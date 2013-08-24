@@ -2,8 +2,9 @@
  * WebSocketAdapter
  * @class
  * @constructor
+ * @param {cobu.EventBus} eventBus
  */
-cobu.wsc.ui.WebSocketAdapter = function WebSocketAdapter()
+cobu.wsc.ui.WebSocketAdapter = function WebSocketAdapter(eventBus)
 {
    'use strict';
 
@@ -12,9 +13,12 @@ cobu.wsc.ui.WebSocketAdapter = function WebSocketAdapter()
 
    var websocket = null;
 
+   this.onopen = null;
+   this.onclose = null;
+   this.onerror = null;
+
    /** Constructor */
-   function constructor()
-   {
+   function constructor() {
    }
 
    /**
@@ -23,53 +27,91 @@ cobu.wsc.ui.WebSocketAdapter = function WebSocketAdapter()
     */
    this.connect = function connect(wsUri) {
 
-      websocket = new WebSocket(wsUri);
-      websocket.onopen = onOpen;
-      websocket.onclose = onClose;
-      websocket.onmessage = onMessage;
-      websocket.onerror = onError;
+      try {
+         websocket = new WebSocket(wsUri);
+         websocket.onopen = handleOpen;
+         websocket.onclose = handleClose;
+         websocket.onmessage = handleMessage;
+         websocket.onerror = handleError;
+      } catch(ex) {
+         console.log(ex);
+         websocket = null;
+
+         if (self.onerror) {
+            self.onerror();
+         }
+      }
+   };
+
+   /**
+    *
+    * @param {string|object} message
+    */
+   this.send = function send(message) {
+      if (typeof message === 'object') {
+         websocket.send(JSON.stringify(message));
+      } else {
+         websocket.send(message);
+      }
    };
 
    /**
     *
     * @param event
     */
-   function onOpen(event) {
+   function handleOpen(event) {
       console.log("CONNECTED");
+
+      if (self.onopen) {
+         self.onopen();
+      }
    }
 
    /**
     *
     * @param event
     */
-   function onClose(event) {
+   function handleClose(event) {
       console.log("DISCONNECTED");
+
+      if (self.onclose) {
+         self.onclose();
+      }
    }
 
    /**
     *
     * @param event
     */
-   function onMessage(event) {
-      console.log('<span style="color: blue;">RESPONSE: ' + evt.data+'</span>');
-      // websocket.close();
+   function handleMessage(event) {
+
+      var msg = null;
+
+      try {
+         msg = JSON.parse(event.data);
+      } catch(ex) {
+         console.log(ex);
+      }
+
+      if (msg) {
+         eventBus.post(msg);
+      }
    }
 
    /**
     *
     * @param event
     */
-   function onError(event) {
-      console.log('<span style="color: red;">ERROR:</span> ' + evt.data);
+   function handleError(event) {
+
+      console.log(event);
+
+      if (self.onerror) {
+         self.onerror();
+      }
    }
 
-   /**
-    *
-    * @param message
-    */
-   function send(message) {
-      websocket.send(message);
-   }
+
 
    constructor();
 };

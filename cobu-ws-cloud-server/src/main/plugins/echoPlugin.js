@@ -10,7 +10,7 @@ cobu.wsc.EchoPLugin = function EchoPLugin()
    /** @type {cobu.wsc.PingPongPlugin} */
    var self = this;
 
-   this.name = self.constructor.name;
+   this.name = 'echo';
 
    /** Constructor */
    function constructor()

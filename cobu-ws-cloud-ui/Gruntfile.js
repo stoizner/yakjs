@@ -48,7 +48,21 @@ module.exports = function(grunt) {
          }
       },
       clean: {
-         build: ["build"]
+         build: ['build']
+      },
+      less: {
+         options: {
+            paths: ['src/main/style']
+         },
+         // target name
+         src: {
+            // no need for files, the config below should work
+            expand: true,
+            cwd:    'src/main/style',
+            src:    '*.less',
+            dest:   'src/main/style',
+            ext:    '.less.css'
+         }
       }
    });
 
@@ -56,9 +70,10 @@ module.exports = function(grunt) {
    grunt.loadNpmTasks('grunt-contrib-uglify');
    grunt.loadNpmTasks('grunt-contrib-concat');
    grunt.loadNpmTasks('grunt-contrib-copy');
+   grunt.loadNpmTasks('grunt-contrib-less');
 
    // Default task(s).
-   grunt.registerTask('default', ['version', 'clean:build', 'concat', 'copy:main']);
+   grunt.registerTask('default', ['version', 'clean:build', 'concat', 'less', 'copy:main']);
 
    grunt.registerTask('version', 'Do something interesting.', function(arg) {
       var msg = 'version ' + grunt.config.get('pkg').version;

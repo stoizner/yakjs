@@ -37,7 +37,8 @@ module.exports = function(grunt) {
       copy: {
          toServer: {
             files: [
-               { expand: true, cwd: 'build/', src: ['*.js'], dest: '../cobu-ws-cloud-server/src/main/api', filter: 'isFile'}
+               { expand: true, cwd: 'build/', src: ['*.js'], dest: '../cobu-ws-cloud-server/src/main/api', filter: 'isFile'},
+               { expand: true, cwd: 'build/', src: ['*.js'], dest: '../cobu-ws-cloud-ui/ext', filter: 'isFile'}
             ]
          }
       }

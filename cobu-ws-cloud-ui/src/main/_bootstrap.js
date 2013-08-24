@@ -1,11 +1,16 @@
 $(document).ready(function() {
 
-   var wsUri = "ws://localhost:8080";
+   console.log('ready');
 
-   var webSocketAdapter = new cobu.wsc.ui.WebSocketAdapter();
-   webSocketAdapter.connect(wsUri);
+   var eventBus = new cobu.EventBus();
 
-   var workspaceView = new cobu.wsc.ui.WorkspaceView($("#main"));
+   var webSocketAdapter = new cobu.wsc.ui.WebSocketAdapter(eventBus);
+
+   var viewContext = new cobu.wsc.ui.ViewContext();
+   viewContext.webSocket = webSocketAdapter;
+   viewContext.eventBus = eventBus;
+
+   var workspaceView = new cobu.wsc.ui.WorkspaceView($(document), viewContext);
 
 });
 

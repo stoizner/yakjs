@@ -7,10 +7,10 @@ cobu.wsc.BroadcastPlugin = function BroadcastPlugin()
 {
    'use strict';
 
-   /** @type {cobu.wsc.PingPongPlugin} */
+   /** @type {cobu.wsc.BroadcastPlugin} */
    var self = this;
 
-   this.name = self.constructor.name;
+   this.name = 'broadcast';
 
    /** Constructor */
    function constructor()

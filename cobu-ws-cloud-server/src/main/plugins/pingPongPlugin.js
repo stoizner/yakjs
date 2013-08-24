@@ -10,7 +10,7 @@ cobu.wsc.PingPongPlugin = function PingPongPlugin()
    /** @type {cobu.wsc.PingPongPlugin} */
    var self = this;
 
-   this.name = self.constructor.name;
+   this.name = 'ping-pong';
 
    /** Constructor */
    function constructor()

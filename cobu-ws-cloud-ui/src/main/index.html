@@ -1,28 +1,67 @@
 <!DOCTYPE html>
 
 <head>
-   <title>WebSocket Test</title>
-   <meta charset="utf-8" />
-   <link rel="stylesheet" href="style/style.css" type="text/css">
-   <script src="./ext/jquery.js"></script>
+   <title>cobu-ws-cloud-ui</title>
+   <link rel="stylesheet" href="style/font.less.css" type="text/css">
+   <link rel="stylesheet" href="style/icons.css" type="text/css">
+   <link rel="stylesheet" href="style/layout.css" type="text/css">
+   <link rel="stylesheet" href="style/style.less.css" type="text/css">
+
+   <script src="ext/jquery.js"></script>
+   <script src="ext/mustache.js"></script>
+   <script src="ext/cobu-eventbus.js"></script>
+   <script src="ext/cobu-ws-cloud-api.js"></script>
    <script src="cobu-ws-cloud-ui.js"></script>
 </head>
 
-<script language="javascript" type="text/javascript">
+<body>
+   <div class="banner">
 
-   $(document).ready(function() {
+   </div>
+   <div class="main">
+      <div class="header">
+         <div class="header-logo icon-cloud-64"></div>
+         <div class="header-text">cobu-ws-cloud-ui</div>
+         <div class="login">
+            <div class="login-input"><input id="webSocketUri" type="text"></div>
+            <button id="webSocketConnect" class="login-button">Connect</button>
+         </div>
+      </div>
+      <div class="menu">
+         <ul>
+            <li data-panel="panel-instance">Instances</li>
+            <li data-panel="panel-plugins">Plugins</li>
+         </ul>
+      </div>
+      <div class="panels">
+         <div class="panel panel-instance">
+            <button>New Instance</button>
+            <div class="instance-items">
 
-      $('#startInstanceA').click(function() { send('{ "type": "request.startInstance", "instanceName": "A" }')});
-      $('#stopInstanceA').click(function() { send('{ "type": "request.stopInstance", "instanceName": "A" }')});
-      $('#connect').click(function() { testWebSocket(); });
-   });
+            </div>
+         </div>
+         <div class="panel panel-plugins">
+            <button>New Plugin</button>
+            <div class="plugin-items">
 
-</script>
+            </div>
+         </div>
+         <div class="panel panel-pluginEdit">
+            <p>Plugin Edit</p>
+         </div>
+      </div>
+   </div>
 
+   <template id="instance-item-tpl">
+      <div class="instance-item">
+         <div class="item-cell instance-item-state icon-state-{{state}}"></div>
+         <div class="item-cell instance-item-port">{{port}}</div>
+         <div class="item-cell instance-item-name">{{name}}</div>
+         <div class="item-cell instance-item-connectionCount">{{connectionCount}}</div>
+         <div class="item-cell instance-item-plugins">{{plugins}}</div>
+      </div>
+   </template>
 
-<h2>WebSocket Test</h2>
-<div class="button" id="connect">Connect</div>
-<div class="button" id="startInstanceA">Start instance A</div>
-<div class="button" id="stopInstanceA">Stop instance A</div>
-<div id="output"></div>
+</body>
+
 </html>
