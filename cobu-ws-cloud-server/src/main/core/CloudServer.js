@@ -15,11 +15,15 @@ cobu.wsc.CloudServer = function CloudServer()
     */
    var instances = {};
 
-
    /**
     * @type {cobu.wsc.ServerInstance}
     */
    this.serviceInstance = null;
+
+   /**
+    * @type {cobu.wsc.PluginManager}
+    */
+   this.pluginManager = new cobu.wsc.PluginManager();
 
    /** Constructor */
    function constructor() {
@@ -30,7 +34,7 @@ cobu.wsc.CloudServer = function CloudServer()
     */
    this.start = function start(serviceInstance) {
       if (serviceInstance) {
-         self.serviceInstance = serviceInstance
+         self.serviceInstance = serviceInstance;
          self.serviceInstance.start();
       }
    };

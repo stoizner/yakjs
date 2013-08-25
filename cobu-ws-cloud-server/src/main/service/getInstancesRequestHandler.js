@@ -11,8 +11,6 @@ cobu.wsc.GetInstancesRequestHandler = function GetInstancesRequestHandler(cloudS
    /** @type {cobu.wsc.StartInstanceRequestHandler} */
    var self = this;
 
-   var os = require('os');
-
    /** Constructor */
    function constructor()
    {

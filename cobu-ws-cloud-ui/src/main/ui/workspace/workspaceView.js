@@ -23,7 +23,7 @@ cobu.wsc.ui.WorkspaceView = function WorkspaceView(parent, context)
 
       header = new cobu.wsc.ui.HeaderView($('.header', parent), context);
       panelViews['panel-instance'] = new cobu.wsc.ui.InstanceListView($('.panel-instance', parent), context);
-      panelViews['panel-instance-new'] = new cobu.wsc.ui.InstanceListView($('.panel-instance', parent), context)
+      panelViews['panel-instance-new'] = new cobu.wsc.ui.InstanceNewView($('.panel-instance-new', parent), context)
 
       context.eventBus.on(cobu.wsc.ui.ActivatePanelCommand).register(handleActivatePanel);
 
@@ -35,6 +35,7 @@ cobu.wsc.ui.WorkspaceView = function WorkspaceView(parent, context)
     * @param {cobu.wsc.ui.ActivatePanelCommand} command
     */
    function handleActivatePanel(command) {
+      console.log('handleActivatePanel', command);
       activatePanel(command.panelName);
    }
 

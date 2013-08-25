@@ -12,8 +12,7 @@ cobu.wsc.WebSocketServerPlugin = function WebSocketServerPlugin(name)
    this.name = name;
 
    /** Constructor */
-   function constructor()
-   {
+   function constructor() {
    }
 
    /**

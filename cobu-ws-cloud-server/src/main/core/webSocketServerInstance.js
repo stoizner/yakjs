@@ -29,6 +29,12 @@ cobu.wsc.WebSocketServerInstance = function WebSocketServerInstance(name, port)
    this.port = port || 8080;
 
    /**
+    * Description
+    * @type {string}
+    */
+   this.description = '';
+
+   /**
     * Unique instance name.
     * @type {string}
     */
