@@ -22,10 +22,20 @@ cobu.wsc.ui.WorkspaceView = function WorkspaceView(parent, context)
    function constructor() {
 
       header = new cobu.wsc.ui.HeaderView($('.header', parent), context);
-      panelViews['panel-instance'] = new cobu.wsc.ui.InstanceListView($('.panel-instance', parent), context)
+      panelViews['panel-instance'] = new cobu.wsc.ui.InstanceListView($('.panel-instance', parent), context);
+      panelViews['panel-instance-new'] = new cobu.wsc.ui.InstanceListView($('.panel-instance', parent), context)
+
+      context.eventBus.on(cobu.wsc.ui.ActivatePanelCommand).register(handleActivatePanel);
 
       $('.menu li', parent).click(handleMenuItemClick);
       hidePanels();
+   }
+
+   /**
+    * @param {cobu.wsc.ui.ActivatePanelCommand} command
+    */
+   function handleActivatePanel(command) {
+      activatePanel(command.panelName);
    }
 
    /**
@@ -39,11 +49,19 @@ cobu.wsc.ui.WorkspaceView = function WorkspaceView(parent, context)
       $('.menu li', parent).removeClass('state-active');
       target.addClass('state-active');
 
-      hidePanels();
-      $('.panels .'+panelName, parent).show();
+      activatePanel(panelName);
+   }
 
-      if (panelViews.hasOwnProperty(panelName)) {
-         panelViews[panelName].active();
+   /**
+    *
+    * @param name
+    */
+   function activatePanel(name) {
+      hidePanels();
+      $('.panels .' + name, parent).show();
+
+      if (panelViews.hasOwnProperty(name)) {
+         panelViews[name].active();
       }
    }
 

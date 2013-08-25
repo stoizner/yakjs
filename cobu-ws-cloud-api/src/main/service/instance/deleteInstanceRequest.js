@@ -1,9 +1,8 @@
 /**
- * StartInstanceRequest
- * @class
+ * DeleteInstanceRequest
  * @constructor
  */
-cobu.wsc.service.StartInstanceRequest = function StartInstanceRequest()
+cobu.wsc.service.DeleteInstanceRequest = function DeleteInstanceRequest()
 {
    'use strict';
 
@@ -11,7 +10,7 @@ cobu.wsc.service.StartInstanceRequest = function StartInstanceRequest()
     * Command for the service API.
     * @type {string}
     */
-   this.type = 'request.startInstance';
+   this.type = 'request.deleteInstance';
 
    /**
     * Name of the instance.

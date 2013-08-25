@@ -34,18 +34,59 @@
          </ul>
       </div>
       <div class="panels">
+
+         <!-- INSTANCE LIST -->
          <div class="panel panel-instance">
-            <button>New Instance</button>
+            <button id="instance-new">New Instance</button><button id="instance-refresh">Refresh</button>
             <div class="instance-items">
 
             </div>
+            <div id="instance-item-context" class="context-menu instance-item-context">
+               <ul>
+                  <li data-menu="edit">Edit</li>
+                  <li data-menu="start">Start</li>
+                  <li data-menu="stop">Stop</li>
+                  <li class="seperator"></li>
+                  <li data-menu="delete">Delete</li>
+               </ul>
+            </div>
          </div>
+
+         <!-- INSTANCE NEW -->
+         <div class="panel panel-instance-new">
+            <div class="form">
+               <div class="form-line">
+                  <div class="line-label">Name</div>
+                  <div class="line-input"><input data-bind="name" type="text" /></div>
+               </div>
+               <div class="form-line">
+                  <div class="line-label">Port</div>
+                  <div class="line-input"><input data-bind="name" type="text" /></div>
+               </div>
+               <div class="form-line">
+                  <div class="line-label">Description</div>
+                  <div class="line-input"><input data-bind="name" type="text" /></div>
+               </div>
+               <div class="form-line">
+                  <div class="line-label">Plugins</div>
+                  <div class="line-input"><input data-bind="name" type="text" /></div>
+               </div>
+               <div class="form-line">
+                  <div class="line-label"></div>
+                  <div class="line-input"><button id="instance-create">Create</button></div>
+               </div>
+            </div>
+         </div>
+
+         <!-- INSTANCE PLUGIN -->
          <div class="panel panel-plugins">
             <button>New Plugin</button>
             <div class="plugin-items">
 
             </div>
          </div>
+
+         <!-- INSTANCE PLUGIN EDIT -->
          <div class="panel panel-pluginEdit">
             <p>Plugin Edit</p>
          </div>
@@ -53,7 +94,7 @@
    </div>
 
    <template id="instance-item-tpl">
-      <div class="instance-item">
+      <div class="instance-item" data-instance="{{name}}">
          <div class="item-cell instance-item-state icon-state-{{state}}"></div>
          <div class="item-cell instance-item-port">{{port}}</div>
          <div class="item-cell instance-item-name">{{name}}</div>

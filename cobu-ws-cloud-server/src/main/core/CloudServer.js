@@ -1,6 +1,5 @@
 /**
  * CloudServer
- * @class
  * @constructor
  */
 cobu.wsc.CloudServer = function CloudServer()
@@ -15,6 +14,7 @@ cobu.wsc.CloudServer = function CloudServer()
     * @type {Object.<string, cobu.wsc.ServerInstance>}
     */
    var instances = {};
+
 
    /**
     * @type {cobu.wsc.ServerInstance}
@@ -55,6 +55,22 @@ cobu.wsc.CloudServer = function CloudServer()
     */
    this.getInstance = function getInstance(name) {
       return instances[name];
+   };
+
+   /**
+    *
+    * @returns {Array.<cobu.wsc.ServerInstance>}
+    */
+   this.getInstances = function getInstances() {
+      var arr = [];
+
+      for(var key in instances) {
+         if (instances.hasOwnProperty(key)) {
+            arr.push(instances[key]);
+         }
+      }
+
+     return arr;
    };
 
    /**

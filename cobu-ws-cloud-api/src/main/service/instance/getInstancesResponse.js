@@ -1,6 +1,5 @@
 /**
  * GetInstancesResponse
- * @class
  * @constructor
  */
 cobu.wsc.service.GetInstancesResponse = function GetInstancesResponse()

@@ -1,9 +1,8 @@
 /**
- * StartInstanceResponse
- * @class
+ * StopInstanceResponse
  * @constructor
  */
-cobu.wsc.service.StartInstanceResponse = function StartInstanceResponse()
+cobu.wsc.service.StopInstanceResponse = function StopInstanceResponse()
 {
    'use strict';
 
@@ -11,7 +10,7 @@ cobu.wsc.service.StartInstanceResponse = function StartInstanceResponse()
     * Command for the service API.
     * @type {string}
     */
-   this.type = 'response.startInstance';
+   this.type = 'response.stopInstance';
 
    /**
     * Whether the request was successfully or not.

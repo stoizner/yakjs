@@ -1,4 +1,4 @@
-div, input {
+div, input, li {
    -webkit-box-sizing:border-box;
    box-sizing:border-box;
 }
@@ -113,6 +113,10 @@ div, input {
    margin-top: 20px;
 }
 
+.panel {
+   position:relative;
+}
+
 .instance-items {
    margin-top: 20px;
 }
@@ -124,6 +128,11 @@ div, input {
    font: 12px/30px 'OpenSansRegular';
    color: #303030;
    overflow:hidden;
+   cursor:context-menu;
+}
+
+.instance-item.state-context-open {
+   background:#F5F5F5;
 }
 
 .item-cell {
@@ -138,3 +147,77 @@ div, input {
 .instance-item-name { width:200px; }
 .instance-item-connectionCount { width:60px; }
 .instance-item-plugins { }
+
+.context-menu {
+   width:150px;
+   border:solid 1px #C0C0C0;
+   background:transparent;
+   box-shadow: 0 0 10px #E0E0E0;
+   position:absolute;
+   left:0;
+   top:0;
+   display:none;
+}
+
+.context-menu ul {
+   margin: 0;
+   padding: 0;
+   display:block;
+}
+
+.context-menu li {
+   display:block;
+   height:30px;
+   font: 12px/30px 'OpenSansRegular';
+   padding: 0;
+   margin: 0;
+   padding-left:10px;
+   color: #303030;
+   cursor:pointer;
+   border-top: 1px solid transparent;
+   border-bottom: 1px solid transparent;
+   background:#F5F5F5;
+}
+
+.context-menu li.seperator,
+.context-menu li.seperator:hover {
+   height: 1px;
+   border: 0;
+   border-top: 1px solid #E0E0E0;
+}
+
+.context-menu li:hover {
+    background:#E5E5E5;
+    color: #000000;
+    border-top: 1px solid #E0E0E0;
+    border-bottom: 1px solid #E0E0E0;
+}
+
+.form {
+}
+
+.form-line {
+   height:30px;
+   margin-bottom:15px;
+}
+
+.line-label {
+   display:inline-block;
+   height:30px;
+   width:200px;
+   font: 13px/30px 'OpenSansRegular';
+   color: #303030;
+   text-transform:uppercase;
+   overflow:hidden;
+}
+
+.line-input {
+   display:inline-block;
+   height:30px;
+   color: #303030;
+}
+
+.line-input input {
+   height:30px;
+   width:300px;
+}

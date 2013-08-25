@@ -1,6 +1,5 @@
 /**
  * StopInstanceRequest
- * @class
  * @constructor
  */
 cobu.wsc.service.StopInstanceRequest = function StopInstanceRequest()
