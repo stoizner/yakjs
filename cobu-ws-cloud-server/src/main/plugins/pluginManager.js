@@ -65,22 +65,24 @@ cobu.wsc.PluginManager = function PluginManager()
     * @param {string} name
     * @return {null|cobu.wsc.PluginWorker}
     */
-   this.createPluginInstance = function createPluginInstance(name) {
-      var pluginInstance = null;
+   this.createPluginWorker = function createPluginWorker(name) {
+      console.log('CreatePluginWorker: ' + name);
+      var pluginWorker = null;
 
       if (plugins.hasOwnProperty(name)) {
          var plugin = plugins[name];
 
          try {
-            pluginInstance = new plugin.PluginWorker();
+            pluginWorker = new plugin.PluginWorker();
+            pluginWorker.name = name;
          } catch(ex) {
-            pluginInstance = null;
-            console.warn('Plugin instance for plugin ' + name + 'could not be created.');
+            pluginWorker = null;
+            console.warn('Can not create plugin worker "' + name + '"');
             console.log(ex);
          }
       }
 
-      return pluginInstance;
+      return pluginWorker;
    };
 
    /**

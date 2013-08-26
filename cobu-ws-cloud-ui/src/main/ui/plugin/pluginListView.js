@@ -26,7 +26,7 @@ cobu.wsc.ui.PluginListView = function PluginListView(parent, context) {
       contextMenuActions['delete'] = handleContextMenuDelete;
 
       $('#plugin-refresh').click(handleButtonRefreshClick);
-      $('#plugin-new').click(function() { context.eventBus.post(new cobu.wsc.ui.ActivatePanelCommand('panel-plugin-new')); });
+      $('#plugin-new').click(function() { context.eventBus.post(new cobu.wsc.ui.ActivatePanelCommand('panel-plugin-edit')); });
    }
 
    /**

@@ -15,6 +15,10 @@ cobu.wsc.ui.InstanceListView = function InstanceListView(parent, context)
 
    var itemContainer = $('.instance-items', parent);
 
+   /**
+    *
+    * @type {Array.<cobu.wsc.service.InstanceInfo>}
+    */
    var listItems = [];
 
    var contextMenuActions = {};
@@ -31,7 +35,7 @@ cobu.wsc.ui.InstanceListView = function InstanceListView(parent, context)
       contextMenuActions['delete'] = handleContextMenuDelete;
 
       $('#instance-refresh').click(handleButtonRefreshClick);
-      $('#instance-new').click(function() { context.eventBus.post(new cobu.wsc.ui.ActivatePanelCommand('panel-instance-new')); });
+      $('#instance-new').click(function() { context.eventBus.post(new cobu.wsc.ui.ActivatePanelCommand('panel-instance-edit')); });
    }
 
    /**
@@ -110,6 +114,16 @@ cobu.wsc.ui.InstanceListView = function InstanceListView(parent, context)
     */
    function handleContextMenuEdit(instanceName) {
 
+      var instanceInfo = null;
+
+      for(var i=0; i<listItems.length; i++) {
+         if (listItems[i].name === instanceName) {
+            instanceInfo = listItems[i];
+            break;
+         }
+      }
+
+      context.eventBus.post(new cobu.wsc.ui.ActivatePanelCommand('panel-instance-edit', instanceInfo));
    }
 
    /**

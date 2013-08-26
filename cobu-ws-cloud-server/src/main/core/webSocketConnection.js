@@ -33,6 +33,7 @@ cobu.wsc.WebSocketConnection = function WebSocketConnection(socket)
     */
    this.send = function send(data) {
 
+      console.log('send', data);
       if (typeof data === 'object') {
          self.sendAsJson(data);
       } else {

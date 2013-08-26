@@ -10,6 +10,7 @@ var instanceA = new cobu.wsc.WebSocketServerInstance('A', 8081);
 //instanceA.plugins.push(new cobu.wsc.PingPongPluginWorker());
 //instanceA.plugins.push(new cobu.wsc.BroadcastPluginWorker());
 
+
 var instanceB = new cobu.wsc.WebSocketServerInstance('B', 8082);
 //instanceB.plugins.push(new cobu.wsc.PingPongPluginWorker());
 //instanceB.plugins.push(new cobu.wsc.EchoPluginWorker());
@@ -24,6 +25,10 @@ echoPlugin.PluginWorker = cobu.wsc.EchoPluginWorker;
 echoPlugin.code = cobu.wsc.EchoPluginWorker.toString();
 
 cloudServer.pluginManager.addOrUpdatePlugin(echoPlugin);
+
+
+instanceA.plugins.push(cloudServer.pluginManager.createPluginWorker('echo'));
+instanceA.plugins.push(cloudServer.pluginManager.createPluginWorker('console'));
 
 cloudServer.addInstance(instanceA);
 cloudServer.addInstance(instanceB);

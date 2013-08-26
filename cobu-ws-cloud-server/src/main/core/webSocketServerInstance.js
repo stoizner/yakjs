@@ -87,6 +87,7 @@ cobu.wsc.WebSocketServerInstance = function WebSocketServerInstance(name, port)
 
       try {
          if (server && self.state === cobu.wsc.InstanceState.RUNNING) {
+            self.state = cobu.wsc.InstanceState.STOPPING;
             self.log.info('Stopping WebSocketServerInstance...');
             server.close();
             server = null;

@@ -2,8 +2,9 @@
  * ActivatePanelCommand
  * @constructor
  * @param {string} name the panel name.
+ * @param {string|object} [data]
  */
-cobu.wsc.ui.ActivatePanelCommand = function ActivatePanelCommand(name)
+cobu.wsc.ui.ActivatePanelCommand = function ActivatePanelCommand(name, data)
 {
    'use strict';
 
@@ -14,4 +15,10 @@ cobu.wsc.ui.ActivatePanelCommand = function ActivatePanelCommand(name)
     * @type {string}
     */
    this.panelName = name;
+
+   /**
+    *
+    * @type {string|string}
+    */
+   this.data = data || null;
 };

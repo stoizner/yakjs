@@ -23,7 +23,7 @@ cobu.wsc.ui.WorkspaceView = function WorkspaceView(parent, context)
 
       header = new cobu.wsc.ui.HeaderView($('.header', parent), context);
       panelViews['panel-instance'] = new cobu.wsc.ui.InstanceListView($('.panel-instance', parent), context);
-      panelViews['panel-instance-new'] = new cobu.wsc.ui.InstanceNewView($('.panel-instance-new', parent), context);
+      panelViews['panel-instance-edit'] = new cobu.wsc.ui.InstanceView($('.panel-instance-edit', parent), context);
       panelViews['panel-plugin'] = new cobu.wsc.ui.PluginListView($('.panel-plugin', parent), context);
       panelViews['panel-plugin-edit'] = new cobu.wsc.ui.PluginEditView($('.panel-plugin-edit', parent), context);
 
@@ -38,7 +38,7 @@ cobu.wsc.ui.WorkspaceView = function WorkspaceView(parent, context)
     */
    function handleActivatePanel(command) {
       console.log('handleActivatePanel', command);
-      activatePanel(command.panelName);
+      activatePanel(command.panelName, command.data);
    }
 
    /**
@@ -57,14 +57,16 @@ cobu.wsc.ui.WorkspaceView = function WorkspaceView(parent, context)
 
    /**
     *
-    * @param name
+    * @param {string} name
+    * @param {null|string|object} data
     */
-   function activatePanel(name) {
+   function activatePanel(name, data) {
+      console.log('activatePanel', name, data);
       hidePanels();
       $('.panels .' + name, parent).show();
 
       if (panelViews.hasOwnProperty(name)) {
-         panelViews[name].active();
+         panelViews[name].active(data);
       }
    }
 

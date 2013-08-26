@@ -37,8 +37,8 @@
 
          <!-- INSTANCE LIST -->
          <div class="panel panel-instance">
-            <button id="instance-new">New Instance</button><button id="instance-refresh">Refresh</button>
-            <div class="instance-items">
+            <button id="instance-edit">New Instance</button><button id="instance-refresh">Refresh</button>
+            <div class="list instance-items">
 
             </div>
             <div id="instance-item-context" class="context-menu instance-item-context">
@@ -53,7 +53,7 @@
          </div>
 
          <!-- INSTANCE NEW -->
-         <div class="panel panel-instance-new">
+         <div class="panel panel-instance-edit">
             <div class="form">
                <div class="form-line">
                   <div class="line-label">Name</div>
@@ -73,7 +73,7 @@
                </div>
                <div class="form-line">
                   <div class="line-label"></div>
-                  <div class="line-input"><button id="instance-create">Create</button></div>
+                  <div class="line-input"><button id="instance-save">Save</button></div>
                </div>
             </div>
          </div>
@@ -81,7 +81,7 @@
          <!-- PLUGIN -->
          <div class="panel panel-plugin">
             <button id="plugin-new">New Plugin</button><button id="plugin-refresh">Refresh</button>
-            <div class="plugin-items">
+            <div class="list plugin-items">
 
             </div>
             <div id="plugin-item-context" class="context-menu plugin-item-context">
@@ -95,25 +95,49 @@
 
          <!-- PLUGIN EDIT -->
          <div class="panel panel-plugin-edit">
-            <p>Plugin Edit</p>
+            <div class="form">
+               <div class="form-line">
+                  <div class="line-label">Name</div>
+                  <div class="line-input"><input data-bind="name" type="text" /></div>
+               </div>
+               <div class="form-line">
+                  <div class="line-label">Description</div>
+                  <div class="line-input"><input data-bind="description" type="text" /></div>
+               </div>
+               <div class="form-line">
+                  <div class="line-left">
+                     <div class="line-label">Code</div>
+                     <div class="line-help">Press CTRL + SPACE for code completion.</div>
+                  </div>
+                  <div class="line-editor">
+                     <div class="codeEditor">
+
+                     </div>
+                  </div>
+               </div>
+               <div class="form-line">
+                  <div class="line-label"></div>
+                  <div class="line-input"><button id="plugin-save">Save</button></div>
+               </div>
+            </div>
          </div>
       </div>
    </div>
 
    <template id="instance-item-tpl">
-      <div class="instance-item" data-instance="{{name}}">
-         <div class="item-cell instance-item-state icon-state-{{state}}"></div>
-         <div class="item-cell instance-item-port">{{port}}</div>
-         <div class="item-cell instance-item-name">{{name}}</div>
-         <div class="item-cell instance-item-connectionCount">{{connectionCount}}</div>
-         <div class="item-cell instance-item-plugins">{{plugins}}</div>
+      <div class="list-item instance-item" data-instance="{{name}}">
+         <div class="list-item-cell instance-item-state icon-state-{{state}}"></div>
+         <div class="list-item-cell instance-item-port">{{port}}</div>
+         <div class="list-item-cell instance-item-name">{{name}}</div>
+         <div class="list-item-cell instance-item-connectionCount">{{connectionCount}}</div>
+         <div class="list-item-cell instance-item-plugins">{{plugins}}</div>
       </div>
    </template>
 
    <template id="plugin-item-tpl">
-      <div class="plugin-item" data-plugin="{{name}}">
-         <div class="item-cell instance-item-name">{{name}}</div>
-         <div class="item-cell instance-item-description">{{description}}</div>
+      <div class="list-item plugin-item" data-plugin="{{name}}">
+         <div class="list-item-cell instance-item-name">{{name}}</div>
+         <div class="list-item-cell instance-item-description">{{description}}</div>
       </div>
    </template>
 

@@ -38,10 +38,12 @@ div, input, li {
 }
 
 .main {
+   position:absolute;
+   left: 50%;
+   top: 40px;
+   bottom: 0;
    width: 980px;
-   margin-top: 40px;
-   margin-left: auto;
-   margin-right: auto;
+   margin-left: -490px;
 }
 
 .login {
@@ -117,11 +119,11 @@ div, input, li {
    position:relative;
 }
 
-.instance-items {
+.list {
    margin-top: 20px;
 }
 
-.instance-item {
+.list-item {
    position:relative;
    height:30px;
    border-bottom:1px solid #F0F0F0;
@@ -131,11 +133,11 @@ div, input, li {
    cursor:context-menu;
 }
 
-.instance-item.state-context-open {
+.list-item.state-context-open {
    background:#F5F5F5;
 }
 
-.item-cell {
+.list-item-cell {
    display:inline-block;
    margin: 0;
    height:30px;
@@ -147,6 +149,7 @@ div, input, li {
 .instance-item-name { width:200px; }
 .instance-item-connectionCount { width:60px; }
 .instance-item-plugins { }
+
 
 .context-menu {
    width:150px;
@@ -197,7 +200,6 @@ div, input, li {
 }
 
 .form-line {
-   height:30px;
    margin-bottom:15px;
 }
 
@@ -209,6 +211,12 @@ div, input, li {
    color: #303030;
    text-transform:uppercase;
    overflow:hidden;
+   vertical-align:top;
+}
+
+.line-help {
+   font: 11px/18px 'OpenSansRegular';
+   color: #A0A0A0;
 }
 
 .line-input {
@@ -220,4 +228,27 @@ div, input, li {
 .line-input input {
    height:30px;
    width:300px;
+}
+
+.line-left {
+   display:inline-block;
+   width:200px;
+   min-height: 30px;
+   vertical-align:top;
+}
+
+.line-left .line-label {
+   display:block;
+   vertical-align:top;
+}
+
+.line-editor {
+   display:inline-block;
+   width:770px;
+}
+
+.codeEditor {
+   width:770px;
+   height:300px;
+   border: solid 1px #E0E0E0;
 }

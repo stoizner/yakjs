@@ -21,6 +21,7 @@ cobu.wsc.ServicePlugin = function ServicePlugin(cloudServer)
       apiMap['request.stopInstance'] = new cobu.wsc.StopInstanceRequestHandler(cloudServer);
       apiMap['request.getInstances'] = new cobu.wsc.GetInstancesRequestHandler(cloudServer);
       apiMap['request.createInstance'] = new cobu.wsc.CreateInstanceRequestHandler(cloudServer);
+      apiMap['request.updateInstance'] = new cobu.wsc.UpdateInstanceRequestHandler(cloudServer);
       apiMap['request.getPlugins'] = new cobu.wsc.GetPluginsRequestHandler(cloudServer);
    }
 
