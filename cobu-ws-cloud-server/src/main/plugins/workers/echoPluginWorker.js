@@ -1,21 +1,17 @@
 /**
- * PingPongPlugin
+ * EchoPluginWorker
  * @constructor
- * @implements {cobu.wsc.WebSocketServerPlugin}
+ * @implements {cobu.wsc.PluginWorker}
  */
-cobu.wsc.PingPongPlugin = function PingPongPlugin()
+cobu.wsc.EchoPluginWorker = function EchoPluginWorker()
 {
    'use strict';
 
-   /** @type {cobu.wsc.PingPongPlugin} */
+   /** @type {cobu.wsc.PingPongPluginWorker} */
    var self = this;
 
-   this.name = 'ping-pong';
-
    /** Constructor */
-   function constructor()
-   {
-   }
+   function constructor() { }
 
    /**
     * @param {cobu.wsc.WebSocketConnection} connection
@@ -28,11 +24,7 @@ cobu.wsc.PingPongPlugin = function PingPongPlugin()
     * @param {cobu.wsc.WebSocketServerInstance} instance
     */
    this.onMessage = function onMessage(message, connection, instance) {
-
-
-      if (message.data === 'ping') {
-         connection.send('pong');
-      }
+      connection.send(message.data);
    };
 
    constructor();

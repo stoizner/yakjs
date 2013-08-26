@@ -1,20 +1,17 @@
 /**
- * BroadcastPlugin
+ * PingPongPluginWorker
  * @constructor
- * @implements {cobu.wsc.WebSocketServerPlugin}
+ * @implements {cobu.wsc.PluginWorker}
  */
-cobu.wsc.BroadcastPlugin = function BroadcastPlugin()
+cobu.wsc.PingPongPluginWorker = function PingPongPluginWorker()
 {
    'use strict';
 
-   /** @type {cobu.wsc.BroadcastPlugin} */
+   /** @type {cobu.wsc.PingPongPluginWorker} */
    var self = this;
 
-   this.name = 'broadcast';
-
    /** Constructor */
-   function constructor()
-   {
+   function constructor() {
    }
 
    /**
@@ -28,15 +25,8 @@ cobu.wsc.BroadcastPlugin = function BroadcastPlugin()
     * @param {cobu.wsc.WebSocketServerInstance} instance
     */
    this.onMessage = function onMessage(message, connection, instance) {
-
-      var connections = instance.getConnections();
-
-      for(var i=0; i<connections.length; i++) {
-         var conn = connections[i];
-
-         if (conn.id !== connection.id) {
-            conn.send(message.data);
-         }
+      if (message.data === 'ping') {
+         connection.send('pong');
       }
    };
 

@@ -1,16 +1,16 @@
 /**
- * EchoPLugin
+ * BroadcastPluginWorker
  * @constructor
- * @implements {cobu.wsc.WebSocketServerPlugin}
+ * @implements {cobu.wsc.PluginWorker}
  */
-cobu.wsc.EchoPLugin = function EchoPLugin()
+cobu.wsc.BroadcastPluginWorker = function BroadcastPluginWorker()
 {
    'use strict';
 
-   /** @type {cobu.wsc.PingPongPlugin} */
+   /** @type {cobu.wsc.BroadcastPluginWorker} */
    var self = this;
 
-   this.name = 'echo';
+   this.name = 'broadcast';
 
    /** Constructor */
    function constructor()
@@ -28,7 +28,16 @@ cobu.wsc.EchoPLugin = function EchoPLugin()
     * @param {cobu.wsc.WebSocketServerInstance} instance
     */
    this.onMessage = function onMessage(message, connection, instance) {
-      connection.send(message.data);
+
+      var connections = instance.getConnections();
+
+      for(var i=0; i<connections.length; i++) {
+         var conn = connections[i];
+
+         if (conn.id !== connection.id) {
+            conn.send(message.data);
+         }
+      }
    };
 
    constructor();

@@ -42,7 +42,7 @@ cobu.wsc.WebSocketServerInstance = function WebSocketServerInstance(name, port)
 
    /**
     *
-    * @type {Array.<cobu.wsc.WebSocketServerPlugin>}
+    * @type {Array.<cobu.wsc.PluginWorker>}
     */
    this.plugins = [];
 
@@ -67,7 +67,7 @@ cobu.wsc.WebSocketServerInstance = function WebSocketServerInstance(name, port)
 
       try {
          if (self.state !== cobu.wsc.InstanceState.RUNNING) {
-            self.log.info('Starting WebSocketServerInstance.');
+            self.log.info('Starting WebSocketServer Instance.');
             server = new WebSocketServer({port: self.port});
             server.on('connection', handleConnection);
             self.state = cobu.wsc.InstanceState.RUNNING;

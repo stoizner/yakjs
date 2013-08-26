@@ -14,7 +14,7 @@ cobu.wsc.service.GetPluginsResponse = function GetPluginsResponse()
 
    /**
     * List of available cloud Plugins as InstanceInfo array.
-    * @type {Array.<cobu.wsc.service.InstanceInfo>}
+    * @type {Array.<cobu.wsc.service.PluginInfo>}
     */
-   this.Plugins = [];
+   this.plugins = [];
 };

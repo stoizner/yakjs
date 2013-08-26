@@ -30,7 +30,7 @@
       <div class="menu">
          <ul>
             <li data-panel="panel-instance">Instances</li>
-            <li data-panel="panel-plugins">Plugins</li>
+            <li data-panel="panel-plugin">Plugins</li>
          </ul>
       </div>
       <div class="panels">
@@ -78,16 +78,23 @@
             </div>
          </div>
 
-         <!-- INSTANCE PLUGIN -->
-         <div class="panel panel-plugins">
-            <button>New Plugin</button>
+         <!-- PLUGIN -->
+         <div class="panel panel-plugin">
+            <button id="plugin-new">New Plugin</button><button id="plugin-refresh">Refresh</button>
             <div class="plugin-items">
 
             </div>
+            <div id="plugin-item-context" class="context-menu plugin-item-context">
+               <ul>
+                  <li data-menu="edit">Edit</li>
+                  <li class="seperator"></li>
+                  <li data-menu="delete">Delete</li>
+               </ul>
+            </div>
          </div>
 
-         <!-- INSTANCE PLUGIN EDIT -->
-         <div class="panel panel-pluginEdit">
+         <!-- PLUGIN EDIT -->
+         <div class="panel panel-plugin-edit">
             <p>Plugin Edit</p>
          </div>
       </div>
@@ -100,6 +107,13 @@
          <div class="item-cell instance-item-name">{{name}}</div>
          <div class="item-cell instance-item-connectionCount">{{connectionCount}}</div>
          <div class="item-cell instance-item-plugins">{{plugins}}</div>
+      </div>
+   </template>
+
+   <template id="plugin-item-tpl">
+      <div class="plugin-item" data-plugin="{{name}}">
+         <div class="item-cell instance-item-name">{{name}}</div>
+         <div class="item-cell instance-item-description">{{description}}</div>
       </div>
    </template>
 

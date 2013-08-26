@@ -1,6 +1,5 @@
 /**
  * PluginManager
- * @class
  * @constructor
  */
 cobu.wsc.PluginManager = function PluginManager()
@@ -28,6 +27,25 @@ cobu.wsc.PluginManager = function PluginManager()
    };
 
    /**
+    * Get list of plugins.
+    * @returns {Array.<cobu.wsc.Plugin>}
+    */
+   this.getPlugins = function getPlugins() {
+
+      var result = [];
+
+      for(var key in plugins) {
+         if (plugins.hasOwnProperty(key)) {
+            result.push(plugins[key]);
+         }
+      }
+
+      console.log('getPlugins', result);
+
+      return result;
+   };
+
+   /**
     * @param plugin
     */
    this.addOrUpdatePlugin = function addOrUpdatePlugin(plugin) {
@@ -45,7 +63,7 @@ cobu.wsc.PluginManager = function PluginManager()
 
    /**
     * @param {string} name
-    * @return {null|cobu.wsc.WebSocketServerPlugin}
+    * @return {null|cobu.wsc.PluginWorker}
     */
    this.createPluginInstance = function createPluginInstance(name) {
       var pluginInstance = null;
@@ -54,7 +72,7 @@ cobu.wsc.PluginManager = function PluginManager()
          var plugin = plugins[name];
 
          try {
-            pluginInstance = new plugin.Instance();
+            pluginInstance = new plugin.PluginWorker();
          } catch(ex) {
             pluginInstance = null;
             console.warn('Plugin instance for plugin ' + name + 'could not be created.');
@@ -70,13 +88,16 @@ cobu.wsc.PluginManager = function PluginManager()
     * @param {string} description
     * @param {string} code
     */
-   this.createPluginFromString = function createPluginFromString(name, description, code) {
-      console.log('createPluginFromString');
+   this.createOrUpdatePlugin = function createOrUpdatePlugin(name, description, code) {
+      console.log('createOrUpdatePlugin', name, description);
       try {
          var plugin = new cobu.wsc.Plugin();
          plugin.name = name;
          plugin.description = description;
-         plugin.Instance = new Function('return ' + code)();
+         plugin.code = code;
+         plugin.PluginWorker = new Function('return ' + code)();
+
+         plugins[name] = plugin;
       } catch (ex) {
          console.log(ex);
       }

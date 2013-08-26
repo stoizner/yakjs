@@ -97,7 +97,7 @@ cobu.wsc.CloudServer = function CloudServer()
       if (instances.hasOwnProperty(name)) {
          instances[name].stop();
       }  else {
-         throw Error('Instance not found ' + name);
+         throw Error('PluginWorker not found ' + name);
       }
    };
 

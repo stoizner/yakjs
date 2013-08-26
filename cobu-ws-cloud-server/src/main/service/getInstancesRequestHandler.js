@@ -46,7 +46,7 @@ cobu.wsc.GetInstancesRequestHandler = function GetInstancesRequestHandler(cloudS
 
    /**
     *
-    * @param {Array.<cobu.wsc.WebSocketServerPlugin>} plugins
+    * @param {Array.<cobu.wsc.PluginWorker>} plugins
     */
    function toPluginString(plugins) {
       var text = '';

@@ -109,7 +109,6 @@
 
    /**
     * @param {$|jQuery} menu
-    * @param {$|jQuery} menuContainer
     * @param {Function} itemClickCallback
     */
    $.fn.contextMenu = function contextMenu(menu, itemClickCallback) {

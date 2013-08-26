@@ -1,14 +1,14 @@
 /**
  * ServicePlugin
  * @constructor
- * @implements {cobu.wsc.WebSocketServerPlugin}
+ * @implements {cobu.wsc.PluginWorker}
  * @param {cobu.wsc.CloudServer} cloudServer
  */
 cobu.wsc.ServicePlugin = function ServicePlugin(cloudServer)
 {
    'use strict';
 
-   /** @type {cobu.wsc.PingPongPlugin} */
+   /** @type {cobu.wsc.PingPongPluginWorker} */
    var self = this;
 
    this.name = self.constructor.name;
@@ -21,6 +21,7 @@ cobu.wsc.ServicePlugin = function ServicePlugin(cloudServer)
       apiMap['request.stopInstance'] = new cobu.wsc.StopInstanceRequestHandler(cloudServer);
       apiMap['request.getInstances'] = new cobu.wsc.GetInstancesRequestHandler(cloudServer);
       apiMap['request.createInstance'] = new cobu.wsc.CreateInstanceRequestHandler(cloudServer);
+      apiMap['request.getPlugins'] = new cobu.wsc.GetPluginsRequestHandler(cloudServer);
    }
 
    /**

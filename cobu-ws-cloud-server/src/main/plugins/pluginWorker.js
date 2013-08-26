@@ -1,12 +1,12 @@
 /**
- * WebSocketServerPlugin
+ * PluginWorker
  * @interface
  */
-cobu.wsc.WebSocketServerPlugin = function WebSocketServerPlugin(name)
+cobu.wsc.PluginWorker = function PluginWorker(name)
 {
    'use strict';
 
-   /** @type {cobu.wsc.WebSocketServerPlugin} */
+   /** @type {cobu.wsc.PluginWorker} */
    var self = this;
 
    this.name = name;
