@@ -19,6 +19,12 @@ cobu.wsc.service.InstanceInfo = function InstanceInfo()
    this.state = null;
 
    /**
+    * Description
+    * @type {null|string}
+    */
+   this.description = null;
+
+   /**
     *
     * @type {number}
     */

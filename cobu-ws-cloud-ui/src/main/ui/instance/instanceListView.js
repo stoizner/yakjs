@@ -26,36 +26,23 @@ cobu.wsc.ui.InstanceListView = function InstanceListView(parent, context)
    /** Constructor */
    function constructor() {
       context.eventBus.on(cobu.wsc.service.GetInstancesResponse).register(handleGetInstancesResponse);
-      context.eventBus.on(cobu.wsc.service.StartInstanceResponse).register(handleStartInstancesResponse);
-      context.eventBus.on(cobu.wsc.service.StopInstanceResponse).register(handleStopInstancesResponse);
+      context.eventBus.on(cobu.wsc.service.StartInstanceResponse).register(handleResponseAndRefreshList);
+      context.eventBus.on(cobu.wsc.service.StopInstanceResponse).register(handleResponseAndRefreshList);
+      context.eventBus.on(cobu.wsc.service.RemoveInstanceResponse).register(handleResponseAndRefreshList);
 
       contextMenuActions['edit'] = handleContextMenuEdit;
       contextMenuActions['start'] = handleContextMenuStart;
       contextMenuActions['stop'] = handleContextMenuStop;
       contextMenuActions['delete'] = handleContextMenuDelete;
 
-      $('#instance-refresh').click(handleButtonRefreshClick);
+      $('#instance-refresh').click(handleResponseAndRefreshList);
       $('#instance-new').click(function() { context.eventBus.post(new cobu.wsc.ui.ActivatePanelCommand('panel-instance-edit')); });
    }
 
    /**
     *
     */
-   function handleButtonRefreshClick() {
-      context.webSocket.send(new cobu.wsc.service.GetInstancesRequest());
-   }
-
-   /**
-    * @param {cobu.wsc.service.StartInstanceResponse} response
-    */
-   function handleStartInstancesResponse(response) {
-      context.webSocket.send(new cobu.wsc.service.GetInstancesRequest());
-   }
-
-   /**
-    * @param {cobu.wsc.service.StopInstanceResponse} response
-    */
-   function handleStopInstancesResponse(response) {
+   function handleResponseAndRefreshList() {
       context.webSocket.send(new cobu.wsc.service.GetInstancesRequest());
    }
 
@@ -151,7 +138,9 @@ cobu.wsc.ui.InstanceListView = function InstanceListView(parent, context)
     * @param instanceName
     */
    function handleContextMenuDelete(instanceName) {
-
+      var request = new cobu.wsc.service.RemoveInstanceRequest();
+      request.instanceName = instanceName;
+      context.webSocket.send(request);
    }
 
    constructor();

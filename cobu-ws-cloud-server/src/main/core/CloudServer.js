@@ -44,11 +44,23 @@ cobu.wsc.CloudServer = function CloudServer()
     * @param {cobu.wsc.ServerInstance} instance
     */
    this.addInstance = function addInstance(instance) {
-
+      console.log('addInstance', instance);
       if (instances.hasOwnProperty(instance.name)) {
          throw Error('Instance with name ' + name + ' already added');
       } else {
          instances[instance.name] = instance;
+      }
+   };
+
+   /**
+    * Remove instance
+    * @param {string} instanceName
+    */
+   this.removeInstance = function removeInstance(instanceName) {
+      console.log('removeInstance', instanceName);
+      if (instances.hasOwnProperty(instanceName)) {
+         instances[instanceName].stop();
+         delete instances[instanceName];
       }
    };
 

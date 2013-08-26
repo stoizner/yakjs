@@ -23,6 +23,12 @@ cobu.wsc.ServerInstance = function ServerInstance()
    this.stop = function stop() {};
 
    /**
+    * Description
+    * @type {string}
+    */
+   this.description = '';
+
+   /**
     * @type {cobu.wsc.Logger}
     */
    this.log = new cobu.wsc.Logger(self.name);

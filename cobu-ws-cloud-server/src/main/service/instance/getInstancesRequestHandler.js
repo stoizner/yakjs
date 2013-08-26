@@ -35,6 +35,7 @@ cobu.wsc.GetInstancesRequestHandler = function GetInstancesRequestHandler(cloudS
             instanceInfo.port = instance.port;
             instanceInfo.state = instance.state;
             instanceInfo.plugins = toPluginString(instance.plugins);
+            instanceInfo.description = instance.description;
 
             response.instances.push(instanceInfo);
          }

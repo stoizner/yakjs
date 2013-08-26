@@ -146,7 +146,8 @@ div, input, li {
 
 .instance-item-state { width:30px; opacity:0.5; }
 .instance-item-port { width:60px; font-family: 'OpenSansSemibold'; color: #000000; }
-.instance-item-name { width:200px; }
+.instance-item-name { width:140px; }
+.instance-item-desc { width:200px; }
 .instance-item-connectionCount { width:60px; }
 .instance-item-plugins { }
 

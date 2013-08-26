@@ -7,6 +7,7 @@ serviceInstance.plugins.push(new cobu.wsc.ServicePlugin(cloudServer));
 cloudServer.start(serviceInstance);
 
 var instanceA = new cobu.wsc.WebSocketServerInstance('A', 8081);
+instanceA.description = 'test-csu';
 //instanceA.plugins.push(new cobu.wsc.PingPongPluginWorker());
 //instanceA.plugins.push(new cobu.wsc.BroadcastPluginWorker());
 
