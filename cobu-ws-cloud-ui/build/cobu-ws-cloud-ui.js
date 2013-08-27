@@ -24,6 +24,26 @@ cobu.wsc.ui = cobu.wsc.ui || {};
 
 
 /**
+ * Name compare
+ * @param {{name:string}} a The first object
+ * @param{{name:string}} b The second object
+ */
+cobu.wsc.ui.nameCompare = function nameCompare(a, b) {
+
+   /**
+    * @type {number}
+    */
+   var result = 0;
+
+
+   if (a.name < b.name) {
+      result = -1;
+   } else if (a.name > b.name) {
+      result = 1;
+   }
+
+   return result;
+};/**
  * ViewContext
  * @class
  * @constructor
@@ -329,6 +349,8 @@ cobu.wsc.ui.InstanceListView = function InstanceListView(parent, context)
 
       var html = '';
 
+      listItems.sort(cobu.wsc.ui.nameCompare);
+
       for(var i=0; i<listItems.length; i++) {
          html += itemTemplate(listItems[i]);
       }
@@ -585,6 +607,8 @@ cobu.wsc.ui.PluginListView = function PluginListView(parent, context) {
 
       var html = '';
 
+      listItems.sort(cobu.wsc.ui.nameCompare);
+
       for(var i=0; i<listItems.length; i++) {
          html += itemTemplate(listItems[i]);
       }
@@ -656,12 +680,39 @@ cobu.wsc.ui.PluginView = function PluginView(parent, context) {
     */
    var pluginInfo = null;
 
+   /**
+    * @type {null|CodeMirror}
+    */
+   var codeEditor = null;
+
    /** Constructor */
    function constructor() {
       $('#plugin-save', parent).click(handleSaveClick);
 
       context.eventBus.on(cobu.wsc.service.CreatePluginResponse).register(handleResponse);
       context.eventBus.on(cobu.wsc.service.UpdatePluginResponse).register(handleResponse);
+
+      CodeMirror.commands.autocomplete = function(cm) {
+         CodeMirror.showHint(cm, CodeMirror.hint.javascript);
+         //CodeMirror.showHint(cm, getCompletions);
+      };
+
+      CodeMirror.commands.autodocument = function(cm) {
+         var cursor = cm.getCursor();
+         console.log(cursor);
+         cm.setCursor(cursor.line, 0);
+         cm.replaceSelection('\n');
+         cm.setCursor(cursor.line, 0);
+         cm.replaceSelection('/**\n * \n */');
+         cm.setCursor(cursor.line+1, cursor.ch);
+      };
+
+      codeEditor = CodeMirror($('#codeEditor')[0], {
+         value:  '', //'/**\n * @param {string} text\n */\nfunction myScript(text) {\n    var x = 100;\n    return text + x;\n}\n',
+         mode:  'javascript',
+         lineNumbers: false,
+         extraKeys: { 'Ctrl-Space': 'autocomplete', 'Ctrl-D': 'autodocument' }
+      });
    }
 
    /**
@@ -686,12 +737,15 @@ cobu.wsc.ui.PluginView = function PluginView(parent, context) {
    this.update = function update() {
       if (pluginInfo === null) {
          $('[data-bind]', parent).val('');
+         codeEditor.setValue('');
       } else {
          $('[data-bind]', parent).each(function() {
             var element = $(this);
             var name = element.attr('data-bind');
             element.val(pluginInfo[name]);
          });
+
+         codeEditor.setValue(pluginInfo.code);
       }
    };
 
@@ -744,6 +798,8 @@ cobu.wsc.ui.PluginView = function PluginView(parent, context) {
          var name = element.attr('data-bind');
          data[name] = element.val();
       });
+
+      data.code = codeEditor.getValue();
 
       return data;
    }
@@ -930,6 +986,9 @@ cobu.wsc.ui.WorkspaceView = function WorkspaceView(parent, context)
 
       $('.menu li', parent).click(handleMenuItemClick);
       hidePanels();
+
+
+
    }
 
    /**

@@ -16,12 +16,39 @@ cobu.wsc.ui.PluginView = function PluginView(parent, context) {
     */
    var pluginInfo = null;
 
+   /**
+    * @type {null|CodeMirror}
+    */
+   var codeEditor = null;
+
    /** Constructor */
    function constructor() {
       $('#plugin-save', parent).click(handleSaveClick);
 
       context.eventBus.on(cobu.wsc.service.CreatePluginResponse).register(handleResponse);
       context.eventBus.on(cobu.wsc.service.UpdatePluginResponse).register(handleResponse);
+
+      CodeMirror.commands.autocomplete = function(cm) {
+         CodeMirror.showHint(cm, CodeMirror.hint.javascript);
+         //CodeMirror.showHint(cm, getCompletions);
+      };
+
+      CodeMirror.commands.autodocument = function(cm) {
+         var cursor = cm.getCursor();
+         console.log(cursor);
+         cm.setCursor(cursor.line, 0);
+         cm.replaceSelection('\n');
+         cm.setCursor(cursor.line, 0);
+         cm.replaceSelection('/**\n * \n */');
+         cm.setCursor(cursor.line+1, cursor.ch);
+      };
+
+      codeEditor = CodeMirror($('#codeEditor')[0], {
+         value:  '', //'/**\n * @param {string} text\n */\nfunction myScript(text) {\n    var x = 100;\n    return text + x;\n}\n',
+         mode:  'javascript',
+         lineNumbers: false,
+         extraKeys: { 'Ctrl-Space': 'autocomplete', 'Ctrl-D': 'autodocument' }
+      });
    }
 
    /**
@@ -46,12 +73,15 @@ cobu.wsc.ui.PluginView = function PluginView(parent, context) {
    this.update = function update() {
       if (pluginInfo === null) {
          $('[data-bind]', parent).val('');
+         codeEditor.setValue('');
       } else {
          $('[data-bind]', parent).each(function() {
             var element = $(this);
             var name = element.attr('data-bind');
             element.val(pluginInfo[name]);
          });
+
+         codeEditor.setValue(pluginInfo.code);
       }
    };
 
@@ -104,6 +134,8 @@ cobu.wsc.ui.PluginView = function PluginView(parent, context) {
          var name = element.attr('data-bind');
          data[name] = element.val();
       });
+
+      data.code = codeEditor.getValue();
 
       return data;
    }

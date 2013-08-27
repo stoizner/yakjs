@@ -69,6 +69,8 @@ cobu.wsc.ui.PluginListView = function PluginListView(parent, context) {
 
       var html = '';
 
+      listItems.sort(cobu.wsc.ui.nameCompare);
+
       for(var i=0; i<listItems.length; i++) {
          html += itemTemplate(listItems[i]);
       }

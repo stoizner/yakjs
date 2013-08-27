@@ -31,6 +31,9 @@ cobu.wsc.ui.WorkspaceView = function WorkspaceView(parent, context)
 
       $('.menu li', parent).click(handleMenuItemClick);
       hidePanels();
+
+
+
    }
 
    /**
