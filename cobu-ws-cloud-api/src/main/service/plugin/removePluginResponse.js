@@ -1,8 +1,8 @@
 /**
- * DeletePluginResponse
+ * RemovePluginResponse
  * @constructor
  */
-cobu.wsc.service.DeletePluginResponse = function DeletePluginResponse()
+cobu.wsc.service.RemovePluginResponse = function RemovePluginResponse()
 {
    'use strict';
 
