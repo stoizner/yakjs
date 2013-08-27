@@ -412,6 +412,62 @@ cobu.wsc.service.UpdateInstanceResponse = function UpdateInstanceResponse()
     */
    this.message = '';
 };/**
+ * CreatePluginRequest
+ * @constructor
+ */
+cobu.wsc.service.CreatePluginRequest = function CreatePluginRequest()
+{
+   'use strict';
+
+   /**
+    * Command for the service API.
+    * @type {string}
+    */
+   this.type = 'request.createPlugin';
+
+   /**
+    * Unique name of Plugin.
+    * @type {string}
+    */
+   this.name = null;
+
+   /**
+    * Some description.
+    * @type {string}
+    */
+   this.description = null;
+
+   /**
+    * Plugin Code.
+    * @type {string}
+    */
+   this.code = null;
+};/**
+ * CreatePluginResponse
+ * @constructor
+ */
+cobu.wsc.service.CreatePluginResponse = function CreatePluginResponse()
+{
+   'use strict';
+
+   /**
+    * Command for the service API.
+    * @type {string}
+    */
+   this.type = 'response.createPlugin';
+
+   /**
+    * Whether the request was successfully or not.
+    * @type {boolean}
+    */
+   this.success = true;
+
+   /**
+    * Optional: Message if no success.
+    * @type {string}
+    */
+   this.message = '';
+};/**
  * GetPluginsRequest
  * @constructor
  */
@@ -468,6 +524,112 @@ cobu.wsc.service.PluginInfo = function PluginInfo()
     * @type {string}
     */
    this.code = null;
+};/**
+ * RemovePluginRequest
+ * @constructor
+ */
+cobu.wsc.service.RemovePluginRequest = function RemovePluginRequest()
+{
+   'use strict';
+
+   /**
+    * Command for the service API.
+    * @type {string}
+    */
+   this.type = 'request.removePlugin';
+
+   /**
+    * Name of the Plugin.
+    * @type {string}
+    */
+   this.pluginName = null;
+};/**
+ * RemovePluginResponse
+ * @constructor
+ */
+cobu.wsc.service.RemovePluginResponse = function RemovePluginResponse()
+{
+   'use strict';
+
+   /**
+    * Command for the service API.
+    * @type {string}
+    */
+   this.type = 'response.deletePlugin';
+
+   /**
+    * Whether the request was successfully or not.
+    * @type {boolean}
+    */
+   this.success = true;
+
+   /**
+    * Optional: Message if no success.
+    * @type {string}
+    */
+   this.message = '';
+};/**
+ * UpdatePluginRequest
+ * @constructor
+ */
+cobu.wsc.service.UpdatePluginRequest = function UpdatePluginRequest()
+{
+   'use strict';
+
+   /**
+    * Command for the service API.
+    * @type {string}
+    */
+   this.type = 'request.updatePlugin';
+
+   /**
+    * The original Plugin name.
+    * @type {null}
+    */
+   this.pluginName = null;
+
+   /**
+    * Unique name of Plugin.
+    * @type {string}
+    */
+   this.name = null;
+
+   /**
+    * Some description.
+    * @type {string}
+    */
+   this.description = null;
+
+   /**
+    * The plugin code.
+    * @type {string}
+    */
+   this.code = 0;
+};/**
+ * UpdatePluginResponse
+ * @constructor
+ */
+cobu.wsc.service.UpdatePluginResponse = function UpdatePluginResponse()
+{
+   'use strict';
+
+   /**
+    * Command for the service API.
+    * @type {string}
+    */
+   this.type = 'response.updatePlugin';
+
+   /**
+    * Whether the request was successfully or not.
+    * @type {boolean}
+    */
+   this.success = true;
+
+   /**
+    * Optional: Message if no success.
+    * @type {string}
+    */
+   this.message = '';
 };/**
  * CloudServer
  * @constructor
@@ -1007,6 +1169,14 @@ cobu.wsc.PluginManager = function PluginManager()
    };
 
    /**
+    * Check if plugin with given name exists.
+    * @param name
+    */
+   this.hasPlugin = function hasPlugin(name) {
+      return plugins.hasOwnProperty(name);
+   };
+
+   /**
     * @param plugin
     */
    this.addOrUpdatePlugin = function addOrUpdatePlugin(plugin) {
@@ -1014,11 +1184,11 @@ cobu.wsc.PluginManager = function PluginManager()
    };
 
    /**
-    * @param {cobu.wsc.Plugin} plugin
+    * @param {string} name The name of the plugin.
     */
-   this.removePlugin = function removePlugin(plugin) {
-      if (plugins.hasOwnProperty(plugin.name)) {
-         delete plugins[plugin.name];
+   this.removePlugin = function removePlugin(name) {
+      if (plugins.hasOwnProperty(name)) {
+         delete plugins[name];
       }
    };
 
@@ -1505,6 +1675,59 @@ cobu.wsc.UpdateInstanceRequestHandler = function UpdateInstanceRequestHandler(cl
 
    constructor();
 };/**
+ * CreatePluginRequestHandler
+ * @constructor
+ * @param {cobu.wsc.CloudServer} cloudServer
+ * @implements {cobu.wsc.ServiceMessageHandler}
+ */
+cobu.wsc.CreatePluginRequestHandler = function CreatePluginRequestHandler(cloudServer)
+{
+   'use strict';
+
+   /** Constructor */
+   function constructor() {
+   }
+
+   /**
+    * @param {cobu.wsc.service.CreatePluginRequest} message
+    * @param {cobu.wsc.WebSocketConnection} connection
+    */
+   this.handle = function handle(message, connection) {
+
+      try {
+         if (cloudServer.pluginManager.hasPlugin(message.name)) {
+            sendPluginAlreadyExistsResponse(connection);
+         } else {
+            cloudServer.pluginManager.createOrUpdatePlugin(message.name, message.description, message.code);
+            sendSuccessResponse(connection);
+         }
+      } catch (ex) {
+         cloudServer.serviceInstance.log.error(ex.message);
+      }
+   };
+
+   /**
+    * Send success response
+    * @param {cobu.wsc.WebSocketConnection} connection
+    */
+   function sendSuccessResponse(connection) {
+      var response = new cobu.wsc.service.CreatePluginResponse();
+      connection.send(response);
+   }
+
+   /**
+    * Send an error response
+    * @param {cobu.wsc.WebSocketConnection} connection
+    */
+   function sendPluginAlreadyExistsResponse(connection) {
+      var response = new cobu.wsc.service.CreatePluginResponse();
+      response.success = false;
+      response.message = 'Cannot create plugin: Name is already used.';
+      connection.send(response);
+   }
+
+   constructor();
+};/**
  * GetPluginsRequestHandler
  * @constructor
  * @param {cobu.wsc.CloudServer} cloudServer
@@ -1551,6 +1774,115 @@ cobu.wsc.GetPluginsRequestHandler = function GetPluginsRequestHandler(cloudServe
 
    constructor();
 };/**
+ * RemovePluginRequestHandler
+ * @constructor
+ * @param {cobu.wsc.CloudServer} cloudServer
+ * @implements {cobu.wsc.ServiceMessageHandler}
+ */
+cobu.wsc.RemovePluginRequestHandler = function RemovePluginRequestHandler(cloudServer)
+{
+   'use strict';
+
+   /** Constructor */
+   function constructor() {
+   }
+
+   /**
+    * @param {cobu.wsc.service.RemovePluginRequest} message
+    * @param {cobu.wsc.WebSocketConnection} connection
+    */
+   this.handle = function handle(message, connection) {
+
+      try {
+         if (cloudServer.pluginManager.hasPlugin(message.pluginName)) {
+            cloudServer.pluginManager.removePlugin(message.pluginName);
+            sendSuccessResponse(connection);
+         } else {
+            sendPluginNotFoundResponse(message, connection);
+         }
+      } catch (ex) {
+         cloudServer.serviceInstance.log.error(ex.message);
+      }
+   };
+
+   /**
+    * Send success response
+    * @param {cobu.wsc.WebSocketConnection} connection
+    */
+   function sendSuccessResponse(connection) {
+      var response = new cobu.wsc.service.RemovePluginResponse();
+      connection.send(response);
+   }
+
+   /**
+    * Send an error response
+    * @param {cobu.wsc.WebSocketConnection} connection
+    * @param {cobu.wsc.RemovePluginRequest} message
+    */
+   function sendPluginNotFoundResponse(message, connection) {
+      var response = new cobu.wsc.service.RemovePluginResponse();
+      response.success = false;
+      response.message = 'Can not find plugin: ' + message.pluginName;
+      connection.send(response);
+   }
+
+   constructor();
+};/**
+ * UpdatePluginRequestHandler
+ * @constructor
+ * @param {cobu.wsc.CloudServer} cloudServer
+ * @implements {cobu.wsc.ServiceMessageHandler}
+ */
+cobu.wsc.UpdatePluginRequestHandler = function UpdatePluginRequestHandler(cloudServer)
+{
+   'use strict';
+
+   /** Constructor */
+   function constructor() {
+   }
+
+   /**
+    * @param {cobu.wsc.service.UpdatePluginRequest} message
+    * @param {cobu.wsc.WebSocketConnection} connection
+    */
+   this.handle = function handle(message, connection) {
+
+      try {
+         if (cloudServer.pluginManager.hasPlugin(message.pluginName)) {
+            cloudServer.pluginManager.removePlugin(message.pluginName);
+            cloudServer.pluginManager.createOrUpdatePlugin(message.name, message.description, message.code);
+            sendSuccessResponse(connection);
+         } else {
+            sendPluginNotFoundResponse(message, connection);
+         }
+      } catch (ex) {
+         cloudServer.serviceInstance.log.error(ex.message);
+      }
+   };
+
+   /**
+    * Send success response
+    * @param {cobu.wsc.WebSocketConnection} connection
+    */
+   function sendSuccessResponse(connection) {
+      var response = new cobu.wsc.service.UpdatePluginResponse();
+      connection.send(response);
+   }
+
+   /**
+    * Send an error response
+    * @param {cobu.wsc.WebSocketConnection} connection
+    * @param {cobu.wsc.RemovePluginRequest} message
+    */
+   function sendPluginNotFoundResponse(message, connection) {
+      var response = new cobu.wsc.service.RemovePluginResponse();
+      response.success = false;
+      response.message = 'Can not find plugin: ' + message.pluginName;
+      connection.send(response);
+   }
+
+   constructor();
+};/**
  * ServiceMessageHandler
  * @interface
  */
@@ -1588,7 +1920,11 @@ cobu.wsc.ServicePlugin = function ServicePlugin(cloudServer)
       apiMap['request.createInstance'] = new cobu.wsc.CreateInstanceRequestHandler(cloudServer);
       apiMap['request.updateInstance'] = new cobu.wsc.UpdateInstanceRequestHandler(cloudServer);
       apiMap['request.removeInstance'] = new cobu.wsc.RemoveInstanceRequestHandler(cloudServer);
+
       apiMap['request.getPlugins'] = new cobu.wsc.GetPluginsRequestHandler(cloudServer);
+      apiMap['request.createPlugin'] = new cobu.wsc.CreatePluginRequestHandler(cloudServer);
+      apiMap['request.removePlugin'] = new cobu.wsc.RemovePluginRequestHandler(cloudServer);
+      apiMap['request.updatePlugin'] = new cobu.wsc.UpdatePluginRequestHandler(cloudServer);
    }
 
    /**

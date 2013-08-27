@@ -23,7 +23,11 @@ cobu.wsc.ServicePlugin = function ServicePlugin(cloudServer)
       apiMap['request.createInstance'] = new cobu.wsc.CreateInstanceRequestHandler(cloudServer);
       apiMap['request.updateInstance'] = new cobu.wsc.UpdateInstanceRequestHandler(cloudServer);
       apiMap['request.removeInstance'] = new cobu.wsc.RemoveInstanceRequestHandler(cloudServer);
+
       apiMap['request.getPlugins'] = new cobu.wsc.GetPluginsRequestHandler(cloudServer);
+      apiMap['request.createPlugin'] = new cobu.wsc.CreatePluginRequestHandler(cloudServer);
+      apiMap['request.removePlugin'] = new cobu.wsc.RemovePluginRequestHandler(cloudServer);
+      apiMap['request.updatePlugin'] = new cobu.wsc.UpdatePluginRequestHandler(cloudServer);
    }
 
    /**

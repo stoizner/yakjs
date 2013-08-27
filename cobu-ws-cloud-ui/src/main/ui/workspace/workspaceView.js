@@ -25,7 +25,7 @@ cobu.wsc.ui.WorkspaceView = function WorkspaceView(parent, context)
       panelViews['panel-instance'] = new cobu.wsc.ui.InstanceListView($('.panel-instance', parent), context);
       panelViews['panel-instance-edit'] = new cobu.wsc.ui.InstanceView($('.panel-instance-edit', parent), context);
       panelViews['panel-plugin'] = new cobu.wsc.ui.PluginListView($('.panel-plugin', parent), context);
-      panelViews['panel-plugin-edit'] = new cobu.wsc.ui.PluginEditView($('.panel-plugin-edit', parent), context);
+      panelViews['panel-plugin-edit'] = new cobu.wsc.ui.PluginView($('.panel-plugin-edit', parent), context);
 
       context.eventBus.on(cobu.wsc.ui.ActivatePanelCommand).register(handleActivatePanel);
 

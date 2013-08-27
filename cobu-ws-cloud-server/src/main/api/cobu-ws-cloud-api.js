@@ -399,6 +399,62 @@ cobu.wsc.service.UpdateInstanceResponse = function UpdateInstanceResponse()
     */
    this.message = '';
 };/**
+ * CreatePluginRequest
+ * @constructor
+ */
+cobu.wsc.service.CreatePluginRequest = function CreatePluginRequest()
+{
+   'use strict';
+
+   /**
+    * Command for the service API.
+    * @type {string}
+    */
+   this.type = 'request.createPlugin';
+
+   /**
+    * Unique name of Plugin.
+    * @type {string}
+    */
+   this.name = null;
+
+   /**
+    * Some description.
+    * @type {string}
+    */
+   this.description = null;
+
+   /**
+    * Plugin Code.
+    * @type {string}
+    */
+   this.code = null;
+};/**
+ * CreatePluginResponse
+ * @constructor
+ */
+cobu.wsc.service.CreatePluginResponse = function CreatePluginResponse()
+{
+   'use strict';
+
+   /**
+    * Command for the service API.
+    * @type {string}
+    */
+   this.type = 'response.createPlugin';
+
+   /**
+    * Whether the request was successfully or not.
+    * @type {boolean}
+    */
+   this.success = true;
+
+   /**
+    * Optional: Message if no success.
+    * @type {string}
+    */
+   this.message = '';
+};/**
  * GetPluginsRequest
  * @constructor
  */
@@ -455,4 +511,110 @@ cobu.wsc.service.PluginInfo = function PluginInfo()
     * @type {string}
     */
    this.code = null;
+};/**
+ * RemovePluginRequest
+ * @constructor
+ */
+cobu.wsc.service.RemovePluginRequest = function RemovePluginRequest()
+{
+   'use strict';
+
+   /**
+    * Command for the service API.
+    * @type {string}
+    */
+   this.type = 'request.removePlugin';
+
+   /**
+    * Name of the Plugin.
+    * @type {string}
+    */
+   this.pluginName = null;
+};/**
+ * RemovePluginResponse
+ * @constructor
+ */
+cobu.wsc.service.RemovePluginResponse = function RemovePluginResponse()
+{
+   'use strict';
+
+   /**
+    * Command for the service API.
+    * @type {string}
+    */
+   this.type = 'response.deletePlugin';
+
+   /**
+    * Whether the request was successfully or not.
+    * @type {boolean}
+    */
+   this.success = true;
+
+   /**
+    * Optional: Message if no success.
+    * @type {string}
+    */
+   this.message = '';
+};/**
+ * UpdatePluginRequest
+ * @constructor
+ */
+cobu.wsc.service.UpdatePluginRequest = function UpdatePluginRequest()
+{
+   'use strict';
+
+   /**
+    * Command for the service API.
+    * @type {string}
+    */
+   this.type = 'request.updatePlugin';
+
+   /**
+    * The original Plugin name.
+    * @type {null}
+    */
+   this.pluginName = null;
+
+   /**
+    * Unique name of Plugin.
+    * @type {string}
+    */
+   this.name = null;
+
+   /**
+    * Some description.
+    * @type {string}
+    */
+   this.description = null;
+
+   /**
+    * The plugin code.
+    * @type {string}
+    */
+   this.code = 0;
+};/**
+ * UpdatePluginResponse
+ * @constructor
+ */
+cobu.wsc.service.UpdatePluginResponse = function UpdatePluginResponse()
+{
+   'use strict';
+
+   /**
+    * Command for the service API.
+    * @type {string}
+    */
+   this.type = 'response.updatePlugin';
+
+   /**
+    * Whether the request was successfully or not.
+    * @type {boolean}
+    */
+   this.success = true;
+
+   /**
+    * Optional: Message if no success.
+    * @type {string}
+    */
+   this.message = '';
 };

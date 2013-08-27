@@ -14,13 +14,14 @@ cobu.wsc.ui.PluginListView = function PluginListView(parent, context) {
 
    var itemContainer = $('.plugin-items', parent);
 
-   var pluginItems = [];
+   var listItems = [];
 
    var contextMenuActions = {};
 
    /** Constructor */
    function constructor() {
       context.eventBus.on(cobu.wsc.service.GetPluginsResponse).register(handleGetPluginsResponse);
+      context.eventBus.on(cobu.wsc.service.RemovePluginResponse).register(handleRemovePluginResponse);
 
       contextMenuActions['edit'] = handleContextMenuEdit;
       contextMenuActions['delete'] = handleContextMenuDelete;
@@ -49,8 +50,16 @@ cobu.wsc.ui.PluginListView = function PluginListView(parent, context) {
    function handleGetPluginsResponse(response) {
       console.log('handleGetPluginsResponse', response);
 
-      pluginItems = response.plugins;
+      listItems = response.plugins;
       self.update();
+   }
+
+   /**
+    * @param {cobu.wsc.service.RemovePluginResponse} response
+    */
+   function handleRemovePluginResponse(response) {
+      console.log('handleRemovePluginResponse', response);
+      context.webSocket.send(new cobu.wsc.service.GetPluginsRequest());
    }
 
    /**
@@ -60,8 +69,8 @@ cobu.wsc.ui.PluginListView = function PluginListView(parent, context) {
 
       var html = '';
 
-      for(var i=0; i<pluginItems.length; i++) {
-         html += itemTemplate(pluginItems[i]);
+      for(var i=0; i<listItems.length; i++) {
+         html += itemTemplate(listItems[i]);
       }
 
       itemContainer.html(html);
@@ -90,13 +99,26 @@ cobu.wsc.ui.PluginListView = function PluginListView(parent, context) {
     * @param pluginName
     */
    function handleContextMenuEdit(pluginName) {
+      var pluginInfo = null;
+
+      for(var i=0; i<listItems.length; i++) {
+         if (listItems[i].name === pluginName) {
+            pluginInfo = listItems[i];
+            break;
+         }
+      }
+
+      context.eventBus.post(new cobu.wsc.ui.ActivatePanelCommand('panel-plugin-edit', pluginInfo));
    }
 
    /**
     *
-    * @param pluginName
+    * @param {string} pluginName
     */
    function handleContextMenuDelete(pluginName) {
+      var request = new cobu.wsc.service.RemovePluginRequest();
+      request.pluginName = pluginName;
+      context.webSocket.send(request);
    }
 
    constructor();

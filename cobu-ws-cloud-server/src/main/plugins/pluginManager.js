@@ -46,6 +46,14 @@ cobu.wsc.PluginManager = function PluginManager()
    };
 
    /**
+    * Check if plugin with given name exists.
+    * @param name
+    */
+   this.hasPlugin = function hasPlugin(name) {
+      return plugins.hasOwnProperty(name);
+   };
+
+   /**
     * @param plugin
     */
    this.addOrUpdatePlugin = function addOrUpdatePlugin(plugin) {
@@ -53,11 +61,11 @@ cobu.wsc.PluginManager = function PluginManager()
    };
 
    /**
-    * @param {cobu.wsc.Plugin} plugin
+    * @param {string} name The name of the plugin.
     */
-   this.removePlugin = function removePlugin(plugin) {
-      if (plugins.hasOwnProperty(plugin.name)) {
-         delete plugins[plugin.name];
+   this.removePlugin = function removePlugin(name) {
+      if (plugins.hasOwnProperty(name)) {
+         delete plugins[name];
       }
    };
 

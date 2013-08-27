@@ -425,12 +425,13 @@ cobu.wsc.ui.InstanceView = function InstanceView(parent, context)
    function constructor() {
 
       $('#instance-save', parent).click(handleSaveClick);
-      context.eventBus.on(cobu.wsc.service.CreateInstanceResponse).register(handleCreateInstanceResponse);
+      context.eventBus.on(cobu.wsc.service.CreateInstanceResponse).register(handleResponse);
+      context.eventBus.on(cobu.wsc.service.UpdateInstanceResponse).register(handleResponse);
    }
 
    /**
     * Activate view
-    * @param {string} data
+    * @param {string|object} data
     */
    this.active = function active(data) {
       console.log('InstanceView active', data);
@@ -462,8 +463,8 @@ cobu.wsc.ui.InstanceView = function InstanceView(parent, context)
    /**
     * @param {cobu.wsc.service.CreateInstanceResponse} response
     */
-   function handleCreateInstanceResponse(response) {
-      console.log('handleCreateInstanceResponse');
+   function handleResponse(response) {
+      console.log('handleResponse');
 
       if (response.success) {
          context.eventBus.post(new cobu.wsc.ui.ActivatePanelCommand('panel-instance'));
@@ -514,28 +515,6 @@ cobu.wsc.ui.InstanceView = function InstanceView(parent, context)
 
    constructor();
 };/**
- * PluginEditView
- * @class
- * @constructor
- * @param {cobu.wsc.ui.ViewContext} context
- * @param {$|jQuery} parent
- */
-cobu.wsc.ui.PluginEditView = function PluginEditView(parent, context) {
-   'use strict';
-
-   /** @type {cobu.wsc.ui.PluginEditView} */
-   var self = this;
-
-   /** Constructor */
-   function constructor() {
-   }
-
-   this.active = function active() {
-      console.log('PluginEditView.active');
-   };
-
-   constructor();
-};/**
  * PluginListView
  * @constructor
  * @param {cobu.wsc.ui.ViewContext} context
@@ -551,13 +530,14 @@ cobu.wsc.ui.PluginListView = function PluginListView(parent, context) {
 
    var itemContainer = $('.plugin-items', parent);
 
-   var pluginItems = [];
+   var listItems = [];
 
    var contextMenuActions = {};
 
    /** Constructor */
    function constructor() {
       context.eventBus.on(cobu.wsc.service.GetPluginsResponse).register(handleGetPluginsResponse);
+      context.eventBus.on(cobu.wsc.service.RemovePluginResponse).register(handleRemovePluginResponse);
 
       contextMenuActions['edit'] = handleContextMenuEdit;
       contextMenuActions['delete'] = handleContextMenuDelete;
@@ -586,8 +566,16 @@ cobu.wsc.ui.PluginListView = function PluginListView(parent, context) {
    function handleGetPluginsResponse(response) {
       console.log('handleGetPluginsResponse', response);
 
-      pluginItems = response.plugins;
+      listItems = response.plugins;
       self.update();
+   }
+
+   /**
+    * @param {cobu.wsc.service.RemovePluginResponse} response
+    */
+   function handleRemovePluginResponse(response) {
+      console.log('handleRemovePluginResponse', response);
+      context.webSocket.send(new cobu.wsc.service.GetPluginsRequest());
    }
 
    /**
@@ -597,8 +585,8 @@ cobu.wsc.ui.PluginListView = function PluginListView(parent, context) {
 
       var html = '';
 
-      for(var i=0; i<pluginItems.length; i++) {
-         html += itemTemplate(pluginItems[i]);
+      for(var i=0; i<listItems.length; i++) {
+         html += itemTemplate(listItems[i]);
       }
 
       itemContainer.html(html);
@@ -627,13 +615,137 @@ cobu.wsc.ui.PluginListView = function PluginListView(parent, context) {
     * @param pluginName
     */
    function handleContextMenuEdit(pluginName) {
+      var pluginInfo = null;
+
+      for(var i=0; i<listItems.length; i++) {
+         if (listItems[i].name === pluginName) {
+            pluginInfo = listItems[i];
+            break;
+         }
+      }
+
+      context.eventBus.post(new cobu.wsc.ui.ActivatePanelCommand('panel-plugin-edit', pluginInfo));
    }
 
    /**
     *
-    * @param pluginName
+    * @param {string} pluginName
     */
    function handleContextMenuDelete(pluginName) {
+      var request = new cobu.wsc.service.RemovePluginRequest();
+      request.pluginName = pluginName;
+      context.webSocket.send(request);
+   }
+
+   constructor();
+};/**
+ * PluginView
+ * @class
+ * @constructor
+ * @param {cobu.wsc.ui.ViewContext} context
+ * @param {$|jQuery} parent
+ */
+cobu.wsc.ui.PluginView = function PluginView(parent, context) {
+   'use strict';
+
+   /** @type {cobu.wsc.ui.PluginView} */
+   var self = this;
+
+   /**
+    * @type {null||cobu.wsc.service.PluginInfo}
+    */
+   var pluginInfo = null;
+
+   /** Constructor */
+   function constructor() {
+      $('#plugin-save', parent).click(handleSaveClick);
+
+      context.eventBus.on(cobu.wsc.service.CreatePluginResponse).register(handleResponse);
+      context.eventBus.on(cobu.wsc.service.UpdatePluginResponse).register(handleResponse);
+   }
+
+   /**
+    * Activate view
+    * @param {string|object} data
+    */
+   this.active = function active(data) {
+      console.log('InstanceView active', data);
+
+      if (data !== null) {
+         pluginInfo = data;
+      } else {
+         pluginInfo = null;
+      }
+
+      self.update();
+   };
+
+   /**
+    *
+    */
+   this.update = function update() {
+      if (pluginInfo === null) {
+         $('[data-bind]', parent).val('');
+      } else {
+         $('[data-bind]', parent).each(function() {
+            var element = $(this);
+            var name = element.attr('data-bind');
+            element.val(pluginInfo[name]);
+         });
+      }
+   };
+
+   /**
+    * @param {cobu.wsc.service.CreateInstanceResponse} response
+    */
+   function handleResponse(response) {
+      console.log('handleResponse');
+
+      if (response.success) {
+         context.eventBus.post(new cobu.wsc.ui.ActivatePanelCommand('panel-plugin'));
+      } else {
+         console.log(response);
+      }
+   }
+
+   /**
+    * Handle Create Click
+    */
+   function handleSaveClick() {
+      var data = bind();
+
+      console.log(data);
+
+      var request = null;
+
+      if (pluginInfo === null) {
+         request = new cobu.wsc.service.CreatePluginRequest();
+         $.extend(request, data);
+      } else {
+         request = new cobu.wsc.service.UpdatePluginRequest();
+         $.extend(request, data);
+         request.pluginName = pluginInfo.name;
+      }
+
+      $.extend(request, data);
+      context.webSocket.send(request);
+   }
+
+   /**
+    * Bind from form
+    * @returns {{}}
+    */
+   function bind() {
+
+      var data = {};
+
+      $('[data-bind]', parent).each(function() {
+         var element = $(this);
+         var name = element.attr('data-bind');
+         data[name] = element.val();
+      });
+
+      return data;
    }
 
    constructor();
@@ -812,7 +924,7 @@ cobu.wsc.ui.WorkspaceView = function WorkspaceView(parent, context)
       panelViews['panel-instance'] = new cobu.wsc.ui.InstanceListView($('.panel-instance', parent), context);
       panelViews['panel-instance-edit'] = new cobu.wsc.ui.InstanceView($('.panel-instance-edit', parent), context);
       panelViews['panel-plugin'] = new cobu.wsc.ui.PluginListView($('.panel-plugin', parent), context);
-      panelViews['panel-plugin-edit'] = new cobu.wsc.ui.PluginEditView($('.panel-plugin-edit', parent), context);
+      panelViews['panel-plugin-edit'] = new cobu.wsc.ui.PluginView($('.panel-plugin-edit', parent), context);
 
       context.eventBus.on(cobu.wsc.ui.ActivatePanelCommand).register(handleActivatePanel);
 
