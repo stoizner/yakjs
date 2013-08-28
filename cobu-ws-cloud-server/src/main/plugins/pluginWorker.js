@@ -17,14 +17,14 @@ cobu.wsc.PluginWorker = function PluginWorker(name)
 
    /**
     * @param {cobu.wsc.WebSocketConnection} connection
-    * @param {cobu.wsc.WebSocketServerInstance} instance
+    * @param {cobu.wsc.WebSocketInstance} instance
     */
    this.onNewConnection = function onNewConnection(connection, instance) {};
 
    /**
     * @param {cobu.wsc.WebSocketMessage} message
     * @param {cobu.wsc.WebSocketConnection} connection
-    * @param {cobu.wsc.WebSocketServerInstance} instance
+    * @param {cobu.wsc.WebSocketInstance} instance
     */
    this.onMessage = function onMessage(message, connection, instance) {};
 

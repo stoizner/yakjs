@@ -12,6 +12,11 @@ cobu.wsc.WebSocketConnection = function WebSocketConnection(socket)
    var self = this;
 
    /**
+    * @type {cobu.wsc.Logger}
+    */
+   var log = new cobu.wsc.Logger(self.constructor.name);
+
+   /**
     * Unique Id of the web socket connection.
     * @type {string}
     */
@@ -33,9 +38,9 @@ cobu.wsc.WebSocketConnection = function WebSocketConnection(socket)
     */
    this.send = function send(data) {
 
-      console.log('send', data);
+      log.info('send', data);
       if (typeof data === 'object') {
-         self.sendAsJson(data);
+         sendAsJson(data);
       } else {
          self.socket.send(data);
       }
@@ -45,9 +50,9 @@ cobu.wsc.WebSocketConnection = function WebSocketConnection(socket)
     * Send data on connection.
     * @param {object} obj
     */
-   this.sendAsJson = function send(obj) {
+   function sendAsJson(obj) {
       self.socket.send(JSON.stringify(obj));
-   };
+   }
 
    constructor();
 };

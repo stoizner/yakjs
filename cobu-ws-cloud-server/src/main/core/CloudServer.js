@@ -2,8 +2,8 @@
  * CloudServer
  * @constructor
  */
-cobu.wsc.CloudServer = function CloudServer()
-{
+cobu.wsc.CloudServer = function CloudServer() {
+
    'use strict';
 
    /** @type {cobu.wsc.CloudServer} */
@@ -16,7 +16,12 @@ cobu.wsc.CloudServer = function CloudServer()
    var instances = {};
 
    /**
-    * @type {cobu.wsc.ServerInstance}
+    * @type {cobu.wsc.Logger}
+    */
+   var log = new cobu.wsc.Logger(self.constructor.name);
+
+   /**
+    * @type {cobu.wsc.WebSocketInstance}
     */
    this.serviceInstance = null;
 
@@ -44,7 +49,7 @@ cobu.wsc.CloudServer = function CloudServer()
     * @param {cobu.wsc.ServerInstance} instance
     */
    this.addInstance = function addInstance(instance) {
-      console.log('addInstance', instance);
+      log.info('addInstance', instance);
       if (instances.hasOwnProperty(instance.name)) {
          throw Error('Instance with name ' + name + ' already added');
       } else {
@@ -57,7 +62,7 @@ cobu.wsc.CloudServer = function CloudServer()
     * @param {string} instanceName
     */
    this.removeInstance = function removeInstance(instanceName) {
-      console.log('removeInstance', instanceName);
+      log.info('removeInstance', instanceName);
       if (instances.hasOwnProperty(instanceName)) {
          instances[instanceName].stop();
          delete instances[instanceName];
@@ -75,7 +80,7 @@ cobu.wsc.CloudServer = function CloudServer()
 
    /**
     *
-    * @returns {Array.<cobu.wsc.ServerInstance>}
+    * @returns {Array.<cobu.wsc.WebSocketInstance>}
     */
    this.getInstances = function getInstances() {
       var arr = [];

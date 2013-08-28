@@ -22,28 +22,37 @@
 </head>
 
 <body>
-   <div class="banner">
+    <div class="banner">
 
-   </div>
-   <div class="main">
-      <div class="header">
-         <div class="header-logo icon-cloud-64"></div>
-         <div class="header-text">cobu-ws-cloud-ui</div>
-         <div class="login">
-            <div class="login-input"><input id="webSocketUri" type="text"></div>
-            <button id="webSocketConnect" class="login-button">Connect</button>
-         </div>
-      </div>
-      <div class="menu">
-         <ul>
-            <li data-panel="panel-instance">Instances</li>
-            <li data-panel="panel-plugin">Plugins</li>
-         </ul>
-      </div>
-      <div class="panels">
+    </div>
+    <div class="main">
+        <div class="header">
+             <div class="header-logo icon-cloud-64"></div>
+             <div class="header-text">cobu-ws-cloud-ui</div>
+             <div class="login">
+                <div class="login-input"><input id="webSocketUri" type="text"></div>
+                <button id="webSocketConnect" class="login-button">Connect</button>
+             </div>
+        </div>
 
-         <!-- INSTANCE LIST -->
-         <div class="panel panel-instance">
+        <!-- Notification bar -->
+        <div class="notification">
+
+        </div>
+
+        <!-- Navigation -->
+        <div class="menu">
+            <ul>
+                <li data-panel="panel-instance">Instances</li>
+                <li data-panel="panel-plugin">Plugins</li>
+            </ul>
+        </div>
+
+        <!-- Panels -->
+        <div class="panels">
+
+            <!-- INSTANCE LIST -->
+            <div class="panel panel-instance">
             <button id="instance-new">New Instance</button><button id="instance-refresh">Refresh</button>
             <div class="list instance-items">
 
@@ -57,10 +66,10 @@
                   <li data-menu="delete">Delete</li>
                </ul>
             </div>
-         </div>
+            </div>
 
-         <!-- INSTANCE NEW -->
-         <div class="panel panel-instance-edit">
+            <!-- INSTANCE NEW -->
+            <div class="panel panel-instance-edit">
             <div class="form">
                <div class="form-line">
                   <div class="line-label">Name</div>
@@ -76,17 +85,17 @@
                </div>
                <div class="form-line">
                   <div class="line-label">Plugins</div>
-                  <div class="line-input"><input data-bind="plugins" type="text" /></div>
+                  <div class="line-input"><input data-bind="pluginsComma" type="text" /></div>
                </div>
                <div class="form-line">
                   <div class="line-label"></div>
                   <div class="line-input"><button id="instance-save">Save</button></div>
                </div>
             </div>
-         </div>
+            </div>
 
-         <!-- PLUGIN -->
-         <div class="panel panel-plugin">
+            <!-- PLUGIN -->
+            <div class="panel panel-plugin">
             <button id="plugin-new">New Plugin</button><button id="plugin-refresh">Refresh</button>
             <div class="list plugin-items">
 
@@ -98,10 +107,10 @@
                   <li data-menu="delete">Delete</li>
                </ul>
             </div>
-         </div>
+            </div>
 
-         <!-- PLUGIN EDIT -->
-         <div class="panel panel-plugin-edit">
+            <!-- PLUGIN EDIT -->
+            <div class="panel panel-plugin-edit">
             <div class="form">
                <div class="form-line">
                   <div class="line-label">Name</div>
@@ -127,8 +136,8 @@
                   <div class="line-input"><button id="plugin-save">Save</button></div>
                </div>
             </div>
-         </div>
-      </div>
+            </div>
+        </div>
    </div>
 
    <template id="instance-item-tpl">
@@ -148,6 +157,30 @@
          <div class="list-item-cell instance-item-description">{{description}}</div>
       </div>
    </template>
+
+<template id="plugin-code-tpl">
+function EmptyPlugin() {
+
+    'use strict';
+
+    /**
+    * @param {cobu.wsc.WebSocketConnection} connection The new connection.
+    * @param {cobu.wsc.WebSocketInstance} instance The websocket instance.
+    */
+    this.onNewConnection = function(connection, instance) {
+    };
+
+    /**
+    * @param {cobu.wsc.WebSocketMessage} message The received message.
+    * @param {cobu.wsc.WebSocketConnection} connection The connection of the received message.
+    * @param {cobu.wsc.WebSocketInstance} instance The websocket instance.
+    */
+    this.onMessage = function(message, connection, instance) {
+
+        instance.log.info('Hello Plugin!');
+    };
+}
+</template>
 
 </body>
 

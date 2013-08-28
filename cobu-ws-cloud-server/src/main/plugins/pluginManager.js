@@ -14,6 +14,11 @@ cobu.wsc.PluginManager = function PluginManager()
     */
    var plugins = {};
 
+   /**
+    * @type {cobu.wsc.Logger}
+    */
+   var log = new cobu.wsc.Logger(self.constructor.name);
+
    /** Constructor */
    function constructor() {
    }
@@ -40,7 +45,7 @@ cobu.wsc.PluginManager = function PluginManager()
          }
       }
 
-      console.log('getPlugins', result);
+      log.info('getPlugins', result);
 
       return result;
    };
@@ -69,49 +74,52 @@ cobu.wsc.PluginManager = function PluginManager()
       }
    };
 
-   /**
-    * @param {string} name
-    * @return {null|cobu.wsc.PluginWorker}
-    */
-   this.createPluginWorker = function createPluginWorker(name) {
-      console.log('CreatePluginWorker: ' + name);
-      var pluginWorker = null;
+    /**
+     * @param {string} name
+     * @return {null|cobu.wsc.PluginWorker}
+     */
+    this.createPluginWorker = function createPluginWorker(name) {
+        log.info('CreatePluginWorker: ' + name);
+        var pluginWorker = null;
 
-      if (plugins.hasOwnProperty(name)) {
-         var plugin = plugins[name];
+        if (plugins.hasOwnProperty(name)) {
+            var plugin = plugins[name];
 
-         try {
-            pluginWorker = new plugin.PluginWorker();
-            pluginWorker.name = name;
-         } catch(ex) {
-            pluginWorker = null;
-            console.warn('Can not create plugin worker "' + name + '"');
-            console.log(ex);
-         }
-      }
+            try {
+                console.log(plugin.PluginWorker);
+                pluginWorker = new plugin.PluginWorker();
+                pluginWorker.name = name;
+            } catch(ex) {
+                pluginWorker = null;
+                log.warn('Can not create plugin worker "' + name + '"');
+                log.info(ex);
+                console.log(ex.stack);
+            }
+        }
 
-      return pluginWorker;
-   };
+        return pluginWorker;
+    };
 
-   /**
-    * @param {string} name
-    * @param {string} description
-    * @param {string} code
-    */
-   this.createOrUpdatePlugin = function createOrUpdatePlugin(name, description, code) {
-      console.log('createOrUpdatePlugin', name, description);
-      try {
-         var plugin = new cobu.wsc.Plugin();
-         plugin.name = name;
-         plugin.description = description;
-         plugin.code = code;
-         plugin.PluginWorker = new Function('return ' + code)();
+    /**
+     * @param {string} name
+     * @param {string} description
+     * @param {string} code
+     */
+    this.createOrUpdatePlugin = function createOrUpdatePlugin(name, description, code) {
+        log.info('createOrUpdatePlugin', { name: name, description: description, code: code });
+        try {
+            var plugin = new cobu.wsc.Plugin();
+            plugin.name = name;
+            plugin.description = description;
+            plugin.code = code;
+            plugin.PluginWorker = new Function('return ' + code)();
 
-         plugins[name] = plugin;
-      } catch (ex) {
-         console.log(ex);
-      }
-   };
+            plugins[name] = plugin;
+        } catch (ex) {
+            console.log(ex.stack);
+            log.warn(ex);
+        }
+    };
 
    constructor();
 };

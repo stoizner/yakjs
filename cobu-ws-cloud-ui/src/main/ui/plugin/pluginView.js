@@ -6,139 +6,132 @@
  * @param {$|jQuery} parent
  */
 cobu.wsc.ui.PluginView = function PluginView(parent, context) {
-   'use strict';
+    'use strict';
 
-   /** @type {cobu.wsc.ui.PluginView} */
-   var self = this;
+    /** @type {cobu.wsc.ui.PluginView} */
+    var self = this;
 
-   /**
+    /**
     * @type {null||cobu.wsc.service.PluginInfo}
     */
-   var pluginInfo = null;
+    var pluginInfo = null;
 
-   /**
+    /**
     * @type {null|CodeMirror}
     */
-   var codeEditor = null;
+    var codeEditor = null;
 
-   /** Constructor */
-   function constructor() {
-      $('#plugin-save', parent).click(handleSaveClick);
+    /**
+     * @type {string}
+     */
+    var pluginCodeTemplate = $('#plugin-code-tpl').html();
 
-      context.eventBus.on(cobu.wsc.service.CreatePluginResponse).register(handleResponse);
-      context.eventBus.on(cobu.wsc.service.UpdatePluginResponse).register(handleResponse);
+    /** Constructor */
+    function constructor() {
+        $('#plugin-save', parent).click(handleSaveClick);
 
-      CodeMirror.commands.autocomplete = function(cm) {
-         CodeMirror.showHint(cm, CodeMirror.hint.javascript);
-         //CodeMirror.showHint(cm, getCompletions);
-      };
+        context.eventBus.on(cobu.wsc.service.CreatePluginResponse).register(handleResponse);
+        context.eventBus.on(cobu.wsc.service.UpdatePluginResponse).register(handleResponse);
 
-      CodeMirror.commands.autodocument = function(cm) {
-         var cursor = cm.getCursor();
-         console.log(cursor);
-         cm.setCursor(cursor.line, 0);
-         cm.replaceSelection('\n');
-         cm.setCursor(cursor.line, 0);
-         cm.replaceSelection('/**\n * \n */');
-         cm.setCursor(cursor.line+1, cursor.ch);
-      };
+        CodeMirror.commands.autocomplete = cobu.wsc.ui.codeEditorAutoComplete;
+        CodeMirror.commands.autodocument = cobu.wsc.ui.codeEditorAutoDocument;
 
-      codeEditor = CodeMirror($('#codeEditor')[0], {
-         value:  '', //'/**\n * @param {string} text\n */\nfunction myScript(text) {\n    var x = 100;\n    return text + x;\n}\n',
-         mode:  'javascript',
-         lineNumbers: false,
-         extraKeys: { 'Ctrl-Space': 'autocomplete', 'Ctrl-D': 'autodocument' }
-      });
-   }
+        codeEditor = CodeMirror($('#codeEditor')[0], {
+            value:  '',
+            mode:  'javascript',
+            lineNumbers: false,
+            extraKeys: { 'Ctrl-Space': 'autocomplete', 'Ctrl-D': 'autodocument' }
+        });
+    }
 
-   /**
+    /**
     * Activate view
     * @param {string|object} data
     */
-   this.active = function active(data) {
-      console.log('InstanceView active', data);
+    this.active = function active(data) {
+        console.log('InstanceView active', data);
 
-      if (data !== null) {
-         pluginInfo = data;
-      } else {
-         pluginInfo = null;
-      }
+        if (data !== null) {
+            pluginInfo = data;
+        } else {
+            pluginInfo = null;
+        }
 
-      self.update();
-   };
+        self.update();
+    };
 
-   /**
-    *
-    */
-   this.update = function update() {
-      if (pluginInfo === null) {
-         $('[data-bind]', parent).val('');
-         codeEditor.setValue('');
-      } else {
-         $('[data-bind]', parent).each(function() {
-            var element = $(this);
-            var name = element.attr('data-bind');
-            element.val(pluginInfo[name]);
-         });
+    /**
+     * Update DOM.
+     */
+    this.update = function update() {
+        if (pluginInfo === null) {
+            $('[data-bind]', parent).val('');
+            codeEditor.setValue(pluginCodeTemplate);
+        } else {
+            $('[data-bind]', parent).each(function() {
+                var element = $(this);
+                var name = element.attr('data-bind');
+                element.val(pluginInfo[name]);
+            });
 
-         codeEditor.setValue(pluginInfo.code);
-      }
-   };
+            codeEditor.setValue(pluginInfo.code);
+        }
+    };
 
-   /**
-    * @param {cobu.wsc.service.CreateInstanceResponse} response
-    */
-   function handleResponse(response) {
-      console.log('handleResponse');
+    /**
+     * @param {cobu.wsc.service.CreateInstanceResponse} response
+     */
+    function handleResponse(response) {
+        console.log('handleResponse');
 
-      if (response.success) {
-         context.eventBus.post(new cobu.wsc.ui.ActivatePanelCommand('panel-plugin'));
-      } else {
-         console.log(response);
-      }
-   }
+        if (response.success) {
+            context.eventBus.post(new cobu.wsc.ui.ActivatePanelCommand('panel-plugin'));
+        } else {
+            console.log(response);
+        }
+    }
 
-   /**
-    * Handle Create Click
-    */
-   function handleSaveClick() {
-      var data = bind();
+    /**
+     * Handle Create Click
+     */
+    function handleSaveClick() {
+        var data = bind();
 
-      console.log(data);
+        console.log(data);
 
-      var request = null;
+        var request = null;
 
-      if (pluginInfo === null) {
-         request = new cobu.wsc.service.CreatePluginRequest();
-         $.extend(request, data);
-      } else {
-         request = new cobu.wsc.service.UpdatePluginRequest();
-         $.extend(request, data);
-         request.pluginName = pluginInfo.name;
-      }
+        if (pluginInfo === null) {
+            request = new cobu.wsc.service.CreatePluginRequest();
+            $.extend(request, data);
+        } else {
+            request = new cobu.wsc.service.UpdatePluginRequest();
+            $.extend(request, data);
+            request.pluginName = pluginInfo.name;
+        }
 
-      $.extend(request, data);
-      context.webSocket.send(request);
-   }
+        $.extend(request, data);
+        context.webSocket.send(request);
+    }
 
-   /**
+    /**
     * Bind from form
     * @returns {{}}
     */
-   function bind() {
+    function bind() {
 
-      var data = {};
+        var data = {};
 
-      $('[data-bind]', parent).each(function() {
-         var element = $(this);
-         var name = element.attr('data-bind');
-         data[name] = element.val();
-      });
+        $('[data-bind]', parent).each(function() {
+            var element = $(this);
+            var name = element.attr('data-bind');
+            data[name] = element.val();
+        });
 
-      data.code = codeEditor.getValue();
+        data.code = codeEditor.getValue();
 
-      return data;
-   }
+        return data;
+    }
 
-   constructor();
+    constructor();
 };

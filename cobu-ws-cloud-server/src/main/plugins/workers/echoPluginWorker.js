@@ -21,7 +21,7 @@ cobu.wsc.EchoPluginWorker = function EchoPluginWorker()
    /**
     * @param {cobu.wsc.WebSocketMessage} message
     * @param {cobu.wsc.WebSocketConnection} connection
-    * @param {cobu.wsc.WebSocketServerInstance} instance
+    * @param {cobu.wsc.WebSocketInstance} instance
     */
    this.onMessage = function onMessage(message, connection, instance) {
       connection.send(message.data);

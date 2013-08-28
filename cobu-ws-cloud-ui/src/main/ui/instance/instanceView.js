@@ -81,9 +81,12 @@ cobu.wsc.ui.InstanceView = function InstanceView(parent, context)
       if (instanceInfo === null) {
          request = new cobu.wsc.service.CreateInstanceRequest();
          $.extend(request, data);
+         request.plugins = data.pluginsComma.split(',');
+
       } else {
          request = new cobu.wsc.service.UpdateInstanceRequest();
          $.extend(request, data);
+         request.plugins = data.pluginsComma.split(',');
          request.instanceName = instanceInfo.name;
       }
 

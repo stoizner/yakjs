@@ -37,7 +37,7 @@ cobu.wsc.GetPluginsRequestHandler = function GetPluginsRequestHandler(cloudServe
             response.plugins.push(pluginInfo);
          }
          console.log(response);
-         connection.sendAsJson(response);
+         connection.send(response);
       } catch (ex) {
          cloudServer.serviceInstance.log.error(ex.message);
       }

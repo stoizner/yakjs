@@ -39,7 +39,7 @@ cobu.wsc.GetInstancesRequestHandler = function GetInstancesRequestHandler(cloudS
 
             response.instances.push(instanceInfo);
          }
-         connection.sendAsJson(response);
+         connection.send(response);
       } catch (ex) {
          cloudServer.serviceInstance.log.error(ex.message);
       }
@@ -56,7 +56,7 @@ cobu.wsc.GetInstancesRequestHandler = function GetInstancesRequestHandler(cloudS
          if (text !== '') {
             text += ", ";
          }
-         text += plugins[i].name;
+         text += plugins[i];
       }
 
       return text;

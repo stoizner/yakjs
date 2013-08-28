@@ -27,8 +27,9 @@ cobu.wsc.UpdateInstanceRequestHandler = function UpdateInstanceRequestHandler(cl
          var foundInstance = checkInstanceName(message.instanceName);
 
          if (foundInstance) {
-            var instance = new cobu.wsc.WebSocketServerInstance(message.name, message.port);
+            var instance = new cobu.wsc.WebSocketInstance(message.name, message.port, cloudServer);
             instance.description = message.description;
+            instance.plugins = message.plugins;
 
             console.log('updateInstance', instance);
             cloudServer.removeInstance(message.instanceName);

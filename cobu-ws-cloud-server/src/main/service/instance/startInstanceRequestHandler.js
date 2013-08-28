@@ -24,7 +24,7 @@ cobu.wsc.StartInstanceRequestHandler = function StartInstanceRequestHandler(clou
 
       try {
          cloudServer.startInstance(message.instanceName);
-         connection.sendAsJson(new cobu.wsc.service.StartInstanceResponse());
+         connection.send(new cobu.wsc.service.StartInstanceResponse());
       } catch (ex) {
          cloudServer.serviceInstance.log.error(ex.message);
       }

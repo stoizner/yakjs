@@ -4,7 +4,7 @@
  * @implements {cobu.wsc.PluginWorker}
  * @param {cobu.wsc.CloudServer} cloudServer
  */
-cobu.wsc.ServicePlugin = function ServicePlugin(cloudServer)
+cobu.wsc.ServiceWorker = function ServiceWorker(cloudServer)
 {
    'use strict';
 
@@ -12,6 +12,11 @@ cobu.wsc.ServicePlugin = function ServicePlugin(cloudServer)
    var self = this;
 
    this.name = self.constructor.name;
+
+   /**
+    * @type {cobu.wsc.Logger}
+    */
+   var log = new cobu.wsc.Logger(self.constructor.name);
 
    var apiMap = {};
 
@@ -38,12 +43,12 @@ cobu.wsc.ServicePlugin = function ServicePlugin(cloudServer)
    /**
     * @param {cobu.wsc.WebSocketMessage} message
     * @param {cobu.wsc.WebSocketConnection} connection
-    * @param {cobu.wsc.WebSocketServerInstance} instance
+    * @param {cobu.wsc.WebSocketInstance} instance
     */
    this.onMessage = function onMessage(message, connection, instance) {
 
       try {
-         instance.log.info('onMessage ' + message.data);
+         log.info('onMessage ' + message.data);
          var msg = JSON.parse(message.data);
 
          if (msg.type) {
@@ -52,7 +57,9 @@ cobu.wsc.ServicePlugin = function ServicePlugin(cloudServer)
             }
          }
       } catch (ex) {
-         instance.log.error(ex.message);
+         console.log(ex);
+         console.log(ex.stack);
+         log.error(ex.message);
       }
    };
 

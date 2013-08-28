@@ -1,5 +1,5 @@
 /**
- * Codebullets
+ * Codebullets.
  * @namespace cobu
  */
 var cobu = cobu || {};

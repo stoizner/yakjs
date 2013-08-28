@@ -55,17 +55,19 @@ cobu.wsc.ui.WebSocketAdapter = function WebSocketAdapter(eventBus)
       }
    };
 
-   /**
-    *
-    * @param event
-    */
-   function handleOpen(event) {
-      console.log("CONNECTED");
+    /**
+     *
+     * @param event
+     */
+    function handleOpen(event) {
+        console.log("CONNECTED");
 
-      if (self.onopen) {
-         self.onopen();
-      }
-   }
+        if (self.onopen) {
+            self.onopen();
+        }
+
+        eventBus.post(new cobu.wsc.ui.WebSocketOpenEvent());
+    }
 
    /**
     *
@@ -77,6 +79,8 @@ cobu.wsc.ui.WebSocketAdapter = function WebSocketAdapter(eventBus)
       if (self.onclose) {
          self.onclose();
       }
+
+       eventBus.post(new cobu.wsc.ui.WebSocketCloseEvent());
    }
 
    /**
@@ -98,20 +102,20 @@ cobu.wsc.ui.WebSocketAdapter = function WebSocketAdapter(eventBus)
       }
    }
 
-   /**
-    *
-    * @param event
-    */
-   function handleError(event) {
+    /**
+     *
+     * @param event
+     */
+    function handleError(event) {
 
-      console.log(event);
+        console.log(event);
 
-      if (self.onerror) {
-         self.onerror();
-      }
-   }
+        if (self.onerror) {
+            self.onerror();
+        }
 
+        eventBus.post(new cobu.wsc.ui.WebSocketCloseEvent());
+    }
 
-
-   constructor();
+    constructor();
 };

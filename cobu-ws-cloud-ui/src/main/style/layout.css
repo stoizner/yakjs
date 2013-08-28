@@ -250,6 +250,17 @@ div, input, li {
 
 .codeEditor {
    width:770px;
-   height:300px;
+   height:400px;
    border: solid 1px #E0E0E0;
+}
+
+.notification {
+    height:40px;
+    font: 14px/40px 'OpenSansSemibold';
+    padding-left: 10px;
+    padding-right:10px;
+    overflow:hidden;
+    color: #C74787;
+    border: solid 1px #C74787;
+    margin: 10px 0 10px 0;
 }
