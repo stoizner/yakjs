@@ -12,7 +12,7 @@ cobu.wsc = cobu.wsc || {};
 
 
 /**
- * Codebullets
+ * Codebullets.
  * @namespace cobu
  */
 var cobu = cobu || {};
@@ -1605,7 +1605,7 @@ cobu.wsc.GetInstancesRequestHandler = function GetInstancesRequestHandler(cloudS
             instanceInfo.connectionCount = instance.getConnections().length;
             instanceInfo.port = instance.port;
             instanceInfo.state = instance.state;
-            instanceInfo.plugins = toPluginString(instance.plugins);
+            instanceInfo.plugins = instance.plugins;
             instanceInfo.description = instance.description;
 
             response.instances.push(instanceInfo);
@@ -1615,23 +1615,6 @@ cobu.wsc.GetInstancesRequestHandler = function GetInstancesRequestHandler(cloudS
          cloudServer.serviceInstance.log.error(ex.message);
       }
    };
-
-   /**
-    *
-    * @param {Array.<cobu.wsc.PluginWorker>} plugins
-    */
-   function toPluginString(plugins) {
-      var text = '';
-
-      for(var i=0; i<plugins.length; i++) {
-         if (text !== '') {
-            text += ", ";
-         }
-         text += plugins[i];
-      }
-
-      return text;
-   }
 
    constructor();
 };/**

@@ -485,20 +485,22 @@ cobu.wsc.ui.InstanceView = function InstanceView(parent, context)
       self.update();
    };
 
-   /**
+    /**
     * Update form.
     */
-   this.update = function update() {
-      if (instanceInfo === null) {
-         $('[data-bind]', parent).val('');
-      } else {
-         $('[data-bind]', parent).each(function() {
-            var element = $(this);
-            var name = element.attr('data-bind');
-            element.val(instanceInfo[name]);
-         });
-      }
-   };
+    this.update = function update() {
+        if (instanceInfo === null) {
+            $('[data-bind]', parent).val('');
+        } else {
+            $('[data-bind]', parent).each(function() {
+                var element = $(this);
+                var name = element.attr('data-bind');
+                element.val(instanceInfo[name]);
+            });
+
+            $('[data-bind="pluginsCsv"]', parent).val(instanceInfo.plugins.join(', '));
+        }
+    };
 
    /**
     * @param {cobu.wsc.service.CreateInstanceResponse} response
@@ -526,12 +528,12 @@ cobu.wsc.ui.InstanceView = function InstanceView(parent, context)
       if (instanceInfo === null) {
          request = new cobu.wsc.service.CreateInstanceRequest();
          $.extend(request, data);
-         request.plugins = data.pluginsComma.split(',');
+         request.plugins = data.pluginsCsv.split(',');
 
       } else {
          request = new cobu.wsc.service.UpdateInstanceRequest();
          $.extend(request, data);
-         request.plugins = data.pluginsComma.split(',');
+         request.plugins = data.pluginsCsv.split(',');
          request.instanceName = instanceInfo.name;
       }
 
