@@ -201,29 +201,40 @@ div, input, li {
 }
 
 .form-line {
-   margin-bottom:15px;
+    margin-bottom:15px;
+}
+
+.error-line {
+    display: none;
+}
+
+.error-line-text {
+    display:inline-block;
+    height:30px;
+    color: #C74787;
+    font: 13px/30px 'OpenSansSemibold';
 }
 
 .line-label {
-   display:inline-block;
-   height:30px;
-   width:200px;
-   font: 13px/30px 'OpenSansRegular';
-   color: #303030;
-   text-transform:uppercase;
-   overflow:hidden;
-   vertical-align:top;
+    display:inline-block;
+    height:30px;
+    width:200px;
+    font: 13px/30px 'OpenSansRegular';
+    color: #303030;
+    text-transform:uppercase;
+    overflow:hidden;
+    vertical-align:top;
 }
 
 .line-help {
-   font: 11px/18px 'OpenSansRegular';
-   color: #A0A0A0;
+    font: 11px/18px 'OpenSansRegular';
+    color: #A0A0A0;
 }
 
 .line-input {
-   display:inline-block;
-   height:30px;
-   color: #303030;
+    display:inline-block;
+    height:30px;
+    color: #303030;
 }
 
 .line-input input {

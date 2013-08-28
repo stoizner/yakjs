@@ -71,26 +71,30 @@
             <!-- INSTANCE NEW -->
             <div class="panel panel-instance-edit">
             <div class="form">
-               <div class="form-line">
-                  <div class="line-label">Name</div>
-                  <div class="line-input"><input data-bind="name" type="text" /></div>
-               </div>
-               <div class="form-line">
-                  <div class="line-label">Port</div>
-                  <div class="line-input"><input data-bind="port" type="text" /></div>
-               </div>
-               <div class="form-line">
-                  <div class="line-label">Description</div>
-                  <div class="line-input"><input data-bind="description" type="text" /></div>
-               </div>
-               <div class="form-line">
-                  <div class="line-label">Plugins</div>
-                  <div class="line-input"><input data-bind="pluginsCsv" type="text" /></div>
-               </div>
-               <div class="form-line">
-                  <div class="line-label"></div>
-                  <div class="line-input"><button id="instance-save">Save</button></div>
-               </div>
+                <div class="form-line">
+                    <div class="line-label">Name</div>
+                    <div class="line-input"><input data-bind="name" type="text" /></div>
+                </div>
+                <div class="form-line">
+                    <div class="line-label">Port</div>
+                    <div class="line-input"><input data-bind="port" type="text" /></div>
+                </div>
+                <div class="form-line">
+                    <div class="line-label">Description</div>
+                    <div class="line-input"><input data-bind="description" type="text" /></div>
+                </div>
+                <div class="form-line">
+                    <div class="line-label">Plugins</div>
+                    <div class="line-input"><input data-bind="pluginsCsv" type="text" /></div>
+                </div>
+                <div class="form-line error-line">
+                    <div class="line-label"></div>
+                    <div class="error-line-text">{{error-text-here}}</div>
+                </div>
+                <div class="form-line">
+                    <div class="line-label"></div>
+                    <div class="line-input"><button id="instance-save">Save</button></div>
+                </div>
             </div>
             </div>
 
@@ -131,6 +135,10 @@
                      </div>
                   </div>
                </div>
+                <div class="form-line error-line">
+                    <div class="line-label"></div>
+                    <div class="error-line-text">{{error-text-here}}</div>
+                </div>
                <div class="form-line">
                   <div class="line-label"></div>
                   <div class="line-input"><button id="plugin-save">Save</button></div>

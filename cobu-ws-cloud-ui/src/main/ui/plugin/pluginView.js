@@ -51,6 +51,8 @@ cobu.wsc.ui.PluginView = function PluginView(parent, context) {
     this.active = function active(data) {
         console.log('InstanceView active', data);
 
+        $('.error-line', parent).hide();
+
         if (data !== null) {
             pluginInfo = data;
         } else {
@@ -82,12 +84,16 @@ cobu.wsc.ui.PluginView = function PluginView(parent, context) {
      * @param {cobu.wsc.service.CreateInstanceResponse} response
      */
     function handleResponse(response) {
-        console.log('handleResponse');
+        console.log('handleResponse', response);
+
+        var errorLine = $('.error-line', parent);
 
         if (response.success) {
             context.eventBus.post(new cobu.wsc.ui.ActivatePanelCommand('panel-plugin'));
+            errorLine.hide();
         } else {
-            console.log(response);
+            errorLine.show();
+            $('.error-line-text', errorLine).html(response.message);
         }
     }
 

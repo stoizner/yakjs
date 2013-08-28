@@ -29,15 +29,17 @@ cobu.wsc.ui.InstanceView = function InstanceView(parent, context)
     * @param {string|object} data
     */
    this.active = function active(data) {
-      console.log('InstanceView active', data);
+        console.log('InstanceView active', data);
 
-      if (data !== null) {
-         instanceInfo = data;
-      } else {
-         instanceInfo = null;
-      }
+        $('.error-line', parent).hide();
 
-      self.update();
+        if (data !== null) {
+            instanceInfo = data;
+        } else {
+            instanceInfo = null;
+        }
+
+        self.update();
    };
 
     /**
@@ -61,13 +63,16 @@ cobu.wsc.ui.InstanceView = function InstanceView(parent, context)
     * @param {cobu.wsc.service.CreateInstanceResponse} response
     */
    function handleResponse(response) {
-      console.log('handleResponse');
+        console.log('handleResponse', response);
 
-      if (response.success) {
-         context.eventBus.post(new cobu.wsc.ui.ActivatePanelCommand('panel-instance'));
-      } else {
-         console.log(response);
-      }
+        var errorLine = $('.error-line', parent);
+        if (response.success) {
+            context.eventBus.post(new cobu.wsc.ui.ActivatePanelCommand('panel-instance'));
+            errorLine.hide();
+        } else {
+            errorLine.show();
+            $('.error-line-text', errorLine).html(response.message);
+        }
    }
 
    /**

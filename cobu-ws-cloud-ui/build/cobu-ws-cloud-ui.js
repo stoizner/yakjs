@@ -474,15 +474,17 @@ cobu.wsc.ui.InstanceView = function InstanceView(parent, context)
     * @param {string|object} data
     */
    this.active = function active(data) {
-      console.log('InstanceView active', data);
+        console.log('InstanceView active', data);
 
-      if (data !== null) {
-         instanceInfo = data;
-      } else {
-         instanceInfo = null;
-      }
+        $('.error-line', parent).hide();
 
-      self.update();
+        if (data !== null) {
+            instanceInfo = data;
+        } else {
+            instanceInfo = null;
+        }
+
+        self.update();
    };
 
     /**
@@ -498,7 +500,7 @@ cobu.wsc.ui.InstanceView = function InstanceView(parent, context)
                 element.val(instanceInfo[name]);
             });
 
-            $('[data-bind="pluginsCsv"]', parent).val(instanceInfo.plugins.join(', '));
+            $('[data-bind="pluginsCsv"]', parent).val(instanceInfo.plugins.join(','));
         }
     };
 
@@ -506,13 +508,16 @@ cobu.wsc.ui.InstanceView = function InstanceView(parent, context)
     * @param {cobu.wsc.service.CreateInstanceResponse} response
     */
    function handleResponse(response) {
-      console.log('handleResponse');
+        console.log('handleResponse', response);
 
-      if (response.success) {
-         context.eventBus.post(new cobu.wsc.ui.ActivatePanelCommand('panel-instance'));
-      } else {
-         console.log(response);
-      }
+        var errorLine = $('.error-line', parent);
+        if (response.success) {
+            context.eventBus.post(new cobu.wsc.ui.ActivatePanelCommand('panel-instance'));
+            errorLine.hide();
+        } else {
+            errorLine.show();
+            $('.error-line-text', errorLine).html(response.message);
+        }
    }
 
    /**
@@ -782,6 +787,8 @@ cobu.wsc.ui.PluginView = function PluginView(parent, context) {
     this.active = function active(data) {
         console.log('InstanceView active', data);
 
+        $('.error-line', parent).hide();
+
         if (data !== null) {
             pluginInfo = data;
         } else {
@@ -813,12 +820,16 @@ cobu.wsc.ui.PluginView = function PluginView(parent, context) {
      * @param {cobu.wsc.service.CreateInstanceResponse} response
      */
     function handleResponse(response) {
-        console.log('handleResponse');
+        console.log('handleResponse', response);
+
+        var errorLine = $('.error-line', parent);
 
         if (response.success) {
             context.eventBus.post(new cobu.wsc.ui.ActivatePanelCommand('panel-plugin'));
+            errorLine.hide();
         } else {
-            console.log(response);
+            errorLine.show();
+            $('.error-line-text', errorLine).html(response.message);
         }
     }
 
