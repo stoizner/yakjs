@@ -24,7 +24,7 @@ cobu.wsc.RemoveInstanceRequestHandler = function RemoveInstanceRequestHandler(cl
 
       try {
          cloudServer.removeInstance(message.instanceName);
-         connection.sendAsJson(new cobu.wsc.service.RemoveInstanceResponse());
+         connection.send(new cobu.wsc.service.RemoveInstanceResponse());
       } catch (ex) {
          cloudServer.serviceInstance.log.error(ex.message);
       }

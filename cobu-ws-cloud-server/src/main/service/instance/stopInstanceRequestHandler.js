@@ -24,7 +24,7 @@ cobu.wsc.StopInstanceRequestHandler = function StopInstanceRequestHandler(cloudS
 
       try {
          cloudServer.stopInstance(message.instanceName);
-         connection.sendAsJson(new cobu.wsc.service.StartInstanceResponse());
+         connection.send(new cobu.wsc.service.StartInstanceResponse());
       } catch (ex) {
          cloudServer.serviceInstance.log.error(ex.message);
       }

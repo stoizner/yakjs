@@ -1643,7 +1643,7 @@ cobu.wsc.RemoveInstanceRequestHandler = function RemoveInstanceRequestHandler(cl
 
       try {
          cloudServer.removeInstance(message.instanceName);
-         connection.sendAsJson(new cobu.wsc.service.RemoveInstanceResponse());
+         connection.send(new cobu.wsc.service.RemoveInstanceResponse());
       } catch (ex) {
          cloudServer.serviceInstance.log.error(ex.message);
       }
@@ -1709,7 +1709,7 @@ cobu.wsc.StopInstanceRequestHandler = function StopInstanceRequestHandler(cloudS
 
       try {
          cloudServer.stopInstance(message.instanceName);
-         connection.sendAsJson(new cobu.wsc.service.StartInstanceResponse());
+         connection.send(new cobu.wsc.service.StartInstanceResponse());
       } catch (ex) {
          cloudServer.serviceInstance.log.error(ex.message);
       }
@@ -1876,7 +1876,7 @@ cobu.wsc.CreatePluginRequestHandler = function CreatePluginRequestHandler(cloudS
         response.success = false;
         response.message = 'Code is not valid: \n';
         response.message += codeCheck.errors.join('\n');
-        
+
         connection.send(response);
     }
 
