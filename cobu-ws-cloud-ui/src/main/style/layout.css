@@ -210,9 +210,9 @@ div, input, li {
 
 .error-line-text {
     display:inline-block;
-    height:30px;
+    min-height:30px;
     color: #C74787;
-    font: 13px/30px 'OpenSansSemibold';
+    font: 13px/20px 'OpenSansSemibold';
 }
 
 .line-label {

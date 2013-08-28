@@ -829,7 +829,7 @@ cobu.wsc.ui.PluginView = function PluginView(parent, context) {
             errorLine.hide();
         } else {
             errorLine.show();
-            $('.error-line-text', errorLine).html(response.message);
+            $('.error-line-text', errorLine).html(response.message.replace('\n','<br>'));
         }
     }
 
