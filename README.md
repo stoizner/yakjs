@@ -1,4 +1,5 @@
-cobu-ws-cloud
-=============
+h1 cobu-ws-cloud
 
-Web Socket Server Cloud
+Create websocket servers on the fly for prototyping or testing. It works like jsFiddle.
+
+
