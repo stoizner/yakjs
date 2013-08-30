@@ -13,5 +13,3 @@ Create websocket servers on the fly for prototyping or testing. It works like js
 ## Use client (ui)
 
 Open index.html in your browser.
-
-
