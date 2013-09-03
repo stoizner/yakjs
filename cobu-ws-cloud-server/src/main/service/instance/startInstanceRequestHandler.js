@@ -4,31 +4,29 @@
  * @param {cobu.wsc.CloudServer} cloudServer
  * @implements {cobu.wsc.ServiceMessageHandler}
  */
-cobu.wsc.StartInstanceRequestHandler = function StartInstanceRequestHandler(cloudServer)
-{
-   'use strict';
+cobu.wsc.StartInstanceRequestHandler = function StartInstanceRequestHandler(cloudServer) {
 
-   /** @type {cobu.wsc.StartInstanceRequestHandler} */
-   var self = this;
+    'use strict';
 
-   /** Constructor */
-   function constructor()
-   {
-   }
+    /** @type {cobu.wsc.StartInstanceRequestHandler} */
+    var self = this;
 
-   /**
+    /** Constructor */
+    function constructor() {
+    }
+
+    /**
     * @param {cobu.wsc.WebSocketMessage} message
     * @param {cobu.wsc.WebSocketConnection} connection
     */
-   this.handle = function handle(message, connection) {
+    this.handle = function handle(message, connection) {
+        try {
+            cloudServer.startInstance(message.instanceName);
+            connection.send(new cobu.wsc.service.StartInstanceResponse());
+        } catch (ex) {
+            cloudServer.serviceInstance.log.error(ex.message);
+        }
+    };
 
-      try {
-         cloudServer.startInstance(message.instanceName);
-         connection.send(new cobu.wsc.service.StartInstanceResponse());
-      } catch (ex) {
-         cloudServer.serviceInstance.log.error(ex.message);
-      }
-   };
-
-   constructor();
+    constructor();
 };
