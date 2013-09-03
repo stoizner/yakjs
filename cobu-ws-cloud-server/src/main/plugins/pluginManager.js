@@ -1,8 +1,9 @@
 /**
  * PluginManager
  * @constructor
+ * @param {cobu.wsc.Config} config
  */
-cobu.wsc.PluginManager = function PluginManager()
+cobu.wsc.PluginManager = function PluginManager(config)
 {
    'use strict';
 

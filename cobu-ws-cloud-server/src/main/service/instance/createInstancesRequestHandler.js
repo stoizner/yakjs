@@ -32,7 +32,7 @@ cobu.wsc.CreateInstanceRequestHandler = function CreateInstanceRequestHandler(cl
             response.message = 'Cannot create instance: Name is already used.';
             connection.send(response);
          } else {
-            var newInstance = new cobu.wsc.WebSocketInstance(message.name, message.port, cloudServer);
+            var newInstance = new cobu.wsc.WebSocketInstance(cloudServer, message.name, message.port);
             newInstance.description = message.description;
 
             cloudServer.addInstance(newInstance);

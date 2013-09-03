@@ -1,20 +1,24 @@
 console.log('start server');
 
-var cloudServer = new cobu.wsc.CloudServer();
+var configManager = new cobu.wsc.ConfigManager();
+configManager.load();
+configManager.save();
 
-var serviceInstance = new cobu.wsc.ServiceInstance('service', 8790, cloudServer);
+var cloudServer = new cobu.wsc.CloudServer(configManager);
+
+var serviceInstance = new cobu.wsc.ServiceInstance('service', configManager.config.servicePort, cloudServer);
 cloudServer.start(serviceInstance);
 
 
-var instanceA = new cobu.wsc.WebSocketInstance('A', 8081, cloudServer);
-instanceA.description = 'test-csu';
-instanceA.plugins.push('echo');
-instanceA.plugins.push('console');
+//var instanceA = new cobu.wsc.WebSocketInstance('A', 8081, cloudServer);
+//instanceA.description = 'test-csu';
+//instanceA.plugins.push('echo');
+//instanceA.plugins.push('console');
 //instanceA.plugins.push(new cobu.wsc.PingPongPluginWorker());
 //instanceA.plugins.push(new cobu.wsc.BroadcastPluginWorker());
 
 
-var instanceB = new cobu.wsc.WebSocketInstance('B', 8082, cloudServer);
+//var instanceB = new cobu.wsc.WebSocketInstance('B', 8082, cloudServer);
 //instanceB.plugins.push(new cobu.wsc.PingPongPluginWorker());
 //instanceB.plugins.push(new cobu.wsc.EchoPluginWorker());
 
@@ -41,8 +45,8 @@ cloudServer.pluginManager.addOrUpdatePlugin(pingpongPlugin);
 //instanceA.plugins.push(cloudServer.pluginManager.createPluginWorker('echo'));
 //instanceA.plugins.push(cloudServer.pluginManager.createPluginWorker('console'));
 
-cloudServer.addInstance(instanceA);
-cloudServer.addInstance(instanceB);
+//cloudServer.addInstance(instanceA);
+//cloudServer.addInstance(instanceB);
 
 console.log('server initialized. running...');
 

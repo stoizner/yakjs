@@ -2,11 +2,11 @@
  * WebSocketInstance
  * @constructor
  * @implements {cobu.wsc.ServerInstance}
- * @param {number} [port]
- * @param {string} name Unique instance name.
  * @param {cobu.wsc.CloudServer} cloudServer
+ * @param {number} [port]
+ * @param {string} [name] Unique instance name.
  */
-cobu.wsc.WebSocketInstance = function WebSocketInstance(name, port, cloudServer) {
+cobu.wsc.WebSocketInstance = function WebSocketInstance(cloudServer, name, port) {
 
     'use strict';
 
@@ -39,7 +39,7 @@ cobu.wsc.WebSocketInstance = function WebSocketInstance(name, port, cloudServer)
     * Unique instance name.
     * @type {string}
     */
-    this.name = name;
+    this.name = name || '';
 
     /**
     * @type {Array.<string>}

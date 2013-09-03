@@ -71,7 +71,7 @@ cobu.wsc.ui.InstanceView = function InstanceView(parent, context)
             errorLine.hide();
         } else {
             errorLine.show();
-            $('.error-line-text', errorLine).html(response.message);
+            $('.error-line-text', errorLine).html(response.message.replace(/\n/g, '<br />'));
         }
    }
 
