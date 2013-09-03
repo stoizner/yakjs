@@ -44,7 +44,7 @@ cobu.wsc.Config = function Config() {
      * Creates default plugin config.
      */
     function createDefaultPluginConfig() {
-        
+
     }
 
     constructor();

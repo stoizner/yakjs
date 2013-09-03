@@ -827,13 +827,27 @@ cobu.wsc.Config = function Config() {
     /** Constructor */
     function constructor() {
 
-        // Default configuration.
+        createDefaultInstanceConfig();
+        createDefaultPluginConfig();
+    }
+
+    /**
+     * Creates default instance config.
+     */
+    function createDefaultInstanceConfig() {
         var echoInstance = new cobu.wsc.InstanceConfigItem();
         echoInstance.name = 'Echo Service';
         echoInstance.description = 'Every received message will be returned to sender.';
         echoInstance.port = 8791;
         echoInstance.plugins = ['echo'];
         self.instances.push(echoInstance);
+    }
+
+    /**
+     * Creates default plugin config.
+     */
+    function createDefaultPluginConfig() {
+
     }
 
     constructor();
@@ -1755,6 +1769,7 @@ cobu.wsc.CreateInstanceRequestHandler = function CreateInstanceRequestHandler(cl
          } else {
             var newInstance = new cobu.wsc.WebSocketInstance(cloudServer, message.name, message.port);
             newInstance.description = message.description;
+            newInstance.plugins = message.plugins;
 
             cloudServer.addInstance(newInstance);
             connection.send(new cobu.wsc.service.CreateInstanceResponse());

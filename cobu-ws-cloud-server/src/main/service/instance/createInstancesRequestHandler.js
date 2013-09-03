@@ -34,6 +34,7 @@ cobu.wsc.CreateInstanceRequestHandler = function CreateInstanceRequestHandler(cl
          } else {
             var newInstance = new cobu.wsc.WebSocketInstance(cloudServer, message.name, message.port);
             newInstance.description = message.description;
+            newInstance.plugins = message.plugins;
 
             cloudServer.addInstance(newInstance);
             connection.send(new cobu.wsc.service.CreateInstanceResponse());
