@@ -23,8 +23,14 @@
 
 <body>
     <div class="banner">
-
+        <div class="banner-wrap">
+            <div class="links">
+                <a href="https://github.com/cobuChris/cobu-ws-cloud/blob/master/README.md">doku</a>
+                <a href="https://github.com/cobuChris/cobu-ws-cloud">github</a>
+            </div>
+        </div>
     </div>
+
     <div class="main">
         <div class="header">
              <div class="header-logo icon-cloud-64"></div>
@@ -43,7 +49,7 @@
         <!-- Navigation -->
         <div class="menu">
             <ul>
-                <li data-panel="panel-instance">Instances</li>
+                <li data-panel="panel-instance" class="state-active">Instances</li>
                 <li data-panel="panel-plugin">Plugins</li>
             </ul>
         </div>
@@ -165,30 +171,6 @@
          <div class="list-item-cell instance-item-description">{{description}}</div>
       </div>
    </template>
-
-<template id="plugin-code-tpl">
-function EmptyPlugin() {
-
-    'use strict';
-
-    /**
-    * @param {cobu.wsc.WebSocketConnection} connection The new connection.
-    * @param {cobu.wsc.WebSocketInstance} instance The websocket instance.
-    */
-    this.onNewConnection = function(connection, instance) {
-    };
-
-    /**
-    * @param {cobu.wsc.WebSocketMessage} message The received message.
-    * @param {cobu.wsc.WebSocketConnection} connection The connection of the received message.
-    * @param {cobu.wsc.WebSocketInstance} instance The websocket instance.
-    */
-    this.onMessage = function(message, connection, instance) {
-
-        instance.log.info('Hello Plugin!');
-    };
-}
-</template>
 
 </body>
 

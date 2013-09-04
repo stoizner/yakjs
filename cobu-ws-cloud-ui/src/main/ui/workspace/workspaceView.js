@@ -73,7 +73,7 @@ cobu.wsc.ui.WorkspaceView = function WorkspaceView(parent, context)
      */
     function showPleaseConnectNotification() {
         var notificationBar = $('.notification', parent);
-        notificationBar.html('Please connect to service port (default: 8791) of cobu-ws-cloud.');
+        notificationBar.html('Please connect to service port (default: 8790) of cobu-ws-cloud.');
         notificationBar.show();
         $('.menu', parent).hide();
         $('.panels', parent).hide();
@@ -87,41 +87,40 @@ cobu.wsc.ui.WorkspaceView = function WorkspaceView(parent, context)
         activatePanel(command.panelName, command.data);
     }
 
-   /**
+    /**
     *
     * @param event
     */
-   function handleMenuItemClick(event) {
-      var target = $(event.currentTarget);
-      var panelName = target.attr('data-panel');
+    function handleMenuItemClick(event) {
+        var target = $(event.currentTarget);
+        var panelName = target.attr('data-panel');
 
-      $('.menu li', parent).removeClass('state-active');
-      target.addClass('state-active');
+        $('.menu li', parent).removeClass('state-active');
+        target.addClass('state-active');
 
-      activatePanel(panelName);
-   }
+        activatePanel(panelName);
+    }
 
-   /**
-    *
-    * @param {string} name
-    * @param {null|string|object} data
-    */
-   function activatePanel(name, data) {
-      console.log('activatePanel', name, data);
-      hidePanels();
-      $('.panels .' + name, parent).show();
+    /**
+     * @param {string} name
+     * @param {null|string|object} data
+     */
+    function activatePanel(name, data) {
+        console.log('activatePanel', name, data);
+        hidePanels();
+        $('.panels .' + name, parent).show();
 
-      if (panelViews.hasOwnProperty(name)) {
-         panelViews[name].active(data);
-      }
-   }
+        if (panelViews.hasOwnProperty(name)) {
+            panelViews[name].active(data);
+        }
+    }
 
-   /**
-    * Hide all panels.
-    */
-   function hidePanels() {
-      $('.panels .panel', parent).hide();
-   }
+    /**
+     * Hide all panels.
+     */
+    function hidePanels() {
+        $('.panels .panel', parent).hide();
+    }
 
-   constructor();
+    constructor();
 };

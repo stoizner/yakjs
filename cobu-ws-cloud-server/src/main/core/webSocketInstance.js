@@ -235,13 +235,17 @@ cobu.wsc.WebSocketInstance = function WebSocketInstance(cloudServer, name, port)
         connections[connection.id] = connection;
 
         socket.on('close', function() {
-            self.log.info('onclose ' + connection.id);
-            connections[connection.id] = null;
+            self.log.info('Connection closed: ' + connection.id);
+            delete connections[connection.id];
+        });
+
+        socket.on('error', function() {
+            self.log.info('Connection closed with error: ' + connection.id);
+            delete connections[connection.id];
         });
 
         socket.on('message', createMessageHandler(connection));
     }
-
 
     /**
      * @param {cobu.wsc.WebSocketConnection} connection
