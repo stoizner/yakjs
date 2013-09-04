@@ -88,15 +88,17 @@ cobu.wsc.CloudServer = function CloudServer(configManager) {
      * @returns {Array.<cobu.wsc.WebSocketInstance>}
      */
     this.getInstances = function getInstances() {
-        var arr = [];
+        var result = [];
 
         for(var key in instances) {
             if (instances.hasOwnProperty(key)) {
-                arr.push(instances[key]);
+                result.push(instances[key]);
             }
         }
 
-        return arr;
+        log.info(result.length + ' instances available.');
+
+        return result;
     };
 
     /**
@@ -119,7 +121,7 @@ cobu.wsc.CloudServer = function CloudServer(configManager) {
         if (instances.hasOwnProperty(name)) {
             instances[name].stop();
         }  else {
-            throw new Error('PluginWorkerConstructor not found ' + name);
+            throw new Error('PluginConstructor not found ' + name);
         }
     };
 
@@ -158,9 +160,7 @@ cobu.wsc.CloudServer = function CloudServer(configManager) {
              * @param {cobu.wsc.InstanceConfigItem} instanceConfig
              */
             function(instanceConfig) {
-                var instance = new cobu.wsc.WebSocketInstance(self);
-                instance.name = instanceConfig.name;
-                instance.port = instanceConfig.port;
+                var instance = new cobu.wsc.WebSocketInstance(self, instanceConfig.name, instanceConfig.port);
                 instance.description = instanceConfig.description;
                 instance.plugins = instanceConfig.plugins;
 

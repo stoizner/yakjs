@@ -7,14 +7,10 @@ cobu.wsc.BroadcastPluginWorker = function BroadcastPluginWorker() {
 
     'use strict';
 
-    /** @type {cobu.wsc.BroadcastPluginWorker} */
-    var self = this;
-
-    this.name = 'broadcast';
-
-    /** Constructor */
-    function constructor() {
-    }
+    /**
+     * @param {cobu.wsc.WebSocketInstance} instance
+     */
+    this.onInitialize = function onInit(instance) {};
 
     /**
      * @param {cobu.wsc.WebSocketConnection} connection
@@ -39,5 +35,8 @@ cobu.wsc.BroadcastPluginWorker = function BroadcastPluginWorker() {
         }
     };
 
-    constructor();
+    /**
+     * @param {cobu.wsc.WebSocketInstance} instance
+     */
+    this.onTerminate = function onInit(instance) {};
 };

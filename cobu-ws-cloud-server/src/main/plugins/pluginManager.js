@@ -46,7 +46,7 @@ cobu.wsc.PluginManager = function PluginManager(configManager) {
             }
         }
 
-        log.info('getPlugins', result);
+        log.info(result.length + ' plugins available.');
 
         return result;
     };
@@ -64,11 +64,11 @@ cobu.wsc.PluginManager = function PluginManager(configManager) {
      */
     this.addOrUpdatePlugin = function addOrUpdatePlugin(plugin) {
 
-        if (plugin.PluginWorkerConstructor === null) {
-            plugin.PluginWorkerConstructor = createPluginWorkerConstructor(plugin.code);
+        if (plugin.PluginConstructor === null) {
+            plugin.PluginConstructor = createPluginWorkerConstructor(plugin.code);
         }
 
-        if (plugin.PluginWorkerConstructor !== null) {
+        if (plugin.PluginConstructor !== null) {
             plugins[plugin.name] = plugin;
             updateAndSaveConfig();
         }
@@ -89,19 +89,22 @@ cobu.wsc.PluginManager = function PluginManager(configManager) {
      * @return {null|cobu.wsc.PluginWorker}
      */
     this.createPluginWorker = function createPluginWorker(name) {
-        log.info('CreatePluginWorker: ' + name);
+        log.info('Create plugin instance: ' + name);
         var pluginWorker = null;
 
         if (plugins.hasOwnProperty(name)) {
             var plugin = plugins[name];
 
             try {
-                log.info(plugin.PluginWorkerConstructor);
-                pluginWorker = new plugin.PluginWorker();
-                pluginWorker.name = name;
+                if (typeof plugin.PluginConstructor === 'function') {
+                    pluginWorker = new plugin.PluginConstructor();
+                    pluginWorker.name = name;
+                } else {
+                    log.warn('No constructor function available, can not create plugin instance: ' + name + '');
+                }
             } catch(ex) {
                 pluginWorker = null;
-                log.warn('Can not create plugin worker "' + name + '"');
+                log.warn('Can not create plugin instance: ' + name + '');
                 log.info(ex);
                 log.info(ex.stack);
             }
@@ -122,9 +125,9 @@ cobu.wsc.PluginManager = function PluginManager(configManager) {
         plugin.name = name;
         plugin.description = description;
         plugin.code = code;
-        plugin.PluginWorkerConstructor = createPluginWorkerConstructor(code);
+        plugin.PluginConstructor = createPluginWorkerConstructor(code);
 
-        if (plugin.PluginWorkerConstructor !== null) {
+        if (plugin.PluginConstructor !== null) {
             plugins[name] = plugin;
             updateAndSaveConfig();
         }

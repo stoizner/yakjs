@@ -37,7 +37,7 @@
 //var echoPlugin = new cobu.wsc.Plugin();
 //echoPlugin.name = 'echo';
 //echoPlugin.description = 'Echo service. Every received message will be returned.';
-//echoPlugin.PluginWorkerConstructor = cobu.wsc.EchoPluginWorker;
+//echoPlugin.PluginConstructor = cobu.wsc.EchoPluginWorker;
 //echoPlugin.code = cobu.wsc.EchoPluginWorker.toString();
 //
 //cloudServer.pluginManager.addOrUpdatePlugin(echoPlugin);
@@ -45,7 +45,7 @@
 //var pingpongPlugin = new cobu.wsc.Plugin();
 //pingpongPlugin.name = 'ping-pong';
 //pingpongPlugin.description = 'ping will be answered with pong';
-//pingpongPlugin.PluginWorkerConstructor = cobu.wsc.PingPongPluginWorker;
+//pingpongPlugin.PluginConstructor = cobu.wsc.PingPongPluginWorker;
 //pingpongPlugin.code = cobu.wsc.PingPongPluginWorker.toString();
 //
 //cloudServer.pluginManager.addOrUpdatePlugin(pingpongPlugin);

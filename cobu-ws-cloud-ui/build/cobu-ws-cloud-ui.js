@@ -609,6 +609,35 @@ cobu.wsc.ui.codeEditorContext = {
     }
 };
 /**
+ * EmptyPluginTemplate
+ * @constructor
+ */
+cobu.wsc.ui.EmptyPluginTemplate = function Plugin() {
+
+    'use strict';
+
+    /**
+     * @param {cobu.wsc.WebSocketInstance} instance
+     */
+    this.onInitialize = function onInit(instance) {};
+
+    /**
+     * @param {cobu.wsc.WebSocketConnection} connection
+     */
+    this.onNewConnection = function onNewConnection(connection) {};
+
+    /**
+     * @param {cobu.wsc.WebSocketMessage} message
+     * @param {cobu.wsc.WebSocketConnection} connection
+     * @param {cobu.wsc.WebSocketInstance} instance
+     */
+    this.onMessage = function onMessage(message, connection, instance) {};
+
+    /**
+     * @param {cobu.wsc.WebSocketInstance} instance
+     */
+    this.onTerminate = function onInit(instance) {};
+};/**
  * PluginListView
  * @constructor
  * @param {cobu.wsc.ui.ViewContext} context
@@ -760,7 +789,7 @@ cobu.wsc.ui.PluginView = function PluginView(parent, context) {
     /**
      * @type {string}
      */
-    var pluginCodeTemplate = $('#plugin-code-tpl').html();
+    var pluginCodeTemplate = cobu.wsc.ui.EmptyPluginTemplate.toString();
 
     /** Constructor */
     function constructor() {

@@ -63,6 +63,13 @@ cobu.wsc.Config = function Config() {
         pingpongPlugin.code = cobu.wsc.PingPongPluginWorker.toString();
         self.plugins.push(pingpongPlugin);
 
+        // BROADCAST Plugin
+        var broadCastPlugin = new cobu.wsc.PluginConfigItem();
+        broadCastPlugin.name = 'broadcast';
+        broadCastPlugin.description = 'Broadcast service. Every received message will be sent to all other connections.';
+        broadCastPlugin.code = cobu.wsc.BroadcastPluginWorker.toString();
+        self.plugins.push(broadCastPlugin);
+
         // HELLO-WORLD_CONSOLE Plugin
         var helloWorldPlugin = new cobu.wsc.PluginConfigItem();
         helloWorldPlugin.name = 'hello-world-console';

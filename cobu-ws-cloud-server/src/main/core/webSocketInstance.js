@@ -99,6 +99,7 @@ cobu.wsc.WebSocketInstance = function WebSocketInstance(cloudServer, name, port)
         try {
             if (server && self.state === cobu.wsc.InstanceState.RUNNING) {
                 self.state = cobu.wsc.InstanceState.STOPPING;
+                terminatePlugins();
                 log.info('Stopping WebSocketInstance...');
                 server.close();
                 server = null;
@@ -128,19 +129,79 @@ cobu.wsc.WebSocketInstance = function WebSocketInstance(cloudServer, name, port)
         pluginWorkers = [];
 
         for(var i=0; i<self.plugins.length; i++) {
-
             var pluginName = self.plugins[i].trim();
             var worker = cloudServer.pluginManager.createPluginWorker(pluginName);
 
-            // Extend with pluginName
-            worker.name = pluginName;
-
             if (worker !== null) {
-                pluginWorkers.push(worker);
-                log.info(pluginName + ' initialized.');
+
+                // Extend with pluginName
+                worker.name = pluginName;
+
+                // A termination fail, shall not stop the loop, so
+                // that other plugins can be terminated.
+                try {
+                    initializePlugin(worker);
+                } catch (ex) {
+                    log.error(worker.name + ' could not be initialized.');
+                    log.error(ex);
+                    log.error(ex.stack);
+                }
             } else {
                 log.warn(pluginName + ' not initialized.');
             }
+        }
+    }
+
+    /**
+     * @param {cobu.wsc.PluginWorker} worker
+     */
+    function initializePlugin(worker) {
+        if (worker.hasOwnProperty('onInitialize')) {
+            log.info(worker.name + ' call onInitialize.');
+
+            worker.onInitialize(self);
+
+            // Add plugin instance to workers.
+            pluginWorkers.push(worker);
+
+            log.info(worker.name + ' initialized.');
+        } else {
+            log.info(worker.name + ' has no onInitialize function - skipped.');
+        }
+    }
+
+    /**
+     * Terminate plugins.
+     */
+    function terminatePlugins() {
+        log.info('Terminate ' + self.plugins.length + ' plugins.');
+        pluginWorkers = [];
+
+        for(var i=0; i<pluginWorkers.length; i++) {
+            var worker = pluginWorkers[i];
+
+            // A termination fail, shall not stop the loop, so
+            // that other plugins can be terminated.
+            try {
+                terminatePlugin(worker);
+            } catch (ex) {
+                log.error(worker.name + ' could not be terminated.');
+                log.error(ex);
+                log.error(ex.stack);
+            }
+        }
+    }
+
+    /**
+     * @param {cobu.wsc.PluginWorker} worker
+     */
+    function terminatePlugin(worker) {
+        if (worker.hasOwnProperty('onTerminate')) {
+            log.info(worker.name + ' call onTerminate.');
+            worker.onTerminate(self);
+            log.info(worker.name + ' terminated.');
+        } else {
+            log.info(worker.name + ' has no onTerminate function - skipped.');
         }
     }
 
@@ -169,7 +230,7 @@ cobu.wsc.WebSocketInstance = function WebSocketInstance(cloudServer, name, port)
         var connection = new cobu.wsc.WebSocketConnection();
         connection.socket = socket;
 
-        log.info('connected ' + connection.id);
+        log.info('New client connected: ' + connection.id);
 
         connections[connection.id] = connection;
 
@@ -190,7 +251,7 @@ cobu.wsc.WebSocketInstance = function WebSocketInstance(cloudServer, name, port)
 
         return function handleMessage(data, flags) {
 
-            log.info('message ' + connection.id + ', ' + data);
+            log.info('Received message from: ' + connection.id + ', data: ' + data);
 
             for(var i=0; i<pluginWorkers.length; i++) {
                 pluginWorkerOnMessage(pluginWorkers[i], data, connection);
@@ -208,7 +269,7 @@ cobu.wsc.WebSocketInstance = function WebSocketInstance(cloudServer, name, port)
 
         if (pluginWorker.onMessage) {
             try {
-                self.log.info(pluginWorker.name + '.onMessage(...)');
+                self.log.info(pluginWorker.name + 'call onMessage.');
                 pluginWorker.onMessage(new cobu.wsc.WebSocketMessage(data), connection, self);
             } catch (ex) {
                 self.log.warn('PluginWorker ' + pluginWorker.name + 'onMessage(...) failed.', ex);

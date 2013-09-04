@@ -7,12 +7,10 @@ cobu.wsc.PingPongPluginWorker = function PingPongPluginWorker() {
 
     'use strict';
 
-    /** @type {cobu.wsc.PingPongPluginWorker} */
-    var self = this;
-
-    /** Constructor */
-    function constructor() {
-    }
+    /**
+     * @param {cobu.wsc.WebSocketInstance} instance
+     */
+    this.onInitialize = function onInit(instance) {};
 
     /**
      * @param {cobu.wsc.WebSocketConnection} connection
@@ -30,5 +28,8 @@ cobu.wsc.PingPongPluginWorker = function PingPongPluginWorker() {
         }
     };
 
-    constructor();
+    /**
+     * @param {cobu.wsc.WebSocketInstance} instance
+     */
+    this.onTerminate = function onInit(instance) {};
 };

@@ -24,7 +24,7 @@ cobu.wsc.ui.PluginView = function PluginView(parent, context) {
     /**
      * @type {string}
      */
-    var pluginCodeTemplate = $('#plugin-code-tpl').html();
+    var pluginCodeTemplate = cobu.wsc.ui.EmptyPluginTemplate.toString();
 
     /** Constructor */
     function constructor() {

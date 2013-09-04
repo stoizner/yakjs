@@ -33,7 +33,7 @@ cobu.wsc.Plugin = function Plugin() {
      * @type {null|Function}
      * @implements {cobu.wsc.PluginWorker}
      */
-    this.PluginWorkerConstructor = null;
+    this.PluginConstructor = null;
 
     /**
      * Constructor

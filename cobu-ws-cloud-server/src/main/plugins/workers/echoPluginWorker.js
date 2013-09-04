@@ -7,11 +7,10 @@ cobu.wsc.EchoPluginWorker = function EchoPluginWorker() {
 
     'use strict';
 
-    /** @type {cobu.wsc.PingPongPluginWorker} */
-    var self = this;
-
-    /** Constructor */
-    function constructor() { }
+    /**
+     * @param {cobu.wsc.WebSocketInstance} instance
+     */
+    this.onInitialize = function onInit(instance) {};
 
     /**
      * @param {cobu.wsc.WebSocketConnection} connection
@@ -27,5 +26,8 @@ cobu.wsc.EchoPluginWorker = function EchoPluginWorker() {
         connection.send(message.data);
     };
 
-    constructor();
+    /**
+     * @param {cobu.wsc.WebSocketInstance} instance
+     */
+    this.onTerminate = function onInit(instance) {};
 };
