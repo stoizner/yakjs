@@ -1,13 +1,22 @@
-console.log('start server');
+(function main() {
 
-var configManager = new cobu.wsc.ConfigManager();
-configManager.load();
-configManager.save();
+    'use strict';
 
-var cloudServer = new cobu.wsc.CloudServer(configManager);
+    console.log('start server');
 
-var serviceInstance = new cobu.wsc.ServiceInstance('service', configManager.config.servicePort, cloudServer);
-cloudServer.start(serviceInstance);
+    var configManager = new cobu.wsc.ConfigManager();
+    configManager.load();
+    configManager.save();
+
+    var cloudServer = new cobu.wsc.CloudServer(configManager);
+
+    var serviceInstance = new cobu.wsc.ServiceInstance('service', configManager.config.servicePort, cloudServer);
+    cloudServer.start(serviceInstance);
+
+    console.log('server initialized. running...');
+}());
+
+
 
 
 //var instanceA = new cobu.wsc.WebSocketInstance('A', 8081, cloudServer);
@@ -23,23 +32,23 @@ cloudServer.start(serviceInstance);
 //instanceB.plugins.push(new cobu.wsc.EchoPluginWorker());
 
 
-cloudServer.pluginManager.createOrUpdatePlugin('console', 'Hello World console output', 'function HelloWorld() { this.onMessage = function onMessage(message, connection, instance) { console.log("hello world"); }; }');
+//cloudServer.pluginManager.createOrUpdatePlugin('console', 'Hello World console output', 'function HelloWorld() { this.onMessage = function onMessage(message, connection, instance) { console.log("hello world"); }; }');
 
-var echoPlugin = new cobu.wsc.Plugin();
-echoPlugin.name = 'echo';
-echoPlugin.description = 'Echo service. Every received message will be returned.';
-echoPlugin.PluginWorker = cobu.wsc.EchoPluginWorker;
-echoPlugin.code = cobu.wsc.EchoPluginWorker.toString();
-
-cloudServer.pluginManager.addOrUpdatePlugin(echoPlugin);
-
-var pingpongPlugin = new cobu.wsc.Plugin();
-pingpongPlugin.name = 'ping-pong';
-pingpongPlugin.description = 'ping will be answered with pong';
-pingpongPlugin.PluginWorker = cobu.wsc.PingPongPluginWorker;
-pingpongPlugin.code = cobu.wsc.PingPongPluginWorker.toString();
-
-cloudServer.pluginManager.addOrUpdatePlugin(pingpongPlugin);
+//var echoPlugin = new cobu.wsc.Plugin();
+//echoPlugin.name = 'echo';
+//echoPlugin.description = 'Echo service. Every received message will be returned.';
+//echoPlugin.PluginWorkerConstructor = cobu.wsc.EchoPluginWorker;
+//echoPlugin.code = cobu.wsc.EchoPluginWorker.toString();
+//
+//cloudServer.pluginManager.addOrUpdatePlugin(echoPlugin);
+//
+//var pingpongPlugin = new cobu.wsc.Plugin();
+//pingpongPlugin.name = 'ping-pong';
+//pingpongPlugin.description = 'ping will be answered with pong';
+//pingpongPlugin.PluginWorkerConstructor = cobu.wsc.PingPongPluginWorker;
+//pingpongPlugin.code = cobu.wsc.PingPongPluginWorker.toString();
+//
+//cloudServer.pluginManager.addOrUpdatePlugin(pingpongPlugin);
 
 
 //instanceA.plugins.push(cloudServer.pluginManager.createPluginWorker('echo'));
@@ -48,7 +57,6 @@ cloudServer.pluginManager.addOrUpdatePlugin(pingpongPlugin);
 //cloudServer.addInstance(instanceA);
 //cloudServer.addInstance(instanceB);
 
-console.log('server initialized. running...');
 
 
 

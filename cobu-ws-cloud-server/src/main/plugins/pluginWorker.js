@@ -2,31 +2,31 @@
  * PluginWorker
  * @interface
  */
-cobu.wsc.PluginWorker = function PluginWorker(name)
-{
-   'use strict';
+cobu.wsc.PluginWorker = function PluginWorker(name) {
 
-   /** @type {cobu.wsc.PluginWorker} */
-   var self = this;
+    'use strict';
 
-   this.name = name;
+    /** @type {cobu.wsc.PluginWorker} */
+    var self = this;
 
-   /** Constructor */
-   function constructor() {
-   }
+    this.name = name;
 
-   /**
+    /** Constructor */
+    function constructor() {
+    }
+
+    /**
     * @param {cobu.wsc.WebSocketConnection} connection
     * @param {cobu.wsc.WebSocketInstance} instance
     */
-   this.onNewConnection = function onNewConnection(connection, instance) {};
+    this.onNewConnection = function onNewConnection(connection, instance) {};
 
-   /**
+    /**
     * @param {cobu.wsc.WebSocketMessage} message
     * @param {cobu.wsc.WebSocketConnection} connection
     * @param {cobu.wsc.WebSocketInstance} instance
     */
-   this.onMessage = function onMessage(message, connection, instance) {};
+    this.onMessage = function onMessage(message, connection, instance) {};
 
-   constructor();
+    constructor();
 };

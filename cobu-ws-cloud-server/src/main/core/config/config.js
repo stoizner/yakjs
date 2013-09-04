@@ -9,6 +9,10 @@ cobu.wsc.Config = function Config() {
     /** @type {cobu.wsc.Config} */
     var self = this;
 
+    /**
+     * The API service web socket service port.
+     * @type {number}
+     */
     this.servicePort = 8790;
 
     /**
@@ -45,6 +49,26 @@ cobu.wsc.Config = function Config() {
      */
     function createDefaultPluginConfig() {
 
+        // ECHO Plugin
+        var echoPlugin = new cobu.wsc.PluginConfigItem();
+        echoPlugin.name = 'echo';
+        echoPlugin.description = 'Echo service. Every received message will be returned.';
+        echoPlugin.code = cobu.wsc.EchoPluginWorker.toString();
+        self.plugins.push(echoPlugin);
+
+        // PING-PONG Plugin
+        var pingpongPlugin = new cobu.wsc.PluginConfigItem();
+        pingpongPlugin.name = 'ping-pong';
+        pingpongPlugin.description = 'ping will be answered with pong';
+        pingpongPlugin.code = cobu.wsc.PingPongPluginWorker.toString();
+        self.plugins.push(pingpongPlugin);
+
+        // HELLO-WORLD_CONSOLE Plugin
+        var helloWorldPlugin = new cobu.wsc.PluginConfigItem();
+        helloWorldPlugin.name = 'hello-world-console';
+        helloWorldPlugin.description = 'Write "hello world" to server console.';
+        helloWorldPlugin.code = 'function HelloWorld() { this.onMessage = function onMessage(message, connection, instance) { console.log("hello world"); }; }';
+        self.plugins.push(helloWorldPlugin);
     }
 
     constructor();

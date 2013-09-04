@@ -1,79 +1,88 @@
 /**
  * PluginManager
  * @constructor
- * @param {cobu.wsc.Config} config
+ * @param {cobu.wsc.ConfigManager} configManager
  */
-cobu.wsc.PluginManager = function PluginManager(config)
-{
-   'use strict';
+cobu.wsc.PluginManager = function PluginManager(configManager) {
 
-   /** @type {cobu.wsc.PluginManager} */
-   var self = this;
+    'use strict';
 
-   /**
-    * @type {Object.<string, cobu.wsc.Plugin>}
-    */
-   var plugins = {};
+    /** @type {cobu.wsc.PluginManager} */
+    var self = this;
 
-   /**
-    * @type {cobu.wsc.Logger}
-    */
-   var log = new cobu.wsc.Logger(self.constructor.name);
+    /**
+     * @type {Object.<string, cobu.wsc.Plugin>}
+     */
+    var plugins = {};
 
-   /** Constructor */
-   function constructor() {
-   }
+    /**
+     * @type {cobu.wsc.Logger}
+     */
+    var log = new cobu.wsc.Logger(self.constructor.name);
 
-   /**
-    * @param {string} name
-    * @returns {cobu.wsc.Plugin}
-    */
-   this.getPlugin = function getPlugin(name) {
-      return plugins[name];
-   };
+    /** Constructor */
+    function constructor() {
+    }
 
-   /**
-    * Get list of plugins.
-    * @returns {Array.<cobu.wsc.Plugin>}
-    */
-   this.getPlugins = function getPlugins() {
+    /**
+     * @param {string} name
+     * @returns {cobu.wsc.Plugin}
+     */
+    this.getPlugin = function getPlugin(name) {
+        return plugins[name];
+    };
 
-      var result = [];
+    /**
+     * Get list of plugins.
+     * @returns {Array.<cobu.wsc.Plugin>}
+     */
+    this.getPlugins = function getPlugins() {
 
-      for(var key in plugins) {
-         if (plugins.hasOwnProperty(key)) {
-            result.push(plugins[key]);
-         }
-      }
+        var result = [];
 
-      log.info('getPlugins', result);
+        for(var key in plugins) {
+            if (plugins.hasOwnProperty(key)) {
+                result.push(plugins[key]);
+            }
+        }
 
-      return result;
-   };
+        log.info('getPlugins', result);
 
-   /**
-    * Check if plugin with given name exists.
-    * @param name
-    */
-   this.hasPlugin = function hasPlugin(name) {
-      return plugins.hasOwnProperty(name);
-   };
+        return result;
+    };
 
-   /**
-    * @param plugin
-    */
-   this.addOrUpdatePlugin = function addOrUpdatePlugin(plugin) {
-      plugins[plugin.name] = plugin;
-   };
+    /**
+     * Check if plugin with given name exists.
+     * @param name
+     */
+    this.hasPlugin = function hasPlugin(name) {
+        return plugins.hasOwnProperty(name);
+    };
 
-   /**
-    * @param {string} name The name of the plugin.
-    */
-   this.removePlugin = function removePlugin(name) {
-      if (plugins.hasOwnProperty(name)) {
-         delete plugins[name];
-      }
-   };
+    /**
+     * @param {cobu.wsc.Plugin} plugin
+     */
+    this.addOrUpdatePlugin = function addOrUpdatePlugin(plugin) {
+
+        if (plugin.PluginWorkerConstructor === null) {
+            plugin.PluginWorkerConstructor = createPluginWorkerConstructor(plugin.code);
+        }
+
+        if (plugin.PluginWorkerConstructor !== null) {
+            plugins[plugin.name] = plugin;
+            updateAndSaveConfig();
+        }
+    };
+
+    /**
+     * @param {string} name The name of the plugin.
+     */
+    this.removePlugin = function removePlugin(name) {
+        if (plugins.hasOwnProperty(name)) {
+            delete plugins[name];
+            updateAndSaveConfig();
+        }
+    };
 
     /**
      * @param {string} name
@@ -87,14 +96,14 @@ cobu.wsc.PluginManager = function PluginManager(config)
             var plugin = plugins[name];
 
             try {
-                console.log(plugin.PluginWorker);
+                log.info(plugin.PluginWorkerConstructor);
                 pluginWorker = new plugin.PluginWorker();
                 pluginWorker.name = name;
             } catch(ex) {
                 pluginWorker = null;
                 log.warn('Can not create plugin worker "' + name + '"');
                 log.info(ex);
-                console.log(ex.stack);
+                log.info(ex.stack);
             }
         }
 
@@ -108,19 +117,62 @@ cobu.wsc.PluginManager = function PluginManager(config)
      */
     this.createOrUpdatePlugin = function createOrUpdatePlugin(name, description, code) {
         log.info('createOrUpdatePlugin', { name: name, description: description, code: code });
-        try {
-            var plugin = new cobu.wsc.Plugin();
-            plugin.name = name;
-            plugin.description = description;
-            plugin.code = code;
-            plugin.PluginWorker = new Function('return ' + code)();
 
+        var plugin = new cobu.wsc.Plugin();
+        plugin.name = name;
+        plugin.description = description;
+        plugin.code = code;
+        plugin.PluginWorkerConstructor = createPluginWorkerConstructor(code);
+
+        if (plugin.PluginWorkerConstructor !== null) {
             plugins[name] = plugin;
-        } catch (ex) {
-            console.log(ex.stack);
-            log.warn(ex);
+            updateAndSaveConfig();
         }
     };
 
-   constructor();
+    /**
+     * Creates the constructor function for the worker.
+     * @param {string} code
+     * @return {Function}
+     */
+    function createPluginWorkerConstructor(code) {
+
+        var worker = null;
+
+        try {
+            // Function is a form of eval, but we are using it here for executing custom plugin code.
+            // noinspection JSHint
+            worker = new Function('return ' + code)();
+        } catch (ex) {
+            log.warn(ex);
+            log.warn(ex.stack);
+        }
+
+        return worker;
+    }
+
+    /**
+     * Update config and save it.
+     */
+    function updateAndSaveConfig() {
+
+        configManager.config.plugins = [];
+
+        for(var key in plugins) {
+            if (plugins.hasOwnProperty(key)) {
+                var plugin = plugins[key];
+
+                var pluginConfigItem = new cobu.wsc.PluginConfigItem();
+                pluginConfigItem.description = plugin.description;
+                pluginConfigItem.name = plugin.name;
+                pluginConfigItem.code = plugin.code;
+
+                configManager.config.plugins.push(pluginConfigItem);
+            }
+        }
+
+        configManager.save();
+    }
+
+    constructor();
 };

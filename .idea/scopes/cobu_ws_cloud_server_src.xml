@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="cobu-ws-cloud-server/src" pattern="file:cobu-ws-cloud-server/src/main//*" />
+</component>

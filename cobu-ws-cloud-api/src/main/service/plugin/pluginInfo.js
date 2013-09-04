@@ -2,25 +2,25 @@
  * PluginInfo
  * @constructor
  */
-cobu.wsc.service.PluginInfo = function PluginInfo()
-{
-   'use strict';
+cobu.wsc.service.PluginInfo = function PluginInfo() {
 
-   /**
+    'use strict';
+
+    /**
     *
     * @type {string}
     */
-   this.name = null;
+    this.name = null;
 
-   /**
+    /**
     *
     * @type {string}
     */
-   this.description = null;
+    this.description = null;
 
-   /**
+    /**
     *
     * @type {string}
     */
-   this.code = null;
+    this.code = null;
 };

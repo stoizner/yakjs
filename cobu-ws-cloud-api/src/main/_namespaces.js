@@ -1,3 +1,5 @@
+/* global cobu:true */
+
 /**
  * Codebullets.
  * @namespace cobu

@@ -28,7 +28,7 @@ cobu.wsc.PluginCodeChecker = function PluginCodeChecker() {
         code = code.trim();
 
         if (lines.length <= 0) {
-            result.errors.push('No code found.')
+            result.errors.push('No code found.');
         } else {
             if (lines[0].indexOf('function') < 0) {
                 result.errors.push('0: First line must contain function keyword.');

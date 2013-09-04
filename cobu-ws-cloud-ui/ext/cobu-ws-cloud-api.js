@@ -1,3 +1,5 @@
+/* global cobu:true */
+
 /**
  * Codebullets.
  * @namespace cobu
@@ -21,600 +23,600 @@ cobu.wsc.service = cobu.wsc.service || {};
  * CreateInstanceRequest
  * @constructor
  */
-cobu.wsc.service.CreateInstanceRequest = function CreateInstanceRequest()
-{
-   'use strict';
+cobu.wsc.service.CreateInstanceRequest = function CreateInstanceRequest() {
 
-   /**
+    'use strict';
+
+    /**
     * Command for the service API.
     * @type {string}
     */
-   this.type = 'request.createInstance';
+    this.type = 'request.createInstance';
 
-   /**
+    /**
     * Unique name of instance.
     * @type {string}
     */
-   this.name = null;
+    this.name = null;
 
-   /**
+    /**
     * Some description.
     * @type {string}
     */
-   this.description = null;
+    this.description = null;
 
-   /**
+    /**
     *
     * @type {number}
     */
-   this.port = 0;
+    this.port = 0;
 
-   /**
+    /**
     * Name of plugins that shall be used by this instance.
     * @type {Array.<string>}
     */
-   this.plugins = [];
+    this.plugins = [];
 };/**
  * CreateInstanceResponse
  * @constructor
  */
-cobu.wsc.service.CreateInstanceResponse = function CreateInstanceResponse()
-{
-   'use strict';
+cobu.wsc.service.CreateInstanceResponse = function CreateInstanceResponse() {
 
-   /**
+    'use strict';
+
+    /**
     * Command for the service API.
     * @type {string}
     */
-   this.type = 'response.createInstance';
+    this.type = 'response.createInstance';
 
-   /**
+    /**
     * Whether the request was successfully or not.
     * @type {boolean}
     */
-   this.success = true;
+    this.success = true;
 
-   /**
+    /**
     * Optional: Message if no success.
     * @type {string}
     */
-   this.message = '';
+    this.message = '';
 };/**
  * DeleteInstanceRequest
  * @constructor
  */
-cobu.wsc.service.DeleteInstanceRequest = function DeleteInstanceRequest()
-{
-   'use strict';
+cobu.wsc.service.DeleteInstanceRequest = function DeleteInstanceRequest() {
 
-   /**
+    'use strict';
+
+    /**
     * Command for the service API.
     * @type {string}
     */
-   this.type = 'request.deleteInstance';
+    this.type = 'request.deleteInstance';
 
-   /**
+    /**
     * Name of the instance.
     * @type {string}
     */
-   this.instanceName = null;
+    this.instanceName = null;
 };/**
  * DeleteInstanceResponse
  * @constructor
  */
-cobu.wsc.service.DeleteInstanceResponse = function DeleteInstanceResponse()
-{
-   'use strict';
+cobu.wsc.service.DeleteInstanceResponse = function DeleteInstanceResponse() {
 
-   /**
+    'use strict';
+
+    /**
     * Command for the service API.
     * @type {string}
     */
-   this.type = 'response.deleteInstance';
+    this.type = 'response.deleteInstance';
 
-   /**
+    /**
     * Whether the request was successfully or not.
     * @type {boolean}
     */
-   this.success = true;
+    this.success = true;
 
-   /**
+    /**
     * Optional: Message if no success.
     * @type {string}
     */
-   this.message = '';
+    this.message = '';
 };/**
  * GetInstancesRequest
  * @constructor
  */
-cobu.wsc.service.GetInstancesRequest = function GetInstancesRequest()
-{
-   'use strict';
+cobu.wsc.service.GetInstancesRequest = function GetInstancesRequest() {
 
-   /**
+    'use strict';
+
+    /**
     * Command for the service API.
     * @type {string}
     */
-   this.type = 'request.getInstances';
+    this.type = 'request.getInstances';
 };/**
  * GetInstancesResponse
  * @constructor
  */
-cobu.wsc.service.GetInstancesResponse = function GetInstancesResponse()
-{
-   'use strict';
+cobu.wsc.service.GetInstancesResponse = function GetInstancesResponse() {
 
-   /**
+    'use strict';
+
+    /**
     * Command for the service API.
     * @type {string}
     */
-   this.type = 'response.getInstances';
+    this.type = 'response.getInstances';
 
-   /**
+    /**
     * List of available cloud instances as InstanceInfo array.
     * @type {Array.<cobu.wsc.service.InstanceInfo>}
     */
-   this.instances = [];
+    this.instances = [];
 };/**
  * InstanceInfo
  * @constructor
  */
-cobu.wsc.service.InstanceInfo = function InstanceInfo()
-{
-   'use strict';
+cobu.wsc.service.InstanceInfo = function InstanceInfo() {
 
-   /**
+    'use strict';
+
+    /**
     *
     * @type {string}
     */
-   this.name = null;
+    this.name = null;
 
-   /**
+    /**
     *
     * @type {string}
     */
-   this.state = null;
+    this.state = null;
 
-   /**
+    /**
     * Description
     * @type {null|string}
     */
-   this.description = null;
+    this.description = null;
 
-   /**
+    /**
     *
     * @type {number}
     */
-   this.connectionCount = 0;
+    this.connectionCount = 0;
 
-   /**
+    /**
     *
     * @type {number}
     */
-   this.port = null;
+    this.port = null;
 
-   /**
+    /**
     *
     * @type {Array.<string>}
     */
-   this.plugins = [];
+    this.plugins = [];
 };/**
  * RemoveInstanceRequest
  * @constructor
  */
-cobu.wsc.service.RemoveInstanceRequest = function RemoveInstanceRequest()
-{
-   'use strict';
+cobu.wsc.service.RemoveInstanceRequest = function RemoveInstanceRequest() {
 
-   /**
+    'use strict';
+
+    /**
     * Command for the service API.
     * @type {string}
     */
-   this.type = 'request.removeInstance';
+    this.type = 'request.removeInstance';
 
-   /**
+    /**
     * Name of the instance.
     * @type {string}
     */
-   this.instanceName = null;
+    this.instanceName = null;
 };/**
  * RemoveInstanceResponse
  * @constructor
  */
-cobu.wsc.service.RemoveInstanceResponse = function RemoveInstanceResponse()
-{
-   'use strict';
+cobu.wsc.service.RemoveInstanceResponse = function RemoveInstanceResponse() {
 
-   /**
+    'use strict';
+
+    /**
     * Command for the service API.
     * @type {string}
     */
-   this.type = 'response.removeInstance';
+    this.type = 'response.removeInstance';
 
-   /**
+    /**
     * Whether the request was successfully or not.
     * @type {boolean}
     */
-   this.success = true;
+    this.success = true;
 
-   /**
+    /**
     * Optional: Message if no success.
     * @type {string}
     */
-   this.message = '';
+    this.message = '';
 };/**
  * StartInstanceRequest
  * @constructor
  */
-cobu.wsc.service.StartInstanceRequest = function StartInstanceRequest()
-{
-   'use strict';
+cobu.wsc.service.StartInstanceRequest = function StartInstanceRequest() {
 
-   /**
+    'use strict';
+
+    /**
     * Command for the service API.
     * @type {string}
     */
-   this.type = 'request.startInstance';
+    this.type = 'request.startInstance';
 
-   /**
+    /**
     * Name of the instance.
     * @type {string}
     */
-   this.instanceName = null;
+    this.instanceName = null;
 };/**
  * StartInstanceResponse
  * @constructor
  */
-cobu.wsc.service.StartInstanceResponse = function StartInstanceResponse()
-{
-   'use strict';
+cobu.wsc.service.StartInstanceResponse = function StartInstanceResponse() {
 
-   /**
+    'use strict';
+
+    /**
     * Command for the service API.
     * @type {string}
     */
-   this.type = 'response.startInstance';
+    this.type = 'response.startInstance';
 
-   /**
+    /**
     * Whether the request was successfully or not.
     * @type {boolean}
     */
-   this.success = true;
+    this.success = true;
 
-   /**
+    /**
     * Optional: Message if no success.
     * @type {string}
     */
-   this.message = '';
+    this.message = '';
 };/**
  * StopInstanceRequest
  * @constructor
  */
-cobu.wsc.service.StopInstanceRequest = function StopInstanceRequest()
-{
-   'use strict';
+cobu.wsc.service.StopInstanceRequest = function StopInstanceRequest() {
 
-   /**
+    'use strict';
+
+    /**
     * Command for the service API.
     * @type {string}
     */
-   this.type = 'request.stopInstance';
+    this.type = 'request.stopInstance';
 
-   /**
+    /**
     * Name of the instance.
     * @type {string}
     */
-   this.instanceName = null;
+    this.instanceName = null;
 };/**
  * StopInstanceResponse
  * @constructor
  */
-cobu.wsc.service.StopInstanceResponse = function StopInstanceResponse()
-{
-   'use strict';
+cobu.wsc.service.StopInstanceResponse = function StopInstanceResponse() {
 
-   /**
+    'use strict';
+
+    /**
     * Command for the service API.
     * @type {string}
     */
-   this.type = 'response.stopInstance';
+    this.type = 'response.stopInstance';
 
-   /**
+    /**
     * Whether the request was successfully or not.
     * @type {boolean}
     */
-   this.success = true;
+    this.success = true;
 
-   /**
+    /**
     * Optional: Message if no success.
     * @type {string}
     */
-   this.message = '';
+    this.message = '';
 };/**
  * UpdateInstanceRequest
  * @constructor
  */
-cobu.wsc.service.UpdateInstanceRequest = function UpdateInstanceRequest()
-{
-   'use strict';
+cobu.wsc.service.UpdateInstanceRequest = function UpdateInstanceRequest() {
 
-   /**
+    'use strict';
+
+    /**
     * Command for the service API.
     * @type {string}
     */
-   this.type = 'request.updateInstance';
+    this.type = 'request.updateInstance';
 
-   /**
+    /**
     * The original instance name.
     * @type {null}
     */
-   this.instanceName = null;
+    this.instanceName = null;
 
-   /**
+    /**
     * Unique name of instance.
     * @type {string}
     */
-   this.name = null;
+    this.name = null;
 
-   /**
+    /**
     * Some description.
     * @type {string}
     */
-   this.description = null;
+    this.description = null;
 
-   /**
+    /**
     *
     * @type {number}
     */
-   this.port = 0;
+    this.port = 0;
 
-   /**
+    /**
     * Name of plugins that shall be used by this instance.
     * @type {Array.<string>}
     */
-   this.plugins = [];
+    this.plugins = [];
 };/**
  * UpdateInstanceResponse
  * @constructor
  */
-cobu.wsc.service.UpdateInstanceResponse = function UpdateInstanceResponse()
-{
-   'use strict';
+cobu.wsc.service.UpdateInstanceResponse = function UpdateInstanceResponse() {
 
-   /**
+    'use strict';
+
+    /**
     * Command for the service API.
     * @type {string}
     */
-   this.type = 'response.updateInstance';
+    this.type = 'response.updateInstance';
 
-   /**
+    /**
     * Whether the request was successfully or not.
     * @type {boolean}
     */
-   this.success = true;
+    this.success = true;
 
-   /**
+    /**
     * Optional: Message if no success.
     * @type {string}
     */
-   this.message = '';
+    this.message = '';
 };/**
  * CreatePluginRequest
  * @constructor
  */
-cobu.wsc.service.CreatePluginRequest = function CreatePluginRequest()
-{
-   'use strict';
+cobu.wsc.service.CreatePluginRequest = function CreatePluginRequest() {
 
-   /**
+    'use strict';
+
+    /**
     * Command for the service API.
     * @type {string}
     */
-   this.type = 'request.createPlugin';
+    this.type = 'request.createPlugin';
 
-   /**
+    /**
     * Unique name of Plugin.
     * @type {string}
     */
-   this.name = null;
+    this.name = null;
 
-   /**
+    /**
     * Some description.
     * @type {string}
     */
-   this.description = null;
+    this.description = null;
 
-   /**
+    /**
     * Plugin Code.
     * @type {string}
     */
-   this.code = null;
+    this.code = null;
 };/**
  * CreatePluginResponse
  * @constructor
  */
-cobu.wsc.service.CreatePluginResponse = function CreatePluginResponse()
-{
-   'use strict';
+cobu.wsc.service.CreatePluginResponse = function CreatePluginResponse() {
 
-   /**
+    'use strict';
+
+    /**
     * Command for the service API.
     * @type {string}
     */
-   this.type = 'response.createPlugin';
+    this.type = 'response.createPlugin';
 
-   /**
+    /**
     * Whether the request was successfully or not.
     * @type {boolean}
     */
-   this.success = true;
+    this.success = true;
 
-   /**
+    /**
     * Optional: Message if no success.
     * @type {string}
     */
-   this.message = '';
+    this.message = '';
 };/**
  * GetPluginsRequest
  * @constructor
  */
-cobu.wsc.service.GetPluginsRequest = function GetPluginsRequest()
-{
-   'use strict';
+cobu.wsc.service.GetPluginsRequest = function GetPluginsRequest() {
 
-   /**
+    'use strict';
+
+    /**
     * Command for the service API.
     * @type {string}
     */
-   this.type = 'request.getPlugins';
+    this.type = 'request.getPlugins';
 };/**
  * GetPluginsResponse
  * @constructor
  */
-cobu.wsc.service.GetPluginsResponse = function GetPluginsResponse()
-{
-   'use strict';
+cobu.wsc.service.GetPluginsResponse = function GetPluginsResponse() {
 
-   /**
+    'use strict';
+
+    /**
     * Command for the service API.
     * @type {string}
     */
-   this.type = 'response.getPlugins';
+    this.type = 'response.getPlugins';
 
-   /**
+    /**
     * List of available cloud Plugins as InstanceInfo array.
     * @type {Array.<cobu.wsc.service.PluginInfo>}
     */
-   this.plugins = [];
+    this.plugins = [];
 };/**
  * PluginInfo
  * @constructor
  */
-cobu.wsc.service.PluginInfo = function PluginInfo()
-{
-   'use strict';
+cobu.wsc.service.PluginInfo = function PluginInfo() {
 
-   /**
+    'use strict';
+
+    /**
     *
     * @type {string}
     */
-   this.name = null;
+    this.name = null;
 
-   /**
+    /**
     *
     * @type {string}
     */
-   this.description = null;
+    this.description = null;
 
-   /**
+    /**
     *
     * @type {string}
     */
-   this.code = null;
+    this.code = null;
 };/**
  * RemovePluginRequest
  * @constructor
  */
-cobu.wsc.service.RemovePluginRequest = function RemovePluginRequest()
-{
-   'use strict';
+cobu.wsc.service.RemovePluginRequest = function RemovePluginRequest() {
 
-   /**
+    'use strict';
+
+    /**
     * Command for the service API.
     * @type {string}
     */
-   this.type = 'request.removePlugin';
+    this.type = 'request.removePlugin';
 
-   /**
+    /**
     * Name of the Plugin.
     * @type {string}
     */
-   this.pluginName = null;
+    this.pluginName = null;
 };/**
  * RemovePluginResponse
  * @constructor
  */
-cobu.wsc.service.RemovePluginResponse = function RemovePluginResponse()
-{
-   'use strict';
+cobu.wsc.service.RemovePluginResponse = function RemovePluginResponse() {
 
-   /**
+    'use strict';
+
+    /**
     * Command for the service API.
     * @type {string}
     */
-   this.type = 'response.deletePlugin';
+    this.type = 'response.deletePlugin';
 
-   /**
+    /**
     * Whether the request was successfully or not.
     * @type {boolean}
     */
-   this.success = true;
+    this.success = true;
 
-   /**
+    /**
     * Optional: Message if no success.
     * @type {string}
     */
-   this.message = '';
+    this.message = '';
 };/**
  * UpdatePluginRequest
  * @constructor
  */
-cobu.wsc.service.UpdatePluginRequest = function UpdatePluginRequest()
-{
-   'use strict';
+cobu.wsc.service.UpdatePluginRequest = function UpdatePluginRequest() {
 
-   /**
+    'use strict';
+
+    /**
     * Command for the service API.
     * @type {string}
     */
-   this.type = 'request.updatePlugin';
+    this.type = 'request.updatePlugin';
 
-   /**
+    /**
     * The original Plugin name.
     * @type {null}
     */
-   this.pluginName = null;
+    this.pluginName = null;
 
-   /**
+    /**
     * Unique name of Plugin.
     * @type {string}
     */
-   this.name = null;
+    this.name = null;
 
-   /**
+    /**
     * Some description.
     * @type {string}
     */
-   this.description = null;
+    this.description = null;
 
-   /**
+    /**
     * The plugin code.
     * @type {string}
     */
-   this.code = 0;
+    this.code = 0;
 };/**
  * UpdatePluginResponse
  * @constructor
  */
-cobu.wsc.service.UpdatePluginResponse = function UpdatePluginResponse()
-{
-   'use strict';
+cobu.wsc.service.UpdatePluginResponse = function UpdatePluginResponse() {
 
-   /**
+    'use strict';
+
+    /**
     * Command for the service API.
     * @type {string}
     */
-   this.type = 'response.updatePlugin';
+    this.type = 'response.updatePlugin';
 
-   /**
+    /**
     * Whether the request was successfully or not.
     * @type {boolean}
     */
-   this.success = true;
+    this.success = true;
 
-   /**
+    /**
     * Optional: Message if no success.
     * @type {string}
     */
-   this.message = '';
+    this.message = '';
 };

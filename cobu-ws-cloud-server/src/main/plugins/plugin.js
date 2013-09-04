@@ -2,40 +2,44 @@
  * Plugin
  * @constructor
  */
-cobu.wsc.Plugin = function Plugin()
-{
-   'use strict';
+cobu.wsc.Plugin = function Plugin() {
 
-   /** @type {cobu.wsc.Plugin} */
-   var self = this;
+    'use strict';
 
-   /**
-    * Name of the plugin (Has to be unique)
-    * @type {null|string}
-    */
-   this.name = null;
+    /**
+     * @type {cobu.wsc.Plugin}
+     */
+    var self = this;
 
-   /**
-    * Description of the plugin.
-    * @type {null|string}
-    */
-   this.description = null;
+    /**
+     * Name of the plugin (Has to be unique)
+     * @type {null|string}
+     */
+    this.name = null;
 
-   /**
-    * @type {null|string}
-    */
-   this.code = null;
+    /**
+     * Description of the plugin.
+     * @type {null|string}
+     */
+    this.description = null;
 
-   /**
-    * Constructor to create a plugin instance.
-    * @constructor
-    * @implements {cobu.wsc.PluginWorker}
-    */
-   this.PluginWorker = function() {};
+    /**
+     * @type {null|string}
+     */
+    this.code = null;
 
-   /** Constructor */
-   function constructor() {
-   }
+    /**
+     * Constructor to create a plugin instance.
+     * @type {null|Function}
+     * @implements {cobu.wsc.PluginWorker}
+     */
+    this.PluginWorkerConstructor = null;
 
-   constructor();
+    /**
+     * Constructor
+     */
+    function constructor() {
+    }
+
+    constructor();
 };

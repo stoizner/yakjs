@@ -3,29 +3,29 @@
  * @constructor
  * @implements {cobu.wsc.PluginWorker}
  */
-cobu.wsc.EchoPluginWorker = function EchoPluginWorker()
-{
-   'use strict';
+cobu.wsc.EchoPluginWorker = function EchoPluginWorker() {
 
-   /** @type {cobu.wsc.PingPongPluginWorker} */
-   var self = this;
+    'use strict';
 
-   /** Constructor */
-   function constructor() { }
+    /** @type {cobu.wsc.PingPongPluginWorker} */
+    var self = this;
 
-   /**
-    * @param {cobu.wsc.WebSocketConnection} connection
-    */
-   this.onNewConnection = function onNewConnection(connection) {};
+    /** Constructor */
+    function constructor() { }
 
-   /**
-    * @param {cobu.wsc.WebSocketMessage} message
-    * @param {cobu.wsc.WebSocketConnection} connection
-    * @param {cobu.wsc.WebSocketInstance} instance
-    */
-   this.onMessage = function onMessage(message, connection, instance) {
-      connection.send(message.data);
-   };
+    /**
+     * @param {cobu.wsc.WebSocketConnection} connection
+     */
+    this.onNewConnection = function onNewConnection(connection) {};
 
-   constructor();
+    /**
+     * @param {cobu.wsc.WebSocketMessage} message
+     * @param {cobu.wsc.WebSocketConnection} connection
+     * @param {cobu.wsc.WebSocketInstance} instance
+     */
+    this.onMessage = function onMessage(message, connection, instance) {
+        connection.send(message.data);
+    };
+
+    constructor();
 };

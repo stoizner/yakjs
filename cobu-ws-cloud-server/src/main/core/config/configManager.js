@@ -6,19 +6,32 @@ cobu.wsc.ConfigManager = function ConfigManager() {
 
     'use strict';
 
+    /**
+     * @type {cobu.wsc.ConfigManager}
+     */
+    var self = this;
+
     var fs = require('fs');
 
+    /**
+     * Config file name.
+     * @type {string}
+     */
     var CONFIG_FILENAME = 'config.json';
 
-    /** @type {cobu.wsc.ConfigManager} */
-    var self = this;
+    /**
+     * @type {cobu.wsc.Logger}
+     */
+    var log = new cobu.wsc.Logger(self.constructor.name);
 
     /**
      * @type {null|cobu.wsc.Config}
      */
     this.config = null;
 
-    /** Constructor */
+    /**
+     * Constructor
+     */
     function constructor() {
     }
 
@@ -27,7 +40,7 @@ cobu.wsc.ConfigManager = function ConfigManager() {
      */
     this.load = function load() {
 
-        console.log('Load configuration from ' + CONFIG_FILENAME);
+        log.info('Load configuration from ' + CONFIG_FILENAME);
 
         try {
             if (fs.existsSync(CONFIG_FILENAME)) {
@@ -36,14 +49,14 @@ cobu.wsc.ConfigManager = function ConfigManager() {
             }
 
             if (!self.config) {
-                console.log('Configuration not found, use default configuration.');
+                log.info('Configuration not found, use default configuration.');
                 self.config = new cobu.wsc.Config();
             }
 
-            console.log(self.config);
+            log.info(self.config);
 
         } catch (ex) {
-            console.log(ex);
+            log.info(ex);
         }
     };
 

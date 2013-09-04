@@ -1,3 +1,5 @@
+/* global cobu:true */
+
 /**
  * Codebullets
  * @namespace cobu
@@ -10,6 +12,8 @@ var cobu = cobu || {};
  */
 cobu.wsc = cobu.wsc || {};
 
+
+/* global cobu:true */
 
 /**
  * Codebullets.
@@ -34,602 +38,602 @@ cobu.wsc.service = cobu.wsc.service || {};
  * CreateInstanceRequest
  * @constructor
  */
-cobu.wsc.service.CreateInstanceRequest = function CreateInstanceRequest()
-{
-   'use strict';
+cobu.wsc.service.CreateInstanceRequest = function CreateInstanceRequest() {
 
-   /**
+    'use strict';
+
+    /**
     * Command for the service API.
     * @type {string}
     */
-   this.type = 'request.createInstance';
+    this.type = 'request.createInstance';
 
-   /**
+    /**
     * Unique name of instance.
     * @type {string}
     */
-   this.name = null;
+    this.name = null;
 
-   /**
+    /**
     * Some description.
     * @type {string}
     */
-   this.description = null;
+    this.description = null;
 
-   /**
+    /**
     *
     * @type {number}
     */
-   this.port = 0;
+    this.port = 0;
 
-   /**
+    /**
     * Name of plugins that shall be used by this instance.
     * @type {Array.<string>}
     */
-   this.plugins = [];
+    this.plugins = [];
 };/**
  * CreateInstanceResponse
  * @constructor
  */
-cobu.wsc.service.CreateInstanceResponse = function CreateInstanceResponse()
-{
-   'use strict';
+cobu.wsc.service.CreateInstanceResponse = function CreateInstanceResponse() {
 
-   /**
+    'use strict';
+
+    /**
     * Command for the service API.
     * @type {string}
     */
-   this.type = 'response.createInstance';
+    this.type = 'response.createInstance';
 
-   /**
+    /**
     * Whether the request was successfully or not.
     * @type {boolean}
     */
-   this.success = true;
+    this.success = true;
 
-   /**
+    /**
     * Optional: Message if no success.
     * @type {string}
     */
-   this.message = '';
+    this.message = '';
 };/**
  * DeleteInstanceRequest
  * @constructor
  */
-cobu.wsc.service.DeleteInstanceRequest = function DeleteInstanceRequest()
-{
-   'use strict';
+cobu.wsc.service.DeleteInstanceRequest = function DeleteInstanceRequest() {
 
-   /**
+    'use strict';
+
+    /**
     * Command for the service API.
     * @type {string}
     */
-   this.type = 'request.deleteInstance';
+    this.type = 'request.deleteInstance';
 
-   /**
+    /**
     * Name of the instance.
     * @type {string}
     */
-   this.instanceName = null;
+    this.instanceName = null;
 };/**
  * DeleteInstanceResponse
  * @constructor
  */
-cobu.wsc.service.DeleteInstanceResponse = function DeleteInstanceResponse()
-{
-   'use strict';
+cobu.wsc.service.DeleteInstanceResponse = function DeleteInstanceResponse() {
 
-   /**
+    'use strict';
+
+    /**
     * Command for the service API.
     * @type {string}
     */
-   this.type = 'response.deleteInstance';
+    this.type = 'response.deleteInstance';
 
-   /**
+    /**
     * Whether the request was successfully or not.
     * @type {boolean}
     */
-   this.success = true;
+    this.success = true;
 
-   /**
+    /**
     * Optional: Message if no success.
     * @type {string}
     */
-   this.message = '';
+    this.message = '';
 };/**
  * GetInstancesRequest
  * @constructor
  */
-cobu.wsc.service.GetInstancesRequest = function GetInstancesRequest()
-{
-   'use strict';
+cobu.wsc.service.GetInstancesRequest = function GetInstancesRequest() {
 
-   /**
+    'use strict';
+
+    /**
     * Command for the service API.
     * @type {string}
     */
-   this.type = 'request.getInstances';
+    this.type = 'request.getInstances';
 };/**
  * GetInstancesResponse
  * @constructor
  */
-cobu.wsc.service.GetInstancesResponse = function GetInstancesResponse()
-{
-   'use strict';
+cobu.wsc.service.GetInstancesResponse = function GetInstancesResponse() {
 
-   /**
+    'use strict';
+
+    /**
     * Command for the service API.
     * @type {string}
     */
-   this.type = 'response.getInstances';
+    this.type = 'response.getInstances';
 
-   /**
+    /**
     * List of available cloud instances as InstanceInfo array.
     * @type {Array.<cobu.wsc.service.InstanceInfo>}
     */
-   this.instances = [];
+    this.instances = [];
 };/**
  * InstanceInfo
  * @constructor
  */
-cobu.wsc.service.InstanceInfo = function InstanceInfo()
-{
-   'use strict';
+cobu.wsc.service.InstanceInfo = function InstanceInfo() {
 
-   /**
+    'use strict';
+
+    /**
     *
     * @type {string}
     */
-   this.name = null;
+    this.name = null;
 
-   /**
+    /**
     *
     * @type {string}
     */
-   this.state = null;
+    this.state = null;
 
-   /**
+    /**
     * Description
     * @type {null|string}
     */
-   this.description = null;
+    this.description = null;
 
-   /**
+    /**
     *
     * @type {number}
     */
-   this.connectionCount = 0;
+    this.connectionCount = 0;
 
-   /**
+    /**
     *
     * @type {number}
     */
-   this.port = null;
+    this.port = null;
 
-   /**
+    /**
     *
     * @type {Array.<string>}
     */
-   this.plugins = [];
+    this.plugins = [];
 };/**
  * RemoveInstanceRequest
  * @constructor
  */
-cobu.wsc.service.RemoveInstanceRequest = function RemoveInstanceRequest()
-{
-   'use strict';
+cobu.wsc.service.RemoveInstanceRequest = function RemoveInstanceRequest() {
 
-   /**
+    'use strict';
+
+    /**
     * Command for the service API.
     * @type {string}
     */
-   this.type = 'request.removeInstance';
+    this.type = 'request.removeInstance';
 
-   /**
+    /**
     * Name of the instance.
     * @type {string}
     */
-   this.instanceName = null;
+    this.instanceName = null;
 };/**
  * RemoveInstanceResponse
  * @constructor
  */
-cobu.wsc.service.RemoveInstanceResponse = function RemoveInstanceResponse()
-{
-   'use strict';
+cobu.wsc.service.RemoveInstanceResponse = function RemoveInstanceResponse() {
 
-   /**
+    'use strict';
+
+    /**
     * Command for the service API.
     * @type {string}
     */
-   this.type = 'response.removeInstance';
+    this.type = 'response.removeInstance';
 
-   /**
+    /**
     * Whether the request was successfully or not.
     * @type {boolean}
     */
-   this.success = true;
+    this.success = true;
 
-   /**
+    /**
     * Optional: Message if no success.
     * @type {string}
     */
-   this.message = '';
+    this.message = '';
 };/**
  * StartInstanceRequest
  * @constructor
  */
-cobu.wsc.service.StartInstanceRequest = function StartInstanceRequest()
-{
-   'use strict';
+cobu.wsc.service.StartInstanceRequest = function StartInstanceRequest() {
 
-   /**
+    'use strict';
+
+    /**
     * Command for the service API.
     * @type {string}
     */
-   this.type = 'request.startInstance';
+    this.type = 'request.startInstance';
 
-   /**
+    /**
     * Name of the instance.
     * @type {string}
     */
-   this.instanceName = null;
+    this.instanceName = null;
 };/**
  * StartInstanceResponse
  * @constructor
  */
-cobu.wsc.service.StartInstanceResponse = function StartInstanceResponse()
-{
-   'use strict';
+cobu.wsc.service.StartInstanceResponse = function StartInstanceResponse() {
 
-   /**
+    'use strict';
+
+    /**
     * Command for the service API.
     * @type {string}
     */
-   this.type = 'response.startInstance';
+    this.type = 'response.startInstance';
 
-   /**
+    /**
     * Whether the request was successfully or not.
     * @type {boolean}
     */
-   this.success = true;
+    this.success = true;
 
-   /**
+    /**
     * Optional: Message if no success.
     * @type {string}
     */
-   this.message = '';
+    this.message = '';
 };/**
  * StopInstanceRequest
  * @constructor
  */
-cobu.wsc.service.StopInstanceRequest = function StopInstanceRequest()
-{
-   'use strict';
+cobu.wsc.service.StopInstanceRequest = function StopInstanceRequest() {
 
-   /**
+    'use strict';
+
+    /**
     * Command for the service API.
     * @type {string}
     */
-   this.type = 'request.stopInstance';
+    this.type = 'request.stopInstance';
 
-   /**
+    /**
     * Name of the instance.
     * @type {string}
     */
-   this.instanceName = null;
+    this.instanceName = null;
 };/**
  * StopInstanceResponse
  * @constructor
  */
-cobu.wsc.service.StopInstanceResponse = function StopInstanceResponse()
-{
-   'use strict';
+cobu.wsc.service.StopInstanceResponse = function StopInstanceResponse() {
 
-   /**
+    'use strict';
+
+    /**
     * Command for the service API.
     * @type {string}
     */
-   this.type = 'response.stopInstance';
+    this.type = 'response.stopInstance';
 
-   /**
+    /**
     * Whether the request was successfully or not.
     * @type {boolean}
     */
-   this.success = true;
+    this.success = true;
 
-   /**
+    /**
     * Optional: Message if no success.
     * @type {string}
     */
-   this.message = '';
+    this.message = '';
 };/**
  * UpdateInstanceRequest
  * @constructor
  */
-cobu.wsc.service.UpdateInstanceRequest = function UpdateInstanceRequest()
-{
-   'use strict';
+cobu.wsc.service.UpdateInstanceRequest = function UpdateInstanceRequest() {
 
-   /**
+    'use strict';
+
+    /**
     * Command for the service API.
     * @type {string}
     */
-   this.type = 'request.updateInstance';
+    this.type = 'request.updateInstance';
 
-   /**
+    /**
     * The original instance name.
     * @type {null}
     */
-   this.instanceName = null;
+    this.instanceName = null;
 
-   /**
+    /**
     * Unique name of instance.
     * @type {string}
     */
-   this.name = null;
+    this.name = null;
 
-   /**
+    /**
     * Some description.
     * @type {string}
     */
-   this.description = null;
+    this.description = null;
 
-   /**
+    /**
     *
     * @type {number}
     */
-   this.port = 0;
+    this.port = 0;
 
-   /**
+    /**
     * Name of plugins that shall be used by this instance.
     * @type {Array.<string>}
     */
-   this.plugins = [];
+    this.plugins = [];
 };/**
  * UpdateInstanceResponse
  * @constructor
  */
-cobu.wsc.service.UpdateInstanceResponse = function UpdateInstanceResponse()
-{
-   'use strict';
+cobu.wsc.service.UpdateInstanceResponse = function UpdateInstanceResponse() {
 
-   /**
+    'use strict';
+
+    /**
     * Command for the service API.
     * @type {string}
     */
-   this.type = 'response.updateInstance';
+    this.type = 'response.updateInstance';
 
-   /**
+    /**
     * Whether the request was successfully or not.
     * @type {boolean}
     */
-   this.success = true;
+    this.success = true;
 
-   /**
+    /**
     * Optional: Message if no success.
     * @type {string}
     */
-   this.message = '';
+    this.message = '';
 };/**
  * CreatePluginRequest
  * @constructor
  */
-cobu.wsc.service.CreatePluginRequest = function CreatePluginRequest()
-{
-   'use strict';
+cobu.wsc.service.CreatePluginRequest = function CreatePluginRequest() {
 
-   /**
+    'use strict';
+
+    /**
     * Command for the service API.
     * @type {string}
     */
-   this.type = 'request.createPlugin';
+    this.type = 'request.createPlugin';
 
-   /**
+    /**
     * Unique name of Plugin.
     * @type {string}
     */
-   this.name = null;
+    this.name = null;
 
-   /**
+    /**
     * Some description.
     * @type {string}
     */
-   this.description = null;
+    this.description = null;
 
-   /**
+    /**
     * Plugin Code.
     * @type {string}
     */
-   this.code = null;
+    this.code = null;
 };/**
  * CreatePluginResponse
  * @constructor
  */
-cobu.wsc.service.CreatePluginResponse = function CreatePluginResponse()
-{
-   'use strict';
+cobu.wsc.service.CreatePluginResponse = function CreatePluginResponse() {
 
-   /**
+    'use strict';
+
+    /**
     * Command for the service API.
     * @type {string}
     */
-   this.type = 'response.createPlugin';
+    this.type = 'response.createPlugin';
 
-   /**
+    /**
     * Whether the request was successfully or not.
     * @type {boolean}
     */
-   this.success = true;
+    this.success = true;
 
-   /**
+    /**
     * Optional: Message if no success.
     * @type {string}
     */
-   this.message = '';
+    this.message = '';
 };/**
  * GetPluginsRequest
  * @constructor
  */
-cobu.wsc.service.GetPluginsRequest = function GetPluginsRequest()
-{
-   'use strict';
+cobu.wsc.service.GetPluginsRequest = function GetPluginsRequest() {
 
-   /**
+    'use strict';
+
+    /**
     * Command for the service API.
     * @type {string}
     */
-   this.type = 'request.getPlugins';
+    this.type = 'request.getPlugins';
 };/**
  * GetPluginsResponse
  * @constructor
  */
-cobu.wsc.service.GetPluginsResponse = function GetPluginsResponse()
-{
-   'use strict';
+cobu.wsc.service.GetPluginsResponse = function GetPluginsResponse() {
 
-   /**
+    'use strict';
+
+    /**
     * Command for the service API.
     * @type {string}
     */
-   this.type = 'response.getPlugins';
+    this.type = 'response.getPlugins';
 
-   /**
+    /**
     * List of available cloud Plugins as InstanceInfo array.
     * @type {Array.<cobu.wsc.service.PluginInfo>}
     */
-   this.plugins = [];
+    this.plugins = [];
 };/**
  * PluginInfo
  * @constructor
  */
-cobu.wsc.service.PluginInfo = function PluginInfo()
-{
-   'use strict';
+cobu.wsc.service.PluginInfo = function PluginInfo() {
 
-   /**
+    'use strict';
+
+    /**
     *
     * @type {string}
     */
-   this.name = null;
+    this.name = null;
 
-   /**
+    /**
     *
     * @type {string}
     */
-   this.description = null;
+    this.description = null;
 
-   /**
+    /**
     *
     * @type {string}
     */
-   this.code = null;
+    this.code = null;
 };/**
  * RemovePluginRequest
  * @constructor
  */
-cobu.wsc.service.RemovePluginRequest = function RemovePluginRequest()
-{
-   'use strict';
+cobu.wsc.service.RemovePluginRequest = function RemovePluginRequest() {
 
-   /**
+    'use strict';
+
+    /**
     * Command for the service API.
     * @type {string}
     */
-   this.type = 'request.removePlugin';
+    this.type = 'request.removePlugin';
 
-   /**
+    /**
     * Name of the Plugin.
     * @type {string}
     */
-   this.pluginName = null;
+    this.pluginName = null;
 };/**
  * RemovePluginResponse
  * @constructor
  */
-cobu.wsc.service.RemovePluginResponse = function RemovePluginResponse()
-{
-   'use strict';
+cobu.wsc.service.RemovePluginResponse = function RemovePluginResponse() {
 
-   /**
+    'use strict';
+
+    /**
     * Command for the service API.
     * @type {string}
     */
-   this.type = 'response.deletePlugin';
+    this.type = 'response.deletePlugin';
 
-   /**
+    /**
     * Whether the request was successfully or not.
     * @type {boolean}
     */
-   this.success = true;
+    this.success = true;
 
-   /**
+    /**
     * Optional: Message if no success.
     * @type {string}
     */
-   this.message = '';
+    this.message = '';
 };/**
  * UpdatePluginRequest
  * @constructor
  */
-cobu.wsc.service.UpdatePluginRequest = function UpdatePluginRequest()
-{
-   'use strict';
+cobu.wsc.service.UpdatePluginRequest = function UpdatePluginRequest() {
 
-   /**
+    'use strict';
+
+    /**
     * Command for the service API.
     * @type {string}
     */
-   this.type = 'request.updatePlugin';
+    this.type = 'request.updatePlugin';
 
-   /**
+    /**
     * The original Plugin name.
     * @type {null}
     */
-   this.pluginName = null;
+    this.pluginName = null;
 
-   /**
+    /**
     * Unique name of Plugin.
     * @type {string}
     */
-   this.name = null;
+    this.name = null;
 
-   /**
+    /**
     * Some description.
     * @type {string}
     */
-   this.description = null;
+    this.description = null;
 
-   /**
+    /**
     * The plugin code.
     * @type {string}
     */
-   this.code = 0;
+    this.code = 0;
 };/**
  * UpdatePluginResponse
  * @constructor
  */
-cobu.wsc.service.UpdatePluginResponse = function UpdatePluginResponse()
-{
-   'use strict';
+cobu.wsc.service.UpdatePluginResponse = function UpdatePluginResponse() {
 
-   /**
+    'use strict';
+
+    /**
     * Command for the service API.
     * @type {string}
     */
-   this.type = 'response.updatePlugin';
+    this.type = 'response.updatePlugin';
 
-   /**
+    /**
     * Whether the request was successfully or not.
     * @type {boolean}
     */
-   this.success = true;
+    this.success = true;
 
-   /**
+    /**
     * Optional: Message if no success.
     * @type {string}
     */
-   this.message = '';
+    this.message = '';
 };/**
  * CloudServer
  * @constructor
@@ -661,11 +665,12 @@ cobu.wsc.CloudServer = function CloudServer(configManager) {
     /**
     * @type {cobu.wsc.PluginManager}
     */
-    this.pluginManager = new cobu.wsc.PluginManager(configManager.config);
+    this.pluginManager = new cobu.wsc.PluginManager(configManager);
 
     /** Constructor */
     function constructor() {
         createInstancesFromConfig();
+        createPluginsFromConfig();
     }
 
     /**
@@ -685,7 +690,7 @@ cobu.wsc.CloudServer = function CloudServer(configManager) {
     this.addInstance = function addInstance(instance) {
         log.info('addInstance', instance);
         if (instances.hasOwnProperty(instance.name)) {
-            throw Error('Instance with name ' + name + ' already added');
+            throw new Error('Instance with name ' + name + ' already added');
         } else {
             instances[instance.name] = instance;
             updateAndSaveConfig();
@@ -705,30 +710,30 @@ cobu.wsc.CloudServer = function CloudServer(configManager) {
         }
     };
 
-   /**
-    * Get instance by name.
-    * @param name
-    * @returns {cobu.wsc.ServerInstance}
-    */
-   this.getInstance = function getInstance(name) {
-      return instances[name];
-   };
+    /**
+     * Get instance by name.
+     * @param name
+     * @returns {cobu.wsc.ServerInstance}
+     */
+    this.getInstance = function getInstance(name) {
+        return instances[name];
+    };
 
-   /**
-    *
-    * @returns {Array.<cobu.wsc.WebSocketInstance>}
-    */
-   this.getInstances = function getInstances() {
-      var arr = [];
+    /**
+     *
+     * @returns {Array.<cobu.wsc.WebSocketInstance>}
+     */
+    this.getInstances = function getInstances() {
+        var arr = [];
 
-      for(var key in instances) {
-         if (instances.hasOwnProperty(key)) {
-            arr.push(instances[key]);
-         }
-      }
+        for(var key in instances) {
+            if (instances.hasOwnProperty(key)) {
+                arr.push(instances[key]);
+            }
+        }
 
-     return arr;
-   };
+        return arr;
+    };
 
     /**
     * Start/Run an instance.
@@ -738,7 +743,7 @@ cobu.wsc.CloudServer = function CloudServer(configManager) {
         if (instances.hasOwnProperty(name)) {
             instances[name].start();
         }  else {
-            throw Error('Instance not found ' + name);
+            throw new Error('Instance not found ' + name);
         }
     };
 
@@ -750,7 +755,7 @@ cobu.wsc.CloudServer = function CloudServer(configManager) {
         if (instances.hasOwnProperty(name)) {
             instances[name].stop();
         }  else {
-            throw Error('PluginWorker not found ' + name);
+            throw new Error('PluginWorkerConstructor not found ' + name);
         }
     };
 
@@ -800,6 +805,27 @@ cobu.wsc.CloudServer = function CloudServer(configManager) {
         );
     }
 
+    /**
+     * Create instances from configuration.
+     */
+    function createPluginsFromConfig() {
+
+        configManager.config.plugins.forEach(
+
+            /**
+             * @param {cobu.wsc.PluginConfigItem} pluginConfig
+             */
+            function(pluginConfig) {
+                var plugin = new cobu.wsc.Plugin();
+                plugin.name = pluginConfig.name;
+                plugin.description = pluginConfig.description;
+                plugin.code = pluginConfig.code;
+
+                self.pluginManager.addOrUpdatePlugin(plugin);
+            }
+        );
+    }
+
     constructor();
 };/**
  * Config
@@ -812,6 +838,10 @@ cobu.wsc.Config = function Config() {
     /** @type {cobu.wsc.Config} */
     var self = this;
 
+    /**
+     * The API service web socket service port.
+     * @type {number}
+     */
     this.servicePort = 8790;
 
     /**
@@ -848,6 +878,26 @@ cobu.wsc.Config = function Config() {
      */
     function createDefaultPluginConfig() {
 
+        // ECHO Plugin
+        var echoPlugin = new cobu.wsc.PluginConfigItem();
+        echoPlugin.name = 'echo';
+        echoPlugin.description = 'Echo service. Every received message will be returned.';
+        echoPlugin.code = cobu.wsc.EchoPluginWorker.toString();
+        self.plugins.push(echoPlugin);
+
+        // PING-PONG Plugin
+        var pingpongPlugin = new cobu.wsc.PluginConfigItem();
+        pingpongPlugin.name = 'ping-pong';
+        pingpongPlugin.description = 'ping will be answered with pong';
+        pingpongPlugin.code = cobu.wsc.PingPongPluginWorker.toString();
+        self.plugins.push(pingpongPlugin);
+
+        // HELLO-WORLD_CONSOLE Plugin
+        var helloWorldPlugin = new cobu.wsc.PluginConfigItem();
+        helloWorldPlugin.name = 'hello-world-console';
+        helloWorldPlugin.description = 'Write "hello world" to server console.';
+        helloWorldPlugin.code = 'function HelloWorld() { this.onMessage = function onMessage(message, connection, instance) { console.log("hello world"); }; }';
+        self.plugins.push(helloWorldPlugin);
     }
 
     constructor();
@@ -859,19 +909,32 @@ cobu.wsc.ConfigManager = function ConfigManager() {
 
     'use strict';
 
+    /**
+     * @type {cobu.wsc.ConfigManager}
+     */
+    var self = this;
+
     var fs = require('fs');
 
+    /**
+     * Config file name.
+     * @type {string}
+     */
     var CONFIG_FILENAME = 'config.json';
 
-    /** @type {cobu.wsc.ConfigManager} */
-    var self = this;
+    /**
+     * @type {cobu.wsc.Logger}
+     */
+    var log = new cobu.wsc.Logger(self.constructor.name);
 
     /**
      * @type {null|cobu.wsc.Config}
      */
     this.config = null;
 
-    /** Constructor */
+    /**
+     * Constructor
+     */
     function constructor() {
     }
 
@@ -880,7 +943,7 @@ cobu.wsc.ConfigManager = function ConfigManager() {
      */
     this.load = function load() {
 
-        console.log('Load configuration from ' + CONFIG_FILENAME);
+        log.info('Load configuration from ' + CONFIG_FILENAME);
 
         try {
             if (fs.existsSync(CONFIG_FILENAME)) {
@@ -889,14 +952,14 @@ cobu.wsc.ConfigManager = function ConfigManager() {
             }
 
             if (!self.config) {
-                console.log('Configuration not found, use default configuration.');
+                log.info('Configuration not found, use default configuration.');
                 self.config = new cobu.wsc.Config();
             }
 
-            console.log(self.config);
+            log.info(self.config);
 
         } catch (ex) {
-            console.log(ex);
+            log.info(ex);
         }
     };
 
@@ -985,194 +1048,197 @@ cobu.wsc.PluginConfigItem = function PluginConfigItem() {
  * @enum {string}
  */
 cobu.wsc.InstanceState = {
-   STARTING: 'starting',
-   STOPPED: 'stopped',
-   RUNNING: 'running',
-   STOPPING: 'stopping',
-   ERROR: 'error'
+    STARTING: 'starting',
+    STOPPED: 'stopped',
+    RUNNING: 'running',
+    STOPPING: 'stopping',
+    ERROR: 'error'
 };
 /**
  * Logger
- * @class
  * @constructor
  * @param {string} [name]
  */
-cobu.wsc.Logger = function Logger(name)
-{
-   'use strict';
+cobu.wsc.Logger = function Logger(name) {
 
-   /** @type {cobu.wsc.Logger} */
-   var self = this;
+    'use strict';
 
-   var category = name || '';
+    /** @type {cobu.wsc.Logger} */
+    var self = this;
 
-   /** Constructor */
-   function constructor() {
-   }
+    /**
+     * @type {string}
+     */
+    var category = name || '';
 
-   /**
+    /** Constructor */
+    function constructor() {
+    }
+
+    /**
     * @param {string|object} message
     * @param {string|object} [data]
     */
-   this.info = function info(message, data) {
-      var logInfo = toLogInfo(message, data);
-      var msg = 'INFO : ' + '[' + category + '] ' +  logInfo.message;
-      log(msg.trim(), logInfo.data);
-   };
+    this.info = function info(message, data) {
+        var logInfo = toLogInfo(message, data);
+        var msg = 'INFO : ' + '[' + category + '] ' +  logInfo.message;
+        log(msg.trim(), logInfo.data);
+    };
 
-   /**
+    /**
     * @param {string|object} message
     * @param {string|object} [data]
     */
-   this.warn = function warn(message, data) {
-      var logInfo = toLogInfo(message, data);
-      var msg = 'WARN : ' + '[' + category + '] ' + logInfo.message;
-      log(msg.trim(), logInfo.data);
-   };
+    this.warn = function warn(message, data) {
+        var logInfo = toLogInfo(message, data);
+        var msg = 'WARN : ' + '[' + category + '] ' + logInfo.message;
+        log(msg.trim(), logInfo.data);
+    };
 
-   /**
+    /**
     * @param {string|object} message
     * @param {string|object} [data]
     */
-   this.error = function error(message, data) {
-      var logInfo = toLogInfo(message);
-      var msg = 'ERROR: ' + '[' + category + '] ' + logInfo.message;
-      log(msg.trim(), logInfo.data);
-   };
+    this.error = function error(message, data) {
+        var logInfo = toLogInfo(message);
+        var msg = 'ERROR: ' + '[' + category + '] ' + logInfo.message;
+        log(msg.trim(), logInfo.data);
+    };
 
-   /**
+    /**
     *
     * @param {string} message
     * @param {null|object} data
     */
-   function log(message, data) {
-      if (data !== null) {
-         console.log(message, data);
-      } else {
-         console.log(message);
-      }
-   }
+    function log(message, data) {
+        if (data !== null) {
+            console.log(message, data);
+        } else {
+            console.log(message);
+        }
+    }
 
-   /**
+    /**
     * @param {string|object} message
     * @return {{message: string, data: null|string|object}}
     * @param {string|object} [data]
     */
-   function toLogInfo(message, data) {
+    function toLogInfo(message, data) {
 
-      var info = { message: '', data: null };
+        var info = { message: '', data: null };
 
-      if (typeof message === 'string') {
-         info.message = message;
-      } else if (typeof message === 'object') {
-         if (message.message) {
-            info.message = message.message;
-            info.data = message;
-         } else {
-            info.message = message.toString();
-            info.data = message;
-         }
-      }
+        if (typeof message === 'string') {
+            info.message = message;
+        } else if (typeof message === 'object') {
+            if (message.message) {
+                info.message = message.message;
+                info.data = message;
+            } else {
+                info.message = message.toString();
+                info.data = message;
+            }
+        }
 
-      if (typeof data !== 'undefined') {
-         info.data = data;
-      }
+        if (typeof data !== 'undefined') {
+            info.data = data;
+        }
 
-      return info;
-   }
+        return info;
+    }
 
-   constructor();
+    constructor();
 };/**
  * ServerInstance
  * @interface
  */
-cobu.wsc.ServerInstance = function ServerInstance()
-{
-   'use strict';
+cobu.wsc.ServerInstance = function ServerInstance() {
 
-   /**
-    * The unique instance name.
-    * @type {null}
-    */
-   this.name = null;
+    'use strict';
 
-   /**
-    * Start instance.
-    */
-   this.start = function start() {};
+    /**
+     * The unique instance name.
+     * @type {null}
+     */
+    this.name = null;
 
-   /**
-    * Stop instance.
-    */
-   this.stop = function stop() {};
+    /**
+     * Start instance.
+     */
+    this.start = function start() {};
 
-   /**
-    * Description
-    * @type {string}
-    */
-   this.description = '';
+    /**
+     * Stop instance.
+     */
+    this.stop = function stop() {};
 
-   /**
-    * @type {cobu.wsc.Logger}
-    */
-   this.log = new cobu.wsc.Logger(self.name);
+    /**
+     * Description
+     * @type {string}
+     */
+    this.description = '';
+
+    /**
+     * @type {cobu.wsc.Logger}
+     */
+    this.log = new cobu.wsc.Logger('');
 };/**
  * WebSocketConnection
  * @class
  * @constructor
  * @param {WebSocket} [socket]
  */
-cobu.wsc.WebSocketConnection = function WebSocketConnection(socket)
-{
-   'use strict';
+cobu.wsc.WebSocketConnection = function WebSocketConnection(socket) {
 
-   /** @type {cobu.wsc.WebSocketConnection} */
-   var self = this;
+    'use strict';
 
-   /**
+    /** @type {cobu.wsc.WebSocketConnection} */
+    var self = this;
+
+    /**
     * @type {cobu.wsc.Logger}
     */
-   var log = new cobu.wsc.Logger(self.constructor.name);
+    var log = new cobu.wsc.Logger(self.constructor.name);
 
-   /**
+    /**
     * Unique Id of the web socket connection.
     * @type {string}
     */
-   this.id = null;
+    this.id = null;
 
-   /**
+    /**
     * @type {WebSocket|null}
     */
-   this.socket = socket || null;
+    this.socket = socket || null;
 
-   /** Constructor */
-   function constructor() {
-      self.id = guid();
-   }
+    /** Constructor */
+    function constructor() {
+        //noinspection JSHint
+        self.id = guid();
+    }
 
-   /**
-    * Send data on connection.
-    * @param {string|object} data
-    */
-   this.send = function send(data) {
+    /**
+     * Send data on connection.
+     * @param {string|object} data
+     */
+    this.send = function send(data) {
 
-      log.info('send', data);
-      if (typeof data === 'object') {
-         sendAsJson(data);
-      } else {
-         self.socket.send(data);
-      }
-   };
+        log.info('send', data);
+        if (typeof data === 'object') {
+            sendAsJson(data);
+        } else {
+            self.socket.send(data);
+        }
+    };
 
-   /**
-    * Send data on connection.
-    * @param {object} obj
-    */
-   function sendAsJson(obj) {
-      self.socket.send(JSON.stringify(obj));
-   }
+    /**
+     * Send data on connection.
+     * @param {object} obj
+     */
+    function sendAsJson(obj) {
+        self.socket.send(JSON.stringify(obj));
+    }
 
-   constructor();
+    constructor();
 };/**
  * WebSocketInstance
  * @constructor
@@ -1312,9 +1378,9 @@ cobu.wsc.WebSocketInstance = function WebSocketInstance(cloudServer, name, port)
 
             if (worker !== null) {
                 pluginWorkers.push(worker);
-                log.info(pluginName + ' initialized.')
+                log.info(pluginName + ' initialized.');
             } else {
-                log.warn(pluginName + ' not initialized.')
+                log.warn(pluginName + ' not initialized.');
             }
         }
     }
@@ -1370,7 +1436,7 @@ cobu.wsc.WebSocketInstance = function WebSocketInstance(cloudServer, name, port)
             for(var i=0; i<pluginWorkers.length; i++) {
                 pluginWorkerOnMessage(pluginWorkers[i], data, connection);
             }
-        }
+        };
     }
 
     /**
@@ -1400,24 +1466,31 @@ cobu.wsc.WebSocketInstance = function WebSocketInstance(cloudServer, name, port)
  * @constructor
  * @param {string} data
  */
-cobu.wsc.WebSocketMessage = function WebSocketMessage(data)
-{
-   'use strict';
+cobu.wsc.WebSocketMessage = function WebSocketMessage(data) {
 
-   /**
+    'use strict';
+
+    /**
     * @type {string|null}
     */
-   this.data = data || null;
+    this.data = data || null;
 
-   /** Constructor */
-   function constructor() {
-   }
+    /** Constructor */
+    function constructor() {
+    }
 
-   constructor();
-};function s4() {
-   return Math.floor((1 + Math.random()) * 0x10000)
-      .toString(16)
-      .substring(1);
+    constructor();
+};/**
+ * S4
+ * @returns {string}
+ */
+function s4() {
+
+    'use strict';
+
+    return Math.floor((1 + Math.random()) * 0x10000)
+        .toString(16)
+        .substring(1);
 }
 
 /**
@@ -1425,125 +1498,140 @@ cobu.wsc.WebSocketMessage = function WebSocketMessage(data)
  * @returns {string}
  */
 function guid() {
-   return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
-      s4() + '-' + s4() + s4() + s4();
+
+    'use strict';
+
+    return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
 }
 /**
  * Plugin
  * @constructor
  */
-cobu.wsc.Plugin = function Plugin()
-{
-   'use strict';
+cobu.wsc.Plugin = function Plugin() {
 
-   /** @type {cobu.wsc.Plugin} */
-   var self = this;
+    'use strict';
 
-   /**
-    * Name of the plugin (Has to be unique)
-    * @type {null|string}
-    */
-   this.name = null;
+    /**
+     * @type {cobu.wsc.Plugin}
+     */
+    var self = this;
 
-   /**
-    * Description of the plugin.
-    * @type {null|string}
-    */
-   this.description = null;
+    /**
+     * Name of the plugin (Has to be unique)
+     * @type {null|string}
+     */
+    this.name = null;
 
-   /**
-    * @type {null|string}
-    */
-   this.code = null;
+    /**
+     * Description of the plugin.
+     * @type {null|string}
+     */
+    this.description = null;
 
-   /**
-    * Constructor to create a plugin instance.
-    * @constructor
-    * @implements {cobu.wsc.PluginWorker}
-    */
-   this.PluginWorker = function() {};
+    /**
+     * @type {null|string}
+     */
+    this.code = null;
 
-   /** Constructor */
-   function constructor() {
-   }
+    /**
+     * Constructor to create a plugin instance.
+     * @type {null|Function}
+     * @implements {cobu.wsc.PluginWorker}
+     */
+    this.PluginWorkerConstructor = null;
 
-   constructor();
+    /**
+     * Constructor
+     */
+    function constructor() {
+    }
+
+    constructor();
 };/**
  * PluginManager
  * @constructor
- * @param {cobu.wsc.Config} config
+ * @param {cobu.wsc.ConfigManager} configManager
  */
-cobu.wsc.PluginManager = function PluginManager(config)
-{
-   'use strict';
+cobu.wsc.PluginManager = function PluginManager(configManager) {
 
-   /** @type {cobu.wsc.PluginManager} */
-   var self = this;
+    'use strict';
 
-   /**
-    * @type {Object.<string, cobu.wsc.Plugin>}
-    */
-   var plugins = {};
+    /** @type {cobu.wsc.PluginManager} */
+    var self = this;
 
-   /**
-    * @type {cobu.wsc.Logger}
-    */
-   var log = new cobu.wsc.Logger(self.constructor.name);
+    /**
+     * @type {Object.<string, cobu.wsc.Plugin>}
+     */
+    var plugins = {};
 
-   /** Constructor */
-   function constructor() {
-   }
+    /**
+     * @type {cobu.wsc.Logger}
+     */
+    var log = new cobu.wsc.Logger(self.constructor.name);
 
-   /**
-    * @param {string} name
-    * @returns {cobu.wsc.Plugin}
-    */
-   this.getPlugin = function getPlugin(name) {
-      return plugins[name];
-   };
+    /** Constructor */
+    function constructor() {
+    }
 
-   /**
-    * Get list of plugins.
-    * @returns {Array.<cobu.wsc.Plugin>}
-    */
-   this.getPlugins = function getPlugins() {
+    /**
+     * @param {string} name
+     * @returns {cobu.wsc.Plugin}
+     */
+    this.getPlugin = function getPlugin(name) {
+        return plugins[name];
+    };
 
-      var result = [];
+    /**
+     * Get list of plugins.
+     * @returns {Array.<cobu.wsc.Plugin>}
+     */
+    this.getPlugins = function getPlugins() {
 
-      for(var key in plugins) {
-         if (plugins.hasOwnProperty(key)) {
-            result.push(plugins[key]);
-         }
-      }
+        var result = [];
 
-      log.info('getPlugins', result);
+        for(var key in plugins) {
+            if (plugins.hasOwnProperty(key)) {
+                result.push(plugins[key]);
+            }
+        }
 
-      return result;
-   };
+        log.info('getPlugins', result);
 
-   /**
-    * Check if plugin with given name exists.
-    * @param name
-    */
-   this.hasPlugin = function hasPlugin(name) {
-      return plugins.hasOwnProperty(name);
-   };
+        return result;
+    };
 
-   /**
-    * @param plugin
-    */
-   this.addOrUpdatePlugin = function addOrUpdatePlugin(plugin) {
-      plugins[plugin.name] = plugin;
-   };
+    /**
+     * Check if plugin with given name exists.
+     * @param name
+     */
+    this.hasPlugin = function hasPlugin(name) {
+        return plugins.hasOwnProperty(name);
+    };
 
-   /**
-    * @param {string} name The name of the plugin.
-    */
-   this.removePlugin = function removePlugin(name) {
-      if (plugins.hasOwnProperty(name)) {
-         delete plugins[name];
-      }
-   };
+    /**
+     * @param {cobu.wsc.Plugin} plugin
+     */
+    this.addOrUpdatePlugin = function addOrUpdatePlugin(plugin) {
+
+        if (plugin.PluginWorkerConstructor === null) {
+            plugin.PluginWorkerConstructor = createPluginWorkerConstructor(plugin.code);
+        }
+
+        if (plugin.PluginWorkerConstructor !== null) {
+            plugins[plugin.name] = plugin;
+            updateAndSaveConfig();
+        }
+    };
+
+    /**
+     * @param {string} name The name of the plugin.
+     */
+    this.removePlugin = function removePlugin(name) {
+        if (plugins.hasOwnProperty(name)) {
+            delete plugins[name];
+            updateAndSaveConfig();
+        }
+    };
 
     /**
      * @param {string} name
@@ -1557,14 +1645,14 @@ cobu.wsc.PluginManager = function PluginManager(config)
             var plugin = plugins[name];
 
             try {
-                console.log(plugin.PluginWorker);
+                log.info(plugin.PluginWorkerConstructor);
                 pluginWorker = new plugin.PluginWorker();
                 pluginWorker.name = name;
             } catch(ex) {
                 pluginWorker = null;
                 log.warn('Can not create plugin worker "' + name + '"');
                 log.info(ex);
-                console.log(ex.stack);
+                log.info(ex.stack);
             }
         }
 
@@ -1578,160 +1666,202 @@ cobu.wsc.PluginManager = function PluginManager(config)
      */
     this.createOrUpdatePlugin = function createOrUpdatePlugin(name, description, code) {
         log.info('createOrUpdatePlugin', { name: name, description: description, code: code });
-        try {
-            var plugin = new cobu.wsc.Plugin();
-            plugin.name = name;
-            plugin.description = description;
-            plugin.code = code;
-            plugin.PluginWorker = new Function('return ' + code)();
 
+        var plugin = new cobu.wsc.Plugin();
+        plugin.name = name;
+        plugin.description = description;
+        plugin.code = code;
+        plugin.PluginWorkerConstructor = createPluginWorkerConstructor(code);
+
+        if (plugin.PluginWorkerConstructor !== null) {
             plugins[name] = plugin;
-        } catch (ex) {
-            console.log(ex.stack);
-            log.warn(ex);
+            updateAndSaveConfig();
         }
     };
 
-   constructor();
+    /**
+     * Creates the constructor function for the worker.
+     * @param {string} code
+     * @return {Function}
+     */
+    function createPluginWorkerConstructor(code) {
+
+        var worker = null;
+
+        try {
+            // Function is a form of eval, but we are using it here for executing custom plugin code.
+            // noinspection JSHint
+            worker = new Function('return ' + code)();
+        } catch (ex) {
+            log.warn(ex);
+            log.warn(ex.stack);
+        }
+
+        return worker;
+    }
+
+    /**
+     * Update config and save it.
+     */
+    function updateAndSaveConfig() {
+
+        configManager.config.plugins = [];
+
+        for(var key in plugins) {
+            if (plugins.hasOwnProperty(key)) {
+                var plugin = plugins[key];
+
+                var pluginConfigItem = new cobu.wsc.PluginConfigItem();
+                pluginConfigItem.description = plugin.description;
+                pluginConfigItem.name = plugin.name;
+                pluginConfigItem.code = plugin.code;
+
+                configManager.config.plugins.push(pluginConfigItem);
+            }
+        }
+
+        configManager.save();
+    }
+
+    constructor();
 };/**
  * PluginWorker
  * @interface
  */
-cobu.wsc.PluginWorker = function PluginWorker(name)
-{
-   'use strict';
+cobu.wsc.PluginWorker = function PluginWorker(name) {
 
-   /** @type {cobu.wsc.PluginWorker} */
-   var self = this;
+    'use strict';
 
-   this.name = name;
+    /** @type {cobu.wsc.PluginWorker} */
+    var self = this;
 
-   /** Constructor */
-   function constructor() {
-   }
+    this.name = name;
 
-   /**
+    /** Constructor */
+    function constructor() {
+    }
+
+    /**
     * @param {cobu.wsc.WebSocketConnection} connection
     * @param {cobu.wsc.WebSocketInstance} instance
     */
-   this.onNewConnection = function onNewConnection(connection, instance) {};
+    this.onNewConnection = function onNewConnection(connection, instance) {};
 
-   /**
+    /**
     * @param {cobu.wsc.WebSocketMessage} message
     * @param {cobu.wsc.WebSocketConnection} connection
     * @param {cobu.wsc.WebSocketInstance} instance
     */
-   this.onMessage = function onMessage(message, connection, instance) {};
+    this.onMessage = function onMessage(message, connection, instance) {};
 
-   constructor();
+    constructor();
 };/**
  * BroadcastPluginWorker
  * @constructor
  * @implements {cobu.wsc.PluginWorker}
  */
-cobu.wsc.BroadcastPluginWorker = function BroadcastPluginWorker()
-{
-   'use strict';
+cobu.wsc.BroadcastPluginWorker = function BroadcastPluginWorker() {
 
-   /** @type {cobu.wsc.BroadcastPluginWorker} */
-   var self = this;
+    'use strict';
 
-   this.name = 'broadcast';
+    /** @type {cobu.wsc.BroadcastPluginWorker} */
+    var self = this;
 
-   /** Constructor */
-   function constructor()
-   {
-   }
+    this.name = 'broadcast';
 
-   /**
-    * @param {cobu.wsc.WebSocketConnection} connection
-    */
-   this.onNewConnection = function onNewConnection(connection) {};
+    /** Constructor */
+    function constructor() {
+    }
 
-   /**
-    * @param {cobu.wsc.WebSocketMessage} message
-    * @param {cobu.wsc.WebSocketConnection} connection
-    * @param {cobu.wsc.WebSocketInstance} instance
-    */
-   this.onMessage = function onMessage(message, connection, instance) {
+    /**
+     * @param {cobu.wsc.WebSocketConnection} connection
+     */
+    this.onNewConnection = function onNewConnection(connection) {};
 
-      var connections = instance.getConnections();
+    /**
+     * @param {cobu.wsc.WebSocketMessage} message
+     * @param {cobu.wsc.WebSocketConnection} connection
+     * @param {cobu.wsc.WebSocketInstance} instance
+     */
+    this.onMessage = function onMessage(message, connection, instance) {
 
-      for(var i=0; i<connections.length; i++) {
-         var conn = connections[i];
+        var connections = instance.getConnections();
 
-         if (conn.id !== connection.id) {
-            conn.send(message.data);
-         }
-      }
-   };
+        for(var i=0; i<connections.length; i++) {
+            var conn = connections[i];
 
-   constructor();
+            if (conn.id !== connection.id) {
+                conn.send(message.data);
+            }
+        }
+    };
+
+    constructor();
 };
 /**
  * EchoPluginWorker
  * @constructor
  * @implements {cobu.wsc.PluginWorker}
  */
-cobu.wsc.EchoPluginWorker = function EchoPluginWorker()
-{
-   'use strict';
+cobu.wsc.EchoPluginWorker = function EchoPluginWorker() {
 
-   /** @type {cobu.wsc.PingPongPluginWorker} */
-   var self = this;
+    'use strict';
 
-   /** Constructor */
-   function constructor() { }
+    /** @type {cobu.wsc.PingPongPluginWorker} */
+    var self = this;
 
-   /**
-    * @param {cobu.wsc.WebSocketConnection} connection
-    */
-   this.onNewConnection = function onNewConnection(connection) {};
+    /** Constructor */
+    function constructor() { }
 
-   /**
-    * @param {cobu.wsc.WebSocketMessage} message
-    * @param {cobu.wsc.WebSocketConnection} connection
-    * @param {cobu.wsc.WebSocketInstance} instance
-    */
-   this.onMessage = function onMessage(message, connection, instance) {
-      connection.send(message.data);
-   };
+    /**
+     * @param {cobu.wsc.WebSocketConnection} connection
+     */
+    this.onNewConnection = function onNewConnection(connection) {};
 
-   constructor();
+    /**
+     * @param {cobu.wsc.WebSocketMessage} message
+     * @param {cobu.wsc.WebSocketConnection} connection
+     * @param {cobu.wsc.WebSocketInstance} instance
+     */
+    this.onMessage = function onMessage(message, connection, instance) {
+        connection.send(message.data);
+    };
+
+    constructor();
 };
 /**
  * PingPongPluginWorker
  * @constructor
  * @implements {cobu.wsc.PluginWorker}
  */
-cobu.wsc.PingPongPluginWorker = function PingPongPluginWorker()
-{
-   'use strict';
+cobu.wsc.PingPongPluginWorker = function PingPongPluginWorker() {
 
-   /** @type {cobu.wsc.PingPongPluginWorker} */
-   var self = this;
+    'use strict';
 
-   /** Constructor */
-   function constructor() {
-   }
+    /** @type {cobu.wsc.PingPongPluginWorker} */
+    var self = this;
 
-   /**
-    * @param {cobu.wsc.WebSocketConnection} connection
-    */
-   this.onNewConnection = function onNewConnection(connection) {};
+    /** Constructor */
+    function constructor() {
+    }
 
-   /**
-    * @param {cobu.wsc.WebSocketMessage} message
-    * @param {cobu.wsc.WebSocketConnection} connection
-    * @param {cobu.wsc.WebSocketInstance} instance
-    */
-   this.onMessage = function onMessage(message, connection, instance) {
-      if (message.data === 'ping') {
-         connection.send('pong');
-      }
-   };
+    /**
+     * @param {cobu.wsc.WebSocketConnection} connection
+     */
+    this.onNewConnection = function onNewConnection(connection) {};
 
-   constructor();
+    /**
+     * @param {cobu.wsc.WebSocketMessage} message
+     * @param {cobu.wsc.WebSocketConnection} connection
+     * @param {cobu.wsc.WebSocketInstance} instance
+     */
+    this.onMessage = function onMessage(message, connection, instance) {
+        if (message.data === 'ping') {
+            connection.send('pong');
+        }
+    };
+
+    constructor();
 };
 /**
  * CreateInstanceRequestHandler
@@ -1739,282 +1869,272 @@ cobu.wsc.PingPongPluginWorker = function PingPongPluginWorker()
  * @param {cobu.wsc.CloudServer} cloudServer
  * @implements {cobu.wsc.ServiceMessageHandler}
  */
-cobu.wsc.CreateInstanceRequestHandler = function CreateInstanceRequestHandler(cloudServer)
-{
-   'use strict';
+cobu.wsc.CreateInstanceRequestHandler = function CreateInstanceRequestHandler(cloudServer) {
 
-   /** @type {cobu.wsc.CreateInstanceRequestHandler} */
-   var self = this;
+    'use strict';
 
-   /** Constructor */
-   function constructor()
-   {
-   }
+    /** @type {cobu.wsc.CreateInstanceRequestHandler} */
+    var self = this;
 
-   /**
+    /** Constructor */
+    function constructor() {
+    }
+
+    /**
     * @param {cobu.wsc.service.CreateInstanceRequest} message
     * @param {cobu.wsc.WebSocketConnection} connection
     */
-   this.handle = function handle(message, connection) {
+    this.handle = function handle(message, connection) {
 
-      try {
+        try {
 
-         var isNameAlreadyUsed = checkInstanceName(message.name);
+            var isNameAlreadyUsed = checkInstanceName(message.name);
 
-         if (isNameAlreadyUsed) {
-            var response = new cobu.wsc.service.CreateInstanceResponse();
-            response.success = false;
-            response.message = 'Cannot create instance: Name is already used.';
-            connection.send(response);
-         } else {
-            var newInstance = new cobu.wsc.WebSocketInstance(cloudServer, message.name, message.port);
-            newInstance.description = message.description;
-            newInstance.plugins = message.plugins;
+            if (isNameAlreadyUsed) {
+                var response = new cobu.wsc.service.CreateInstanceResponse();
+                response.success = false;
+                response.message = 'Cannot create instance: Name is already used.';
+                connection.send(response);
+            } else {
+                var newInstance = new cobu.wsc.WebSocketInstance(cloudServer, message.name, message.port);
+                newInstance.description = message.description;
+                newInstance.plugins = message.plugins;
 
-            cloudServer.addInstance(newInstance);
-            connection.send(new cobu.wsc.service.CreateInstanceResponse());
-         }
-      } catch (ex) {
-         cloudServer.serviceInstance.log.error(ex.message);
-      }
-   };
+                cloudServer.addInstance(newInstance);
+                connection.send(new cobu.wsc.service.CreateInstanceResponse());
+            }
+        } catch (ex) {
+            cloudServer.serviceInstance.log.error(ex.message);
+        }
+    };
 
-   /**
+    /**
     * Check if instance name is already in use.
     * @param {string} name
     */
-   function checkInstanceName(name) {
+    function checkInstanceName(name) {
 
-      var isNameAlreadyUsed = false;
-      var instances = cloudServer.getInstances();
+        var isNameAlreadyUsed = false;
+        var instances = cloudServer.getInstances();
 
-      for(var i=0; i<instances.length; i++) {
-         if (instances[i].name.trim() === name.trim()) {
-            isNameAlreadyUsed = true;
-            break;
-         }
-      }
+        for(var i=0; i<instances.length; i++) {
+            if (instances[i].name.trim() === name.trim()) {
+                isNameAlreadyUsed = true;
+                break;
+            }
+        }
 
-      return isNameAlreadyUsed;
-   }
+        return isNameAlreadyUsed;
+    }
 
-   constructor();
+    constructor();
 };/**
  * GetInstancesRequestHandler
  * @constructor
  * @param {cobu.wsc.CloudServer} cloudServer
  * @implements {cobu.wsc.ServiceMessageHandler}
  */
-cobu.wsc.GetInstancesRequestHandler = function GetInstancesRequestHandler(cloudServer)
-{
-   'use strict';
+cobu.wsc.GetInstancesRequestHandler = function GetInstancesRequestHandler(cloudServer) {
 
-   /** @type {cobu.wsc.StartInstanceRequestHandler} */
-   var self = this;
+    'use strict';
 
-   /** Constructor */
-   function constructor()
-   {
-   }
+    /** @type {cobu.wsc.StartInstanceRequestHandler} */
+    var self = this;
 
-   /**
+    /** Constructor */
+    function constructor() {
+    }
+
+    /**
     * @param {cobu.wsc.WebSocketMessage} message
     * @param {cobu.wsc.WebSocketConnection} connection
     */
-   this.handle = function handle(message, connection) {
+    this.handle = function handle(message, connection) {
 
-      try {
-         var instances = cloudServer.getInstances();
-         var response = new cobu.wsc.service.GetInstancesResponse();
+        try {
+            var instances = cloudServer.getInstances();
+            var response = new cobu.wsc.service.GetInstancesResponse();
 
-         for(var i=0; i<instances.length; i++) {
-            var instance = instances[i];
+            for(var i=0; i<instances.length; i++) {
+                var instance = instances[i];
 
-            var instanceInfo = new cobu.wsc.service.InstanceInfo();
-            instanceInfo.name = instance.name;
-            instanceInfo.connectionCount = instance.getConnections().length;
-            instanceInfo.port = instance.port;
-            instanceInfo.state = instance.state;
-            instanceInfo.plugins = instance.plugins;
-            instanceInfo.description = instance.description;
+                var instanceInfo = new cobu.wsc.service.InstanceInfo();
+                instanceInfo.name = instance.name;
+                instanceInfo.connectionCount = instance.getConnections().length;
+                instanceInfo.port = instance.port;
+                instanceInfo.state = instance.state;
+                instanceInfo.plugins = instance.plugins;
+                instanceInfo.description = instance.description;
 
-            response.instances.push(instanceInfo);
-         }
-         connection.send(response);
-      } catch (ex) {
-         cloudServer.serviceInstance.log.error(ex.message);
-      }
-   };
+                response.instances.push(instanceInfo);
+            }
+            connection.send(response);
+        } catch (ex) {
+            cloudServer.serviceInstance.log.error(ex.message);
+        }
+    };
 
-   constructor();
+    constructor();
 };/**
  * RemoveInstanceRequestHandler
  * @constructor
  * @param {cobu.wsc.CloudServer} cloudServer
  * @implements {cobu.wsc.ServiceMessageHandler}
  */
-cobu.wsc.RemoveInstanceRequestHandler = function RemoveInstanceRequestHandler(cloudServer)
-{
-   'use strict';
+cobu.wsc.RemoveInstanceRequestHandler = function RemoveInstanceRequestHandler(cloudServer) {
 
-   /** @type {cobu.wsc.RemoveInstanceRequestHandler} */
-   var self = this;
+    'use strict';
 
-   /** Constructor */
-   function constructor()
-   {
-   }
+    /** @type {cobu.wsc.RemoveInstanceRequestHandler} */
+    var self = this;
 
-   /**
+    /** Constructor */
+    function constructor() {
+    }
+
+    /**
     * @param {cobu.wsc.WebSocketMessage} message
     * @param {cobu.wsc.WebSocketConnection} connection
     */
-   this.handle = function handle(message, connection) {
+    this.handle = function handle(message, connection) {
+        try {
+            cloudServer.removeInstance(message.instanceName);
+            connection.send(new cobu.wsc.service.RemoveInstanceResponse());
+        } catch (ex) {
+            cloudServer.serviceInstance.log.error(ex.message);
+        }
+    };
 
-      try {
-         cloudServer.removeInstance(message.instanceName);
-         connection.send(new cobu.wsc.service.RemoveInstanceResponse());
-      } catch (ex) {
-         cloudServer.serviceInstance.log.error(ex.message);
-      }
-   };
-
-   constructor();
+    constructor();
 };/**
  * StartInstanceRequestHandler
  * @constructor
  * @param {cobu.wsc.CloudServer} cloudServer
  * @implements {cobu.wsc.ServiceMessageHandler}
  */
-cobu.wsc.StartInstanceRequestHandler = function StartInstanceRequestHandler(cloudServer)
-{
-   'use strict';
+cobu.wsc.StartInstanceRequestHandler = function StartInstanceRequestHandler(cloudServer) {
 
-   /** @type {cobu.wsc.StartInstanceRequestHandler} */
-   var self = this;
+    'use strict';
 
-   /** Constructor */
-   function constructor()
-   {
-   }
+    /** @type {cobu.wsc.StartInstanceRequestHandler} */
+    var self = this;
 
-   /**
+    /** Constructor */
+    function constructor() {
+    }
+
+    /**
     * @param {cobu.wsc.WebSocketMessage} message
     * @param {cobu.wsc.WebSocketConnection} connection
     */
-   this.handle = function handle(message, connection) {
+    this.handle = function handle(message, connection) {
+        try {
+            cloudServer.startInstance(message.instanceName);
+            connection.send(new cobu.wsc.service.StartInstanceResponse());
+        } catch (ex) {
+            cloudServer.serviceInstance.log.error(ex.message);
+        }
+    };
 
-      try {
-         cloudServer.startInstance(message.instanceName);
-         connection.send(new cobu.wsc.service.StartInstanceResponse());
-      } catch (ex) {
-         cloudServer.serviceInstance.log.error(ex.message);
-      }
-   };
-
-   constructor();
+    constructor();
 };/**
  * StopInstanceRequestHandler
  * @constructor
  * @param {cobu.wsc.CloudServer} cloudServer
  * @implements {cobu.wsc.ServiceMessageHandler}
  */
-cobu.wsc.StopInstanceRequestHandler = function StopInstanceRequestHandler(cloudServer)
-{
-   'use strict';
+cobu.wsc.StopInstanceRequestHandler = function StopInstanceRequestHandler(cloudServer) {
+    'use strict';
 
-   /** @type {cobu.wsc.StartInstanceRequestHandler} */
-   var self = this;
+    /** @type {cobu.wsc.StartInstanceRequestHandler} */
+    var self = this;
 
-   /** Constructor */
-   function constructor()
-   {
-   }
+    /** Constructor */
+    function constructor() {
+    }
 
-   /**
+    /**
     * @param {cobu.wsc.WebSocketMessage} message
     * @param {cobu.wsc.WebSocketConnection} connection
     */
-   this.handle = function handle(message, connection) {
+    this.handle = function handle(message, connection) {
+        try {
+            cloudServer.stopInstance(message.instanceName);
+            connection.send(new cobu.wsc.service.StartInstanceResponse());
+        } catch (ex) {
+            cloudServer.serviceInstance.log.error(ex.message);
+        }
+    };
 
-      try {
-         cloudServer.stopInstance(message.instanceName);
-         connection.send(new cobu.wsc.service.StartInstanceResponse());
-      } catch (ex) {
-         cloudServer.serviceInstance.log.error(ex.message);
-      }
-   };
-
-   constructor();
+    constructor();
 };/**
  * UpdateInstanceRequestHandler
  * @constructor
  * @param {cobu.wsc.CloudServer} cloudServer
  * @implements {cobu.wsc.ServiceMessageHandler}
  */
-cobu.wsc.UpdateInstanceRequestHandler = function UpdateInstanceRequestHandler(cloudServer)
-{
-   'use strict';
+cobu.wsc.UpdateInstanceRequestHandler = function UpdateInstanceRequestHandler(cloudServer) {
 
-   /** @type {cobu.wsc.CreateInstanceRequestHandler} */
-   var self = this;
+    'use strict';
 
-   /** Constructor */
-   function constructor()
-   {
-   }
+    /** @type {cobu.wsc.CreateInstanceRequestHandler} */
+    var self = this;
 
-   /**
+    /** Constructor */
+    function constructor() {
+    }
+
+    /**
     * @param {cobu.wsc.service.UpdateInstanceRequest} message
     * @param {cobu.wsc.WebSocketConnection} connection
     */
-   this.handle = function handle(message, connection) {
+    this.handle = function handle(message, connection) {
 
-      try {
+        try {
 
-         var foundInstance = checkInstanceName(message.instanceName);
+            var foundInstance = checkInstanceName(message.instanceName);
 
-         if (foundInstance) {
-            var instance = new cobu.wsc.WebSocketInstance(cloudServer, message.name, message.port);
-            instance.description = message.description;
-            instance.plugins = message.plugins;
+            if (foundInstance) {
+                var instance = new cobu.wsc.WebSocketInstance(cloudServer, message.name, message.port);
+                instance.description = message.description;
+                instance.plugins = message.plugins;
 
-            console.log('updateInstance', instance);
-            cloudServer.removeInstance(message.instanceName);
-            cloudServer.addInstance(instance);
+                console.log('updateInstance', instance);
+                cloudServer.removeInstance(message.instanceName);
+                cloudServer.addInstance(instance);
 
-            connection.send(new cobu.wsc.service.UpdateInstanceResponse());
-         } else {
-            var response = new cobu.wsc.service.UpdateInstanceResponse();
-            response.success = false;
-            response.message = 'No instance with name ' + message.name + ' found';
-            connection.send(response);
-         }
-      } catch (ex) {
-         cloudServer.serviceInstance.log.error(ex.message);
-      }
-   };
+                connection.send(new cobu.wsc.service.UpdateInstanceResponse());
+            } else {
+                var response = new cobu.wsc.service.UpdateInstanceResponse();
+                response.success = false;
+                response.message = 'No instance with name ' + message.name + ' found';
+                connection.send(response);
+            }
+        } catch (ex) {
+            cloudServer.serviceInstance.log.error(ex.message);
+        }
+    };
 
-   /**
+    /**
     * Check if instance name is already in use.
     * @param {string} name
     */
-   function checkInstanceName(name) {
+    function checkInstanceName(name) {
 
-      var isNameAlreadyUsed = false;
-      var instances = cloudServer.getInstances();
+        var isNameAlreadyUsed = false;
+        var instances = cloudServer.getInstances();
 
-      for(var i=0; i<instances.length; i++) {
-         if (instances[i].name.trim() === name.trim()) {
-            isNameAlreadyUsed = true;
-            break;
-         }
-      }
+        for(var i=0; i<instances.length; i++) {
+            if (instances[i].name.trim() === name.trim()) {
+                isNameAlreadyUsed = true;
+                break;
+            }
+        }
 
-      return isNameAlreadyUsed;
-   }
+        return isNameAlreadyUsed;
+    }
 
-   constructor();
+    constructor();
 };/**
  * CreatePluginRequestHandler
  * @constructor
@@ -2117,46 +2237,46 @@ cobu.wsc.CreatePluginRequestHandler = function CreatePluginRequestHandler(cloudS
  * @param {cobu.wsc.CloudServer} cloudServer
  * @implements {cobu.wsc.ServiceMessageHandler}
  */
-cobu.wsc.GetPluginsRequestHandler = function GetPluginsRequestHandler(cloudServer)
-{
-   'use strict';
+cobu.wsc.GetPluginsRequestHandler = function GetPluginsRequestHandler(cloudServer) {
 
-   /** @type {cobu.wsc.GetPluginsRequestHandler} */
-   var self = this;
+    'use strict';
 
-   /** Constructor */
-   function constructor() {
-   }
+    /** @type {cobu.wsc.GetPluginsRequestHandler} */
+    var self = this;
 
-   /**
+    /** Constructor */
+    function constructor() {
+    }
+
+    /**
     * @param {cobu.wsc.WebSocketMessage} message
     * @param {cobu.wsc.WebSocketConnection} connection
     */
-   this.handle = function handle(message, connection) {
+    this.handle = function handle(message, connection) {
 
-      try {
-         var plugins = cloudServer.pluginManager.getPlugins();
+        try {
+            var plugins = cloudServer.pluginManager.getPlugins();
 
-         var response = new cobu.wsc.service.GetPluginsResponse();
+            var response = new cobu.wsc.service.GetPluginsResponse();
 
-         for(var i=0; i < plugins.length; i++) {
-            var plugin = plugins[i];
+            for(var i=0; i < plugins.length; i++) {
+                var plugin = plugins[i];
 
-            var pluginInfo = new cobu.wsc.service.PluginInfo();
-            pluginInfo.name = plugin.name;
-            pluginInfo.description = plugin.description;
-            pluginInfo.code = plugin.code;
+                var pluginInfo = new cobu.wsc.service.PluginInfo();
+                pluginInfo.name = plugin.name;
+                pluginInfo.description = plugin.description;
+                pluginInfo.code = plugin.code;
 
-            response.plugins.push(pluginInfo);
-         }
-         console.log(response);
-         connection.send(response);
-      } catch (ex) {
-         cloudServer.serviceInstance.log.error(ex.message);
-      }
-   };
+                response.plugins.push(pluginInfo);
+            }
+            console.log(response);
+            connection.send(response);
+        } catch (ex) {
+            cloudServer.serviceInstance.log.error(ex.message);
+        }
+    };
 
-   constructor();
+    constructor();
 };/**
  * PluginCodeChecker
  * @class
@@ -2187,7 +2307,7 @@ cobu.wsc.PluginCodeChecker = function PluginCodeChecker() {
         code = code.trim();
 
         if (lines.length <= 0) {
-            result.errors.push('No code found.')
+            result.errors.push('No code found.');
         } else {
             if (lines[0].indexOf('function') < 0) {
                 result.errors.push('0: First line must contain function keyword.');
@@ -2216,77 +2336,77 @@ cobu.wsc.PluginCodeChecker = function PluginCodeChecker() {
  * @param {cobu.wsc.CloudServer} cloudServer
  * @implements {cobu.wsc.ServiceMessageHandler}
  */
-cobu.wsc.RemovePluginRequestHandler = function RemovePluginRequestHandler(cloudServer)
-{
-   'use strict';
+cobu.wsc.RemovePluginRequestHandler = function RemovePluginRequestHandler(cloudServer) {
 
-   /** Constructor */
-   function constructor() {
-   }
+    'use strict';
 
-   /**
+    /** Constructor */
+    function constructor() {
+    }
+
+    /**
     * @param {cobu.wsc.service.RemovePluginRequest} message
     * @param {cobu.wsc.WebSocketConnection} connection
     */
-   this.handle = function handle(message, connection) {
+    this.handle = function handle(message, connection) {
 
-      try {
-         if (cloudServer.pluginManager.hasPlugin(message.pluginName)) {
-            cloudServer.pluginManager.removePlugin(message.pluginName);
-            sendSuccessResponse(connection);
-         } else {
-            sendPluginNotFoundResponse(message, connection);
-         }
-      } catch (ex) {
-         cloudServer.serviceInstance.log.error(ex.message);
-      }
-   };
+        try {
+            if (cloudServer.pluginManager.hasPlugin(message.pluginName)) {
+                cloudServer.pluginManager.removePlugin(message.pluginName);
+                sendSuccessResponse(connection);
+            } else {
+                sendPluginNotFoundResponse(message, connection);
+            }
+        } catch (ex) {
+            cloudServer.serviceInstance.log.error(ex.message);
+        }
+    };
 
-   /**
+    /**
     * Send success response
     * @param {cobu.wsc.WebSocketConnection} connection
     */
-   function sendSuccessResponse(connection) {
-      var response = new cobu.wsc.service.RemovePluginResponse();
-      connection.send(response);
-   }
+    function sendSuccessResponse(connection) {
+        var response = new cobu.wsc.service.RemovePluginResponse();
+        connection.send(response);
+    }
 
-   /**
+    /**
     * Send an error response
     * @param {cobu.wsc.WebSocketConnection} connection
     * @param {cobu.wsc.RemovePluginRequest} message
     */
-   function sendPluginNotFoundResponse(message, connection) {
-      var response = new cobu.wsc.service.RemovePluginResponse();
-      response.success = false;
-      response.message = 'Can not find plugin: ' + message.pluginName;
-      connection.send(response);
-   }
+    function sendPluginNotFoundResponse(message, connection) {
+        var response = new cobu.wsc.service.RemovePluginResponse();
+        response.success = false;
+        response.message = 'Can not find plugin: ' + message.pluginName;
+        connection.send(response);
+    }
 
-   constructor();
+    constructor();
 };/**
  * UpdatePluginRequestHandler
  * @constructor
  * @param {cobu.wsc.CloudServer} cloudServer
  * @implements {cobu.wsc.ServiceMessageHandler}
  */
-cobu.wsc.UpdatePluginRequestHandler = function UpdatePluginRequestHandler(cloudServer)
-{
-   'use strict';
+cobu.wsc.UpdatePluginRequestHandler = function UpdatePluginRequestHandler(cloudServer) {
+
+    'use strict';
 
     /**
-     * @type {cobu.wsc.PluginCodeChecker}
-     */
+    * @type {cobu.wsc.PluginCodeChecker}
+    */
     var pluginCodeChecker = new cobu.wsc.PluginCodeChecker();
 
     /** Constructor */
-   function constructor() {
-   }
+    function constructor() {
+    }
 
     /**
-    * @param {cobu.wsc.service.UpdatePluginRequest} message
-    * @param {cobu.wsc.WebSocketConnection} connection
-    */
+     * @param {cobu.wsc.service.UpdatePluginRequest} message
+     * @param {cobu.wsc.WebSocketConnection} connection
+     */
     this.handle = function handle(message, connection) {
 
         try {
@@ -2309,19 +2429,19 @@ cobu.wsc.UpdatePluginRequestHandler = function UpdatePluginRequestHandler(cloudS
     };
 
     /**
-    * Send success response
-    * @param {cobu.wsc.WebSocketConnection} connection
-    */
+     * Send success response
+     * @param {cobu.wsc.WebSocketConnection} connection
+     */
     function sendSuccessResponse(connection) {
         var response = new cobu.wsc.service.UpdatePluginResponse();
         connection.send(response);
     }
 
     /**
-    * Send an error response
-    * @param {cobu.wsc.WebSocketConnection} connection
-    * @param {cobu.wsc.UpdatePluginRequest} message
-    */
+     * Send an error response
+     * @param {cobu.wsc.WebSocketConnection} connection
+     * @param {cobu.wsc.UpdatePluginRequest} message
+     */
     function sendPluginNotFoundResponse(message, connection) {
         var response = new cobu.wsc.service.RemovePluginResponse();
         response.success = false;
@@ -2343,10 +2463,10 @@ cobu.wsc.UpdatePluginRequestHandler = function UpdatePluginRequestHandler(cloudS
         connection.send(response);
     }
 
-   constructor();
+    constructor();
 };/**
  * ServiceInstance
- * @interface
+ * @constructor
  * @param {cobu.wsc.CloudServer} cloudServer
  * @param {string} name
  * @param {number} port
@@ -2471,100 +2591,114 @@ cobu.wsc.ServiceInstance = function ServiceInstance(name, port, cloudServer)
         return function handleMessage(data, flags) {
             log.info('message ' + connection.id + ', ' + data);
             serviceWorker.onMessage(new cobu.wsc.WebSocketMessage(data), connection, self);
-        }
+        };
     }
 
-   constructor();
+    constructor();
 };/**
  * ServiceMessageHandler
  * @interface
  */
-cobu.wsc.ServiceMessageHandler = function ServiceMessageHandler()
-{
-   'use strict';
+cobu.wsc.ServiceMessageHandler = function ServiceMessageHandler() {
 
-   /**
+    'use strict';
+
+    /**
     * @param {object} message
     * @param {cobu.wsc.WebSocketConnection} connection
     */
-   this.handle = function handle(message, connection) {};
+    this.handle = function handle(message, connection) {};
 };/**
  * ServicePlugin
  * @constructor
  * @implements {cobu.wsc.PluginWorker}
  * @param {cobu.wsc.CloudServer} cloudServer
  */
-cobu.wsc.ServiceWorker = function ServiceWorker(cloudServer)
-{
-   'use strict';
+cobu.wsc.ServiceWorker = function ServiceWorker(cloudServer) {
 
-   /** @type {cobu.wsc.PingPongPluginWorker} */
-   var self = this;
+    'use strict';
 
-   this.name = self.constructor.name;
+    /** @type {cobu.wsc.ServiceWorker} */
+    var self = this;
 
-   /**
+    /**
+     * @type {string}
+     */
+    this.name = self.constructor.name;
+
+    /**
     * @type {cobu.wsc.Logger}
     */
-   var log = new cobu.wsc.Logger(self.constructor.name);
+    var log = new cobu.wsc.Logger(self.constructor.name);
 
-   var apiMap = {};
+    /**
+     * @type {Object.<string, Object>}
+     */
+    var apiMap = {};
 
-   /** Constructor */
-   function constructor() {
-      apiMap['request.startInstance'] = new cobu.wsc.StartInstanceRequestHandler(cloudServer);
-      apiMap['request.stopInstance'] = new cobu.wsc.StopInstanceRequestHandler(cloudServer);
-      apiMap['request.getInstances'] = new cobu.wsc.GetInstancesRequestHandler(cloudServer);
-      apiMap['request.createInstance'] = new cobu.wsc.CreateInstanceRequestHandler(cloudServer);
-      apiMap['request.updateInstance'] = new cobu.wsc.UpdateInstanceRequestHandler(cloudServer);
-      apiMap['request.removeInstance'] = new cobu.wsc.RemoveInstanceRequestHandler(cloudServer);
+    /** Constructor */
+    function constructor() {
+        apiMap['request.startInstance'] = new cobu.wsc.StartInstanceRequestHandler(cloudServer);
+        apiMap['request.stopInstance'] = new cobu.wsc.StopInstanceRequestHandler(cloudServer);
+        apiMap['request.getInstances'] = new cobu.wsc.GetInstancesRequestHandler(cloudServer);
+        apiMap['request.createInstance'] = new cobu.wsc.CreateInstanceRequestHandler(cloudServer);
+        apiMap['request.updateInstance'] = new cobu.wsc.UpdateInstanceRequestHandler(cloudServer);
+        apiMap['request.removeInstance'] = new cobu.wsc.RemoveInstanceRequestHandler(cloudServer);
 
-      apiMap['request.getPlugins'] = new cobu.wsc.GetPluginsRequestHandler(cloudServer);
-      apiMap['request.createPlugin'] = new cobu.wsc.CreatePluginRequestHandler(cloudServer);
-      apiMap['request.removePlugin'] = new cobu.wsc.RemovePluginRequestHandler(cloudServer);
-      apiMap['request.updatePlugin'] = new cobu.wsc.UpdatePluginRequestHandler(cloudServer);
-   }
+        apiMap['request.getPlugins'] = new cobu.wsc.GetPluginsRequestHandler(cloudServer);
+        apiMap['request.createPlugin'] = new cobu.wsc.CreatePluginRequestHandler(cloudServer);
+        apiMap['request.removePlugin'] = new cobu.wsc.RemovePluginRequestHandler(cloudServer);
+        apiMap['request.updatePlugin'] = new cobu.wsc.UpdatePluginRequestHandler(cloudServer);
+    }
 
-   /**
-    * @param {cobu.wsc.WebSocketConnection} connection
-    */
-   this.onNewConnection = function onNewConnection(connection) {};
+    /**
+     * @param {cobu.wsc.WebSocketConnection} connection
+     */
+    this.onNewConnection = function onNewConnection(connection) {};
 
-   /**
-    * @param {cobu.wsc.WebSocketMessage} message
-    * @param {cobu.wsc.WebSocketConnection} connection
-    * @param {cobu.wsc.WebSocketInstance} instance
-    */
-   this.onMessage = function onMessage(message, connection, instance) {
+    /**
+     * @param {cobu.wsc.WebSocketMessage} message
+     * @param {cobu.wsc.WebSocketConnection} connection
+     * @param {cobu.wsc.WebSocketInstance} instance
+     */
+    this.onMessage = function onMessage(message, connection, instance) {
 
-      try {
-         log.info('onMessage ' + message.data);
-         var msg = JSON.parse(message.data);
+        try {
+            log.info('onMessage ' + message.data);
+            var msg = JSON.parse(message.data);
 
-         if (msg.type) {
-            if (apiMap.hasOwnProperty(msg.type)) {
-               apiMap[msg.type].handle(msg, connection);
+            if (msg.type) {
+                if (apiMap.hasOwnProperty(msg.type)) {
+                    apiMap[msg.type].handle(msg, connection);
+                }
             }
-         }
-      } catch (ex) {
-         console.log(ex);
-         console.log(ex.stack);
-         log.error(ex.message);
-      }
-   };
+        } catch (ex) {
+            log.error(ex.message);
+            log.error(ex.stack);
+        }
+    };
 
-   constructor();
+    constructor();
 };
-console.log('start server');
+(function main() {
 
-var configManager = new cobu.wsc.ConfigManager();
-configManager.load();
-configManager.save();
+    'use strict';
 
-var cloudServer = new cobu.wsc.CloudServer(configManager);
+    console.log('start server');
 
-var serviceInstance = new cobu.wsc.ServiceInstance('service', configManager.config.servicePort, cloudServer);
-cloudServer.start(serviceInstance);
+    var configManager = new cobu.wsc.ConfigManager();
+    configManager.load();
+    configManager.save();
+
+    var cloudServer = new cobu.wsc.CloudServer(configManager);
+
+    var serviceInstance = new cobu.wsc.ServiceInstance('service', configManager.config.servicePort, cloudServer);
+    cloudServer.start(serviceInstance);
+
+    console.log('server initialized. running...');
+}());
+
+
 
 
 //var instanceA = new cobu.wsc.WebSocketInstance('A', 8081, cloudServer);
@@ -2580,23 +2714,23 @@ cloudServer.start(serviceInstance);
 //instanceB.plugins.push(new cobu.wsc.EchoPluginWorker());
 
 
-cloudServer.pluginManager.createOrUpdatePlugin('console', 'Hello World console output', 'function HelloWorld() { this.onMessage = function onMessage(message, connection, instance) { console.log("hello world"); }; }');
+//cloudServer.pluginManager.createOrUpdatePlugin('console', 'Hello World console output', 'function HelloWorld() { this.onMessage = function onMessage(message, connection, instance) { console.log("hello world"); }; }');
 
-var echoPlugin = new cobu.wsc.Plugin();
-echoPlugin.name = 'echo';
-echoPlugin.description = 'Echo service. Every received message will be returned.';
-echoPlugin.PluginWorker = cobu.wsc.EchoPluginWorker;
-echoPlugin.code = cobu.wsc.EchoPluginWorker.toString();
-
-cloudServer.pluginManager.addOrUpdatePlugin(echoPlugin);
-
-var pingpongPlugin = new cobu.wsc.Plugin();
-pingpongPlugin.name = 'ping-pong';
-pingpongPlugin.description = 'ping will be answered with pong';
-pingpongPlugin.PluginWorker = cobu.wsc.PingPongPluginWorker;
-pingpongPlugin.code = cobu.wsc.PingPongPluginWorker.toString();
-
-cloudServer.pluginManager.addOrUpdatePlugin(pingpongPlugin);
+//var echoPlugin = new cobu.wsc.Plugin();
+//echoPlugin.name = 'echo';
+//echoPlugin.description = 'Echo service. Every received message will be returned.';
+//echoPlugin.PluginWorkerConstructor = cobu.wsc.EchoPluginWorker;
+//echoPlugin.code = cobu.wsc.EchoPluginWorker.toString();
+//
+//cloudServer.pluginManager.addOrUpdatePlugin(echoPlugin);
+//
+//var pingpongPlugin = new cobu.wsc.Plugin();
+//pingpongPlugin.name = 'ping-pong';
+//pingpongPlugin.description = 'ping will be answered with pong';
+//pingpongPlugin.PluginWorkerConstructor = cobu.wsc.PingPongPluginWorker;
+//pingpongPlugin.code = cobu.wsc.PingPongPluginWorker.toString();
+//
+//cloudServer.pluginManager.addOrUpdatePlugin(pingpongPlugin);
 
 
 //instanceA.plugins.push(cloudServer.pluginManager.createPluginWorker('echo'));
@@ -2605,7 +2739,6 @@ cloudServer.pluginManager.addOrUpdatePlugin(pingpongPlugin);
 //cloudServer.addInstance(instanceA);
 //cloudServer.addInstance(instanceB);
 
-console.log('server initialized. running...');
 
 
 

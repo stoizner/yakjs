@@ -1,6 +1,6 @@
 /**
  * ServiceInstance
- * @interface
+ * @constructor
  * @param {cobu.wsc.CloudServer} cloudServer
  * @param {string} name
  * @param {number} port
@@ -125,8 +125,8 @@ cobu.wsc.ServiceInstance = function ServiceInstance(name, port, cloudServer)
         return function handleMessage(data, flags) {
             log.info('message ' + connection.id + ', ' + data);
             serviceWorker.onMessage(new cobu.wsc.WebSocketMessage(data), connection, self);
-        }
+        };
     }
 
-   constructor();
+    constructor();
 };

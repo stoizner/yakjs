@@ -2,43 +2,43 @@
  * InstanceInfo
  * @constructor
  */
-cobu.wsc.service.InstanceInfo = function InstanceInfo()
-{
-   'use strict';
+cobu.wsc.service.InstanceInfo = function InstanceInfo() {
 
-   /**
+    'use strict';
+
+    /**
     *
     * @type {string}
     */
-   this.name = null;
+    this.name = null;
 
-   /**
+    /**
     *
     * @type {string}
     */
-   this.state = null;
+    this.state = null;
 
-   /**
+    /**
     * Description
     * @type {null|string}
     */
-   this.description = null;
+    this.description = null;
 
-   /**
+    /**
     *
     * @type {number}
     */
-   this.connectionCount = 0;
+    this.connectionCount = 0;
 
-   /**
+    /**
     *
     * @type {number}
     */
-   this.port = null;
+    this.port = null;
 
-   /**
+    /**
     *
     * @type {Array.<string>}
     */
-   this.plugins = [];
+    this.plugins = [];
 };

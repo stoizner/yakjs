@@ -3,42 +3,41 @@
  * @constructor
  * @implements {cobu.wsc.PluginWorker}
  */
-cobu.wsc.BroadcastPluginWorker = function BroadcastPluginWorker()
-{
-   'use strict';
+cobu.wsc.BroadcastPluginWorker = function BroadcastPluginWorker() {
 
-   /** @type {cobu.wsc.BroadcastPluginWorker} */
-   var self = this;
+    'use strict';
 
-   this.name = 'broadcast';
+    /** @type {cobu.wsc.BroadcastPluginWorker} */
+    var self = this;
 
-   /** Constructor */
-   function constructor()
-   {
-   }
+    this.name = 'broadcast';
 
-   /**
-    * @param {cobu.wsc.WebSocketConnection} connection
-    */
-   this.onNewConnection = function onNewConnection(connection) {};
+    /** Constructor */
+    function constructor() {
+    }
 
-   /**
-    * @param {cobu.wsc.WebSocketMessage} message
-    * @param {cobu.wsc.WebSocketConnection} connection
-    * @param {cobu.wsc.WebSocketInstance} instance
-    */
-   this.onMessage = function onMessage(message, connection, instance) {
+    /**
+     * @param {cobu.wsc.WebSocketConnection} connection
+     */
+    this.onNewConnection = function onNewConnection(connection) {};
 
-      var connections = instance.getConnections();
+    /**
+     * @param {cobu.wsc.WebSocketMessage} message
+     * @param {cobu.wsc.WebSocketConnection} connection
+     * @param {cobu.wsc.WebSocketInstance} instance
+     */
+    this.onMessage = function onMessage(message, connection, instance) {
 
-      for(var i=0; i<connections.length; i++) {
-         var conn = connections[i];
+        var connections = instance.getConnections();
 
-         if (conn.id !== connection.id) {
-            conn.send(message.data);
-         }
-      }
-   };
+        for(var i=0; i<connections.length; i++) {
+            var conn = connections[i];
 
-   constructor();
+            if (conn.id !== connection.id) {
+                conn.send(message.data);
+            }
+        }
+    };
+
+    constructor();
 };

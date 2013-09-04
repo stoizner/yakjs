@@ -137,9 +137,9 @@ cobu.wsc.WebSocketInstance = function WebSocketInstance(cloudServer, name, port)
 
             if (worker !== null) {
                 pluginWorkers.push(worker);
-                log.info(pluginName + ' initialized.')
+                log.info(pluginName + ' initialized.');
             } else {
-                log.warn(pluginName + ' not initialized.')
+                log.warn(pluginName + ' not initialized.');
             }
         }
     }
@@ -195,7 +195,7 @@ cobu.wsc.WebSocketInstance = function WebSocketInstance(cloudServer, name, port)
             for(var i=0; i<pluginWorkers.length; i++) {
                 pluginWorkerOnMessage(pluginWorkers[i], data, connection);
             }
-        }
+        };
     }
 
     /**

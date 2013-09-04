@@ -4,18 +4,18 @@
  * @constructor
  * @param {string} data
  */
-cobu.wsc.WebSocketMessage = function WebSocketMessage(data)
-{
-   'use strict';
+cobu.wsc.WebSocketMessage = function WebSocketMessage(data) {
 
-   /**
+    'use strict';
+
+    /**
     * @type {string|null}
     */
-   this.data = data || null;
+    this.data = data || null;
 
-   /** Constructor */
-   function constructor() {
-   }
+    /** Constructor */
+    function constructor() {
+    }
 
-   constructor();
+    constructor();
 };

@@ -2,19 +2,19 @@
  * StopInstanceRequest
  * @constructor
  */
-cobu.wsc.service.StopInstanceRequest = function StopInstanceRequest()
-{
-   'use strict';
+cobu.wsc.service.StopInstanceRequest = function StopInstanceRequest() {
 
-   /**
+    'use strict';
+
+    /**
     * Command for the service API.
     * @type {string}
     */
-   this.type = 'request.stopInstance';
+    this.type = 'request.stopInstance';
 
-   /**
+    /**
     * Name of the instance.
     * @type {string}
     */
-   this.instanceName = null;
+    this.instanceName = null;
 };

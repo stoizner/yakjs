@@ -2,34 +2,34 @@
  * ServerInstance
  * @interface
  */
-cobu.wsc.ServerInstance = function ServerInstance()
-{
-   'use strict';
+cobu.wsc.ServerInstance = function ServerInstance() {
 
-   /**
-    * The unique instance name.
-    * @type {null}
-    */
-   this.name = null;
+    'use strict';
 
-   /**
-    * Start instance.
-    */
-   this.start = function start() {};
+    /**
+     * The unique instance name.
+     * @type {null}
+     */
+    this.name = null;
 
-   /**
-    * Stop instance.
-    */
-   this.stop = function stop() {};
+    /**
+     * Start instance.
+     */
+    this.start = function start() {};
 
-   /**
-    * Description
-    * @type {string}
-    */
-   this.description = '';
+    /**
+     * Stop instance.
+     */
+    this.stop = function stop() {};
 
-   /**
-    * @type {cobu.wsc.Logger}
-    */
-   this.log = new cobu.wsc.Logger(self.name);
+    /**
+     * Description
+     * @type {string}
+     */
+    this.description = '';
+
+    /**
+     * @type {cobu.wsc.Logger}
+     */
+    this.log = new cobu.wsc.Logger('');
 };
