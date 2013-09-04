@@ -9,7 +9,7 @@ The server requires node.js (see and download it from [http://nodejs.org/]) to r
 ### Install and run the cloud server
 
 _Install_
-Download zip package and extract it.
+Download zip package (not yet ready) and extract it.
 
 _Start the server_
 ``` node cobu-ws-cloud-server.js ```
