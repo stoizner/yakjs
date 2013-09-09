@@ -9,7 +9,7 @@ cobu.wsc.ui.EmptyPluginTemplate = function Plugin() {
     /**
      * @param {cobu.wsc.WebSocketInstance} instance
      */
-    this.onInitialize = function onInit(instance) {};
+    this.onInitialize = function onInitialize(instance) {};
 
     /**
      * @param {cobu.wsc.WebSocketConnection} connection
@@ -26,5 +26,5 @@ cobu.wsc.ui.EmptyPluginTemplate = function Plugin() {
     /**
      * @param {cobu.wsc.WebSocketInstance} instance
      */
-    this.onTerminate = function onInit(instance) {};
+    this.onTerminate = function onTerminate(instance) {};
 };
