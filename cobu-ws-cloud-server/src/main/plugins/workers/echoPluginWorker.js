@@ -10,7 +10,7 @@ cobu.wsc.EchoPluginWorker = function EchoPluginWorker() {
     /**
      * @param {cobu.wsc.WebSocketInstance} instance
      */
-    this.onInitialize = function onInit(instance) {};
+    this.onInitialize = function onInitialize(instance) {};
 
     /**
      * @param {cobu.wsc.WebSocketConnection} connection
@@ -29,5 +29,5 @@ cobu.wsc.EchoPluginWorker = function EchoPluginWorker() {
     /**
      * @param {cobu.wsc.WebSocketInstance} instance
      */
-    this.onTerminate = function onInit(instance) {};
+    this.onTerminate = function onTerminate(instance) {};
 };
