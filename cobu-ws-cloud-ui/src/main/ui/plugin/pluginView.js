@@ -40,6 +40,7 @@ cobu.wsc.ui.PluginView = function PluginView(parent, context) {
             value:  '',
             mode:  'javascript',
             lineNumbers: false,
+            indentUnit: 4,
             extraKeys: { 'Ctrl-Space': 'autocomplete', 'Ctrl-D': 'autodocument' }
         });
     }
