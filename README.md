@@ -2,20 +2,21 @@
 
 Create websocket servers on the fly for prototyping or testing. It works like jsFiddle.
 
-### Requirements
+### Download 
+Download the [latest release](https://github.com/cobuChris/cobu-ws-cloud/releases) here.
 
-The server requires node.js (see and download it from [http://nodejs.org/]) to run.
+**Requirements**
 
-### Install and run the cloud server
+The server requires [node.js](http://nodejs.org/) to run.
 
-_Install_
+**Install and run the cloud server**
 
-Download zip package (not yet ready) and extract it.
+Download zip package and extract it.
 
 _Start the server_
 
 ``` node cobu-ws-cloud-server.js ```
 
-## Use client (ui)
+**Use web-based client (ui)**
 
-Open index.html in your browser.
+Open _index.html_ in your browser. The UI is included in the release zip package.
