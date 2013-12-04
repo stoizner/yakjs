@@ -10,7 +10,7 @@ Download the **[latest release package 0.2.0](https://github.com/cobuChris/yak-j
 **Requirements**
 The server requires [node.js](http://nodejs.org/) to run.
 
-## Install and run the cloud server
+## Install and run YAKjs server
 
 Download zip package and extract it.
 
@@ -18,7 +18,7 @@ _Start the server_
 
 ``` node yakjs-server.js ```
 
-## Web based user interface
+## Open the YAKjs user interface
 
 Open _index.html_ in your browser. The UI is included in the release zip package.
 
