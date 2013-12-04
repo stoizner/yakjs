@@ -49,7 +49,8 @@ module.exports = function(grunt) {
             readme: {
                 files: [
                     { flatten:true, src: ['README.md'], dest: BUILD + '/' },
-                    { flatten:true, src: ['LICENSE'], dest: BUILD + '/'}
+                    { flatten:true, src: ['LICENSE'], dest: BUILD + '/'},
+                    { flatten:false, src: ['node_modules/ws/**'], dest: BUILD}
                 ]
             }
         }

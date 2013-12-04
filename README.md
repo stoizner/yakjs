@@ -5,7 +5,7 @@ This tool is for rapid prototyping, testing, integration and simulation.
 It **does not** replace or take over your websocket server implementation.  
 
 ## Download 
-Download the **[latest release package 0.2.0](https://github.com/yakChris/yak-js/releases)**.
+Download the **[latest release package 0.2.0](https://github.com/cobuChris/yak-js/releases)**.
 
 **Requirements**
 The server requires [node.js](http://nodejs.org/) to run.
