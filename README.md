@@ -1,11 +1,11 @@
-## cobu-ws-cloud
+## yak-js
 
-The cobu websocket cloud makes developing software, based on WebSocket comunication very easy. 
+The yak-js makes developing software, based on websocket comunication very easy. 
 This tool is for rapid prototyping, testing, integration and simulation. 
 It **does not** replace or take over your websocket server implementation.  
 
 ## Download 
-Download the **[latest release](https://github.com/cobuChris/cobu-ws-cloud/releases)**.
+Download the **[latest release](https://github.com/cobuChris/yak-js/releases)**.
 
 **Requirements**
 The server requires [node.js](http://nodejs.org/) to run.
