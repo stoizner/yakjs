@@ -1,8 +1,8 @@
 ## YAKjs
 
-The yak-js makes developing software, based on websocket comunication very easy. 
-This tool is for rapid prototyping, testing, integration and simulation. 
-It **does not** replace or take over your websocket server implementation.  
+The YAKjs makes developing software, based on websocket comunication very easy. 
+This tool is for rapid prototyping, testing, integration and simulation.
+It **does not** replace or is an solution for production ready websocket server implementation.  
 
 ## Download 
 Download the **[latest release package 0.2.0](https://github.com/cobuChris/yak-js/releases)**.
