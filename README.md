@@ -22,4 +22,4 @@ _Start the server_
 
 Open _index.html_ in your browser. The UI is included in the release zip package.
 
-![alt text](https://raw.github.com/yakChris/yak-js/master/yakjs-ui/doc/screenshot-v0.2.0-03.png "screenshot")
+![alt text](https://github.com/cobuChris/yak-js/blob/master/yakjs-ui/doc/screenshot-v0.2.0-03.png "screenshot")
