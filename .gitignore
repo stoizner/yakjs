@@ -1,1 +1,4 @@
-/cobu-ws-cloud-server/build
+/yakjs-server/build
+/yakjs-ui/build
+/yakjs-api/build
+/yakjs-package/release

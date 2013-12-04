@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="yakjs-server" pattern="file:yakjs-server/src/main//*" />
+</component>

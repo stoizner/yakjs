@@ -1,0 +1,21 @@
+{
+  "name": "yakjs-ui",
+  "version": "0.2.0",
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-contrib-jshint": "~0.6.3",
+    "grunt-contrib-nodeunit": "~0.2.0",
+    "grunt-contrib-uglify": "~0.2.2",
+    "grunt-contrib-concat": "~0.3.0",
+    "ws": "~0.4.29",
+    "grunt-contrib-copy": "~0.4.1",
+    "grunt-contrib-clean": "~0.5.0",
+    "grunt-contrib-less": "~0.7.0",
+    "assemble-less": "~0.5.1"
+  },
+  "description": "yak websocket cloud service ui",
+  "main": "Gruntfile.js",
+  "repository": "",
+  "author": "Christian Schuller",
+  "license": "MIT"
+}
