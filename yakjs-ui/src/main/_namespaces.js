@@ -5,8 +5,6 @@
  */
 var yak= yak || {};
 
-
-
 /**
  * yak API
  * @namespace yak.api
@@ -18,5 +16,6 @@ yak.api = yak.api || {};
  * @namespace yak.ui
  */
 yak.ui = yak.ui || {};
+
 
 

@@ -1,4 +1,7 @@
 /yakjs-server/build
-/yakjs-ui/build
+/yakjs-server/.build
+/yakjs-server/.dist
+/yakjs-ui/.build
+/yakjs-ui/.dist
 /yakjs-api/build
 /yakjs-package/release
