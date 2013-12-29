@@ -4,6 +4,7 @@
       <w>dest</w>
       <w>guid</w>
       <w>nonull</w>
+      <w>noop</w>
       <w>uglify</w>
       <w>websocket</w>
       <w>yakjs</w>

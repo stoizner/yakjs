@@ -15,8 +15,8 @@ module.exports = function(grunt) {
      * Files
      */
     var currentDirectory = './';
-    var buildDirectory = currentDirectory + '.build/';
-    var distDirectory  = currentDirectory + '.dist/' + pkg.name + '/';
+    var buildDirectory = currentDirectory + '-build/';
+    var distDirectory  = currentDirectory + '-dist/' + pkg.name + '/';
     var srcDirectory = currentDirectory + 'src/main/';
 
     /**
@@ -58,7 +58,7 @@ module.exports = function(grunt) {
         copy: {
             main: {
                 files: [
-                    { expand: true, cwd: srcDirectory, src: ['**/*.*', '!**/*.less'], dest: distDirectory, filter: 'isFile'},
+                    { expand: true, cwd: srcDirectory, src: ['**/*.*', '!**/*.less', '!**/*.js'], dest: distDirectory, filter: 'isFile'},
                     { expand: true, src: ['ext/**/*'], dest: distDirectory}
                 ]
             },
@@ -102,6 +102,39 @@ module.exports = function(grunt) {
                     spawn: false,
                     interrupt: true
                 }
+            },
+            css : {
+                files: [srcDirectory + '**/*.css'],
+                tasks: ['copy:main'],
+                options: {
+                    spawn: false,
+                    interrupt: true
+                }
+            },
+            index: {
+                files: [srcDirectory + 'index.html'],
+                tasks: ['build'],
+                options: {
+                    spawn: false,
+                    interrupt: true
+                }
+            },
+            mustache: {
+                files: [srcDirectory + '**/*.mustache'],
+                tasks: ['mustache'],
+                options: {
+                    spawn: false,
+                    interrupt: true
+                }
+            }
+        },
+        mustache: {
+            dist: {
+                files: {
+                    src: [srcDirectory + '**/*.mustache']
+                },
+                srcMerge: srcDirectory + 'index.html',
+                target: distDirectory + 'index.html'
             }
         }
     });
@@ -113,6 +146,8 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-contrib-watch');
 
+    grunt.loadTasks('grunt-tasks');
+
     // Single purpose Tasks
     grunt.registerTask('convertLess', ['copy:less', 'less']);
 
@@ -120,7 +155,7 @@ module.exports = function(grunt) {
     grunt.registerTask('dev', ['build', 'watch']);
 
     // Build Tasks
-    grunt.registerTask('build', ['clean:all', 'concat', 'copy:main', 'convertLess']);
+    grunt.registerTask('build', ['clean:all', 'concat', 'copy:main', 'convertLess', 'mustache']);
 
     // Default task(s).
     grunt.registerTask('default', ['build']);

@@ -5,3 +5,5 @@
 /yakjs-ui/.dist
 /yakjs-api/build
 /yakjs-package/release
+
+yakjs-ui

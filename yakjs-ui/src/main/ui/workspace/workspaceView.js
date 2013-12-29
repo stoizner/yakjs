@@ -3,23 +3,16 @@
  * @class
  * @constructor
  * @param {yak.ui.ViewContext} context
- * @param {$} parent
+ * @param {jQuery} parent
+ * @param {yak.ui.WorkspaceViewModel} viewModel
  */
-yak.ui.WorkspaceView = function WorkspaceView(parent, context) {
+yak.ui.WorkspaceView = function WorkspaceView(parent, context, viewModel) {
     'use strict';
 
-    /** @type {yak.ui.WorkspaceView} */
+    /**
+     * @type {yak.ui.WorkspaceView}
+     */
     var self = this;
-
-    /**
-     * @type {yak.ui.HeaderView}
-     */
-    var header = null;
-
-    /**
-     * @type {$|jQuery}
-     */
-    var instanceList = null;
 
     /**
      * @type {Object.<string, object>}
@@ -27,90 +20,76 @@ yak.ui.WorkspaceView = function WorkspaceView(parent, context) {
     var panelViews = {};
 
     /**
+     * @type {yak.ui.Template}
+     */
+    var template = context.template.load('workspace');
+
+    /**
+     * Whether the main navigation is visible or not.
+     * @type {*}
+     */
+    this.isNavigationVisible = context.ko.observable(false);
+
+    /**
      *  Constructor
      */
     function constructor() {
+        parent.html(template.build());
 
-        header = new yak.ui.HeaderView($('.header', parent), context);
-        panelViews['panel-instance'] = new yak.ui.InstanceListView($('.panel-instance', parent), context);
-        panelViews['panel-instance-edit'] = new yak.ui.InstanceView($('.panel-instance-edit', parent), context);
-        panelViews['panel-plugin'] = new yak.ui.PluginListView($('.panel-plugin', parent), context);
-        panelViews['panel-plugin-edit'] = new yak.ui.PluginView($('.panel-plugin-edit', parent), context);
+        context.viewFactory.create($('.header'), yak.ui.HeaderView, yak.ui.HeaderViewModel);
+        context.viewFactory.create($('.notification', parent), yak.ui.NotificationView, yak.ui.NotificationViewModel);
 
-        context.eventBus.on(yak.ui.ActivatePanelCommand).register(handleActivatePanel);
-        context.eventBus.on(yak.ui.WebSocketOpenEvent).register(handleWebSocketOpen);
-        context.eventBus.on(yak.ui.WebSocketCloseEvent).register(handleWebSocketClosed);
+        panelViews['panel-instance'] = context.viewFactory.create($('.panel-instance', parent), yak.ui.InstanceListView, yak.ui.InstanceListViewModel);
+        panelViews['panel-instance-edit'] = context.viewFactory.create($('.panel-instance-edit', parent), yak.ui.InstanceView, yak.ui.InstanceViewModel);
+        panelViews['panel-plugin'] = context.viewFactory.create($('.panel-plugin', parent), yak.ui.PluginListView, yak.ui.PluginListViewModel);
 
-        $('.menu li', parent).click(handleMenuItemClick);
-        hidePanels();
-        showPleaseConnectNotification();
+        //panelViews['panel-instance'] = new yak.ui.InstanceListView($('.panel-instance', parent), context);
+//        panelViews['panel-instance'] = context.viewFactory.create($('.panel-instance', parent), yak.ui.InstanceListView, yak.ui.InstanceListViewModel);
+//
+//        panelViews['panel-plugin'] = new yak.ui.PluginListView($('.panel-plugin', parent), context);
+//        panelViews['panel-plugin-edit'] = new yak.ui.PluginView($('.panel-plugin-edit', parent), context);
+
+
+        viewModel.onActivePanelChanged = showPanel;
+        showPanel();
+
+        context.ko.applyBindings(self, $('.workspace-nav', parent)[0]);
     }
 
     /**
-     * Handle event when web socket was opened.
+     * @param {yak.ui.WorkspaceViewModel} view
+     * @param event
      */
-    function handleWebSocketOpen() {
-        console.log('handleWebSocketOpen');
-        $('.notification', parent).hide();
+    this.handleNavigationClick = function handleNavigationClick(view, event) {
+        console.log('handleNavigationClick', view, event);
 
-        $('.menu', parent).show();
-        $('.panels', parent).show();
-
-        activatePanel('panel-instance', null);
-    }
-
-    /**
-     * Handle event when web socket was closed.
-     */
-    function handleWebSocketClosed() {
-        console.log('handleWebSocketClosed');
-        showPleaseConnectNotification();
-    }
-
-    /**
-     * Show 'Please connect to service port' notification
-     */
-    function showPleaseConnectNotification() {
-        var notificationBar = $('.notification', parent);
-        notificationBar.html('Please connect to service port (default: 8790) of yakjs-server');
-        notificationBar.show();
-        $('.menu', parent).hide();
-        $('.panels', parent).hide();
-    }
-
-    /**
-     * @param {yak.ui.ActivatePanelCommand} command
-     */
-    function handleActivatePanel(command) {
-        console.log('handleActivatePanel', command);
-        activatePanel(command.panelName, command.data);
-    }
-
-    /**
-    *
-    * @param event
-    */
-    function handleMenuItemClick(event) {
-        var target = $(event.currentTarget);
+        var target = $(event.target).closest('li');
         var panelName = target.attr('data-panel');
 
-        $('.menu li', parent).removeClass('state-active');
+        $('.workspace-nav li', parent).removeClass('state-active');
         target.addClass('state-active');
 
-        activatePanel(panelName);
-    }
+        viewModel.activatePanel(panelName);
+    };
 
     /**
-     * @param {string} name
-     * @param {null|string|object} data
+     * Show active panel.
      */
-    function activatePanel(name, data) {
-        console.log('activatePanel', name, data);
+    function showPanel() {
+        console.log('yak.ui.WorkspaceView.showPanel', { panel: viewModel.activePanel, data: viewModel.activePanelData });
         hidePanels();
-        $('.panels .' + name, parent).show();
+        self.isNavigationVisible(false);
 
-        if (panelViews.hasOwnProperty(name)) {
-            panelViews[name].active(data);
+        if (viewModel.activePanel) {
+            self.isNavigationVisible(true);
+
+            $('.workspace-panels .' + viewModel.activePanel, parent).show();
+
+            if (panelViews.hasOwnProperty(viewModel.activePanel)) {
+                panelViews[viewModel.activePanel].activate(viewModel.activePanelData);
+            } else {
+                console.log('No view found.', { activePanel: viewModel.activePanel });
+            }
         }
     }
 
@@ -118,7 +97,7 @@ yak.ui.WorkspaceView = function WorkspaceView(parent, context) {
      * Hide all panels.
      */
     function hidePanels() {
-        $('.panels .panel', parent).hide();
+        $('.workspace-panels .panel', parent).hide();
     }
 
     constructor();

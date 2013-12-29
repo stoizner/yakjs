@@ -7,25 +7,17 @@ yak.ui.ViewContext = function ViewContext() {
     'use strict';
 
     /**
-     * @type {yak.ui.ViewContext}
+     * @type {yak.ui.ViewFactory}
      */
-    var self = this;
+    this.viewFactory = null;
 
     /**
-     * @type {yak.ui.WebSocketAdapter}
+     * @type {yak.ui.TemplateLoader}
      */
-    this.webSocket = null;
+    this.template = null;
 
     /**
-     * @type {cobu.EventBus}
+     * @type {{observable:function, applyBindings:function}}
      */
-    this.eventBus = null;
-
-    /**
-     * Constructor
-     */
-    function constructor() {
-    }
-
-    constructor();
+    this.ko = null;
 };

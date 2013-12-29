@@ -2,120 +2,81 @@
  * InstanceView
  * @constructor
  * @param {yak.ui.ViewContext} context
- * @param {$} parent
+ * @param {jQuery} parent
+ * @param {yak.ui.InstanceViewModel} viewModel
  */
-yak.ui.InstanceView = function InstanceView(parent, context) {
+yak.ui.InstanceView = function InstanceView(parent, context, viewModel) {
     'use strict';
 
-    /** @type {yak.ui.InstanceView} */
+    /**
+     *  @type {yak.ui.InstanceView}
+     */
     var self = this;
 
     /**
-    * @type {null|yak.api.InstanceInfo}
-    */
-    var instanceInfo = null;
+     * @type {yak.ui.Template}
+     */
+    var template = context.template.load('panelInstanceEdit');
+
+    this.activate = viewModel.activate;
+
+    this.name = context.ko.observable('');
+    this.port = context.ko.observable('');
+    this.description = context.ko.observable('');
+    this.pluginsCsv = context.ko.observable('');
 
     /**
      * Constructor
      */
     function constructor() {
-        $('#instance-save', parent).click(handleSaveClick);
-        context.eventBus.on(yak.api.CreateInstanceResponse).register(handleResponse);
-        context.eventBus.on(yak.api.UpdateInstanceResponse).register(handleResponse);
+        console.log('yak.ui.InstanceView.constructor', self);
+        parent.html(template.build());
+
+        //$('#instance-save', parent).click(handleSaveClick);
+
+        viewModel.onInstanceInfoChanged = handleInstanceInfoChanged;
+        context.ko.applyBindings(self, parent[0]);
     }
 
     /**
-     * Activate view
-     * @param {string|object} data
+     * Handle Instance Info Changed event.
      */
-    this.active = function active(data) {
-        console.log('InstanceView active', data);
+    function handleInstanceInfoChanged() {
+        console.log('InstanceView.handleInstanceInfoChanged', viewModel.instanceItem);
 
-        $('.error-line', parent).hide();
-
-        if (data !== null) {
-            instanceInfo = data;
+        if (viewModel.instanceItem) {
+            self.name(viewModel.instanceItem.name);
+            self.description(viewModel.instanceItem.description);
+            self.port(viewModel.instanceItem.port);
+            self.pluginsCsv(viewModel.instanceItem.pluginsCsv);
         } else {
-            instanceInfo = null;
+            self.name('');
+            self.description('');
+            self.port('');
+            self.pluginsCsv('');
         }
+    }
 
-        self.update();
+    /**
+     * Handle Save Button Click
+     */
+    this.handleSaveClick = function handleSaveClick() {
+        var instanceItem = new yak.ui.InstanceItem();
+        instanceItem.name = self.name();
+        instanceItem.description = self.description();
+        instanceItem.port = self.port();
+        instanceItem.pluginsCsv = self.pluginsCsv();
+
+        viewModel.createOrUpdate(instanceItem);
     };
 
-    /**
-     * Update form.
-     */
-    this.update = function update() {
-        if (instanceInfo === null) {
-            $('[data-bind]', parent).val('');
-        } else {
-            $('[data-bind]', parent).each(function() {
-                var element = $(this);
-                var name = element.attr('data-bind');
-                element.val(instanceInfo[name]);
-            });
 
-            $('[data-bind="pluginsCsv"]', parent).val(instanceInfo.plugins.join(','));
-        }
+    /**
+     * Handle cancel button click
+     */
+    this.handleCancelClick = function handleCancelClick() {
+        viewModel.cancel();
     };
-
-    /**
-     * @param {yak.api.CreateInstanceResponse} response
-     */
-    function handleResponse(response) {
-        console.log('handleResponse', response);
-
-        var errorLine = $('.error-line', parent);
-        if (response.success) {
-            context.eventBus.post(new yak.ui.ActivatePanelCommand('panel-instance'));
-            errorLine.hide();
-        } else {
-            errorLine.show();
-            $('.error-line-text', errorLine).html(response.message.replace(/\n/g, '<br />'));
-        }
-    }
-
-    /**
-     * Handle Create Click
-     */
-    function handleSaveClick() {
-        var data = bind();
-
-        console.log(data);
-
-        var request = null;
-
-        if (instanceInfo === null) {
-            request = new yak.api.CreateInstanceRequest();
-            $.extend(request, data);
-            request.plugins = data.pluginsCsv.split(',');
-        } else {
-            request = new yak.api.UpdateInstanceRequest();
-            $.extend(request, data);
-            request.plugins = data.pluginsCsv.split(',');
-            request.instanceName = instanceInfo.name;
-        }
-
-        $.extend(request, data);
-        context.webSocket.send(request);
-    }
-
-    /**
-     * Bind from form
-     * @returns {{}}
-     */
-    function bind() {
-
-        var data = {};
-
-        $('[data-bind]', parent).each(function() {
-            var element = $(this);
-            var name = element.attr('data-bind');
-            data[name] = element.val();
-        });
-
-        return data;
-    }
 
     constructor();
 };

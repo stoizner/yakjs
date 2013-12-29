@@ -7,21 +7,21 @@ yak.api.InstanceInfo = function InstanceInfo() {
     'use strict';
 
     /**
-    *
-    * @type {string}
-    */
+     * Name of the instance
+     * @type {string}
+     */
     this.name = null;
 
     /**
-    *
-    * @type {string}
-    */
+     * Instance state
+     * @type {string}
+     */
     this.state = null;
 
     /**
-    * Description
-    * @type {null|string}
-    */
+     * Description
+     * @type {null|string}
+     */
     this.description = null;
 
     /**

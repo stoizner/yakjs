@@ -2,84 +2,85 @@
  * InstanceListView
  * @constructor
  * @param {yak.ui.ViewContext} context
- * @param {$} parent
+ * @param {jQuery} parent
+ * @param {yak.ui.InstanceListViewModel} viewModel
  */
-yak.ui.InstanceListView = function InstanceListView(parent, context) {
+yak.ui.InstanceListView = function InstanceListView(parent, context, viewModel) {
     'use strict';
 
-    /** @type {yak.ui.InstanceListView} */
+    /**
+     * @type {yak.ui.InstanceListView}
+     */
     var self = this;
 
-    var itemTemplate = Mustache.compile($('#instance-item-tpl').html());
-
-    var itemContainer = $('.instance-items', parent);
+    /**
+     * @type {yak.ui.Template}
+     */
+    var template = context.template.load('panelInstances');
 
     /**
-     * @type {Array.<yak.api.InstanceInfo>}
+     * @type {yak.ui.Template}
      */
-    var listItems = [];
+    var itemTemplate = context.template.load('instanceItem');
 
     var contextMenuActions = {};
 
-    /** Constructor */
+    this.handleNewInstanceClick = viewModel.activateInstanceEditPanel;
+    this.handleRefreshClick = viewModel.reloadAndRefreshList;
+    this.activate = viewModel.activate;
+
+    /**
+     * Constructor
+     */
     function constructor() {
-        context.eventBus.on(yak.api.GetInstancesResponse).register(handleGetInstancesResponse);
-        context.eventBus.on(yak.api.StartInstanceResponse).register(handleResponseAndRefreshList);
-        context.eventBus.on(yak.api.StopInstanceResponse).register(handleResponseAndRefreshList);
-        context.eventBus.on(yak.api.RemoveInstanceResponse).register(handleResponseAndRefreshList);
+        console.log('yak.ui.InstanceListView.constructor');
+        parent.html(template.build());
 
-        contextMenuActions['edit'] = handleContextMenuEdit;
-        contextMenuActions['start'] = handleContextMenuStart;
-        contextMenuActions['stop'] = handleContextMenuStop;
-        contextMenuActions['delete'] = handleContextMenuDelete;
+        contextMenuActions.edit = handleContextEdit;
+        contextMenuActions.start = viewModel.startInstance;
+        contextMenuActions.stop = viewModel.stopInstance;
+        contextMenuActions.delete = viewModel.deleteInstance;
 
-        $('#instance-refresh').click(handleResponseAndRefreshList);
-        $('#instance-new').click(function() { context.eventBus.post(new yak.ui.ActivatePanelCommand('panel-instance-edit')); });
+        viewModel.onItemsChanged = handleItemsChanged;
+
+        context.ko.applyBindings(self, parent[0]);
+        self.createList();
     }
 
     /**
-     *
+     * Create the instance list.
      */
-    function handleResponseAndRefreshList() {
-        context.webSocket.send(new yak.api.GetInstancesRequest());
-    }
-
-    /**
-     * Activate View
-     */
-    this.active = function active() {
-        context.webSocket.send(new yak.api.GetInstancesRequest());
-    };
-
-    /**
-     * @param {yak.api.GetInstancesResponse} response
-     */
-    function handleGetInstancesResponse(response) {
-        console.log('handleGetInstancesResponse');
-
-        listItems = response.instances;
-        self.update();
-    }
-
-    /**
-     * Update panel list
-     */
-    this.update = function update() {
+    this.createList = function createList() {
 
         var html = '';
+        var itemContainer = $('.instance-items', parent);
 
-        listItems.sort(yak.ui.yakCompare);
+        viewModel.items.sort(yak.ui.nameCompare);
 
-        for(var i=0; i<listItems.length; i++) {
-            html += itemTemplate(listItems[i]);
-        }
+        _.each(viewModel.items, function(item) {
+            html += itemTemplate.build(item);
+        });
 
         itemContainer.html(html);
 
         $('.instance-item', itemContainer).contextMenu($('#instance-item-context'), handleMenuClicked);
     };
 
+    function handleContextEdit(name) {
+
+        var contextItem = _.findWhere(viewModel.items, { name: name});
+        viewModel.activateInstanceEditPanel(contextItem);
+    }
+
     /**
+     * Handle items changed event from view model.
+     */
+    function handleItemsChanged() {
+        self.createList();
+    }
+
+    /**
+     * Handle context menu item clicked event.
      * @param event
      * @param context
      */
@@ -88,58 +89,12 @@ yak.ui.InstanceListView = function InstanceListView(parent, context) {
         var instanceName = context.attr('data-instance');
         var menuAction = $(event.target).attr('data-menu');
 
+        // Registered callback functions lookup for context menu actions.
         if (contextMenuActions.hasOwnProperty(menuAction)) {
             contextMenuActions[menuAction](instanceName);
         } else {
             console.warn('No context menu handler found for ' + menuAction);
         }
-    }
-
-    /**
-     *
-     * @param instanceName
-     */
-    function handleContextMenuEdit(instanceName) {
-        var instanceInfo = null;
-
-        for(var i=0; i<listItems.length; i++) {
-            if (listItems[i].name === instanceName) {
-                instanceInfo = listItems[i];
-                break;
-            }
-        }
-
-        context.eventBus.post(new yak.ui.ActivatePanelCommand('panel-instance-edit', instanceInfo));
-    }
-
-    /**
-     *
-     * @param instanceName
-     */
-    function handleContextMenuStart(instanceName) {
-        var request = new yak.api.StartInstanceRequest();
-        request.instanceName = instanceName;
-        context.webSocket.send(request);
-    }
-
-    /**
-     *
-     * @param instanceName
-     */
-    function handleContextMenuStop(instanceName) {
-        var request = new yak.api.StopInstanceRequest();
-        request.instanceName = instanceName;
-        context.webSocket.send(request);
-    }
-
-    /**
-     *
-     * @param instanceName
-     */
-    function handleContextMenuDelete(instanceName) {
-        var request = new yak.api.RemoveInstanceRequest();
-        request.instanceName = instanceName;
-        context.webSocket.send(request);
     }
 
     constructor();

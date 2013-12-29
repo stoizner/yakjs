@@ -1,0 +1,29 @@
+<div class="form">
+    <div class="form-line">
+        <div class="line-label">Name</div>
+        <div class="line-input"><input data-bind="name" type="text" /></div>
+    </div>
+    <div class="form-line">
+        <div class="line-label">Description</div>
+        <div class="line-input"><input data-bind="description" type="text" /></div>
+    </div>
+    <div class="form-line">
+        <div class="line-left">
+            <div class="line-label">Code</div>
+            <div class="line-help">Press CTRL + SPACE for code completion.</div>
+        </div>
+        <div class="line-editor">
+            <div id="codeEditor" class="codeEditor">
+
+            </div>
+        </div>
+    </div>
+    <div class="form-line error-line">
+        <div class="line-label"></div>
+        <div class="error-line-text">{{error-text-here}}</div>
+    </div>
+    <div class="form-line">
+        <div class="line-label"></div>
+        <div class="line-input"><button id="plugin-save">Save</button></div>
+    </div>
+</div>

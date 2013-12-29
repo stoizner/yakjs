@@ -1,9 +1,8 @@
 /**
- * PluginInfo
+ * PluginItem
  * @constructor
  */
-yak.api.PluginInfo = function PluginInfo() {
-
+yak.ui.PluginItem = function PluginItem() {
     'use strict';
 
     /**

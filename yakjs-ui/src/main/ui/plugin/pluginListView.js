@@ -2,9 +2,10 @@
  * PluginListView
  * @constructor
  * @param {yak.ui.ViewContext} context
- * @param {$} parent
+ * @param {jQuery} parent
+ * @param {yak.ui.PluginListViewModel} viewModel
  */
-yak.ui.PluginListView = function PluginListView(parent, context) {
+yak.ui.PluginListView = function PluginListView(parent, context, viewModel) {
     'use strict';
 
     /**
@@ -12,72 +13,51 @@ yak.ui.PluginListView = function PluginListView(parent, context) {
      */
     var self = this;
 
-    var itemTemplate = Mustache.compile($('#plugin-item-tpl').html());
+    /**
+     * @type {yak.ui.Template}
+     */
+    var template = context.template.load('panelPlugins');
 
-    var itemContainer = $('.plugin-items', parent);
-
-    var listItems = [];
+    /**
+     * @type {yak.ui.Template}
+     */
+    var itemTemplate = context.template.load('pluginItem');
 
     var contextMenuActions = {};
+
+    this.handleNewPluginClick = viewModel.activatePluginEditPanel;
+    this.handleRefreshClick = viewModel.reloadAndRefreshList;
+    this.activate = viewModel.activate;
 
     /**
      * Constructor
      */
     function constructor() {
-        context.eventBus.on(yak.api.GetPluginsResponse).register(handleGetPluginsResponse);
-        context.eventBus.on(yak.api.RemovePluginResponse).register(handleRemovePluginResponse);
+        console.log('yak.ui.PluginListView.constructor');
+        parent.html(template.build());
 
-        contextMenuActions['edit'] = handleContextMenuEdit;
-        contextMenuActions['delete'] = handleContextMenuDelete;
+        contextMenuActions.edit = handleContextMenuEdit;
+        contextMenuActions.delete = handleContextMenuDelete;
 
-        $('#plugin-refresh').click(handleButtonRefreshClick);
-        $('#plugin-new').click(function() { context.eventBus.post(new yak.ui.ActivatePanelCommand('panel-plugin-edit')); });
-    }
+        viewModel.onItemsChanged = function() { self.createList(); };
 
-    /**
-     * Handle refresh button click
-     */
-    function handleButtonRefreshClick() {
-        context.webSocket.send(new yak.api.GetPluginsRequest());
-    }
-
-    /**
-     * Activate View
-     */
-    this.active = function active() {
-        context.webSocket.send(new yak.api.GetPluginsRequest());
-    };
-
-    /**
-     * @param {yak.api.GetPluginsResponse} response
-     */
-    function handleGetPluginsResponse(response) {
-        console.log('handleGetPluginsResponse', response);
-
-        listItems = response.plugins;
-        self.update();
-    }
-
-    /**
-     * @param {yak.RemovePluginResponse} response
-     */
-    function handleRemovePluginResponse(response) {
-        console.log('handleRemovePluginResponse', response);
-        context.webSocket.send(new yak.api.GetPluginsRequest());
+        context.ko.applyBindings(self, parent[0]);
+        self.createList();
     }
 
     /**
      * Update panel list
      */
-    this.update = function update() {
+    this.createList = function createList() {
 
         var html = '';
+        var itemContainer = $('.plugin-items', parent);
 
-        listItems.sort(yak.ui.nameCompare);
+        viewModel.items.sort(yak.ui.nameCompare);
 
-        for(var i=0; i<listItems.length; i++) {
-            html += itemTemplate(listItems[i]);
-        }
+        _.each(viewModel.items, function(item) {
+            html += itemTemplate.build(item);
+        });
 
         itemContainer.html(html);
 
@@ -104,25 +84,14 @@ yak.ui.PluginListView = function PluginListView(parent, context) {
      * @param pluginName
      */
     function handleContextMenuEdit(pluginName) {
-        var pluginInfo = null;
-
-        for(var i=0; i<listItems.length; i++) {
-            if (listItems[i].name === pluginName) {
-                pluginInfo = listItems[i];
-                break;
-            }
-        }
-
-        context.eventBus.post(new yak.ui.ActivatePanelCommand('panel-plugin-edit', pluginInfo));
+        viewModel.activatePluginEditPanel();
     }
 
     /**
      * @param {string} pluginName
      */
     function handleContextMenuDelete(pluginName) {
-        var request = new yak.api.RemovePluginRequest();
-        request.pluginName = pluginName;
-        context.webSocket.send(request);
+        viewModel.remove(pluginName);
     }
 
     constructor();

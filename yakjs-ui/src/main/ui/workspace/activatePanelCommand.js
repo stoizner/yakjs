@@ -4,21 +4,20 @@
  * @param {string} name the panel name.
  * @param {string|object} [data]
  */
-yak.ui.ActivatePanelCommand = function ActivatePanelCommand(name, data)
-{
-   'use strict';
+yak.ui.ActivatePanelCommand = function ActivatePanelCommand(name, data) {
+    'use strict';
 
-   this.type="ui.command.activatePanel";
+    this.type='ui.command.activatePanel';
 
-   /**
-    * Name of the panel.
-    * @type {string}
-    */
-   this.panelName = name;
+    /**
+     * Name of the panel.
+     * @type {string}
+     */
+    this.panelName = name;
 
-   /**
-    *
-    * @type {string|string}
-    */
-   this.data = data || null;
+    /**
+     *
+     * @type {string|object}
+     */
+    this.data = data || null;
 };

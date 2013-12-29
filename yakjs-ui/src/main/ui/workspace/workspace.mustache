@@ -1,0 +1,20 @@
+<div class="notification" data-bind="visible: isNotificationVisible"></div>
+
+<div class="workspace-main">
+
+    <!-- Navigation -->
+    <nav class="workspace-nav" data-bind="visible: isNavigationVisible, click: handleNavigationClick">
+        <ul>
+            <li data-panel="panel-instance" class="state-active">Instances</li>
+            <li data-panel="panel-plugin">Plugins</li>
+        </ul>
+    </nav>
+
+    <!-- Panels -->
+    <div class="workspace-panels">
+        <div class="panel panel-instance"></div>
+        <div class="panel panel-instance-edit"></div>
+        <div class="panel panel-plugin"></div>
+        <div class="panel panel-plugin-edit"></div>
+    </div>
+</div>

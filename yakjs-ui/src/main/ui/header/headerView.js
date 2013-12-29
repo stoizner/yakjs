@@ -4,88 +4,63 @@
  * @constructor
  * @param {$} parent
  * @param {yak.ui.ViewContext} context
+ * @param {yak.ui.HeaderViewModel} viewModel
  */
-yak.ui.HeaderView = function HeaderView(parent, context) {
+yak.ui.HeaderView = function HeaderView(parent, context, viewModel) {
     'use strict';
 
-    /** @type {yak.ui.HeaderView} */
+    /**
+     * @type {yak.ui.HeaderView}
+     */
     var self = this;
 
-    var WEB_SOCKET_URI_STORAGE_KEY = 'yak-js-ui-user-data-web-socket-uri';
+    /**
+     * @type {yak.ui.Template}
+     */
+    var template = context.template.load('header');
 
-    var uriInput = null;
+    /**
+     * Connection State CSS class
+     */
+    this.classConnectionState = context.ko.observable();
+
+    /**
+     * WebSocket uri input
+     */
+    this.webSocketUri = context.ko.observable();
 
     /**
      * Constructor
      */
     function constructor() {
-
-        uriInput = $('#webSocketUri', parent);
-        uriInput.val(getLastUsedWebSocketUri());
-        uriInput.focusout(handleUriFocusOut);
+        parent.html(template.build());
 
         $('#webSocketConnect').click(handleConnectClick);
 
-        context.webSocket.onclose = handleSocketClose;
-        context.webSocket.onopen = handleSocketOpen;
-        context.webSocket.onerror = handleSocketError;
-        context.webSocket.connect(uriInput.val());
+        viewModel.onWebSocketConnectedChanged = updateConnectionState;
+
+        self.webSocketUri(viewModel.webSocketUri);
+
+        context.ko.applyBindings(self, parent[0]);
     }
 
     /**
-     * Handle websocket open event.
+     * Update Connection State
      */
-    function handleSocketOpen() {
-        uriInput.removeClass('state-error');
-        uriInput.addClass('state-connected');
-    }
-
-    /**
-     * Handle websocket close event.
-     */
-    function handleSocketClose() {
-        uriInput.removeClass('state-connected');
-        uriInput.removeClass('state-error');
-    }
-
-    /**
-     * Handle websocket error event.
-     */
-    function handleSocketError() {
-        uriInput.removeClass('state-connected');
-        uriInput.addClass('state-error');
+    function updateConnectionState() {
+        console.log('updateConnectionState ' + viewModel.isWebSocketConnected);
+        if (viewModel.isWebSocketConnected) {
+            self.classConnectionState('state-connected');
+        } else {
+            self.classConnectionState('state-error');
+        }
     }
 
     /**
      * Handle connect button click.
      */
     function handleConnectClick() {
-        saveWebSocketUri();
-        context.webSocket.connect($('#webSocketUri').val());
-    }
-
-    /**
-     * handle Uri FocusOut
-     */
-    function handleUriFocusOut() {
-        saveWebSocketUri();
-    }
-
-    /**
-    * Save websocket uri.
-    */
-    function saveWebSocketUri() {
-        localStorage.setItem(WEB_SOCKET_URI_STORAGE_KEY, $('#webSocketUri').val());
-    }
-
-    /**
-     * @returns {string}
-     */
-    function getLastUsedWebSocketUri() {
-        var webSocketUri = localStorage.getItem(WEB_SOCKET_URI_STORAGE_KEY);
-        webSocketUri = webSocketUri || 'ws://localhost:8080';
-
-        return webSocketUri;
+        viewModel.connect(self.webSocketUri());
     }
 
     constructor();
