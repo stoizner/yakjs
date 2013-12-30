@@ -1,25 +1,29 @@
-//noinspection JSUnresolvedVariable
-module.exports = function(grunt) {
+/* global module:false */
 
+module.exports = function(grunt) {
     'use strict';
 
     var PKG = grunt.file.readJSON('package.json');
 
-    var DST_RELEASE = 'release/' + PKG.name + '-' + PKG.version;
-    var SRC_SERVER = '../yakjs-server/build/';
-    var SRC_UI = '../yakjs-ui/build/';
+    /**
+     * Base Directories
+     */
+    var currentDirectory = './';
+    var packageDistDirectory = currentDirectory + 'dist/' + PKG.name + '-' + PKG.version;
+    var serverDistDirectory = '../yakjs-server/dist/yakjs-server/';
+    var uiDistDirectory = '../yakjs-ui/dist/yakjs-ui/';
 
     // Project configuration.
     grunt.initConfig({
         pkg: PKG,
         clean: {
-            release: [DST_RELEASE]
+            release: [packageDistDirectory]
         },
         copy: {
             release: {
                 files: [
-                    { expand:true, flatten:false, cwd: SRC_SERVER, src: ['**'], dest: DST_RELEASE + '/yakjs-server/' },
-                    { expand:true, flatten:false, cwd: SRC_UI, src: ['**'], dest: DST_RELEASE + '/yakjs-ui/'}
+                    { expand:true, flatten:false, cwd: serverDistDirectory, src: ['**'], dest: packageDistDirectory + '/yakjs-server/' },
+                    { expand:true, flatten:false, cwd: uiDistDirectory, src: ['**'], dest: packageDistDirectory + '/yakjs-ui/'}
                 ]
             }
         }
@@ -38,7 +42,7 @@ module.exports = function(grunt) {
     // Creates release directory.
     grunt.registerTask('mkDirRelease', [], function(arg) {
         // Create release directory
-        grunt.file.mkdir(DST_RELEASE);
+        grunt.file.mkdir(packageDistDirectory);
     });
 
     // TASK: version

@@ -1,7 +1,7 @@
 /* global yak:true */
 
 /**
- * Codebullets
+ * YAKjs
  * @namespace yak
  */
 var yak = yak || {};

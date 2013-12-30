@@ -4,8 +4,14 @@ module.exports = function(grunt) {
 
     'use strict';
 
-    var BUILD = 'build/';
-    var SRC = 'src/main/';
+    /**
+     * Base Directories
+     */
+    var currentDirectory = './';
+    var buildDirectory = currentDirectory + 'build/';
+    var tempDirectory = currentDirectory + 'dist/temp/';
+    var distDirectory = currentDirectory + 'dist/';
+    var srcDirectory = currentDirectory + 'src/main/';
 
     // Project configuration.
     grunt.initConfig({
@@ -31,10 +37,10 @@ module.exports = function(grunt) {
                     }
                 },
                 src: [
-                    SRC + '_namespaces.js',
-                    SRC + '**/*.js'
+                    srcDirectory + '_namespaces.js',
+                    srcDirectory + '**/*.js'
                 ],
-                dest: BUILD + '<%= pkg.name %>.js',
+                dest: distDirectory + '<%= pkg.name %>.js',
                 nonull: true
             }
         },

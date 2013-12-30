@@ -1,6 +1,6 @@
 {
   "name": "yakjs",
-  "version": "0.2.0",
+  "version": "0.3.0-snap",
   "devDependencies": {
     "grunt": "~0.4.1",
     "grunt-contrib-jshint": "~0.6.3",
@@ -13,7 +13,7 @@
     "grunt-contrib-clean": "~0.5.0"
   },
   "description": "yakjs package",
-  "main": "build/yakjs-server.js",
+  "main": "dist/yakjs-server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

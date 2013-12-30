@@ -1,7 +1,7 @@
 {
     "passfail"      : false,
     "maxerr"        : 100,
-    "predef"        : ["yak", "require", "ko", "_"],
+    "predef"        : ["yak", "require", "_"],
     "devel"         : true,
     "bitwise"       : true,
     "camelcase"     : true,

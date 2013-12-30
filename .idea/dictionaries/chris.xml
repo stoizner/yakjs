@@ -2,6 +2,7 @@
   <dictionary name="chris">
     <words>
       <w>dest</w>
+      <w>gruntfile</w>
       <w>guid</w>
       <w>nonull</w>
       <w>noop</w>

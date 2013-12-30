@@ -12,11 +12,12 @@ module.exports = function(grunt) {
     var pkg = grunt.file.readJSON('package.json');
 
     /**
-     * Files
+     * Base Directories
      */
     var currentDirectory = './';
-    var buildDirectory = currentDirectory + '-build/';
-    var distDirectory  = currentDirectory + '-dist/' + pkg.name + '/';
+    var buildDirectory = currentDirectory + 'build/';
+    var tempDirectory = currentDirectory + 'dist/temp/';
+    var distDirectory  = currentDirectory + 'dist/' + pkg.name + '/';
     var srcDirectory = currentDirectory + 'src/main/';
 
     /**
@@ -58,30 +59,30 @@ module.exports = function(grunt) {
         copy: {
             main: {
                 files: [
-                    { expand: true, cwd: srcDirectory, src: ['**/*.*', '!**/*.less', '!**/*.js'], dest: distDirectory, filter: 'isFile'},
+                    { expand: true, cwd: srcDirectory, src: ['**/*.*', '!**/*.less', '!**/*.js', '!**/*.mustache'], dest: distDirectory, filter: 'isFile'},
                     { expand: true, src: ['ext/**/*'], dest: distDirectory}
                 ]
             },
             less: {
                 files: [
-                    { expand: true, cwd: srcDirectory, src: ['**/style/**.less'], dest: buildDirectory + 'less', filter: 'isFile'}
+                    { expand: true, cwd: srcDirectory, src: ['**/style/**.less'], dest: tempDirectory + 'less', filter: 'isFile'}
                 ]
             }
         },
         clean: {
-            all : [buildDirectory, distDirectory],
-            build : [buildDirectory],
+            all : [tempDirectory, distDirectory],
+            build : [tempDirectory],
             dist : [distDirectory]
         },
         less: {
             options: {
-                paths: [buildDirectory]
+                paths: [tempDirectory]
             },
             // target name
             src: {
                 // no need for files, the config below should work
                 expand: true,
-                cwd:    buildDirectory + 'less/',
+                cwd:    tempDirectory + 'less/',
                 src:    '**/*.less',
                 dest:   distDirectory,
                 ext:    '.css'
@@ -146,7 +147,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-contrib-watch');
 
-    grunt.loadTasks('grunt-tasks');
+    grunt.loadTasks(buildDirectory + 'grunt-tasks');
 
     // Single purpose Tasks
     grunt.registerTask('convertLess', ['copy:less', 'less']);

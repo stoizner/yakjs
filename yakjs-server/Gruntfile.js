@@ -1,16 +1,26 @@
-//noinspection JSUnresolvedVariable
-module.exports = function(grunt) {
+/* global module:false */
 
+/**
+ * Gruntfile for yakjs-server
+ * @param grunt
+ */
+module.exports = function(grunt) {
     'use strict';
 
-    var PKG = grunt.file.readJSON('package.json');
+    var pkg = grunt.file.readJSON('package.json');
 
-    var BUILD = 'build/';
-    var SRC = 'src/main/';
+    /**
+     * Base Directories
+     */
+    var currentDirectory = './';
+    var buildDirectory = currentDirectory + 'build/';
+    var tempDirectory = currentDirectory + 'dist/temp/';
+    var distDirectory = currentDirectory + 'dist/' + pkg.name + '/';
+    var srcDirectory = currentDirectory + 'src/main/';
 
     // Project configuration.
     grunt.initConfig({
-        pkg: PKG,
+        pkg: pkg,
         uglify: {
             options: {
                 banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
@@ -31,26 +41,26 @@ module.exports = function(grunt) {
                         return src;
                     }
                 },
-                banner: '(c) Christian Schuller',
+                banner: '(c) ' + pkg.author,
                 src: [
-                    SRC + '_namespaces.js',
-                    SRC + 'api/**/*.js',
-                    SRC + 'core/**/*.js',
-                    SRC + 'modules/**/*.js',
-                    SRC + 'plugins/**/*.js',
-                    SRC + 'service/**/*.js',
-                    SRC + '_bootstrap.js'
+                    srcDirectory + '_namespaces.js',
+                    srcDirectory + 'api/**/*.js',
+                    srcDirectory + 'core/**/*.js',
+                    srcDirectory + 'modules/**/*.js',
+                    srcDirectory + 'plugins/**/*.js',
+                    srcDirectory + 'service/**/*.js',
+                    srcDirectory + '_bootstrap.js'
                 ],
-                dest: BUILD + PKG.name + '.js',
+                dest: distDirectory + pkg.name + '.js',
                 nonull: true
             }
         },
         copy: {
-            readme: {
+            dist: {
                 files: [
-                    { flatten:true, src: ['README.md'], dest: BUILD + '/' },
-                    { flatten:true, src: ['LICENSE'], dest: BUILD + '/'},
-                    { flatten:false, src: ['node_modules/ws/**'], dest: BUILD}
+                    { flatten:true, src: ['README.md', 'LICENSE', '*.bat', '*.sh'], dest: distDirectory + '/' },
+                    { flatten:false, src: ['node_modules/ws/**'], dest: distDirectory},
+                    { flatten:true, cwd: srcDirectory + 'shell/', src: ['*.bat', '*.sh'], dest: distDirectory + '/', expand: true }
                 ]
             }
         }
@@ -61,20 +71,21 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-compress');
 
-    // TASK: default
-    grunt.registerTask('default', ['version', 'concat', 'copy:readme']);
-
     // TASK: mkDirRelease
     // Creates release directory.
     grunt.registerTask('mkDirRelease', ['version', 'concat'], function(arg) {
         // Create release directory
-        grunt.file.mkdir(BUILD + '/release');
+        grunt.file.mkdir(distDirectory + '/release');
     });
 
     // TASK: version
     // Display current version to console
-    grunt.registerTask('version', 'Do something interesting.', function(arg) {
-        var msg = 'version ' + PKG.version;
+    grunt.registerTask('version', 'Display current version', function(arg) {
+        var msg = 'version ' + pkg.version;
         grunt.log.writeln(msg);
     });
+
+    // TASK: default
+    grunt.registerTask('default', ['version', 'concat', 'copy']);
+
 };
