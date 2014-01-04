@@ -25,7 +25,7 @@ yak.ui.InstanceListView = function InstanceListView(parent, context, viewModel) 
 
     var contextMenuActions = {};
 
-    this.handleNewInstanceClick = viewModel.activateInstanceEditPanel;
+    this.handleNewInstanceClick = function() { viewModel.activateInstanceEditPanel(); };
     this.handleRefreshClick = viewModel.reloadAndRefreshList;
     this.activate = viewModel.activate;
 

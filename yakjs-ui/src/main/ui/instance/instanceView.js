@@ -18,12 +18,16 @@ yak.ui.InstanceView = function InstanceView(parent, context, viewModel) {
      */
     var template = context.template.load('panelInstanceEdit');
 
+    /**
+     * @type {yak.ui.Template}
+     */
+    var selectPluginTemplate = context.template.load('selectPluginItem');
+
     this.activate = viewModel.activate;
 
     this.name = context.ko.observable('');
     this.port = context.ko.observable('');
     this.description = context.ko.observable('');
-    this.pluginsCsv = context.ko.observable('');
 
     /**
      * Constructor
@@ -35,7 +39,21 @@ yak.ui.InstanceView = function InstanceView(parent, context, viewModel) {
         //$('#instance-save', parent).click(handleSaveClick);
 
         viewModel.onInstanceInfoChanged = handleInstanceInfoChanged;
+        viewModel.onSelectPluginItemsChanged = createPluginList;
         context.ko.applyBindings(self, parent[0]);
+
+        $('.plugin-list', parent).click(handleSelectPluginClick);
+    }
+
+    /**
+     *
+     * @param event
+     */
+    function handleSelectPluginClick(event) {
+        var plugin = $(event.target).closest('.select-plugin-item');
+        var pluginName = plugin.attr('data-plugin-name');
+
+        viewModel.togglePluginSelection(pluginName);
     }
 
     /**
@@ -48,13 +66,28 @@ yak.ui.InstanceView = function InstanceView(parent, context, viewModel) {
             self.name(viewModel.instanceItem.name);
             self.description(viewModel.instanceItem.description);
             self.port(viewModel.instanceItem.port);
-            self.pluginsCsv(viewModel.instanceItem.plugins.join(','));
         } else {
             self.name('');
             self.description('');
             self.port('');
             self.pluginsCsv('');
         }
+
+        createPluginList();
+    }
+
+    /**
+     *
+     */
+    function createPluginList() {
+
+        var html = '';
+
+        _.each(viewModel.selectPluginItems, function(plugin) {
+            html += selectPluginTemplate.build(plugin);
+        });
+
+        $('.plugin-list', parent).html(html);
     }
 
     /**
@@ -65,7 +98,6 @@ yak.ui.InstanceView = function InstanceView(parent, context, viewModel) {
         instanceItem.name = self.name();
         instanceItem.description = self.description();
         instanceItem.port = self.port();
-        instanceItem.plugins = self.pluginsCsv().split(',');
 
         viewModel.createOrUpdate(instanceItem);
     };

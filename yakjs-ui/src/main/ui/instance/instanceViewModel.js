@@ -20,11 +20,22 @@ yak.ui.InstanceViewModel = function InstanceViewModel(context) {
     this.onInstanceInfoChanged = yak.ui.noop;
 
     /**
+     * @type {Array.<yak.ui.SelectPluginItem>}
+     */
+    this.selectPluginItems = [];
+
+    /**
+     * @type {Function}
+     */
+    this.onSelectPluginItemsChanged = yak.ui.noop;
+
+    /**
      * Constructor
      */
     function constructor() {
         context.eventBus.on(yak.api.CreateInstanceResponse).register(handleResponse);
         context.eventBus.on(yak.api.UpdateInstanceResponse).register(handleResponse);
+        context.eventBus.on(yak.api.GetPluginsResponse).register(handleGetPluginsResponse);
     }
 
     /**
@@ -42,7 +53,31 @@ yak.ui.InstanceViewModel = function InstanceViewModel(context) {
         }
 
         self.onInstanceInfoChanged();
+
+        context.webSocket.send(new yak.api.GetPluginsRequest());
     };
+
+    /**
+     *
+     * @param {yak.api.GetPluginsResponse} response
+     */
+    function handleGetPluginsResponse(response) {
+        self.selectPluginItems = [];
+
+        _.each(response.plugins, function (pluginsInfo) {
+            var item = new yak.ui.SelectPluginItem();
+            item.name = pluginsInfo.name;
+            item.description = pluginsInfo.description;
+
+            if (_.contains(self.instanceItem.plugins, item.name)) {
+                item.isActive = true;
+            }
+
+            self.selectPluginItems.push(item);
+        });
+
+        self.onSelectPluginItemsChanged();
+    }
 
     /**
      * Create or update a new websocket instance.
@@ -61,6 +96,12 @@ yak.ui.InstanceViewModel = function InstanceViewModel(context) {
             request.instanceName = self.instanceItem.name;
         }
 
+        request.plugins = [];
+
+        _.each(_.where(self.selectPluginItems, { isActive: true }), function (selectPluginItem) {
+            request.plugins.push(selectPluginItem.name);
+        });
+
         context.webSocket.send(request);
     };
 
@@ -69,6 +110,18 @@ yak.ui.InstanceViewModel = function InstanceViewModel(context) {
      */
     this.cancel = function cancel() {
         context.eventBus.post(new yak.ui.ActivatePanelCommand('panel-instance'));
+    };
+
+    /**
+     *
+     * @param {string} pluginName
+     */
+    this.togglePluginSelection = function togglePluginSelection(pluginName) {
+        console.log('togglePluginSelection', pluginName);
+        var pluginItem = _.findWhere(self.selectPluginItems, { name: pluginName});
+        pluginItem.isActive = !pluginItem.isActive;
+
+        self.onSelectPluginItemsChanged();
     };
 
     /**

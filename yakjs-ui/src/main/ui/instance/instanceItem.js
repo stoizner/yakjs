@@ -24,7 +24,7 @@ yak.ui.InstanceItem = function InstanceItem() {
     this.port = '';
 
     /**
-     *
+     * @readonly
      * @type {Array.<string>}
      */
     this.plugins = [];

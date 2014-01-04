@@ -192,7 +192,7 @@ div, input, li {
 
 .line-input input {
    height:30px;
-   width:300px;
+   width:400px;
 }
 
 .line-left {
@@ -245,4 +245,42 @@ div, input, li {
     display: inline-block;
     margin: 0;
     padding: 0;
+}
+
+.select-plugin-item {
+    position: relative;
+    display: inline-block;
+    margin: 5px 5px 5px 0px;
+    border: solid 1px #c0c0c0;
+    background: #ffffff;
+    height: 30px;
+    width: 195px;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.select-plugin-item-text {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 30px;
+    font: 12px/30px 'roboto';
+}
+
+.select-plugin-item-selector {
+    position: absolute;
+    top: 10px;
+    bottom: 10px;
+    left: 10px;
+    border: solid 1px #909090;
+    background: #f5f5f5;
+    height: 10px;
+    width: 10px;
+    border-radius: 5px;
+}
+
+.select-plugin-item-selector.state-active {
+    background: #4787C7;
+    border: solid 1px #377797;
 }

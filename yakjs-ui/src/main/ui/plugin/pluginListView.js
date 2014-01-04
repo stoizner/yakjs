@@ -25,9 +25,9 @@ yak.ui.PluginListView = function PluginListView(parent, context, viewModel) {
 
     var contextMenuActions = {};
 
-    this.handleNewPluginClick = viewModel.activatePluginEditPanel;
-    this.handleRefreshClick = viewModel.reloadAndRefreshList;
-    this.activate = viewModel.activate;
+    this.handleNewPluginClick = function() { viewModel.activatePluginEditPanel(); };
+    this.handleRefreshClick = function() { viewModel.reloadAndRefreshList(); };
+    this.activate = function() { viewModel.activate(); };
 
     /**
      * Constructor
