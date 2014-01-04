@@ -25,6 +25,11 @@ yak.ui.PluginListView = function PluginListView(parent, context, viewModel) {
 
     var contextMenuActions = {};
 
+    /**
+     * @type {jQuery}
+     */
+    var fileDropZone = null;
+
     this.handleNewPluginClick = function() { viewModel.activatePluginEditPanel(); };
     this.handleRefreshClick = function() { viewModel.reloadAndRefreshList(); };
     this.activate = function() { viewModel.activate(); };
@@ -36,6 +41,8 @@ yak.ui.PluginListView = function PluginListView(parent, context, viewModel) {
         console.log('yak.ui.PluginListView.constructor');
         parent.html(template.build());
 
+        fileDropZone = $('.drop-js-file');
+
         contextMenuActions.edit = handleContextMenuEdit;
         contextMenuActions.delete = viewModel.deletePlugin;
 
@@ -44,8 +51,9 @@ yak.ui.PluginListView = function PluginListView(parent, context, viewModel) {
         context.ko.applyBindings(self, parent[0]);
         self.createList();
 
-        $('.drop-js-file').bind('drop', handleJsFileDrop);
-        $('.drop-js-file').bind('dragover', handleJsFileDragOver);
+        fileDropZone.bind('drop', handleJsFileDrop);
+        fileDropZone.bind('dragover', handleJsFileDragOver);
+        fileDropZone.bind('dragleave', handleJsFileDragLeave);
     }
 
     /**
@@ -55,6 +63,15 @@ yak.ui.PluginListView = function PluginListView(parent, context, viewModel) {
         event.stopPropagation();
         event.preventDefault();
         event.originalEvent.dataTransfer.dropEffect = 'copy';
+
+        fileDropZone.addClass('state-drag-over');
+    }
+
+    /**
+     * @param event
+     */
+    function handleJsFileDragLeave(event) {
+        fileDropZone.removeClass('state-drag-over');
     }
 
     /**
@@ -62,6 +79,7 @@ yak.ui.PluginListView = function PluginListView(parent, context, viewModel) {
      */
     function handleJsFileDrop(event) {
         console.log('handleJsFileDrop', event);
+        fileDropZone.removeClass('state-drag-over');
 
         event.stopPropagation();
         event.preventDefault();
