@@ -45,6 +45,7 @@ yak.ui.PluginListView = function PluginListView(parent, context, viewModel) {
 
         contextMenuActions.edit = handleContextMenuEdit;
         contextMenuActions.delete = viewModel.deletePlugin;
+        contextMenuActions.saveAsJavaScriptFile = handleSaveAsJavaScriptFile;
 
         viewModel.onItemsChanged = function() { self.createList(); };
 
@@ -154,6 +155,19 @@ yak.ui.PluginListView = function PluginListView(parent, context, viewModel) {
     function handleContextMenuEdit(pluginName) {
         var contextItem = _.findWhere(viewModel.items, { name: pluginName});
         viewModel.activatePluginEditPanel(contextItem);
+    }
+
+    /**
+     * @param pluginName
+     */
+    function handleSaveAsJavaScriptFile(pluginName) {
+        var contextItem = _.findWhere(viewModel.items, { name: pluginName});
+
+        var downloadLink = document.createElement('a');
+        downloadLink.href = 'data:application/json,' + encodeURIComponent(contextItem.code);
+        downloadLink.download = pluginName + '.js';
+        downloadLink.target = '_blank';
+        downloadLink.click();
     }
 
     constructor();
