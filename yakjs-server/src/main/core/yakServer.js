@@ -13,7 +13,6 @@ yak.YakServer = function YakServer(configManager) {
     var self = this;
 
     /**
-     *
      * @type {Object.<string, yak.ServerInstance>}
      */
     var instances = {};
@@ -45,10 +44,19 @@ yak.YakServer = function YakServer(configManager) {
      * @param {yak.ServerInstance} serviceInstance
      */
     this.start = function start(serviceInstance) {
+        log.info('YakServer.start');
         if (serviceInstance) {
             self.serviceInstance = serviceInstance;
             self.serviceInstance.start();
         }
+
+        // Start all auto start instances.
+        _.each(instances, function(instance) {
+            if (instance.autoStartEnabled) {
+                log.info('YakServer.auto start instance ' + instance.name);
+                instance.start();
+            }
+        });
     };
 
     /**
@@ -56,7 +64,7 @@ yak.YakServer = function YakServer(configManager) {
      * @param {yak.ServerInstance} instance
      */
     this.addInstance = function addInstance(instance) {
-        log.info('addInstance', instance);
+        log.info('YakServer.addInstance', instance.name);
         if (instances.hasOwnProperty(instance.name)) {
             throw new Error('Instance with name ' + name + ' already added');
         } else {
@@ -110,8 +118,11 @@ yak.YakServer = function YakServer(configManager) {
      * @param {string} name
      */
     this.startInstance = function startInstance(name) {
+        log.info('YakServer.startInstance ' + name);
         if (instances.hasOwnProperty(name)) {
             instances[name].start();
+            instances[name].autoStartEnabled = true;
+            updateAndSaveConfig();
         }  else {
             throw new Error('Instance not found ' + name);
         }
@@ -122,8 +133,11 @@ yak.YakServer = function YakServer(configManager) {
      * @param {string} name
      */
     this.stopInstance = function stopInstance(name) {
+        log.info('YakServer.stopInstance ' + name);
         if (instances.hasOwnProperty(name)) {
             instances[name].stop();
+            instances[name].autoStartEnabled = false;
+            updateAndSaveConfig();
         }  else {
             throw new Error('PluginConstructor not found ' + name);
         }
@@ -133,7 +147,7 @@ yak.YakServer = function YakServer(configManager) {
      * Update config and save it.
      */
     function updateAndSaveConfig() {
-
+        log.info('YakServer.updateAndSaveConfig');
         configManager.config.instances = [];
 
         for(var key in instances) {
@@ -145,6 +159,7 @@ yak.YakServer = function YakServer(configManager) {
                 instanceConfigItem.name = instance.name;
                 instanceConfigItem.plugins = instance.plugins;
                 instanceConfigItem.port = instance.port;
+                instanceConfigItem.autoStartEnabled = instance.autoStartEnabled;
 
                 configManager.config.instances.push(instanceConfigItem);
             }
@@ -167,6 +182,7 @@ yak.YakServer = function YakServer(configManager) {
                 var instance = new yak.WebSocketInstance(self, instanceConfig.name, instanceConfig.port);
                 instance.description = instanceConfig.description;
                 instance.plugins = instanceConfig.plugins;
+                instance.autoStartEnabled = instanceConfig.autoStartEnabled;
 
                 self.addInstance(instance);
             }

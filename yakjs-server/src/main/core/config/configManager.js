@@ -53,7 +53,7 @@ yak.ConfigManager = function ConfigManager() {
                 self.config = new yak.Config();
             }
 
-            log.info(self.config);
+            // log.info(self.config);
 
         } catch (ex) {
             log.info(ex);

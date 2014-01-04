@@ -3,7 +3,6 @@
  * @constructor
  */
 yak.Config = function Config() {
-
     'use strict';
 
     /** @type {yak.Config} */
@@ -25,9 +24,10 @@ yak.Config = function Config() {
      */
     this.plugins = [];
 
-    /** Constructor */
+    /**
+     * Constructor
+     * /
     function constructor() {
-
         createDefaultInstanceConfig();
         createDefaultPluginConfig();
     }

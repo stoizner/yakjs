@@ -28,6 +28,12 @@ yak.InstanceConfigItem = function InstanceConfigItem() {
     this.name = '';
 
     /**
+     * Start instance after server started.
+     * @type {boolean}
+     */
+    this.autoStartEnabled = false;
+
+    /**
      * @type {Array.<string>}
      */
     this.plugins = [];

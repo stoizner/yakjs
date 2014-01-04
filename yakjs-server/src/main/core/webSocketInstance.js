@@ -69,6 +69,12 @@ yak.WebSocketInstance = function WebSocketInstance(yakServer, name, port) {
     this.state = yak.InstanceState.STOPPED;
 
     /**
+     * Start instance after server started.
+     * @type {boolean}
+     */
+    this.autoStartEnabled = false;
+
+    /**
      * @type {Array.<yak.PluginWorker>}
      */
     var pluginWorkers = [];
@@ -83,8 +89,7 @@ yak.WebSocketInstance = function WebSocketInstance(yakServer, name, port) {
      * Start server instance
      */
     this.start = function start() {
-
-        log.info('Start WebSocketServer Instance.');
+        log.info('Start WebSocketServer Instance ' + self.name);
         try {
             if (self.state !== yak.InstanceState.RUNNING) {
                 initializePlugins();
