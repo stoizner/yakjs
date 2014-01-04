@@ -1,11 +1,13 @@
+/* global CodeMirror: false */
+
 /**
- * PluginView
- * @class
+ * PluginListView
  * @constructor
  * @param {yak.ui.ViewContext} context
- * @param {$|jQuery} parent
+ * @param {jQuery} parent
+ * @param {yak.ui.PluginViewModel} viewModel
  */
-yak.ui.PluginView = function PluginView(parent, context) {
+yak.ui.PluginView = function PluginView(parent, context, viewModel) {
     'use strict';
 
     /**
@@ -14,28 +16,36 @@ yak.ui.PluginView = function PluginView(parent, context) {
     var self = this;
 
     /**
-     * @type {null||yak.api.PluginInfo}
-     */
-    var pluginInfo = null;
-
-    /**
     * @type {null|CodeMirror}
     */
     var codeEditor = null;
 
     /**
-     * @type {string}
+     * @type {yak.ui.Template}
      */
-    var pluginCodeTemplate = yak.ui.EmptyPluginTemplate.toString();
+    var template = context.template.load('panelPluginEdit');
+
+    /**
+     * Form:  Name of the plugin
+     */
+    this.name = context.ko.observable('');
+
+    /**
+     * Form: Description of the plugin
+     */
+    this.description = context.ko.observable('');
 
     /**
      * Constructor
      */
     function constructor() {
-        $('#plugin-save', parent).click(handleSaveClick);
+        console.log('yak.ui.InstanceView.constructor', self);
+        parent.html(template.build());
 
-        context.eventBus.on(yak.api.CreatePluginResponse).register(handleResponse);
-        context.eventBus.on(yak.api.UpdatePluginResponse).register(handleResponse);
+        //$('#instance-save', parent).click(handleSaveClick);
+
+        viewModel.onPluginItemChanged = handlePluginItemChanged;
+        context.ko.applyBindings(self, parent[0]);
 
         CodeMirror.commands.autocomplete = yak.ui.codeEditorAutoComplete;
         CodeMirror.commands.autodocument = yak.ui.codeEditorAutoDocument;
@@ -51,98 +61,48 @@ yak.ui.PluginView = function PluginView(parent, context) {
 
     /**
      * Activate view
-     * @param {string|object} data
+     * @param {string|object} [data]
      */
-    this.active = function active(data) {
-        console.log('InstanceView active', data);
-
+    this.activate = function activate(data) {
         $('.error-line', parent).hide();
-
-        if (data !== null) {
-            pluginInfo = data;
-        } else {
-            pluginInfo = null;
-        }
-
-        self.update();
+        viewModel.activate(data);
     };
 
     /**
-     * Update DOM.
+     * Handle plugin item changed event.
      */
-    this.update = function update() {
-        if (pluginInfo === null) {
-            $('[data-bind]', parent).val('');
-            codeEditor.setValue(pluginCodeTemplate);
-        } else {
-            $('[data-bind]', parent).each(function() {
-                var element = $(this);
-                var name = element.attr('data-bind');
-                element.val(pluginInfo[name]);
-            });
+    function handlePluginItemChanged() {
+        console.log('InstanceView.handleInstanceInfoChanged', viewModel.instanceItem);
 
-            codeEditor.setValue(pluginInfo.code);
+        if (viewModel.pluginItem) {
+            self.name(viewModel.pluginItem.name);
+            self.description(viewModel.pluginItem.description);
+            codeEditor.setValue(viewModel.pluginItem.code);
+        } else {
+            self.name('');
+            self.description('');
+            codeEditor.setValue(yak.ui.EmptyPluginTemplate.toString());
         }
+    }
+
+    /**
+     * Handle Save Button Click
+     */
+    this.handleSaveClick = function handleSaveClick() {
+        var pluginItem = new yak.ui.PluginItem();
+        pluginItem.name = self.name();
+        pluginItem.description = self.description();
+        pluginItem.code = codeEditor.getValue();
+
+        viewModel.createOrUpdate(pluginItem);
     };
 
     /**
-     * @param {yak.api.CreateInstanceResponse} response
+     * Handle cancel button click
      */
-    function handleResponse(response) {
-        console.log('handleResponse', response);
-
-        var errorLine = $('.error-line', parent);
-
-        if (response.success) {
-            context.eventBus.post(new yak.ui.ActivatePanelCommand('panel-plugin'));
-            errorLine.hide();
-        } else {
-            errorLine.show();
-            $('.error-line-text', errorLine).html(response.message.replace(/\n/g, '<br />'));
-        }
-    }
-
-    /**
-     * Handle Create Click
-     */
-    function handleSaveClick() {
-        var data = bind();
-
-        console.log(data);
-
-        var request = null;
-
-        if (pluginInfo === null) {
-            request = new yak.api.CreatePluginRequest();
-            $.extend(request, data);
-        } else {
-            request = new yak.api.UpdatePluginRequest();
-            $.extend(request, data);
-            request.pluginName = pluginInfo.name;
-        }
-
-        $.extend(request, data);
-        context.webSocket.send(request);
-    }
-
-    /**
-     * Bind from form
-     * @returns {{}}
-     */
-    function bind() {
-
-        var data = {};
-
-        $('[data-bind]', parent).each(function() {
-            var element = $(this);
-            var name = element.attr('data-bind');
-            data[name] = element.val();
-        });
-
-        data.code = codeEditor.getValue();
-
-        return data;
-    }
+    this.handleCancelClick = function handleCancelClick() {
+        viewModel.cancel();
+    };
 
     constructor();
 };

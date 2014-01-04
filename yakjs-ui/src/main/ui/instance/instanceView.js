@@ -48,7 +48,7 @@ yak.ui.InstanceView = function InstanceView(parent, context, viewModel) {
             self.name(viewModel.instanceItem.name);
             self.description(viewModel.instanceItem.description);
             self.port(viewModel.instanceItem.port);
-            self.pluginsCsv(viewModel.instanceItem.pluginsCsv);
+            self.pluginsCsv(viewModel.instanceItem.plugins.join(','));
         } else {
             self.name('');
             self.description('');
@@ -65,7 +65,7 @@ yak.ui.InstanceView = function InstanceView(parent, context, viewModel) {
         instanceItem.name = self.name();
         instanceItem.description = self.description();
         instanceItem.port = self.port();
-        instanceItem.pluginsCsv = self.pluginsCsv();
+        instanceItem.plugins = self.pluginsCsv().split(',');
 
         viewModel.createOrUpdate(instanceItem);
     };

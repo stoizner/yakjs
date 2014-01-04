@@ -29,7 +29,7 @@ yak.ui.InstanceListViewModel = function InstanceListViewModel(context) {
         context.eventBus.on(yak.api.GetInstancesResponse).register(handleGetInstancesResponse);
         context.eventBus.on(yak.api.StartInstanceResponse).register(self.reloadAndRefreshList);
         context.eventBus.on(yak.api.StopInstanceResponse).register(self.reloadAndRefreshList);
-        context.eventBus.on(yak.api.RemoveInstanceResponse).register(self.reloadAndRefreshList);
+        context.eventBus.on(yak.api.DeleteInstanceResponse).register(self.reloadAndRefreshList);
     }
 
     /**
@@ -69,7 +69,7 @@ yak.ui.InstanceListViewModel = function InstanceListViewModel(context) {
      * @param {string} name
      */
     this.deleteInstance = function stopInstance(name) {
-        context.webSocket.send(new yak.api.RemoveInstanceRequest(), { instanceName: name });
+        context.webSocket.send(new yak.api.DeleteInstanceRequest(), { instanceName: name });
     };
 
     /**

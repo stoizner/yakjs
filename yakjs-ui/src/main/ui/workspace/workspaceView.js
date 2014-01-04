@@ -42,6 +42,7 @@ yak.ui.WorkspaceView = function WorkspaceView(parent, context, viewModel) {
         panelViews['panel-instance'] = context.viewFactory.create($('.panel-instance', parent), yak.ui.InstanceListView, yak.ui.InstanceListViewModel);
         panelViews['panel-instance-edit'] = context.viewFactory.create($('.panel-instance-edit', parent), yak.ui.InstanceView, yak.ui.InstanceViewModel);
         panelViews['panel-plugin'] = context.viewFactory.create($('.panel-plugin', parent), yak.ui.PluginListView, yak.ui.PluginListViewModel);
+        panelViews['panel-plugin-edit'] = context.viewFactory.create($('.panel-plugin-edit', parent), yak.ui.PluginView, yak.ui.PluginViewModel);
 
         //panelViews['panel-instance'] = new yak.ui.InstanceListView($('.panel-instance', parent), context);
 //        panelViews['panel-instance'] = context.viewFactory.create($('.panel-instance', parent), yak.ui.InstanceListView, yak.ui.InstanceListViewModel);
@@ -66,10 +67,12 @@ yak.ui.WorkspaceView = function WorkspaceView(parent, context, viewModel) {
         var target = $(event.target).closest('li');
         var panelName = target.attr('data-panel');
 
-        $('.workspace-nav li', parent).removeClass('state-active');
-        target.addClass('state-active');
+        if (panelName) {
+            $('.workspace-nav li', parent).removeClass('state-active');
+            target.addClass('state-active');
 
-        viewModel.activatePanel(panelName);
+            viewModel.activatePanel(panelName);
+        }
     };
 
     /**

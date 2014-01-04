@@ -17,12 +17,16 @@ yak.WebSocketInstance = function WebSocketInstance(yakServer, name, port) {
      */
     var self = this;
 
+    /**
+     * WebSocketServer instance
+     * @type {null}
+     */
     var server = null;
 
     /**
-    *
-    * @type {Object.<string, yak.WebSocketConnection>}
-    */
+     *
+     * @type {Object.<string, yak.WebSocketConnection>}
+     */
     var connections = {};
 
     /**

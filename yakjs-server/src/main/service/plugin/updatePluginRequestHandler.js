@@ -58,7 +58,7 @@ yak.UpdatePluginRequestHandler = function UpdatePluginRequestHandler(yakServer) 
      * @param {yak.RemovePluginRequest} message
      */
     function sendPluginNotFoundResponse(message, connection) {
-        var response = new yak.api.RemovePluginResponse();
+        var response = new yak.api.DeletePluginResponse();
         response.success = false;
         response.message = 'Can not find plugin: ' + message.pluginName;
         connection.send(response);

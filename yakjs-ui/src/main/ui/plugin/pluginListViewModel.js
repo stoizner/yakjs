@@ -27,7 +27,7 @@ yak.ui.PluginListViewModel = function PluginListViewModel(context) {
     function constructor() {
         console.log('yak.ui.PluginListViewModel.constructor');
         context.eventBus.on(yak.api.GetPluginsResponse).register(handleGetPluginsResponse);
-        context.eventBus.on(yak.api.RemovePluginResponse).register(handleRemovePluginResponse);
+        context.eventBus.on(yak.api.DeletePluginResponse).register(handleDeletePluginResponse);
     }
 
     /**
@@ -39,18 +39,19 @@ yak.ui.PluginListViewModel = function PluginListViewModel(context) {
     };
 
     /**
-     * Remove plugin.
+     * Delete plugin.
      * @param {string} name
      */
-    this.remove = function remove(name) {
-        context.webSocket.send(new yak.api.RemovePluginRequest(), { pluginName: name });
+    this.deletePlugin = function deletePlugin(name) {
+        context.webSocket.send(new yak.api.DeletePluginRequest(), { pluginName: name });
     };
 
     /**
      * Show and activate the plugin edit panel.
+     * @param {yak.ui.PluginItem} [item]
      */
-    this.activatePluginEditPanel = function activatePluginEditPanel() {
-        context.eventBus.post(new yak.ui.ActivatePanelCommand('panel-instance-edit'));
+    this.activatePluginEditPanel = function activatePluginEditPanel(item) {
+        context.eventBus.post(new yak.ui.ActivatePanelCommand('panel-plugin-edit', item));
     };
 
     /**
@@ -77,10 +78,10 @@ yak.ui.PluginListViewModel = function PluginListViewModel(context) {
     }
 
     /**
-     * @param {yak.RemovePluginResponse} response
+     * @param {yak.DeletePluginResponse} response
      */
-    function handleRemovePluginResponse(response) {
-        console.log('handleRemovePluginResponse', response);
+    function handleDeletePluginResponse(response) {
+        console.log('handleDeletePluginResponse', response);
         self.reloadAndRefreshList();
     }
 

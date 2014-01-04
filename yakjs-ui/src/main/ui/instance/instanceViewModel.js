@@ -1,5 +1,5 @@
 /**
- * InstanceView
+ * InstanceViewModel
  * @constructor
  * @param {yak.ui.ViewModelContext} context
  */
@@ -33,8 +33,6 @@ yak.ui.InstanceViewModel = function InstanceViewModel(context) {
      */
     this.activate = function activate(data) {
         console.log('InstanceViewModel.activate', data);
-
-        $('.error-line', parent).hide();
 
         if (data !== null) {
             self.instanceItem = new yak.ui.InstanceItem();
@@ -79,13 +77,8 @@ yak.ui.InstanceViewModel = function InstanceViewModel(context) {
     function handleResponse(response) {
         console.log('handleResponse', response);
 
-        var errorLine = $('.error-line', parent);
         if (response.success) {
             context.eventBus.post(new yak.ui.ActivatePanelCommand('panel-instance'));
-            errorLine.hide();
-        } else {
-            errorLine.show();
-            $('.error-line-text', errorLine).html(response.message.replace(/\n/g, '<br />'));
         }
     }
 

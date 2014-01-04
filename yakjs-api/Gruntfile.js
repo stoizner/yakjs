@@ -47,8 +47,8 @@ module.exports = function(grunt) {
         copy: {
             toServer: {
                 files: [
-                    { expand: true, cwd: 'build/', src: ['*.js'], dest: '../yakjs-server/src/main/api', filter: 'isFile'},
-                    { expand: true, cwd: 'build/', src: ['*.js'], dest: '../yakjs-ui/ext', filter: 'isFile'}
+                    { expand: true, cwd: distDirectory, src: ['*.js'], dest: '../yakjs-server/src/main/api', filter: 'isFile'},
+                    { expand: true, cwd: distDirectory, src: ['*.js'], dest: '../yakjs-ui/ext', filter: 'isFile'}
                 ]
             }
         }

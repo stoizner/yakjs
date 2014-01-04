@@ -1,11 +1,10 @@
 /**
- * ServicePlugin
+ * ServiceWorker
  * @constructor
  * @implements {yak.PluginWorker}
  * @param {yak.YakServer} yakServer
  */
 yak.ServiceWorker = function ServiceWorker(yakServer) {
-
     'use strict';
 
     /**
@@ -37,11 +36,11 @@ yak.ServiceWorker = function ServiceWorker(yakServer) {
         apiMap['request.getInstances'] = new yak.GetInstancesRequestHandler(yakServer);
         apiMap['request.createInstance'] = new yak.CreateInstanceRequestHandler(yakServer);
         apiMap['request.updateInstance'] = new yak.UpdateInstanceRequestHandler(yakServer);
-        apiMap['request.removeInstance'] = new yak.RemoveInstanceRequestHandler(yakServer);
+        apiMap['request.deleteInstance'] = new yak.DeleteInstanceRequestHandler(yakServer);
 
         apiMap['request.getPlugins'] = new yak.GetPluginsRequestHandler(yakServer);
         apiMap['request.createPlugin'] = new yak.CreatePluginRequestHandler(yakServer);
-        apiMap['request.removePlugin'] = new yak.RemovePluginRequestHandler(yakServer);
+        apiMap['request.deletePlugin'] = new yak.DeletePluginRequestHandler(yakServer);
         apiMap['request.updatePlugin'] = new yak.UpdatePluginRequestHandler(yakServer);
     }
 
@@ -56,15 +55,14 @@ yak.ServiceWorker = function ServiceWorker(yakServer) {
      * @param {yak.WebSocketInstance} instance
      */
     this.onMessage = function onMessage(message, connection, instance) {
-
         try {
             log.info('onMessage ' + message.data);
             var msg = JSON.parse(message.data);
 
-            if (msg.type) {
-                if (apiMap.hasOwnProperty(msg.type)) {
-                    apiMap[msg.type].handle(msg, connection);
-                }
+            if (msg.type && apiMap.hasOwnProperty(msg.type)) {
+                apiMap[msg.type].handle(msg, connection);
+            } else {
+                log.warn('No handler found for ' + msg.type);
             }
         } catch (ex) {
             log.error(ex.message);

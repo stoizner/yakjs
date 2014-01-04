@@ -1,11 +1,23 @@
+<div class="panel-toolbar">
+    <ul class="panel-actions">
+        <li><button data-bind="click: handleSaveClick">Save</button></li>
+        <li><button data-bind="click: handleCancelClick">Cancel</button></li>
+    </ul>
+</div>
+
+<div class="form-line error-line">
+    <div class="line-label"></div>
+    <div class="error-line-text">{{error-text-here}}</div>
+</div>
+
 <div class="form">
     <div class="form-line">
         <div class="line-label">Name</div>
-        <div class="line-input"><input data-bind="name" type="text" /></div>
+        <div class="line-input"><input data-bind="value:name" type="text" /></div>
     </div>
     <div class="form-line">
         <div class="line-label">Description</div>
-        <div class="line-input"><input data-bind="description" type="text" /></div>
+        <div class="line-input"><input data-bind="value:description" type="text" /></div>
     </div>
     <div class="form-line">
         <div class="line-left">
@@ -17,13 +29,5 @@
 
             </div>
         </div>
-    </div>
-    <div class="form-line error-line">
-        <div class="line-label"></div>
-        <div class="error-line-text">{{error-text-here}}</div>
-    </div>
-    <div class="form-line">
-        <div class="line-label"></div>
-        <div class="line-input"><button id="plugin-save">Save</button></div>
     </div>
 </div>

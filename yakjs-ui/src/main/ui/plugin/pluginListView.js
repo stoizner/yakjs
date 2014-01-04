@@ -37,7 +37,7 @@ yak.ui.PluginListView = function PluginListView(parent, context, viewModel) {
         parent.html(template.build());
 
         contextMenuActions.edit = handleContextMenuEdit;
-        contextMenuActions.delete = handleContextMenuDelete;
+        contextMenuActions.delete = viewModel.deletePlugin;
 
         viewModel.onItemsChanged = function() { self.createList(); };
 
@@ -84,14 +84,8 @@ yak.ui.PluginListView = function PluginListView(parent, context, viewModel) {
      * @param pluginName
      */
     function handleContextMenuEdit(pluginName) {
-        viewModel.activatePluginEditPanel();
-    }
-
-    /**
-     * @param {string} pluginName
-     */
-    function handleContextMenuDelete(pluginName) {
-        viewModel.remove(pluginName);
+        var contextItem = _.findWhere(viewModel.items, { name: pluginName});
+        viewModel.activatePluginEditPanel(contextItem);
     }
 
     constructor();

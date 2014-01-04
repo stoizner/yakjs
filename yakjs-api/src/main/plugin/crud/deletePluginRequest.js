@@ -2,7 +2,7 @@
  * RemovePluginRequest
  * @constructor
  */
-yak.api.RemovePluginRequest = function RemovePluginRequest() {
+yak.api.DeletePluginRequest = function DeletePluginRequest() {
 
     'use strict';
 
@@ -10,7 +10,7 @@ yak.api.RemovePluginRequest = function RemovePluginRequest() {
     * Command for the service API.
     * @type {string}
     */
-    this.type = 'request.removePlugin';
+    this.type = 'request.deletePlugin';
 
     /**
     * Name of the Plugin.

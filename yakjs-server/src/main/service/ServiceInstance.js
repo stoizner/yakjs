@@ -125,7 +125,6 @@ yak.ServiceInstance = function ServiceInstance(name, port, yakServer)
      * @returns {Function}
      */
     function createMessageHandler(connection) {
-
         return function handleMessage(data, flags) {
             log.info('message ' + connection.id + ', ' + data);
             serviceWorker.onMessage(new yak.WebSocketMessage(data), connection, self);

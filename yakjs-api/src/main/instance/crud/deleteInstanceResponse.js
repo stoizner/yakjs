@@ -2,7 +2,7 @@
  * RemoveInstanceResponse
  * @constructor
  */
-yak.api.RemoveInstanceResponse = function RemoveInstanceResponse() {
+yak.api.DeleteInstanceResponse = function DeleteInstanceResponse() {
 
     'use strict';
 

@@ -1,10 +1,10 @@
 /**
- * RemovePluginRequestHandler
+ * DeletePluginRequestHandler
  * @constructor
  * @param {yak.YakServer} cloudServer
  * @implements {yak.ServiceMessageHandler}
  */
-yak.RemovePluginRequestHandler = function RemovePluginRequestHandler(cloudServer) {
+yak.DeletePluginRequestHandler = function DeletePluginRequestHandler(cloudServer) {
 
     'use strict';
 
@@ -15,7 +15,7 @@ yak.RemovePluginRequestHandler = function RemovePluginRequestHandler(cloudServer
     }
 
     /**
-    * @param {yak.api.RemovePluginRequest} message
+    * @param {yak.api.DeletePluginRequest} message
     * @param {yak.WebSocketConnection} connection
     */
     this.handle = function handle(message, connection) {
@@ -37,17 +37,17 @@ yak.RemovePluginRequestHandler = function RemovePluginRequestHandler(cloudServer
     * @param {yak.WebSocketConnection} connection
     */
     function sendSuccessResponse(connection) {
-        var response = new yak.api.RemovePluginResponse();
+        var response = new yak.api.DeletePluginResponse();
         connection.send(response);
     }
 
     /**
     * Send an error response
     * @param {yak.WebSocketConnection} connection
-    * @param {yak.RemovePluginRequest} message
+    * @param {yak.DeletePluginRequest} message
     */
     function sendPluginNotFoundResponse(message, connection) {
-        var response = new yak.api.RemovePluginResponse();
+        var response = new yak.api.DeletePluginResponse();
         response.success = false;
         response.message = 'Can not find plugin: ' + message.pluginName;
         connection.send(response);

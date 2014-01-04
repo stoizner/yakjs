@@ -1,14 +1,14 @@
 /**
- * RemoveInstanceRequestHandler
+ * DeleteInstanceRequestHandler
  * @constructor
  * @param {yak.YakServer} cloudServer
  * @implements {yakServiceMessageHandler}
  */
-yak.RemoveInstanceRequestHandler = function RemoveInstanceRequestHandler(cloudServer) {
+yak.DeleteInstanceRequestHandler = function DeleteInstanceRequestHandler(cloudServer) {
 
     'use strict';
 
-    /** @type {yak.RemoveInstanceRequestHandler} */
+    /** @type {yak.DeleteInstanceRequestHandler} */
     var self = this;
 
     /** Constructor */
@@ -22,7 +22,7 @@ yak.RemoveInstanceRequestHandler = function RemoveInstanceRequestHandler(cloudSe
     this.handle = function handle(message, connection) {
         try {
             cloudServer.removeInstance(message.instanceName);
-            connection.send(new yak.api.RemoveInstanceResponse());
+            connection.send(new yak.api.DeleteInstanceResponse());
         } catch (ex) {
             cloudServer.serviceInstance.log.error(ex.message);
         }

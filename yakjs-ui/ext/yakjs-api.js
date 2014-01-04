@@ -1,7 +1,7 @@
 /* global yak:true */
 
 /**
- * Codebullets.
+ * YAKjs
  * @namespace yak
  */
 var yak = yak || {};
@@ -22,33 +22,33 @@ yak.api.CreateInstanceRequest = function CreateInstanceRequest() {
     'use strict';
 
     /**
-    * Command for the service API.
-    * @type {string}
-    */
+     * Command for the service API.
+     * @type {string}
+     */
     this.type = 'request.createInstance';
 
     /**
-    * Unique name of instance.
-    * @type {string}
-    */
+     * Unique name of instance.
+     * @type {string}
+     */
     this.name = null;
 
     /**
-    * Some description.
-    * @type {string}
-    */
+     * Some description.
+     * @type {string}
+     */
     this.description = null;
 
     /**
-    *
-    * @type {number}
-    */
+     *
+     * @type {number}
+     */
     this.port = 0;
 
     /**
-    * Name of plugins that shall be used by this instance.
-    * @type {Array.<string>}
-    */
+     * Name of plugins that shall be used by this instance.
+     * @type {Array.<string>}
+     */
     this.plugins = [];
 };/**
  * CreateInstanceResponse
@@ -76,7 +76,7 @@ yak.api.CreateInstanceResponse = function CreateInstanceResponse() {
     */
     this.message = '';
 };/**
- * DeleteInstanceRequest
+ * RemoveInstanceRequest
  * @constructor
  */
 yak.api.DeleteInstanceRequest = function DeleteInstanceRequest() {
@@ -87,7 +87,7 @@ yak.api.DeleteInstanceRequest = function DeleteInstanceRequest() {
     * Command for the service API.
     * @type {string}
     */
-    this.type = 'request.deleteInstance';
+    this.type = 'request.removeInstance';
 
     /**
     * Name of the instance.
@@ -95,7 +95,7 @@ yak.api.DeleteInstanceRequest = function DeleteInstanceRequest() {
     */
     this.instanceName = null;
 };/**
- * DeleteInstanceResponse
+ * RemoveInstanceResponse
  * @constructor
  */
 yak.api.DeleteInstanceResponse = function DeleteInstanceResponse() {
@@ -106,7 +106,7 @@ yak.api.DeleteInstanceResponse = function DeleteInstanceResponse() {
     * Command for the service API.
     * @type {string}
     */
-    this.type = 'response.deleteInstance';
+    this.type = 'response.removeInstance';
 
     /**
     * Whether the request was successfully or not.
@@ -152,6 +152,74 @@ yak.api.GetInstancesResponse = function GetInstancesResponse() {
     */
     this.instances = [];
 };/**
+ * UpdateInstanceRequest
+ * @constructor
+ */
+yak.api.UpdateInstanceRequest = function UpdateInstanceRequest() {
+
+    'use strict';
+
+    /**
+    * Command for the service API.
+    * @type {string}
+    */
+    this.type = 'request.updateInstance';
+
+    /**
+    * The original instance name.
+    * @type {null}
+    */
+    this.instanceName = null;
+
+    /**
+    * Unique name of instance.
+    * @type {string}
+    */
+    this.name = null;
+
+    /**
+    * Some description.
+    * @type {string}
+    */
+    this.description = null;
+
+    /**
+    *
+    * @type {number}
+    */
+    this.port = 0;
+
+    /**
+    * Name of plugins that shall be used by this instance.
+    * @type {Array.<string>}
+    */
+    this.plugins = [];
+};/**
+ * UpdateInstanceResponse
+ * @constructor
+ */
+yak.api.UpdateInstanceResponse = function UpdateInstanceResponse() {
+
+    'use strict';
+
+    /**
+    * Command for the service API.
+    * @type {string}
+    */
+    this.type = 'response.updateInstance';
+
+    /**
+    * Whether the request was successfully or not.
+    * @type {boolean}
+    */
+    this.success = true;
+
+    /**
+    * Optional: Message if no success.
+    * @type {string}
+    */
+    this.message = '';
+};/**
  * InstanceInfo
  * @constructor
  */
@@ -160,21 +228,21 @@ yak.api.InstanceInfo = function InstanceInfo() {
     'use strict';
 
     /**
-    *
-    * @type {string}
-    */
+     * Name of the instance
+     * @type {string}
+     */
     this.name = null;
 
     /**
-    *
-    * @type {string}
-    */
+     * Instance state
+     * @type {string}
+     */
     this.state = null;
 
     /**
-    * Description
-    * @type {null|string}
-    */
+     * Description
+     * @type {null|string}
+     */
     this.description = null;
 
     /**
@@ -194,50 +262,6 @@ yak.api.InstanceInfo = function InstanceInfo() {
     * @type {Array.<string>}
     */
     this.plugins = [];
-};/**
- * RemoveInstanceRequest
- * @constructor
- */
-yak.api.RemoveInstanceRequest = function RemoveInstanceRequest() {
-
-    'use strict';
-
-    /**
-    * Command for the service API.
-    * @type {string}
-    */
-    this.type = 'request.removeInstance';
-
-    /**
-    * Name of the instance.
-    * @type {string}
-    */
-    this.instanceName = null;
-};/**
- * RemoveInstanceResponse
- * @constructor
- */
-yak.api.RemoveInstanceResponse = function RemoveInstanceResponse() {
-
-    'use strict';
-
-    /**
-    * Command for the service API.
-    * @type {string}
-    */
-    this.type = 'response.removeInstance';
-
-    /**
-    * Whether the request was successfully or not.
-    * @type {boolean}
-    */
-    this.success = true;
-
-    /**
-    * Optional: Message if no success.
-    * @type {string}
-    */
-    this.message = '';
 };/**
  * StartInstanceRequest
  * @constructor
@@ -327,74 +351,6 @@ yak.api.StopInstanceResponse = function StopInstanceResponse() {
     */
     this.message = '';
 };/**
- * UpdateInstanceRequest
- * @constructor
- */
-yak.api.UpdateInstanceRequest = function UpdateInstanceRequest() {
-
-    'use strict';
-
-    /**
-    * Command for the service API.
-    * @type {string}
-    */
-    this.type = 'request.updateInstance';
-
-    /**
-    * The original instance name.
-    * @type {null}
-    */
-    this.instanceName = null;
-
-    /**
-    * Unique name of instance.
-    * @type {string}
-    */
-    this.name = null;
-
-    /**
-    * Some description.
-    * @type {string}
-    */
-    this.description = null;
-
-    /**
-    *
-    * @type {number}
-    */
-    this.port = 0;
-
-    /**
-    * Name of plugins that shall be used by this instance.
-    * @type {Array.<string>}
-    */
-    this.plugins = [];
-};/**
- * UpdateInstanceResponse
- * @constructor
- */
-yak.api.UpdateInstanceResponse = function UpdateInstanceResponse() {
-
-    'use strict';
-
-    /**
-    * Command for the service API.
-    * @type {string}
-    */
-    this.type = 'response.updateInstance';
-
-    /**
-    * Whether the request was successfully or not.
-    * @type {boolean}
-    */
-    this.success = true;
-
-    /**
-    * Optional: Message if no success.
-    * @type {string}
-    */
-    this.message = '';
-};/**
  * CreatePluginRequest
  * @constructor
  */
@@ -451,6 +407,50 @@ yak.api.CreatePluginResponse = function CreatePluginResponse() {
     */
     this.message = '';
 };/**
+ * RemovePluginRequest
+ * @constructor
+ */
+yak.api.DeletePluginRequest = function DeletePluginRequest() {
+
+    'use strict';
+
+    /**
+    * Command for the service API.
+    * @type {string}
+    */
+    this.type = 'request.deletePlugin';
+
+    /**
+    * Name of the Plugin.
+    * @type {string}
+    */
+    this.pluginName = null;
+};/**
+ * RemovePluginResponse
+ * @constructor
+ */
+yak.api.DeletePluginResponse = function DeletePluginResponse() {
+
+    'use strict';
+
+    /**
+    * Command for the service API.
+    * @type {string}
+    */
+    this.type = 'response.deletePlugin';
+
+    /**
+    * Whether the request was successfully or not.
+    * @type {boolean}
+    */
+    this.success = true;
+
+    /**
+    * Optional: Message if no success.
+    * @type {string}
+    */
+    this.message = '';
+};/**
  * GetPluginsRequest
  * @constructor
  */
@@ -482,75 +482,6 @@ yak.api.GetPluginsResponse = function GetPluginsResponse() {
     * @type {Array.<yak.api.PluginInfo>}
     */
     this.plugins = [];
-};/**
- * PluginInfo
- * @constructor
- */
-yak.api.PluginInfo = function PluginInfo() {
-
-    'use strict';
-
-    /**
-    *
-    * @type {string}
-    */
-    this.name = null;
-
-    /**
-    *
-    * @type {string}
-    */
-    this.description = null;
-
-    /**
-    *
-    * @type {string}
-    */
-    this.code = null;
-};/**
- * RemovePluginRequest
- * @constructor
- */
-yak.api.RemovePluginRequest = function RemovePluginRequest() {
-
-    'use strict';
-
-    /**
-    * Command for the service API.
-    * @type {string}
-    */
-    this.type = 'request.removePlugin';
-
-    /**
-    * Name of the Plugin.
-    * @type {string}
-    */
-    this.pluginName = null;
-};/**
- * RemovePluginResponse
- * @constructor
- */
-yak.api.RemovePluginResponse = function RemovePluginResponse() {
-
-    'use strict';
-
-    /**
-    * Command for the service API.
-    * @type {string}
-    */
-    this.type = 'response.deletePlugin';
-
-    /**
-    * Whether the request was successfully or not.
-    * @type {boolean}
-    */
-    this.success = true;
-
-    /**
-    * Optional: Message if no success.
-    * @type {string}
-    */
-    this.message = '';
 };/**
  * UpdatePluginRequest
  * @constructor
@@ -613,4 +544,29 @@ yak.api.UpdatePluginResponse = function UpdatePluginResponse() {
     * @type {string}
     */
     this.message = '';
+};/**
+ * PluginInfo
+ * @constructor
+ */
+yak.api.PluginInfo = function PluginInfo() {
+
+    'use strict';
+
+    /**
+     *
+     * @type {string}
+     */
+    this.name = null;
+
+    /**
+     *
+     * @type {string}
+     */
+    this.description = null;
+
+    /**
+     *
+     * @type {string}
+     */
+    this.code = null;
 };

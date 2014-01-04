@@ -2,7 +2,7 @@
  * RemovePluginResponse
  * @constructor
  */
-yak.api.RemovePluginResponse = function RemovePluginResponse() {
+yak.api.DeletePluginResponse = function DeletePluginResponse() {
 
     'use strict';
 
