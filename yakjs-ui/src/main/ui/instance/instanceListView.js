@@ -39,6 +39,7 @@ yak.ui.InstanceListView = function InstanceListView(parent, context, viewModel) 
         contextMenuActions.edit = handleContextEdit;
         contextMenuActions.start = viewModel.startInstance;
         contextMenuActions.stop = viewModel.stopInstance;
+        contextMenuActions.restart = viewModel.restartInstance;
         contextMenuActions.delete = viewModel.deleteInstance;
 
         viewModel.onItemsChanged = handleItemsChanged;

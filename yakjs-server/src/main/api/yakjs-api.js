@@ -263,6 +263,50 @@ yak.api.InstanceInfo = function InstanceInfo() {
     */
     this.plugins = [];
 };/**
+ * RestartInstanceRequest
+ * @constructor
+ */
+yak.api.RestartInstanceRequest = function RestartInstanceRequest() {
+
+    'use strict';
+
+    /**
+     * Command for the service API.
+     * @type {string}
+     */
+    this.type = 'request.restartInstance';
+
+    /**
+     * Name of the instance.
+     * @type {string}
+     */
+    this.instanceName = null;
+};/**
+ * RestartInstanceResponse
+ * @constructor
+ */
+yak.api.RestartInstanceResponse = function RestartInstanceResponse() {
+
+    'use strict';
+
+    /**
+     * Command for the service API.
+     * @type {string}
+     */
+    this.type = 'response.restartInstance';
+
+    /**
+     * Whether the request was successfully or not.
+     * @type {boolean}
+     */
+    this.success = true;
+
+    /**
+     * Optional: Message if no success.
+     * @type {string}
+     */
+    this.message = '';
+};/**
  * StartInstanceRequest
  * @constructor
  */

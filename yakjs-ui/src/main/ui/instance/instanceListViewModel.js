@@ -30,6 +30,7 @@ yak.ui.InstanceListViewModel = function InstanceListViewModel(context) {
         context.eventBus.on(yak.api.StartInstanceResponse).register(self.reloadAndRefreshList);
         context.eventBus.on(yak.api.StopInstanceResponse).register(self.reloadAndRefreshList);
         context.eventBus.on(yak.api.DeleteInstanceResponse).register(self.reloadAndRefreshList);
+        context.eventBus.on(yak.api.RestartInstanceResponse).register(self.reloadAndRefreshList);
     }
 
     /**

@@ -33,6 +33,7 @@ yak.ServiceWorker = function ServiceWorker(yakServer) {
     function constructor() {
         apiMap['request.startInstance'] = new yak.StartInstanceRequestHandler(yakServer);
         apiMap['request.stopInstance'] = new yak.StopInstanceRequestHandler(yakServer);
+        apiMap['request.restartInstance'] = new yak.RestartInstanceRequestHandler(yakServer);
         apiMap['request.getInstances'] = new yak.GetInstancesRequestHandler(yakServer);
         apiMap['request.createInstance'] = new yak.CreateInstanceRequestHandler(yakServer);
         apiMap['request.updateInstance'] = new yak.UpdateInstanceRequestHandler(yakServer);
