@@ -14,8 +14,8 @@
     "assemble-less": "~0.5.1",
     "grunt-contrib-watch": "~0.5.3"
   },
-  "description": "yak websocket cloud service ui",
-  "main": "Gruntfile.js",
+  "description": "YAKjs websocket service ui",
+  "main": "index.html",
   "repository": "",
   "author": "Christian Schuller",
   "license": "MIT"

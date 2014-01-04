@@ -20,6 +20,9 @@ module.exports = function(grunt) {
     var distDirectory  = currentDirectory + 'dist/' + pkg.name + '/';
     var srcDirectory = currentDirectory + 'src/main/';
 
+    var banner = '/* ' + pkg.name + ' version: ' + pkg.version + ' created: ' + grunt.template.today('yyyy-mm-dd') + '*/\n\n';
+    var footer = 'yak.ui.version = \'' + pkg.version + '\';\n';
+
     /**
      * Build configuration
      */
@@ -27,7 +30,8 @@ module.exports = function(grunt) {
         pkg: pkg,
         uglify: {
             options: {
-                banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
+                banner: banner,
+                footer: footer
             },
             build: {
                 src: pkg.name + '.js',
@@ -36,7 +40,9 @@ module.exports = function(grunt) {
         },
         concat: {
             options: {
-                separator: ''
+                separator: '\n',
+                banner: banner,
+                footer: footer
             },
             dist: {
                 options: {
@@ -45,7 +51,8 @@ module.exports = function(grunt) {
                         return src;
                     }
                 },
-                banner: '(c) Christian Schuller',
+                banner: banner,
+                footer: footer,
                 src: [
                     srcDirectory + '_namespaces.js',
                     srcDirectory + 'core/**/*.js',

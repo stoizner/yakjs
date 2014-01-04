@@ -33,7 +33,7 @@ yak.ui.HeaderView = function HeaderView(parent, context, viewModel) {
      * Constructor
      */
     function constructor() {
-        parent.html(template.build());
+        parent.html(template.build({ version: yak.ui.version}));
 
         $('#webSocketConnect').click(handleConnectClick);
 
