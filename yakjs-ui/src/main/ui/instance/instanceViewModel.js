@@ -62,21 +62,25 @@ yak.ui.InstanceViewModel = function InstanceViewModel(context) {
      * @param {yak.api.GetPluginsResponse} response
      */
     function handleGetPluginsResponse(response) {
+        console.log('InstanceViewModel.handleGetPluginsResponse');
+
         self.selectPluginItems = [];
 
-        _.each(response.plugins, function (pluginsInfo) {
-            var item = new yak.ui.SelectPluginItem();
-            item.name = pluginsInfo.name;
-            item.description = pluginsInfo.description;
+        if (self.instanceItem) {
+            _.each(response.plugins, function (pluginsInfo) {
+                var item = new yak.ui.SelectPluginItem();
+                item.name = pluginsInfo.name;
+                item.description = pluginsInfo.description;
 
-            if (_.contains(self.instanceItem.plugins, item.name)) {
-                item.isActive = true;
-            }
+                if (_.contains(self.instanceItem.plugins, item.name)) {
+                    item.isActive = true;
+                }
 
-            self.selectPluginItems.push(item);
-        });
+                self.selectPluginItems.push(item);
+            });
 
-        self.onSelectPluginItemsChanged();
+            self.onSelectPluginItemsChanged();
+        }
     }
 
     /**

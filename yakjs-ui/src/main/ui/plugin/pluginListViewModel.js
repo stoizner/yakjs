@@ -63,6 +63,20 @@ yak.ui.PluginListViewModel = function PluginListViewModel(context) {
     };
 
     /**
+     *
+     * @param {string} name The name of the plugin.
+     * @param {string} code The plugin JavaScript code.
+     */
+    this.createOrUpdatePlugin = function createOrUpdatePlugin(name, code) {
+        console.log('PluginListViewModel.createOrUpdatePlugin');
+        var request = new yak.api.CreateOrUpdatePluginRequest();
+        request.name = name;
+        request.code = code;
+        request.description = '';
+        context.webSocket.send(request);
+    };
+
+    /**
      * @param {yak.api.GetPluginsResponse} response
      */
     function handleGetPluginsResponse(response) {

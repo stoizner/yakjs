@@ -45,12 +45,10 @@ yak.CreatePluginRequestHandler = function CreatePluginRequestHandler(cloudServer
         }
     };
 
-
-
     /**
      * Send success response
-      * @param {yak.WebSocketConnection} connection
-    */
+     * @param {yak.WebSocketConnection} connection
+     */
     function sendSuccessResponse(connection) {
         var response = new yak.api.CreatePluginResponse();
         connection.send(response);

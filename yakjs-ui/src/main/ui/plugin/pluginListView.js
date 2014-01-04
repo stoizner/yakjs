@@ -43,6 +43,56 @@ yak.ui.PluginListView = function PluginListView(parent, context, viewModel) {
 
         context.ko.applyBindings(self, parent[0]);
         self.createList();
+
+        $('.drop-js-file').bind('drop', handleJsFileDrop);
+        $('.drop-js-file').bind('dragover', handleJsFileDragOver);
+    }
+
+    /**
+     * @param event
+     */
+    function handleJsFileDragOver(event) {
+        event.stopPropagation();
+        event.preventDefault();
+        event.originalEvent.dataTransfer.dropEffect = 'copy';
+    }
+
+    /**
+     * @param event
+     */
+    function handleJsFileDrop(event) {
+        console.log('handleJsFileDrop', event);
+
+        event.stopPropagation();
+        event.preventDefault();
+
+        var files = event.originalEvent.target.files || event.originalEvent.dataTransfer.files;
+        console.log(files);
+
+        _.each(files, function(file) {
+
+            if (file.type.match('application/javascript')) {
+                console.log('file uploaded', file);
+                var reader = new FileReader();
+
+                // Closure to capture the file information.
+                reader.onload = (function(theFile) {
+                    return function(e) {
+                        var fileName = file.name;
+                        var content = e.target.result;
+                        var pluginName = fileName.substr(0, fileName.lastIndexOf('.js')).trim();
+                        console.log({pluginName: pluginName, fileName: fileName, content: content});
+
+                        viewModel.createOrUpdatePlugin(pluginName, content);
+                    };
+                })(file);
+
+                // Read in the image file as a data URL.
+                reader.readAsText(file);
+            } else {
+                console.warn('Drop only JavaScript files with *.js ending.');
+            }
+        });
     }
 
     /**

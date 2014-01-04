@@ -395,6 +395,62 @@ yak.api.StopInstanceResponse = function StopInstanceResponse() {
     */
     this.message = '';
 };/**
+ * CreateOrUpdatePluginRequest
+ * @constructor
+ */
+yak.api.CreateOrUpdatePluginRequest = function CreateOrUpdatePluginRequest() {
+
+    'use strict';
+
+    /**
+    * Command for the service API.
+    * @type {string}
+    */
+    this.type = 'request.createOrUpdatePlugin';
+
+    /**
+    * Unique name of Plugin.
+    * @type {string}
+    */
+    this.name = null;
+
+    /**
+    * Some description.
+    * @type {string}
+    */
+    this.description = null;
+
+    /**
+    * Plugin Code.
+    * @type {string}
+    */
+    this.code = null;
+};/**
+ * CreateOrUpdatePluginResponse
+ * @constructor
+ */
+yak.api.CreateOrUpdatePluginResponse = function CreateOrUpdatePluginResponse() {
+
+    'use strict';
+
+    /**
+    * Command for the service API.
+    * @type {string}
+    */
+    this.type = 'response.createOrUpdatePlugin';
+
+    /**
+    * Whether the request was successfully or not.
+    * @type {boolean}
+    */
+    this.success = true;
+
+    /**
+    * Optional: Message if no success.
+    * @type {string}
+    */
+    this.message = '';
+};/**
  * CreatePluginRequest
  * @constructor
  */

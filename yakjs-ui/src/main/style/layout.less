@@ -230,17 +230,44 @@ div, input, li {
 }
 
 .panel-toolbar {
+    position:relative;
     margin: 20px 0 0 0;
+    height: 30px;
+    overflow: hidden;
 }
 
-.panel-actions {
+.panel-actions,
+.panel-actions-left {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
     margin: 0;
     padding: 0;
     display: block;
     clear: both;
 }
 
+.panel-actions-right {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    display: block;
+    clear: both;
+}
+
+.panel-actions-left li,
 .panel-actions li {
+    list-style: none;
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+}
+
+.panel-actions-right li {
     list-style: none;
     display: inline-block;
     margin: 0;
@@ -283,4 +310,16 @@ div, input, li {
 .select-plugin-item-selector.state-active {
     background: #4787C7;
     border: solid 1px #377797;
+}
+
+.drop-js-file {
+    width: 200px;
+    height: 30px;
+    font: 11px/30px 'roboto';
+    color: #909090;
+    text-transform:uppercase;
+    text-decoration:none;
+    text-align: center;
+    border: solid 1px #c0c0c0;
+    background: #e5e5e5;
 }

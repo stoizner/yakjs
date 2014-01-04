@@ -41,6 +41,7 @@ yak.ServiceWorker = function ServiceWorker(yakServer) {
 
         apiMap['request.getPlugins'] = new yak.GetPluginsRequestHandler(yakServer);
         apiMap['request.createPlugin'] = new yak.CreatePluginRequestHandler(yakServer);
+        apiMap['request.createOrUpdatePlugin'] = new yak.CreateOrUpdatePluginRequestHandler(yakServer);
         apiMap['request.deletePlugin'] = new yak.DeletePluginRequestHandler(yakServer);
         apiMap['request.updatePlugin'] = new yak.UpdatePluginRequestHandler(yakServer);
     }
