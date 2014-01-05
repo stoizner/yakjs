@@ -64,7 +64,7 @@ yak.ui.InstanceListView = function InstanceListView(parent, context, viewModel) 
 
         itemContainer.html(html);
 
-        $('.instance-item', itemContainer).contextMenu($('#instance-item-context'), handleMenuClicked);
+        $('.instance-item-open-context', itemContainer).contextMenu($('#instance-item-context'), handleMenuClicked);
     };
 
     function handleContextEdit(name) {
@@ -87,7 +87,7 @@ yak.ui.InstanceListView = function InstanceListView(parent, context, viewModel) 
      */
     function handleMenuClicked(context, event) {
 
-        var instanceName = context.attr('data-instance');
+        var instanceName = context.closest('.list-item').attr('data-instance');
         var menuAction = $(event.target).attr('data-menu');
 
         // Registered callback functions lookup for context menu actions.

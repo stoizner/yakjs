@@ -18,11 +18,6 @@
          * Constructor
          */
         function constructor() {
-            // Prevent default context menu.
-            parent.bind('contextmenu', function(){
-                return false;
-            });
-
             element.off('click');
             element.off('mouseout');
 
@@ -31,39 +26,37 @@
         }
 
         /**
-         * @param event
-         */
-        this.mousedown = function mousedown(event) {
-            console.log('mousedown');
-            if (event.which === 3) {
-                isRightButtonDown = true;
-            }
-        };
-
-        /**
-         *
-         * @param event
+         * Handle click on context-icon.
          * @param context
+         * @param event
          */
-        this.mouseup = function mouseup(context, event) {
-            console.log('mouseup');
-            if (isRightButtonDown) {
-                console.log('handleMouseUp');
-                currentContext = context;
-                isRightButtonDown = false;
+        this.handleClick = function handleClick(context, event) {
+            currentContext = context;
 
-
+            if (isMenuOpen) {
+                closeContextMenu();
+            } else {
+                var target = $(event.currentTarget);
                 var parentOffset = parent.offset();
+                var offset = target.offset();
 
-                var relX = event.pageX - parentOffset.left;
-                var relY = event.pageY - parentOffset.top;
+                var relX = offset.left - parentOffset.left;
+                var relY = offset.top - parentOffset.top + target.height();
 
-                element.css('left', relX - 10);
-                element.css('top', relY - 10);
-                element.show();
+                var maxHeight = element.parent().height();
+                var contextHeight = element.height();
 
+                console.log({ relY: relY, contexHeight: contextHeight, maxHeight:maxHeight});
+
+                if (relY + contextHeight > maxHeight) {
+                    // move context menu into visible area
+                    relY = maxHeight - contextHeight;
+                }
+
+                element.css('left', relX);
+                element.css('top', relY);
+                element.addClass('state-context-open');
                 isMenuOpen = true;
-                currentContext.addClass('state-context-open');
             }
         };
 
@@ -86,7 +79,6 @@
             if (element.has(e).length > 0) {
                 return;
             }
-
             closeContextMenu();
         }
 
@@ -96,8 +88,7 @@
         function closeContextMenu() {
             if (isMenuOpen) {
                 console.log('handleMenuMouseOut');
-                element.hide();
-                currentContext.removeClass('state-context-open');
+                element.removeClass('state-context-open');
                 isMenuOpen = false;
             }
         }
@@ -115,8 +106,7 @@
 
         this.each(function() {
             var context = $(this);
-            context.mousedown(function(event) { menu.mousedown(event); });
-            context.mouseup(function(event) { menu.mouseup(context, event); });
+            context.click(function(event) { menu.handleClick(context, event); });
         });
     };
 }());

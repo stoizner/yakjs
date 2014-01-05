@@ -139,7 +139,7 @@ yak.ui.PluginListView = function PluginListView(parent, context, viewModel) {
      */
     function handleMenuClicked(context, event) {
 
-        var pluginName = context.attr('data-plugin');
+        var pluginName = context.closest('.list-item').attr('data-plugin');
         var menuAction = $(event.target).attr('data-menu');
 
         if (contextMenuActions.hasOwnProperty(menuAction)) {

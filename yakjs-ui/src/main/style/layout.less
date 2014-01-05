@@ -52,6 +52,21 @@ div, input, li {
    vertical-align:top;
 }
 
+.instance-item-open-context {
+    width: 30px;
+    opacity: 1;
+    background: url('icons/context-accent.svg') no-repeat center;
+    background-size:20px 20px;
+    cursor: pointer;
+}
+
+.instance-item-open-context:hover {
+    width: 30px;
+    opacity: 1;
+    background: #4787C7 url('icons/context-white.svg') no-repeat center;
+    background-size:20px 20px;
+}
+
 .instance-item-state { width:30px; opacity:0.5; }
 .instance-item-port { width:60px; color: #000000; }
 .instance-item-name { width:140px; }
@@ -61,48 +76,63 @@ div, input, li {
 
 
 .context-menu {
-   width:150px;
-   border:solid 1px #C0C0C0;
-   background:transparent;
-   box-shadow: 0 0 10px #E0E0E0;
-   position:absolute;
-   left:0;
-   top:0;
-   display:none;
+    width:150px;
+    background:transparent;
+    position:absolute;
+    left:0;
+    top:0;
+    overflow: hidden;
+    opacity: 0;
+    z-index: -1;
+    -moz-transition: opacity 0.1s ease-in;
+    -webkit-transition: opacity 0.1s ease-in;
+    -o-transition: opacity 0.1s ease-in;
+    transition: opacity 0.1s ease-in;
+}
+
+.context-menu.state-context-open {
+    border:solid 1px #4787C7;
+    display: block;
+    opacity: 1;
+    z-index: 100;
+    -moz-transition: opacity 0.1s ease-in;
+    -webkit-transition: opacity 0.1s ease-in;
+    -o-transition: opacity 0.1s ease-in;
+    transition: opacity 0.1s ease-in;
 }
 
 .context-menu ul {
-   margin: 0;
-   padding: 0;
-   display:block;
+    margin: 0;
+    padding: 0;
+    display:block;
 }
 
 .context-menu li {
-   display:block;
-   height:30px;
-   font: 12px/30px 'roboto';
-   padding: 0;
-   margin: 0;
-   padding-left:10px;
-   color: #303030;
-   cursor:pointer;
-   border-top: 1px solid transparent;
-   border-bottom: 1px solid transparent;
-   background:#F5F5F5;
+    display:block;
+    height:30px;
+    font: 12px/30px 'roboto';
+    padding: 0;
+    margin: 0;
+    padding-left:10px;
+    color: #4787C7;
+    cursor:pointer;
+    border-top: 0px solid transparent;
+    border-bottom: 0px solid transparent;
+    background:#ffffff;
 }
 
 .context-menu li.seperator,
 .context-menu li.seperator:hover {
-   height: 1px;
-   border: 0;
-   border-top: 1px solid #E0E0E0;
+    height: 1px;
+    border: 0;
+    border-top: 1px solid #4787C7;
 }
 
 .context-menu li:hover {
-    background:#E5E5E5;
-    color: #000000;
-    border-top: 1px solid #E0E0E0;
-    border-bottom: 1px solid #E0E0E0;
+    background:#4787C7;
+    color: #ffffff;
+    border-top: 0px solid #E0E0E0;
+    border-bottom: 0px solid #E0E0E0;
 }
 
 .form {
@@ -172,7 +202,7 @@ div, input, li {
 
 .codeEditor {
     position: absolute;
-    top: 195px;
+    top: 150px;
     left: 0px;
     right: 0px;
     bottom: 40px;
