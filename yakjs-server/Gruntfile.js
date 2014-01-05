@@ -60,6 +60,7 @@ module.exports = function(grunt) {
                 files: [
                     { flatten:true, src: ['README.md', 'LICENSE', '*.bat', '*.sh'], dest: distDirectory + '/' },
                     { flatten:false, src: ['node_modules/ws/**'], dest: distDirectory},
+                    { flatten:false, src: ['node_modules/underscore/**'], dest: distDirectory},
                     { flatten:true, cwd: srcDirectory + 'shell/', src: ['*.bat', '*.sh'], dest: distDirectory + '/', expand: true }
                 ]
             }

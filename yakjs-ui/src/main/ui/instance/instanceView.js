@@ -23,8 +23,6 @@ yak.ui.InstanceView = function InstanceView(parent, context, viewModel) {
      */
     var selectPluginTemplate = context.template.load('selectPluginItem');
 
-    this.activate = viewModel.activate;
-
     this.name = context.ko.observable('');
     this.port = context.ko.observable('');
     this.description = context.ko.observable('');
@@ -44,6 +42,14 @@ yak.ui.InstanceView = function InstanceView(parent, context, viewModel) {
 
         $('.plugin-list', parent).click(handleSelectPluginClick);
     }
+
+    /**
+     * View is being activated.
+     * @param [data]
+     */
+    this.activate = function activate(data) {
+        viewModel.activate(data);
+    };
 
     /**
      *
@@ -70,7 +76,6 @@ yak.ui.InstanceView = function InstanceView(parent, context, viewModel) {
             self.name('');
             self.description('');
             self.port('');
-            self.pluginsCsv('');
         }
 
         createPluginList();

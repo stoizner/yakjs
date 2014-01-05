@@ -26,7 +26,7 @@ yak.Config = function Config() {
 
     /**
      * Constructor
-     * /
+     */
     function constructor() {
         createDefaultInstanceConfig();
         createDefaultPluginConfig();

@@ -69,8 +69,8 @@ div, input, li {
 
 .instance-item-state { width:30px; opacity:0.5; }
 .instance-item-port { width:60px; color: #000000; }
-.instance-item-name { width:140px; }
-.instance-item-desc { width:200px; }
+.instance-item-name { width:250px; }
+.instance-item-desc { width:250px; }
 .instance-item-connectionCount { width:60px; }
 .instance-item-plugins { }
 
@@ -161,7 +161,7 @@ div, input, li {
 .line-label {
     display:block;
     height:30px;
-    width:200px;
+    width:150px;
     font: 13px/30px 'roboto';
     color: #303030;
     text-transform:uppercase;
@@ -175,12 +175,12 @@ div, input, li {
     display:inline-block;
     min-height:30px;
     color: #303030;
-    width: 750px;
+    width: 800px;
 }
 
 .line-input input {
    height:30px;
-   width:400px;
+   width:380px;
 }
 
 .line-left {
@@ -261,6 +261,11 @@ div, input, li {
     margin: 10px 0 10px 0;
 }
 
+.plugin-list {
+    max-height: 230px;
+    overflow: auto;
+}
+
 .select-plugin-item {
     position: relative;
     display: inline-block;
@@ -268,7 +273,7 @@ div, input, li {
     border: solid 1px #c0c0c0;
     background: #ffffff;
     height: 30px;
-    width: 195px;
+    width: 185px;
     overflow: hidden;
     cursor: pointer;
 }

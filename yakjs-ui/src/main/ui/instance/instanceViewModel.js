@@ -45,7 +45,7 @@ yak.ui.InstanceViewModel = function InstanceViewModel(context) {
     this.activate = function activate(data) {
         console.log('InstanceViewModel.activate', data);
 
-        if (data !== null) {
+        if (data) {
             self.instanceItem = new yak.ui.InstanceItem();
             _.extend(self.instanceItem, data);
         } else {
@@ -66,21 +66,19 @@ yak.ui.InstanceViewModel = function InstanceViewModel(context) {
 
         self.selectPluginItems = [];
 
-        if (self.instanceItem) {
-            _.each(response.plugins, function (pluginsInfo) {
-                var item = new yak.ui.SelectPluginItem();
-                item.name = pluginsInfo.name;
-                item.description = pluginsInfo.description;
+        _.each(response.plugins, function (pluginsInfo) {
+            var item = new yak.ui.SelectPluginItem();
+            item.name = pluginsInfo.name;
+            item.description = pluginsInfo.description;
 
-                if (_.contains(self.instanceItem.plugins, item.name)) {
-                    item.isActive = true;
-                }
+            if (self.instanceItem && _.contains(self.instanceItem.plugins, item.name)) {
+                item.isActive = true;
+            }
 
-                self.selectPluginItems.push(item);
-            });
+            self.selectPluginItems.push(item);
+        });
 
-            self.onSelectPluginItemsChanged();
-        }
+        self.onSelectPluginItemsChanged();
     }
 
     /**
