@@ -1,4 +1,4 @@
-/* global CodeMirror: false */
+/* global CodeMirror:false */
 
 /**
  * PluginListView
@@ -35,6 +35,12 @@ yak.ui.PluginView = function PluginView(parent, context, viewModel) {
      */
     this.description = context.ko.observable('');
 
+    this.classStateSyntaxError = context.ko.observable('');
+    this.classStateSyntaxErrorTitle = context.ko.observable('');
+
+    this.editorCursorLine = context.ko.observable(0);
+    this.editorCursorColumn = context.ko.observable(0);
+
     /**
      * Constructor
      */
@@ -50,13 +56,51 @@ yak.ui.PluginView = function PluginView(parent, context, viewModel) {
         CodeMirror.commands.autocomplete = yak.ui.codeEditorAutoComplete;
         CodeMirror.commands.autodocument = yak.ui.codeEditorAutoDocument;
 
-        codeEditor = CodeMirror($('#codeEditor')[0], {
+        codeEditor = new CodeMirror($('#codeEditor')[0], {
             value:  '',
             mode:  'javascript',
             lineNumbers: false,
             indentUnit: 4,
             extraKeys: { 'Ctrl-Space': 'autocomplete', 'Ctrl-D': 'autodocument' }
         });
+
+        codeEditor.on('change', handleCodeEditorChange);
+        codeEditor.on('cursorActivity', handleCodeCursorActivity);
+    }
+
+    /**
+     * Display the current cursor position in the editor status bar.
+     * @param instance
+     */
+    function handleCodeCursorActivity(instance) {
+        var cursorPosition = instance.getCursor();
+        self.editorCursorLine(cursorPosition.line);
+        self.editorCursorColumn(cursorPosition.ch);
+    }
+
+    /**
+     * Handle if code in editor was change to perform a syntax check.
+     */
+    function handleCodeEditorChange(doc, change) {
+        console.log('handleCodeEditorChange');
+
+        try {
+            var code = codeEditor.getValue();
+            (function() {
+                //noinspection JSHint
+                new Function('return ' + code)();
+            })();
+            self.classStateSyntaxError('');
+            self.classStateSyntaxErrorTitle('');
+        } catch(ex) {
+            console.log(change);
+            console.log(ex);
+
+            self.classStateSyntaxError('state-syntax-error');
+
+            var title = 'Last code change was done near ' + change.from.line + ':' + change.from.ch;
+            self.classStateSyntaxErrorTitle(title);
+        }
     }
 
     /**

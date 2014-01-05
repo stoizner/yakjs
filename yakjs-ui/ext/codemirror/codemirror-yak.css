@@ -2,7 +2,7 @@
 
 .CodeMirror {
    /* Set height, width, borders, and global font properties here */
-   font: 12px/18px 'Consolas' 'SourceCodeProRegular' monospace;
+   font: 12px/20px 'Consolas' 'SourceCodeProRegular' monospace;
    height: 100%;
 }
 .CodeMirror-scroll {
@@ -41,7 +41,7 @@
 /* CURSOR */
 
 .CodeMirror div.CodeMirror-cursor {
-  border-left: 1px solid black;
+  border-left: 2px solid black;
   z-index: 3;
 }
 /* Shown when moving in bi-directional text */
