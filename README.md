@@ -35,3 +35,6 @@ You can test it with any WebSocket client (e.g.: [websocket.org](http://www.webs
 
 **Screenshot of the service user interface**
 ![alt text](https://raw.github.com/cobuChris/yak-js/master/yakjs-ui/doc/screenshot-v0.3.0-02.png "screenshot")
+
+
+[![Analytics](https://ga-beacon.appspot.com/UA-46883525-1/yak-js/README.md)](https://github.com/igrigorik/ga-beacon)
