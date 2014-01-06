@@ -1,7 +1,7 @@
 # YAKjs
 ### The JavaScript WebSocket development environment.
 
-This tool is for developing, rapid prototyping, testing, integration and simulation WebSocket communication.
+This tool is for developing, rapid prototyping, testing, integrating and simulating WebSocket communication.
 
 YAKjs is a [jsFiddle](http://jsfiddle.net/) like tool for WebSockets.   
 
