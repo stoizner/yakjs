@@ -1,25 +1,37 @@
-## YAKjs
+# YAKjs
+### The JavaScript WebSocket development environment.
 
-The YAKjs makes developing software, based on websocket comunication very easy. 
-This tool is for rapid prototyping, testing, integration and simulation.
-It **does not** replace or is an solution for production ready websocket server implementation.  
+This tool is for developing, rapid prototyping, testing, integration and simulation WebSocket communication.
 
-## Download 
-Download the **[latest release package 0.3.0](https://github.com/cobuChris/yak-js/releases)**.
+YAKjs is a [jsFiddle](http://jsfiddle.net/) like tool for WebSockets.   
 
-**Requirements**
-The server requires [node.js](http://nodejs.org/) to run.
+## Get started
 
-## Install and run YAKjs server
+Get started in less than 55 seconds. If you have already installed [node.js](http://nodejs.org/).
 
+**Download**
+
+Go to the **[latest release package 0.3.0](https://github.com/cobuChris/yak-js/releases)**.
 Download zip package and extract it.
 
-_Start the server_
 
-``` node yakjs-server.js ```
+**Start the server**
 
-## Open the YAKjs user interface
+Go to yakjs-server and use ``` node yakjs-server.js ``` or the startup scripts.
+This will stat the yakjs-server with default service port 8790.
 
-Open _index.html_ in your browser. The UI is included in the release zip package.
 
+**Start the client**
+
+Go to yakjs-ui and open the index.html (latest browser generation recommended)
+It will automatically try to connect to the yakjs-server service port ws://localhost:8790
+
+
+**Start an instance**
+
+On the service user interface, start pre configured 'echo' instance.
+Now your 'echo' WebSocket server instance is running and ready. 
+You can test it with any WebSocket client (e.g.: [websocket.org](http://www.websocket.org/echo.html))
+
+**Screenshot of the service user interface**
 ![alt text](https://raw.github.com/cobuChris/yak-js/master/yakjs-ui/doc/screenshot-v0.3.0-02.png "screenshot")
