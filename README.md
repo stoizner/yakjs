@@ -1,5 +1,5 @@
-# YAKjs
-### The JavaScript WebSocket server development environment.
+![alt text](https://raw.github.com/cobuChris/yak-js/master/yakjs-ui/doc/header.png "screenshot")
+### Speed up client development using plug&play JavaScript WebSocket servers
 
 This tool is for developing, rapid prototyping, testing, integrating and simulating WebSocket communication.
 
