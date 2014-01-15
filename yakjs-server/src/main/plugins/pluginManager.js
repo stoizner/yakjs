@@ -4,10 +4,11 @@
  * @param {yak.ConfigManager} configManager
  */
 yak.PluginManager = function PluginManager(configManager) {
-
     'use strict';
 
-    /** @type {yak.PluginManager} */
+    /**
+     * @type {yak.PluginManager}
+     */
     var self = this;
 
     /**
@@ -20,7 +21,9 @@ yak.PluginManager = function PluginManager(configManager) {
      */
     var log = new yak.Logger(self.constructor.name);
 
-    /** Constructor */
+    /**
+     * Constructor
+     */
     function constructor() {
     }
 
@@ -133,7 +136,7 @@ yak.PluginManager = function PluginManager(configManager) {
     };
 
     /**
-     * Creates the constructor function for the worker.
+     * Creates the constructor function to create a plugin instance.
      * @param {string} code
      * @return {Function}
      */

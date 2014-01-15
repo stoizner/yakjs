@@ -157,7 +157,8 @@ yak.WebSocketInstance = function WebSocketInstance(yakServer, name, port) {
 
                     initializePlugin(plugin);
                 } catch (ex) {
-                    log.error('Initialization failed.', { plugin: pluginName, error: ex, stack: ex.stack });
+                    log.error('Initialization failed.', { plugin: pluginName });
+                    log.debug({ error: ex.message });
                 }
             } else {
                 log.warn('Plugin could not be loaded.', { plugin: pluginName });
