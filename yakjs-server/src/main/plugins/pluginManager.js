@@ -101,7 +101,7 @@ yak.PluginManager = function PluginManager(configManager) {
 
             try {
                 if (typeof plugin.PluginConstructor === 'function') {
-                    pluginInstance = new plugin.PluginConstructor(require);
+                    pluginInstance = new plugin.PluginConstructor(yak.require);
                     pluginInstance.name = name;
                 } else {
                     log.warn('No constructor function available, can not create plugin instance: ' + name + '');
