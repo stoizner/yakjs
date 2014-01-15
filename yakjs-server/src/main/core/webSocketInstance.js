@@ -77,7 +77,7 @@ yak.WebSocketInstance = function WebSocketInstance(yakServer, name, port) {
     /**
      * @type {Array.<yak.PluginWorker>}
      */
-    var pluginWorkers = [];
+    var pluginInstances = [];
 
     /**
      * Constructor
@@ -89,17 +89,17 @@ yak.WebSocketInstance = function WebSocketInstance(yakServer, name, port) {
      * Start server instance
      */
     this.start = function start() {
-        log.info('Start WebSocketServer Instance ' + self.name);
+        log.info('Start WebSocketServer Instance', { name: self.name });
         try {
             if (self.state !== yak.InstanceState.RUNNING) {
-                initializePlugins();
+                instantiatePlugins();
                 startServer();
                 self.state = yak.InstanceState.RUNNING;
             } else {
-                log.info('Can not start, Instance already running.');
+                log.info('Can not start, Instance already running.', { name: self.name });
             }
         } catch (ex) {
-            log.error('Could not start instance: ' + ex.message);
+            log.error('Could not start instance: ', { error: ex.message, ex: ex, stack: ex.stack });
             self.state = yak.InstanceState.ERROR;
         }
     };
@@ -113,13 +113,13 @@ yak.WebSocketInstance = function WebSocketInstance(yakServer, name, port) {
             if (server && self.state === yak.InstanceState.RUNNING) {
                 self.state = yak.InstanceState.STOPPING;
                 terminatePlugins();
-                log.info('Stopping WebSocketInstance...');
+                log.info('Stopping WebSocket Instance.');
                 server.close();
                 server = null;
                 self.state = yak.InstanceState.STOPPED;
             }
         } catch (ex) {
-            log.error('Could not stop instance: ' + ex.message);
+            log.error('Could not stop instance: ', { error: ex.message, ex: ex, stack: ex.stack });
             self.state = yak.Instanceyake.ERROR;
         }
     };
@@ -128,7 +128,7 @@ yak.WebSocketInstance = function WebSocketInstance(yakServer, name, port) {
      * Start the web socket.
      */
     function startServer() {
-        log.info('Start websocket server instance on ' + self.port);
+        log.info('Start websocket server instance.', { port: self.port });
         server = new WebSocketServer({port: self.port});
         server.on('connection', handleConnection);
     }
@@ -136,50 +136,49 @@ yak.WebSocketInstance = function WebSocketInstance(yakServer, name, port) {
     /**
      * Initialize plugins.
      */
-    function initializePlugins() {
-
-        log.info('Initialize ' + self.plugins.length + ' plugins.');
-        pluginWorkers = [];
+    function instantiatePlugins() {
+        log.info('Instantiate and initialize plugins.', { count: self.plugins.length });
+        pluginInstances = [];
 
         for(var i=0; i<self.plugins.length; i++) {
             var pluginName = self.plugins[i].trim();
-            var worker = yakServer.pluginManager.createPluginWorker(pluginName);
 
-            if (worker !== null) {
+            log.info('Instantiate plugin.', { plugin: pluginName });
+            var plugin = yakServer.pluginManager.createPluginInstance(pluginName);
+
+            if (plugin !== null) {
 
                 // Extend with pluginName
-                worker.name = pluginName;
+                plugin.name = pluginName;
 
                 // A termination fail, shall not stop the loop, so
                 // that other plugins can be terminated.
                 try {
-                    initializePlugin(worker);
+
+                    initializePlugin(plugin);
                 } catch (ex) {
-                    log.error(worker.name + ' could not be initialized.');
-                    log.error(ex);
-                    log.error(ex.stack);
+                    log.error('Initialization failed.', { plugin: pluginName, error: ex, stack: ex.stack });
                 }
             } else {
-                log.warn(pluginName + ' not initialized.');
+                log.warn('Plugin could not be loaded.', { plugin: pluginName });
             }
         }
     }
 
     /**
-     * @param {yak.PluginWorker} worker
+     * @param {yak.PluginWorker} plugin
      */
-    function initializePlugin(worker) {
-        if (worker.hasOwnProperty('onInitialize')) {
-            log.info(worker.name + ' call onInitialize.');
-
-            worker.onInitialize(self);
+    function initializePlugin(plugin) {
+        log.info('Initialize plugin.', { plugin: plugin.name });
+        if (plugin.hasOwnProperty('onInitialize')) {
+            plugin.onInitialize(self);
 
             // Add plugin instance to workers.
-            pluginWorkers.push(worker);
+            pluginInstances.push(plugin);
 
-            log.info(worker.name + ' initialized.');
+            log.info('Plugin initialized.', { plugin: plugin.name });
         } else {
-            log.info(worker.name + ' has no onInitialize function - skipped.');
+            log.info('Plugin has no onInitialize function - skipped.', { plugin: plugin.name });
         }
     }
 
@@ -187,34 +186,33 @@ yak.WebSocketInstance = function WebSocketInstance(yakServer, name, port) {
      * Terminate plugins.
      */
     function terminatePlugins() {
-        log.info('Terminate ' + self.plugins.length + ' plugins.');
-        pluginWorkers = [];
+        log.info('Terminate all plugins.', { count: self.plugins.length });
+        pluginInstances = [];
 
-        for(var i=0; i<pluginWorkers.length; i++) {
-            var worker = pluginWorkers[i];
+        for(var i=0; i<pluginInstances.length; i++) {
+            var pluginInstance = pluginInstances[i];
 
             // A termination fail, shall not stop the loop, so
             // that other plugins can be terminated.
             try {
-                terminatePlugin(worker);
+                terminatePlugin(pluginInstance);
             } catch (ex) {
-                log.error(worker.name + ' could not be terminated.');
-                log.error(ex);
-                log.error(ex.stack);
+                log.error('Could not terminate plugin', { plugin: pluginInstance.name, error: ex, stack: ex.stack });
             }
         }
     }
 
     /**
-     * @param {yak.PluginWorker} worker
+     * @param {yak.PluginWorker} pluginInstance
      */
-    function terminatePlugin(worker) {
-        if (worker.hasOwnProperty('onTerminate')) {
-            log.info(worker.name + ' call onTerminate.');
-            worker.onTerminate(self);
-            log.info(worker.name + ' terminated.');
+    function terminatePlugin(pluginInstance) {
+        log.info('Terminate plugin.', { plugin: pluginInstance.name });
+
+        if (pluginInstance.hasOwnProperty('onTerminate')) {
+            pluginInstance.onTerminate(self);
+            log.info('Plugin terminated.', { plugin: pluginInstance.name });
         } else {
-            log.info(worker.name + ' has no onTerminate function - skipped.');
+            log.info('Plugin has no onTerminate function - skipped.', { plugin: pluginInstance.name });
         }
     }
 
@@ -270,29 +268,29 @@ yak.WebSocketInstance = function WebSocketInstance(yakServer, name, port) {
 
             log.info('Received message from: ' + connection.id + ', data: ' + data);
 
-            for(var i=0; i<pluginWorkers.length; i++) {
-                pluginWorkerOnMessage(pluginWorkers[i], data, connection);
+            for(var i=0; i<pluginInstances.length; i++) {
+                pluginOnMessage(pluginInstances[i], data, connection);
             }
         };
     }
 
     /**
      *
-     * @param {yak.PluginWorker} pluginWorker
+     * @param {yak.PluginWorker} pluginInstance
      * @param {string} data
      * @param {yak.WebSocketConnection} connection
      */
-    function pluginWorkerOnMessage(pluginWorker, data, connection) {
+    function pluginOnMessage(pluginInstance, data, connection) {
 
-        if (pluginWorker.onMessage) {
+        if (pluginInstance.onMessage) {
             try {
-                self.log.info(pluginWorker.name + 'call onMessage.');
-                pluginWorker.onMessage(new yak.WebSocketMessage(data), connection, self);
+                self.log.info('Plugin.onMessage(...)', { pluginName: pluginInstance.name });
+                pluginInstance.onMessage(new yak.WebSocketMessage(data), connection, self);
             } catch (ex) {
-                self.log.warn('PluginWorker ' + pluginWorker.name + 'onMessage(...) failed.', ex);
+                self.log.warn('Plugin.onMessage(...) failed.', { pluginName: pluginInstance.name, error: ex});
             }
         } else {
-            self.log.warn('PluginWorker ' + pluginWorker.name + ' has no method onMessage.');
+            self.log.warn('Plugin.onMessage(data, connection, instance) not found.', { pluginName: pluginInstance.name });
         }
     }
 

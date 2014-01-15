@@ -53,21 +53,21 @@ yak.Config = function Config() {
         var echoPlugin = new yak.PluginConfigItem();
         echoPlugin.name = 'echo';
         echoPlugin.description = 'Echo service. Every received message will be returned.';
-        echoPlugin.code = yak.EchoPluginWorker.toString();
+        echoPlugin.code = yak.EchoPlugin.toString();
         self.plugins.push(echoPlugin);
 
         // PING-PONG Plugin
         var pingpongPlugin = new yak.PluginConfigItem();
         pingpongPlugin.name = 'ping-pong';
         pingpongPlugin.description = 'ping will be answered with pong';
-        pingpongPlugin.code = yak.PingPongPluginWorker.toString();
+        pingpongPlugin.code = yak.PingPongPlugin.toString();
         self.plugins.push(pingpongPlugin);
 
         // BROADCAST Plugin
         var broadCastPlugin = new yak.PluginConfigItem();
         broadCastPlugin.name = 'broadcast';
         broadCastPlugin.description = 'Broadcast service. Every received message will be sent to all other connections.';
-        broadCastPlugin.code = yak.BroadcastPluginWorker.toString();
+        broadCastPlugin.code = yak.BroadcastPlugin.toString();
         self.plugins.push(broadCastPlugin);
 
         // HELLO-WORLD_CONSOLE Plugin

@@ -3,13 +3,7 @@
  * @constructor
  */
 yak.Plugin = function Plugin() {
-
     'use strict';
-
-    /**
-     * @type {yak.Plugin}
-     */
-    var self = this;
 
     /**
      * Name of the plugin (Has to be unique)
@@ -34,12 +28,4 @@ yak.Plugin = function Plugin() {
      * @implements {yak.PluginWorker}
      */
     this.PluginConstructor = null;
-
-    /**
-     * Constructor
-     */
-    function constructor() {
-    }
-
-    constructor();
 };

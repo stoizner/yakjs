@@ -3,7 +3,9 @@ var _ = require('underscore');
 (function main() {
     'use strict';
 
-    console.log('Start YAK server');
+    var log = new yak.Logger('STARTUP');
+
+    log.info('Start YAK server');
 
     var configManager = new yak.ConfigManager();
     configManager.load();
@@ -14,7 +16,9 @@ var _ = require('underscore');
 
     yakServer.start(serviceInstance);
 
-    console.log('YAK server initialized and running...');
+    log.info('........................................');
+    log.info('. YAKjs server initialized and running .');
+    log.info('........................................');
 }());
 
 

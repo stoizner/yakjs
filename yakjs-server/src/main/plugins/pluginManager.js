@@ -85,32 +85,31 @@ yak.PluginManager = function PluginManager(configManager) {
     };
 
     /**
+     * Create a plugin instance.
      * @param {string} name
      * @return {null|yak.PluginWorker}
      */
-    this.createPluginWorker = function createPluginWorker(name) {
-        log.info('Create plugin instance: ' + name);
-        var pluginWorker = null;
+    this.createPluginInstance = function createPluginInstance(name) {
+        log.info('Create plugin instance', { pluginName: name });
+        var pluginInstance = null;
 
         if (plugins.hasOwnProperty(name)) {
             var plugin = plugins[name];
 
             try {
                 if (typeof plugin.PluginConstructor === 'function') {
-                    pluginWorker = new plugin.PluginConstructor();
-                    pluginWorker.name = name;
+                    pluginInstance = new plugin.PluginConstructor(require);
+                    pluginInstance.name = name;
                 } else {
                     log.warn('No constructor function available, can not create plugin instance: ' + name + '');
                 }
             } catch(ex) {
-                pluginWorker = null;
-                log.warn('Can not create plugin instance: ' + name + '');
-                log.info(ex);
-                log.info(ex.stack);
+                pluginInstance = null;
+                log.warn('Can not create plugin instance: ' + name + '', { exception: ex, stack: ex.stack });
             }
         }
 
-        return pluginWorker;
+        return pluginInstance;
     };
 
     /**

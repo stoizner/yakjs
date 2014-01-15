@@ -1,9 +1,10 @@
 /**
- * PingPongPluginWorker
+ * EchoPlugin
+ * Every received message will be send back.
  * @constructor
  * @implements {yak.PluginWorker}
  */
-yak.PingPongPluginWorker = function PingPongPluginWorker() {
+yak.EchoPlugin = function EchoPlugin() {
 
     'use strict';
 
@@ -23,9 +24,7 @@ yak.PingPongPluginWorker = function PingPongPluginWorker() {
      * @param {yak.WebSocketInstance} instance
      */
     this.onMessage = function onMessage(message, connection, instance) {
-        if (message.data === 'ping') {
-            connection.send('pong');
-        }
+        connection.send(message.data);
     };
 
     /**

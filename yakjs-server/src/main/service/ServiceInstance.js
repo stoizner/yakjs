@@ -95,7 +95,7 @@ yak.ServiceInstance = function ServiceInstance(name, port, yakServer)
      * Start the web socket.
      */
     function startServer() {
-        log.info('Start web socket.');
+        log.info('Start web socket server.', {port: self.port});
         server = new WebSocketServer({port: self.port});
         server.on('connection', handleConnection);
     }

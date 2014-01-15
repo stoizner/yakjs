@@ -1,9 +1,10 @@
 /**
- * BroadcastPluginWorker
+ * BroadcastPlugin
+ * Every received message will be send to all connected clients.
  * @constructor
  * @implements {yak.PluginWorker}
  */
-yak.BroadcastPluginWorker = function BroadcastPluginWorker() {
+yak.BroadcastPlugin = function BroadcastPlugin() {
 
     'use strict';
 

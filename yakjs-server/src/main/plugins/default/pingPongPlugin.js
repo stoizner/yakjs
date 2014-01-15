@@ -1,9 +1,10 @@
 /**
- * EchoPluginWorker
+ * PingPong
+ * For every received 'ping' string, this plugin will send an 'pong' string.
  * @constructor
  * @implements {yak.PluginWorker}
  */
-yak.EchoPluginWorker = function EchoPluginWorker() {
+yak.PingPongPlugin = function PingPongPlugin() {
 
     'use strict';
 
@@ -23,7 +24,9 @@ yak.EchoPluginWorker = function EchoPluginWorker() {
      * @param {yak.WebSocketInstance} instance
      */
     this.onMessage = function onMessage(message, connection, instance) {
-        connection.send(message.data);
+        if (message.data === 'ping') {
+            connection.send('pong');
+        }
     };
 
     /**

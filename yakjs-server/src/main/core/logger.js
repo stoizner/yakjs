@@ -1,9 +1,9 @@
 /**
  * Logger
  * @constructor
- * @param {string} [name]
+ * @param {string} [category]
  */
-yak.Logger = function Logger(name) {
+yak.Logger = function Logger(category) {
 
     'use strict';
 
@@ -13,40 +13,46 @@ yak.Logger = function Logger(name) {
     /**
      * @type {string}
      */
-    var category = name || '';
-
-    /** Constructor */
-    function constructor() {
-    }
+    var logCategory = category || '';
 
     /**
-    * @param {string|object} message
-    * @param {string|object} [data]
-    */
+     * @param {*} message
+     * @param {*} [data]
+     */
     this.info = function info(message, data) {
         var logInfo = toLogInfo(message, data);
-        var msg = 'INFO : ' + '[' + category + '] ' +  logInfo.message;
-        log(msg.trim(), logInfo.data);
+        var msg = 'INFO : ' + '[' + logCategory + '] ' +  logInfo.message;
+        log(msg, logInfo.data);
     };
 
     /**
-    * @param {string|object} message
-    * @param {string|object} [data]
-    */
+     * @param {*} message
+     * @param {*} [data]
+     */
     this.warn = function warn(message, data) {
-        var logInfo = toLogInfo(message, data);
-        var msg = 'WARN : ' + '[' + category + '] ' + logInfo.message;
-        log(msg.trim(), logInfo.data);
+        var info = toLogInfo(message, data);
+        var msg = 'WARN : ' + '[' + logCategory + '] ' + info.message;
+        log(msg, info.data);
     };
 
     /**
-    * @param {string|object} message
-    * @param {string|object} [data]
-    */
+     * @param {*} message
+     * @param {*} [data]
+     */
+    this.debug = function debug(message, data) {
+        var info = toLogInfo(message, data);
+        var msg = 'DEBUG: ' + '[' + logCategory + '] ' + info.message;
+        log(msg, info.data);
+    };
+
+    /**
+     * @param {*} message
+     * @param {*} [data]
+     */
     this.error = function error(message, data) {
-        var logInfo = toLogInfo(message);
-        var msg = 'ERROR: ' + '[' + category + '] ' + logInfo.message;
-        log(msg.trim(), logInfo.data);
+        var info = toLogInfo(message);
+        var msg = 'ERROR: ' + '[' + logCategory + '] ' + info.message;
+        log(msg, info.data);
     };
 
     /**
@@ -55,7 +61,7 @@ yak.Logger = function Logger(name) {
     * @param {null|object} data
     */
     function log(message, data) {
-        if (data !== null) {
+        if (!_.isUndefined(data)) {
             console.log(message, data);
         } else {
             console.log(message);
@@ -69,13 +75,14 @@ yak.Logger = function Logger(name) {
     */
     function toLogInfo(message, data) {
 
-        var info = { message: '', data: null };
+        var info = { message: '', data: data };
+        var messageProp = 'message';
 
         if (typeof message === 'string') {
             info.message = message;
-        } else if (typeof message === 'object') {
-            if (message.message) {
-                info.message = message.message;
+        } else {
+            if (message.hasOwnProperty(messageProp)) {
+                info.message = message[messageProp];
                 info.data = message;
             } else {
                 info.message = message.toString();
@@ -83,12 +90,6 @@ yak.Logger = function Logger(name) {
             }
         }
 
-        if (typeof data !== 'undefined') {
-            info.data = data;
-        }
-
         return info;
     }
-
-    constructor();
 };
