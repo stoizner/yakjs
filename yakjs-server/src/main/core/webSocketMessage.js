@@ -9,13 +9,7 @@ yak.WebSocketMessage = function WebSocketMessage(data) {
     'use strict';
 
     /**
-    * @type {string|null}
-    */
+     * @type {string|null}
+     */
     this.data = data || null;
-
-    /** Constructor */
-    function constructor() {
-    }
-
-    constructor();
 };

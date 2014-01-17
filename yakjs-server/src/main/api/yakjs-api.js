@@ -395,6 +395,81 @@ yak.api.StopInstanceResponse = function StopInstanceResponse() {
     */
     this.message = '';
 };/**
+ * Get server log information
+ * @constructor
+ */
+yak.api.GetLogInfoRequest = function GetLogInfoRequest() {
+
+    'use strict';
+
+    /**
+     * Command for the service API.
+     * @type {string}
+     */
+    this.type = 'request.getLogInfo';
+
+    /**
+     * Filter for a specific instance.
+     * @type {?string}
+     */
+    this.filterInstanceName = null;
+
+    /**
+     * Maximal count of log results
+     * @type {number}
+     */
+    this.maxCount = 500;
+};/**
+ * GetLogInfoResponse
+ * @constructor
+ */
+yak.api.GetLogInfoResponse = function GetLogInfoResponse() {
+
+    'use strict';
+
+    /**
+     * Command for the service API.
+     * @type {string}
+     */
+    this.type = 'response.getLogInfo';
+
+    /**
+     * List of log information.
+     * @type {Array.<yak.api.LogInfo>}
+     */
+    this.logs = [];
+};/**
+ * LogInfo
+ * @constructor
+ */
+yak.api.LogInfo = function LogInfo() {
+
+    'use strict';
+
+    /**
+     * Log Level (info|warn|error|debug)
+     * @type {string}
+     */
+    this.level = null;
+
+    /**
+     * category name.
+     * @type {?string}
+     */
+    this.category = null;
+
+    /**
+     * Log information.
+     * @type {?string}
+     */
+    this.info = null;
+
+    /**
+     * ISO DateTime format when the log entry was created.
+     * @type {?string}
+     */
+    this.time = null;
+};/**
  * CreateOrUpdatePluginRequest
  * @constructor
  */
@@ -669,4 +744,142 @@ yak.api.PluginInfo = function PluginInfo() {
      * @type {string}
      */
     this.code = null;
+};/**
+ * GetStoreKeyInfoRequest
+ * @constructor
+ */
+yak.api.GetStoreKeyInfoRequest = function GetStoreKeyInfoRequest() {
+    'use strict';
+
+    /**
+     * Command for the service API.
+     * @type {string}
+     */
+    this.type = 'request.getStoreKeyInfo';
+};/**
+ * GetStoreKeyInfoResponse
+ * @constructor
+ */
+yak.api.GetStoreKeyInfoResponse = function GetStoreKeyInfoResponse() {
+    'use strict';
+
+    /**
+     * Command for the service API.
+     * @type {string}
+     */
+    this.type = 'response.getStoreKeyInfo';
+
+    /**
+     * List of log information.
+     * @type {Array.<yak.api.StoreKeyInfo>}
+     */
+    this.keys = [];
+};/**
+ * GetStoreValueRequest
+ * @constructor
+ */
+yak.api.GetStoreValueRequest = function GetStoreValueRequest() {
+    'use strict';
+
+    /**
+     * Command for the service API.
+     * @type {string}
+     */
+    this.type = 'request.getStoreValue';
+
+    /**
+     * Store key
+     * @type {?string}
+     */
+    this.key = null;
+};/**
+ * GetStoreValueResponse
+ * @constructor
+ */
+yak.api.GetStoreValueResponse = function GetStoreValueResponse() {
+    'use strict';
+
+    /**
+     * Command for the service API.
+     * @type {string}
+     */
+    this.type = 'response.getStoreValue';
+
+    /**
+     * The store key.
+     * @type {?string}
+     */
+    this.key = null;
+
+    /**
+     * The store value.
+     * @type {?string}
+     */
+    this.value = null;
+};/**
+ * SetStoreValueRequest
+ * @constructor
+ */
+yak.api.SetStoreValueRequest = function SetStoreValueRequest() {
+    'use strict';
+
+    /**
+     * Command for the service API.
+     * @type {string}
+     */
+    this.type = 'request.setStoreValue';
+
+    /**
+     * The store key.
+     * @type {?string}
+     */
+    this.key = null;
+
+    /**
+     * The store value.
+     * @type {?string}
+     */
+    this.value = null;
+};/**
+ * SetStoreValueResponse
+ * @constructor
+ */
+yak.api.SetStoreValueResponse = function SetStoreValueResponse() {
+    'use strict';
+
+    /**
+     * Command for the service API.
+     * @type {string}
+     */
+    this.type = 'response.setStoreValue';
+
+    /**
+     * The store key.
+     * @type {?string}
+     */
+    this.key = null;
+
+    /**
+     * The store value.
+     * @type {?string}
+     */
+    this.value = null;
+};/**
+ * StoreKeyInfo
+ * @constructor
+ */
+yak.api.StoreKeyInfo = function StoreKeyInfo() {
+    'use strict';
+
+    /**
+     * The store key.
+     * @type {string}
+     */
+    this.key = null;
+
+    /**
+     * The store description for that key.
+     * @type {?string}
+     */
+    this.description = null;
 };

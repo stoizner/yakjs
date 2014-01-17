@@ -7,7 +7,9 @@ yak.Logger = function Logger(category) {
 
     'use strict';
 
-    /** @type {yak.Logger} */
+    /**
+     * @type {yak.Logger}
+     */
     var self = this;
 
     /**
@@ -16,13 +18,27 @@ yak.Logger = function Logger(category) {
     var logCategory = category || '';
 
     /**
+     * LogAppender
+     * @type {Object.<string, function(level, message, data)>}
+     */
+    var appenders = {};
+
+    /**
+     * Constructor
+     */
+    (function constructor() {
+        appenders.console = consoleAppender;
+        appenders.cache = yak.cacheAppender;
+    }());
+
+    /**
      * @param {*} message
      * @param {*} [data]
      */
     this.info = function info(message, data) {
         var logInfo = toLogInfo(message, data);
-        var msg = 'INFO : ' + '[' + logCategory + '] ' +  logInfo.message;
-        log(msg, logInfo.data);
+        var logLevel = 'info';
+        log(logLevel, logCategory, logInfo.message, logInfo.data);
     };
 
     /**
@@ -31,8 +47,8 @@ yak.Logger = function Logger(category) {
      */
     this.warn = function warn(message, data) {
         var info = toLogInfo(message, data);
-        var msg = 'WARN : ' + '[' + logCategory + '] ' + info.message;
-        log(msg, info.data);
+        var logLevel = 'warn';
+        log(logLevel, logCategory, info.message, info.data);
     };
 
     /**
@@ -41,8 +57,8 @@ yak.Logger = function Logger(category) {
      */
     this.debug = function debug(message, data) {
         var info = toLogInfo(message, data);
-        var msg = 'DEBUG: ' + '[' + logCategory + '] ' + info.message;
-        log(msg, info.data);
+        var logLevel = 'debug';
+        log(logLevel, logCategory, info.message, info.data);
     };
 
     /**
@@ -50,21 +66,48 @@ yak.Logger = function Logger(category) {
      * @param {*} [data]
      */
     this.error = function error(message, data) {
-        var info = toLogInfo(message);
-        var msg = 'ERROR: ' + '[' + logCategory + '] ' + info.message;
-        log(msg, info.data);
+        var info = toLogInfo(message, data);
+        var logLevel = 'error';
+        log(logLevel, logCategory, info.message, info.data);
     };
 
     /**
-    *
-    * @param {string} message
-    * @param {null|object} data
-    */
-    function log(message, data) {
+     * Get logs.
+     * @return {Array.<yak.api.LogInfo>}
+     */
+    this.getLogs = function getLogs() {
+        return yak.logCache;
+    };
+
+    /**
+     *
+     * @param {string} message
+     * @param {null|object} data
+     * @param {string} category
+     * @param {string} level
+     */
+    function log(level, category, message, data) {
+        _.each(appenders, function(appender) {
+            if (_.isFunction(appender)) {
+                appender(level, category, message, data);
+            }
+        });
+    }
+
+    /**
+     * Console Log Appender
+     * @param level
+     * @param category
+     * @param message
+     * @param data
+     */
+    function consoleAppender(level, category, message, data) {
+        var msg = level + ': ' + '[' + category + '] ' + message;
+
         if (!_.isUndefined(data)) {
-            console.log(message, data);
+            console.log(msg, data);
         } else {
-            console.log(message);
+            console.log(msg);
         }
     }
 

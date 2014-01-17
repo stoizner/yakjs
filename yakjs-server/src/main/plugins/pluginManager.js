@@ -49,7 +49,7 @@ yak.PluginManager = function PluginManager(configManager) {
             }
         }
 
-        log.info(result.length + ' plugins available.');
+        log.info('Available plugins', { count: result.length });
 
         return result;
     };
@@ -68,7 +68,7 @@ yak.PluginManager = function PluginManager(configManager) {
     this.addOrUpdatePlugin = function addOrUpdatePlugin(plugin) {
 
         if (plugin.PluginConstructor === null) {
-            plugin.PluginConstructor = createPluginWorkerConstructor(plugin.code);
+            plugin.PluginConstructor = createPluginConstructor(plugin.code);
         }
 
         if (plugin.PluginConstructor !== null) {
@@ -104,11 +104,12 @@ yak.PluginManager = function PluginManager(configManager) {
                     pluginInstance = new plugin.PluginConstructor(yak.require);
                     pluginInstance.name = name;
                 } else {
-                    log.warn('No constructor function available, can not create plugin instance: ' + name + '');
+                    log.warn('No constructor function available, can not create plugin instance. ', { plugin: name });
                 }
             } catch(ex) {
                 pluginInstance = null;
-                log.warn('Can not create plugin instance: ' + name + '', { exception: ex, stack: ex.stack });
+                log.error('Can not create plugin instance.', { plugin: name, error: ex.message });
+                log.debug('Error Stack', { stack: ex.stack });
             }
         }
 
@@ -127,12 +128,12 @@ yak.PluginManager = function PluginManager(configManager) {
         plugin.name = name;
         plugin.description = description;
         plugin.code = code;
-        plugin.PluginConstructor = createPluginWorkerConstructor(code);
+        plugin.PluginConstructor = createPluginConstructor(code);
 
-        if (plugin.PluginConstructor !== null) {
-            plugins[name] = plugin;
-            updateAndSaveConfig();
-        }
+        // if (plugin.PluginConstructor !== null) {
+        plugins[name] = plugin;
+        updateAndSaveConfig();
+        //}
     };
 
     /**
@@ -140,7 +141,7 @@ yak.PluginManager = function PluginManager(configManager) {
      * @param {string} code
      * @return {Function}
      */
-    function createPluginWorkerConstructor(code) {
+    function createPluginConstructor(code) {
 
         var worker = null;
 
@@ -149,8 +150,7 @@ yak.PluginManager = function PluginManager(configManager) {
             // noinspection JSHint
             worker = new Function('return ' + code)();
         } catch (ex) {
-            log.warn(ex);
-            log.warn(ex.stack);
+            log.error('No valid plugin code.', { name: ex.name, message:ex.message, line: ex.line});
         }
 
         return worker;

@@ -64,7 +64,7 @@ yak.ui.InstanceListView = function InstanceListView(parent, context, viewModel) 
 
         itemContainer.html(html);
 
-        $('.instance-item-open-context', itemContainer).contextMenu($('#instance-item-context'), handleMenuClicked);
+        $('.list-item-open-context', itemContainer).contextMenu($('#instance-item-context'), handleMenuClicked);
     };
 
     function handleContextEdit(name) {

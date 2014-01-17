@@ -40,7 +40,7 @@ yak.ConfigManager = function ConfigManager() {
      */
     this.load = function load() {
 
-        log.info('Load configuration from ' + CONFIG_FILENAME);
+        log.info('Load configuration from file.', { fileName: CONFIG_FILENAME });
 
         try {
             if (fs.existsSync(CONFIG_FILENAME)) {
@@ -56,7 +56,7 @@ yak.ConfigManager = function ConfigManager() {
             // log.info(self.config);
 
         } catch (ex) {
-            log.info(ex);
+            log.error('Load configuration from file failed.', { error: ex.message });
         }
     };
 

@@ -108,12 +108,12 @@ yak.ServiceInstance = function ServiceInstance(name, port, yakServer)
         var connection = new yak.WebSocketConnection();
         connection.socket = socket;
 
-        log.info('connected ' + connection.id);
+        log.info('connected', { connectionId: connection.id });
 
         connections[connection.id] = connection;
 
         socket.on('close', function() {
-            log.info('onclose ' + connection.id);
+            log.info('close', { connectionId: connection.id });
             connections[connection.id] = null;
         });
 
@@ -126,7 +126,7 @@ yak.ServiceInstance = function ServiceInstance(name, port, yakServer)
      */
     function createMessageHandler(connection) {
         return function handleMessage(data, flags) {
-            log.info('message ' + connection.id + ', ' + data);
+            log.info('message', { connectionId: connection.id, data: data });
             serviceWorker.onMessage(new yak.WebSocketMessage(data), connection, self);
         };
     }

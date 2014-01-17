@@ -86,7 +86,7 @@ yak.ui.InstanceViewModel = function InstanceViewModel(context) {
      * @param {yak.ui.InstanceItem} instance
      */
     this.createOrUpdate = function createOrUpdate(instance) {
-        console.log('InstanceViewModel.createOrUpdate', instance);
+        console.log('InstanceViewModel.createOrUpdate', { instance: instance });
         var request = null;
 
         if (self.instanceItem === null) {

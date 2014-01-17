@@ -154,14 +154,13 @@ yak.WebSocketInstance = function WebSocketInstance(yakServer, name, port) {
                 // A termination fail, shall not stop the loop, so
                 // that other plugins can be terminated.
                 try {
-
                     initializePlugin(plugin);
                 } catch (ex) {
                     log.error('Initialization failed.', { plugin: pluginName });
                     log.debug({ error: ex.message });
                 }
             } else {
-                log.warn('Plugin could not be loaded.', { plugin: pluginName });
+                log.error('Plugin could not be loaded.', { plugin: pluginName });
             }
         }
     }
@@ -242,17 +241,17 @@ yak.WebSocketInstance = function WebSocketInstance(yakServer, name, port) {
         var connection = new yak.WebSocketConnection();
         connection.socket = socket;
 
-        log.info('New client connected: ' + connection.id);
+        log.info('New client connected', { connectionId: connection.id });
 
         connections[connection.id] = connection;
 
         socket.on('close', function() {
-            self.log.info('Connection closed: ' + connection.id);
+            self.log.info('Connection closed ', { connectionId: connection.id });
             delete connections[connection.id];
         });
 
         socket.on('error', function() {
-            self.log.info('Connection closed with error: ' + connection.id);
+            self.log.info('Connection closed with error' , { connectionId: connection.id });
             delete connections[connection.id];
         });
 
@@ -267,7 +266,7 @@ yak.WebSocketInstance = function WebSocketInstance(yakServer, name, port) {
 
         return function handleMessage(data, flags) {
 
-            log.info('Received message from: ' + connection.id + ', data: ' + data);
+            log.info('Received websocket message ', { fromConnectionId: connection.id, data: data });
 
             for(var i=0; i<pluginInstances.length; i++) {
                 pluginOnMessage(pluginInstances[i], data, connection);
@@ -285,10 +284,10 @@ yak.WebSocketInstance = function WebSocketInstance(yakServer, name, port) {
 
         if (pluginInstance.onMessage) {
             try {
-                self.log.info('Plugin.onMessage(...)', { pluginName: pluginInstance.name });
+                self.log.info('Plugin.onMessage', { pluginName: pluginInstance.name });
                 pluginInstance.onMessage(new yak.WebSocketMessage(data), connection, self);
             } catch (ex) {
-                self.log.warn('Plugin.onMessage(...) failed.', { pluginName: pluginInstance.name, error: ex});
+                self.log.error('Plugin.onMessage failed.', { pluginName: pluginInstance.name, error: ex.name, message:ex.message });
             }
         } else {
             self.log.warn('Plugin.onMessage(data, connection, instance) not found.', { pluginName: pluginInstance.name });

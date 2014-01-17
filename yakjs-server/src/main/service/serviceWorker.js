@@ -31,6 +31,8 @@ yak.ServiceWorker = function ServiceWorker(yakServer) {
      * Constructor
      */
     function constructor() {
+
+        // Instance
         apiMap['request.startInstance'] = new yak.StartInstanceRequestHandler(yakServer);
         apiMap['request.stopInstance'] = new yak.StopInstanceRequestHandler(yakServer);
         apiMap['request.restartInstance'] = new yak.RestartInstanceRequestHandler(yakServer);
@@ -39,11 +41,18 @@ yak.ServiceWorker = function ServiceWorker(yakServer) {
         apiMap['request.updateInstance'] = new yak.UpdateInstanceRequestHandler(yakServer);
         apiMap['request.deleteInstance'] = new yak.DeleteInstanceRequestHandler(yakServer);
 
+        // Plugin
         apiMap['request.getPlugins'] = new yak.GetPluginsRequestHandler(yakServer);
         apiMap['request.createPlugin'] = new yak.CreatePluginRequestHandler(yakServer);
         apiMap['request.createOrUpdatePlugin'] = new yak.CreateOrUpdatePluginRequestHandler(yakServer);
         apiMap['request.deletePlugin'] = new yak.DeletePluginRequestHandler(yakServer);
         apiMap['request.updatePlugin'] = new yak.UpdatePluginRequestHandler(yakServer);
+
+        // Log
+        apiMap['request.getLogInfo'] = new yak.GetLogInfoRequestHandler(yakServer);
+
+        // Store
+        apiMap['request.getStoreKeyInfo'] = new yak.GetStoreKeyInfoRequestHandler(yakServer);
     }
 
     /**
@@ -58,13 +67,13 @@ yak.ServiceWorker = function ServiceWorker(yakServer) {
      */
     this.onMessage = function onMessage(message, connection, instance) {
         try {
-            log.info('onMessage ' + message.data);
+            log.info('onMessage', { data: message.data });
             var msg = JSON.parse(message.data);
 
             if (msg.type && apiMap.hasOwnProperty(msg.type)) {
                 apiMap[msg.type].handle(msg, connection);
             } else {
-                log.warn('No handler found for ' + msg.type);
+                log.warn('No handler found for ', { type: msg.type });
             }
         } catch (ex) {
             log.error(ex.message);

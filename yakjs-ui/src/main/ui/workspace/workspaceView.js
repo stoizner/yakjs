@@ -43,13 +43,8 @@ yak.ui.WorkspaceView = function WorkspaceView(parent, context, viewModel) {
         panelViews['panel-instance-edit'] = context.viewFactory.create($('.panel-instance-edit', parent), yak.ui.InstanceView, yak.ui.InstanceViewModel);
         panelViews['panel-plugin'] = context.viewFactory.create($('.panel-plugin', parent), yak.ui.PluginListView, yak.ui.PluginListViewModel);
         panelViews['panel-plugin-edit'] = context.viewFactory.create($('.panel-plugin-edit', parent), yak.ui.PluginView, yak.ui.PluginViewModel);
-
-        //panelViews['panel-instance'] = new yak.ui.InstanceListView($('.panel-instance', parent), context);
-//        panelViews['panel-instance'] = context.viewFactory.create($('.panel-instance', parent), yak.ui.InstanceListView, yak.ui.InstanceListViewModel);
-//
-//        panelViews['panel-plugin'] = new yak.ui.PluginListView($('.panel-plugin', parent), context);
-//        panelViews['panel-plugin-edit'] = new yak.ui.PluginView($('.panel-plugin-edit', parent), context);
-
+        panelViews['panel-log'] = context.viewFactory.create($('.panel-log', parent), yak.ui.LogListView, yak.ui.LogListViewModel);
+        panelViews['panel-store'] = context.viewFactory.create($('.panel-store', parent), yak.ui.StoreListView, yak.ui.StoreListViewModel);
 
         viewModel.onActivePanelChanged = showPanel;
         showPanel();
