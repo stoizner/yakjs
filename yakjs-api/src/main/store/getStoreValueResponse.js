@@ -18,6 +18,12 @@ yak.api.GetStoreValueResponse = function GetStoreValueResponse() {
     this.key = null;
 
     /**
+     * The key-value pair description.
+     * @type {null}
+     */
+    this.description = null;
+
+    /**
      * The store value.
      * @type {?string}
      */
