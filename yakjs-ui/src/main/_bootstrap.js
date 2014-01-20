@@ -1,13 +1,12 @@
 /*global ko:false, cobu:false, Mustache:false */
 
 $(document).ready(function() {
-
     'use strict';
 
     console.log('ready');
 
     var eventBus = new cobu.EventBus();
-    eventBus.diagnostics().onError(function(error) { console.error(error); console.error(error.originalError.stack); });
+    eventBus.diagnostics().onError(handleEventBusError);
 
     var webSocketAdapter = new yak.ui.WebSocketAdapter(eventBus);
 
@@ -27,3 +26,17 @@ $(document).ready(function() {
     //var workspaceView = new yak.ui.WorkspaceView($(document), viewContext);
 });
 
+
+//noinspection JSHint
+/**
+ * EventBus error handler
+ * @param {cobu.EventBusError} eventBusError
+ */
+function handleEventBusError(eventBusError) {
+    'use strict';
+    console.error('Unexpected error', { eventBusError: eventBusError });
+
+    if (eventBusError.originalError && eventBusError.originalError.stack) {
+        console.error(eventBusError.originalError.stack);
+    }
+}
