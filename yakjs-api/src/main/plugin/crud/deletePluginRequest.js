@@ -13,6 +13,12 @@ yak.api.DeletePluginRequest = function DeletePluginRequest() {
     this.type = 'request.deletePlugin';
 
     /**
+     * Create unique request id.
+     * @type {string}
+     */
+    this.id = yak.api.guid();
+
+    /**
     * Name of the Plugin.
     * @type {string}
     */

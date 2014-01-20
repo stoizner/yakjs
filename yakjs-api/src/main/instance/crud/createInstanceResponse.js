@@ -13,6 +13,12 @@ yak.api.CreateInstanceResponse = function CreateInstanceResponse() {
     this.type = 'response.createInstance';
 
     /**
+     * The original request id.
+     * @type {null}
+     */
+    this.requestId = null;
+
+    /**
     * Whether the request was successfully or not.
     * @type {boolean}
     */

@@ -17,7 +17,6 @@ var _ = require('underscore');
     configManager.save();
 
     store.load();
-    store.setValue('test', 'hello world', 'This is a test entry');
 
     var yakServer = new yak.YakServer(configManager);
     var serviceInstance = new yak.ServiceInstance('service', configManager.config.servicePort, yakServer);

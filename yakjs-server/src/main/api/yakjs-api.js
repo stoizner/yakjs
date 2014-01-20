@@ -13,7 +13,23 @@ var yak = yak || {};
 yak.api = yak.api || {};
 
 
-/**
+(function() {
+    'use strict';
+
+    function s4() {
+        return Math.floor((1 + Math.random()) * 0x10000)
+            .toString(16)
+            .substring(1);
+    }
+
+    /**
+     * Create a GUID.
+     * @returns {string} The GUID
+     */
+    yak.api.guid = function guid() {
+        return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
+    };
+}());/**
  * CreateInstanceRequest
  * @constructor
  */
@@ -26,6 +42,12 @@ yak.api.CreateInstanceRequest = function CreateInstanceRequest() {
      * @type {string}
      */
     this.type = 'request.createInstance';
+
+    /**
+     * Create unique request id.
+     * @type {string}
+     */
+    this.id = yak.api.guid();
 
     /**
      * Unique name of instance.
@@ -65,6 +87,12 @@ yak.api.CreateInstanceResponse = function CreateInstanceResponse() {
     this.type = 'response.createInstance';
 
     /**
+     * The original request id.
+     * @type {null}
+     */
+    this.requestId = null;
+
+    /**
     * Whether the request was successfully or not.
     * @type {boolean}
     */
@@ -90,6 +118,12 @@ yak.api.DeleteInstanceRequest = function DeleteInstanceRequest() {
     this.type = 'request.removeInstance';
 
     /**
+     * Create unique request id.
+     * @type {string}
+     */
+    this.id = yak.api.guid();
+
+    /**
     * Name of the instance.
     * @type {string}
     */
@@ -107,6 +141,12 @@ yak.api.DeleteInstanceResponse = function DeleteInstanceResponse() {
     * @type {string}
     */
     this.type = 'response.removeInstance';
+
+    /**
+     * The original request id.
+     * @type {null}
+     */
+    this.requestId = null;
 
     /**
     * Whether the request was successfully or not.
@@ -132,6 +172,12 @@ yak.api.GetInstancesRequest = function GetInstancesRequest() {
     * @type {string}
     */
     this.type = 'request.getInstances';
+
+    /**
+     * Create unique request id.
+     * @type {string}
+     */
+    this.id = yak.api.guid();
 };/**
  * GetInstancesResponse
  * @constructor
@@ -145,6 +191,12 @@ yak.api.GetInstancesResponse = function GetInstancesResponse() {
     * @type {string}
     */
     this.type = 'response.getInstances';
+
+    /**
+     * The original request id.
+     * @type {null}
+     */
+    this.requestId = null;
 
     /**
     * List of available cloud instances as InstanceInfo array.
@@ -164,6 +216,12 @@ yak.api.UpdateInstanceRequest = function UpdateInstanceRequest() {
     * @type {string}
     */
     this.type = 'request.updateInstance';
+
+    /**
+     * Create unique request id.
+     * @type {string}
+     */
+    this.id = yak.api.guid();
 
     /**
     * The original instance name.
@@ -207,6 +265,12 @@ yak.api.UpdateInstanceResponse = function UpdateInstanceResponse() {
     * @type {string}
     */
     this.type = 'response.updateInstance';
+
+    /**
+     * The original request id.
+     * @type {null}
+     */
+    this.requestId = null;
 
     /**
     * Whether the request was successfully or not.
@@ -277,6 +341,12 @@ yak.api.RestartInstanceRequest = function RestartInstanceRequest() {
     this.type = 'request.restartInstance';
 
     /**
+     * Create unique request id.
+     * @type {string}
+     */
+    this.id = yak.api.guid();
+
+    /**
      * Name of the instance.
      * @type {string}
      */
@@ -294,6 +364,12 @@ yak.api.RestartInstanceResponse = function RestartInstanceResponse() {
      * @type {string}
      */
     this.type = 'response.restartInstance';
+
+    /**
+     * The original request id.
+     * @type {null}
+     */
+    this.requestId = null;
 
     /**
      * Whether the request was successfully or not.
@@ -321,6 +397,12 @@ yak.api.StartInstanceRequest = function StartInstanceRequest() {
     this.type = 'request.startInstance';
 
     /**
+     * Create unique request id.
+     * @type {string}
+     */
+    this.id = yak.api.guid();
+
+    /**
     * Name of the instance.
     * @type {string}
     */
@@ -334,10 +416,16 @@ yak.api.StartInstanceResponse = function StartInstanceResponse() {
     'use strict';
 
     /**
-    * Command for the service API.
-    * @type {string}
-    */
+     * Command for the service API.
+     * @type {string}
+     */
     this.type = 'response.startInstance';
+
+    /**
+     * The original request id.
+     * @type {null}
+     */
+    this.requestId = null;
 
     /**
     * Whether the request was successfully or not.
@@ -365,6 +453,12 @@ yak.api.StopInstanceRequest = function StopInstanceRequest() {
     this.type = 'request.stopInstance';
 
     /**
+     * Create unique request id.
+     * @type {string}
+     */
+    this.id = yak.api.guid();
+
+    /**
     * Name of the instance.
     * @type {string}
     */
@@ -382,6 +476,12 @@ yak.api.StopInstanceResponse = function StopInstanceResponse() {
     * @type {string}
     */
     this.type = 'response.stopInstance';
+
+    /**
+     * The original request id.
+     * @type {null}
+     */
+    this.requestId = null;
 
     /**
     * Whether the request was successfully or not.
@@ -409,6 +509,12 @@ yak.api.GetLogInfoRequest = function GetLogInfoRequest() {
     this.type = 'request.getLogInfo';
 
     /**
+     * Create unique request id.
+     * @type {string}
+     */
+    this.id = yak.api.guid();
+
+    /**
      * Filter for a specific instance.
      * @type {?string}
      */
@@ -432,6 +538,12 @@ yak.api.GetLogInfoResponse = function GetLogInfoResponse() {
      * @type {string}
      */
     this.type = 'response.getLogInfo';
+
+    /**
+     * The original request id.
+     * @type {null}
+     */
+    this.requestId = null;
 
     /**
      * List of log information.
@@ -484,6 +596,12 @@ yak.api.CreateOrUpdatePluginRequest = function CreateOrUpdatePluginRequest() {
     this.type = 'request.createOrUpdatePlugin';
 
     /**
+     * Create unique request id.
+     * @type {string}
+     */
+    this.id = yak.api.guid();
+
+    /**
     * Unique name of Plugin.
     * @type {string}
     */
@@ -515,6 +633,12 @@ yak.api.CreateOrUpdatePluginResponse = function CreateOrUpdatePluginResponse() {
     this.type = 'response.createOrUpdatePlugin';
 
     /**
+     * The original request id.
+     * @type {null}
+     */
+    this.requestId = null;
+
+    /**
     * Whether the request was successfully or not.
     * @type {boolean}
     */
@@ -538,6 +662,12 @@ yak.api.CreatePluginRequest = function CreatePluginRequest() {
     * @type {string}
     */
     this.type = 'request.createPlugin';
+
+    /**
+     * Create unique request id.
+     * @type {string}
+     */
+    this.id = yak.api.guid();
 
     /**
     * Unique name of Plugin.
@@ -571,6 +701,12 @@ yak.api.CreatePluginResponse = function CreatePluginResponse() {
     this.type = 'response.createPlugin';
 
     /**
+     * The original request id.
+     * @type {null}
+     */
+    this.requestId = null;
+
+    /**
     * Whether the request was successfully or not.
     * @type {boolean}
     */
@@ -596,6 +732,12 @@ yak.api.DeletePluginRequest = function DeletePluginRequest() {
     this.type = 'request.deletePlugin';
 
     /**
+     * Create unique request id.
+     * @type {string}
+     */
+    this.id = yak.api.guid();
+
+    /**
     * Name of the Plugin.
     * @type {string}
     */
@@ -613,6 +755,12 @@ yak.api.DeletePluginResponse = function DeletePluginResponse() {
     * @type {string}
     */
     this.type = 'response.deletePlugin';
+
+    /**
+     * The original request id.
+     * @type {null}
+     */
+    this.requestId = null;
 
     /**
     * Whether the request was successfully or not.
@@ -638,6 +786,12 @@ yak.api.GetPluginsRequest = function GetPluginsRequest() {
     * @type {string}
     */
     this.type = 'request.getPlugins';
+
+    /**
+     * Create unique request id.
+     * @type {string}
+     */
+    this.id = yak.api.guid();
 };/**
  * GetPluginsResponse
  * @constructor
@@ -651,6 +805,12 @@ yak.api.GetPluginsResponse = function GetPluginsResponse() {
     * @type {string}
     */
     this.type = 'response.getPlugins';
+
+    /**
+     * The original request id.
+     * @type {null}
+     */
+    this.requestId = null;
 
     /**
     * List of available cloud Plugins as InstanceInfo array.
@@ -670,6 +830,12 @@ yak.api.UpdatePluginRequest = function UpdatePluginRequest() {
     * @type {string}
     */
     this.type = 'request.updatePlugin';
+
+    /**
+     * Create unique request id.
+     * @type {string}
+     */
+    this.id = yak.api.guid();
 
     /**
     * The original Plugin name.
@@ -709,6 +875,12 @@ yak.api.UpdatePluginResponse = function UpdatePluginResponse() {
     this.type = 'response.updatePlugin';
 
     /**
+     * The original request id.
+     * @type {null}
+     */
+    this.requestId = null;
+
+    /**
     * Whether the request was successfully or not.
     * @type {boolean}
     */
@@ -745,6 +917,54 @@ yak.api.PluginInfo = function PluginInfo() {
      */
     this.code = null;
 };/**
+ * DeleteStoreItemRequest
+ * @constructor
+ */
+yak.api.DeleteStoreItemRequest = function DeleteStoreItemRequest(key) {
+    'use strict';
+
+    /**
+     * Command for the service API.
+     * @type {string}
+     */
+    this.type = 'request.deleteStoreItem';
+
+    /**
+     * Create unique request id.
+     * @type {string}
+     */
+    this.id = yak.api.guid();
+
+    /**
+     * Store key
+     * @type {string}
+     */
+    this.key = key;
+};/**
+ * DeleteStoreItemResponse
+ * @constructor
+ */
+yak.api.DeleteStoreItemResponse = function DeleteStoreItemResponse() {
+    'use strict';
+
+    /**
+     * Command for the service API.
+     * @type {string}
+     */
+    this.type = 'response.deleteStoreItem';
+
+    /**
+     * The original request id.
+     * @type {null}
+     */
+    this.requestId = null;
+
+    /**
+     * Was setting store value successful.
+     * @type {boolean}
+     */
+    this.success = true;
+};/**
  * GetStoreKeyInfoRequest
  * @constructor
  */
@@ -756,6 +976,12 @@ yak.api.GetStoreKeyInfoRequest = function GetStoreKeyInfoRequest() {
      * @type {string}
      */
     this.type = 'request.getStoreKeyInfo';
+
+    /**
+     * Create unique request id.
+     * @type {string}
+     */
+    this.id = yak.api.guid();
 };/**
  * GetStoreKeyInfoResponse
  * @constructor
@@ -768,6 +994,12 @@ yak.api.GetStoreKeyInfoResponse = function GetStoreKeyInfoResponse() {
      * @type {string}
      */
     this.type = 'response.getStoreKeyInfo';
+
+    /**
+     * The original request id.
+     * @type {null}
+     */
+    this.requestId = null;
 
     /**
      * List of log information.
@@ -788,6 +1020,12 @@ yak.api.GetStoreValueRequest = function GetStoreValueRequest() {
     this.type = 'request.getStoreValue';
 
     /**
+     * Create unique request id.
+     * @type {string}
+     */
+    this.id = yak.api.guid();
+
+    /**
      * Store key
      * @type {?string}
      */
@@ -806,10 +1044,22 @@ yak.api.GetStoreValueResponse = function GetStoreValueResponse() {
     this.type = 'response.getStoreValue';
 
     /**
+     * The original request id.
+     * @type {null}
+     */
+    this.requestId = null;
+
+    /**
      * The store key.
      * @type {?string}
      */
     this.key = null;
+
+    /**
+     * The key-value pair description.
+     * @type {null}
+     */
+    this.description = null;
 
     /**
      * The store value.
@@ -830,10 +1080,22 @@ yak.api.SetStoreValueRequest = function SetStoreValueRequest() {
     this.type = 'request.setStoreValue';
 
     /**
+     * Create unique request id.
+     * @type {string}
+     */
+    this.id = yak.api.guid();
+
+    /**
      * The store key.
      * @type {?string}
      */
     this.key = null;
+
+    /**
+     * The key-value pair description.
+     * @type {null}
+     */
+    this.description = null;
 
     /**
      * The store value.
@@ -854,16 +1116,16 @@ yak.api.SetStoreValueResponse = function SetStoreValueResponse() {
     this.type = 'response.setStoreValue';
 
     /**
-     * The store key.
-     * @type {?string}
+     * The original request id.
+     * @type {null}
      */
-    this.key = null;
+    this.requestId = null;
 
     /**
-     * The store value.
-     * @type {?string}
+     * Was setting store value successful.
+     * @type {boolean}
      */
-    this.value = null;
+    this.success = true;
 };/**
  * StoreKeyInfo
  * @constructor

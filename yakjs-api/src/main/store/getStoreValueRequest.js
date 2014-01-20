@@ -12,6 +12,12 @@ yak.api.GetStoreValueRequest = function GetStoreValueRequest() {
     this.type = 'request.getStoreValue';
 
     /**
+     * Create unique request id.
+     * @type {string}
+     */
+    this.id = yak.api.guid();
+
+    /**
      * Store key
      * @type {?string}
      */

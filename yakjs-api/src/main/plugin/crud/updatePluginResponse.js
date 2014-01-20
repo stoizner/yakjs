@@ -13,6 +13,12 @@ yak.api.UpdatePluginResponse = function UpdatePluginResponse() {
     this.type = 'response.updatePlugin';
 
     /**
+     * The original request id.
+     * @type {null}
+     */
+    this.requestId = null;
+
+    /**
     * Whether the request was successfully or not.
     * @type {boolean}
     */

@@ -13,6 +13,12 @@ yak.api.CreateOrUpdatePluginRequest = function CreateOrUpdatePluginRequest() {
     this.type = 'request.createOrUpdatePlugin';
 
     /**
+     * Create unique request id.
+     * @type {string}
+     */
+    this.id = yak.api.guid();
+
+    /**
     * Unique name of Plugin.
     * @type {string}
     */

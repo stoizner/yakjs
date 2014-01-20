@@ -13,6 +13,12 @@ yak.api.StopInstanceResponse = function StopInstanceResponse() {
     this.type = 'response.stopInstance';
 
     /**
+     * The original request id.
+     * @type {null}
+     */
+    this.requestId = null;
+
+    /**
     * Whether the request was successfully or not.
     * @type {boolean}
     */

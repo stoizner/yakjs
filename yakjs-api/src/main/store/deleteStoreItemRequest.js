@@ -1,16 +1,15 @@
 /**
- * RestartInstanceRequest
+ * DeleteStoreItemRequest
  * @constructor
  */
-yak.api.RestartInstanceRequest = function RestartInstanceRequest() {
-
+yak.api.DeleteStoreItemRequest = function DeleteStoreItemRequest(key) {
     'use strict';
 
     /**
      * Command for the service API.
      * @type {string}
      */
-    this.type = 'request.restartInstance';
+    this.type = 'request.deleteStoreItem';
 
     /**
      * Create unique request id.
@@ -19,8 +18,8 @@ yak.api.RestartInstanceRequest = function RestartInstanceRequest() {
     this.id = yak.api.guid();
 
     /**
-     * Name of the instance.
+     * Store key
      * @type {string}
      */
-    this.instanceName = null;
+    this.key = key;
 };

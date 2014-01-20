@@ -13,6 +13,12 @@ yak.api.GetInstancesResponse = function GetInstancesResponse() {
     this.type = 'response.getInstances';
 
     /**
+     * The original request id.
+     * @type {null}
+     */
+    this.requestId = null;
+
+    /**
     * List of available cloud instances as InstanceInfo array.
     * @type {Array.<yak.api.InstanceInfo>}
     */

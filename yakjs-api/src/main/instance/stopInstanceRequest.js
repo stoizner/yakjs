@@ -13,6 +13,12 @@ yak.api.StopInstanceRequest = function StopInstanceRequest() {
     this.type = 'request.stopInstance';
 
     /**
+     * Create unique request id.
+     * @type {string}
+     */
+    this.id = yak.api.guid();
+
+    /**
     * Name of the instance.
     * @type {string}
     */

@@ -11,14 +11,17 @@ yak.GetStoreKeyInfoRequestHandler = function GetStoreKeyInfoRequestHandler(yakSe
     var store = yak.require('store');
 
     /**
-    * @param {yak.WebSocketMessage} message
+    * @param {yak.api.GetStoreKeyInfoRequest} request
     * @param {yak.WebSocketConnection} connection
     */
-    this.handle = function handle(message, connection) {
+    this.handle = function handle(request, connection) {
 
         try {
             var logger = yakServer.getLogger();
+            logger.debug('GetStoreKeyInfoRequestHandler', { request: request });
+
             var response = new yak.api.GetStoreKeyInfoResponse();
+            response.requestId = request.id;
 
             var storeData = store.getStore();
 

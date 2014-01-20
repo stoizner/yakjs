@@ -13,6 +13,12 @@ yak.api.UpdatePluginRequest = function UpdatePluginRequest() {
     this.type = 'request.updatePlugin';
 
     /**
+     * Create unique request id.
+     * @type {string}
+     */
+    this.id = yak.api.guid();
+
+    /**
     * The original Plugin name.
     * @type {null}
     */

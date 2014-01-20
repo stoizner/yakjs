@@ -12,6 +12,12 @@ yak.api.GetStoreKeyInfoResponse = function GetStoreKeyInfoResponse() {
     this.type = 'response.getStoreKeyInfo';
 
     /**
+     * The original request id.
+     * @type {null}
+     */
+    this.requestId = null;
+
+    /**
      * List of log information.
      * @type {Array.<yak.api.StoreKeyInfo>}
      */

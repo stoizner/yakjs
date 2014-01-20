@@ -11,4 +11,10 @@ yak.api.GetInstancesRequest = function GetInstancesRequest() {
     * @type {string}
     */
     this.type = 'request.getInstances';
+
+    /**
+     * Create unique request id.
+     * @type {string}
+     */
+    this.id = yak.api.guid();
 };

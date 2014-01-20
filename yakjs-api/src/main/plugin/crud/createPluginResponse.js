@@ -13,6 +13,12 @@ yak.api.CreatePluginResponse = function CreatePluginResponse() {
     this.type = 'response.createPlugin';
 
     /**
+     * The original request id.
+     * @type {null}
+     */
+    this.requestId = null;
+
+    /**
     * Whether the request was successfully or not.
     * @type {boolean}
     */

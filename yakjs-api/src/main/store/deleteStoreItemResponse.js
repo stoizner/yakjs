@@ -1,15 +1,15 @@
 /**
- * SetStoreValueResponse
+ * DeleteStoreItemResponse
  * @constructor
  */
-yak.api.SetStoreValueResponse = function SetStoreValueResponse() {
+yak.api.DeleteStoreItemResponse = function DeleteStoreItemResponse() {
     'use strict';
 
     /**
      * Command for the service API.
      * @type {string}
      */
-    this.type = 'response.setStoreValue';
+    this.type = 'response.deleteStoreItem';
 
     /**
      * The original request id.

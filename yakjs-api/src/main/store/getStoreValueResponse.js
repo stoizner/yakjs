@@ -12,6 +12,12 @@ yak.api.GetStoreValueResponse = function GetStoreValueResponse() {
     this.type = 'response.getStoreValue';
 
     /**
+     * The original request id.
+     * @type {null}
+     */
+    this.requestId = null;
+
+    /**
      * The store key.
      * @type {?string}
      */

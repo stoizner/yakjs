@@ -13,6 +13,12 @@ yak.api.CreateInstanceRequest = function CreateInstanceRequest() {
     this.type = 'request.createInstance';
 
     /**
+     * Create unique request id.
+     * @type {string}
+     */
+    this.id = yak.api.guid();
+
+    /**
      * Unique name of instance.
      * @type {string}
      */

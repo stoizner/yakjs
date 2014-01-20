@@ -11,4 +11,10 @@ yak.api.GetPluginsRequest = function GetPluginsRequest() {
     * @type {string}
     */
     this.type = 'request.getPlugins';
+
+    /**
+     * Create unique request id.
+     * @type {string}
+     */
+    this.id = yak.api.guid();
 };

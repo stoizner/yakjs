@@ -7,10 +7,16 @@ yak.api.StartInstanceResponse = function StartInstanceResponse() {
     'use strict';
 
     /**
-    * Command for the service API.
-    * @type {string}
-    */
+     * Command for the service API.
+     * @type {string}
+     */
     this.type = 'response.startInstance';
+
+    /**
+     * The original request id.
+     * @type {null}
+     */
+    this.requestId = null;
 
     /**
     * Whether the request was successfully or not.

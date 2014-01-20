@@ -13,6 +13,12 @@ yak.api.UpdateInstanceRequest = function UpdateInstanceRequest() {
     this.type = 'request.updateInstance';
 
     /**
+     * Create unique request id.
+     * @type {string}
+     */
+    this.id = yak.api.guid();
+
+    /**
     * The original instance name.
     * @type {null}
     */

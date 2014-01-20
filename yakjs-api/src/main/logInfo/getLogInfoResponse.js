@@ -13,6 +13,12 @@ yak.api.GetLogInfoResponse = function GetLogInfoResponse() {
     this.type = 'response.getLogInfo';
 
     /**
+     * The original request id.
+     * @type {null}
+     */
+    this.requestId = null;
+
+    /**
      * List of log information.
      * @type {Array.<yak.api.LogInfo>}
      */

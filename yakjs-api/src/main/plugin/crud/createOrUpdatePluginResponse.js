@@ -13,6 +13,12 @@ yak.api.CreateOrUpdatePluginResponse = function CreateOrUpdatePluginResponse() {
     this.type = 'response.createOrUpdatePlugin';
 
     /**
+     * The original request id.
+     * @type {null}
+     */
+    this.requestId = null;
+
+    /**
     * Whether the request was successfully or not.
     * @type {boolean}
     */

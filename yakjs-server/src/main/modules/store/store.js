@@ -40,18 +40,50 @@
          * @param [description]
          */
         this.setValue = function setValue(key, value, description) {
-            data[key] = { value: value, description:description };
+
+            var item = data[key];
+
+            if (!item) {
+                item = {};
+            }
+
+            if (value) {
+                item.value = value;
+            }
+
+            if (description) {
+                item.description = description;
+            }
+
+            data[key] = item;
             self.save();
         };
 
         /**
          * Get a store value
-         * @param key
-         * @param value
+         * @param {string} key
          * @returns {*}
          */
-        this.getValue = function getValue(key, value) {
+        this.getValue = function getValue(key) {
+            return data[key].value;
+        };
+
+        /**
+         * Get a complete store item.
+         * @param {string} key
+         * @returns {{key:string, value:?}}
+         */
+        this.getStoreItem = function getStoreItem(key) {
             return data[key];
+        };
+
+        /**
+         * Delete value from store
+         * @param {string} key
+         * @return {boolean}
+         */
+        this.deleteKey = function deleteKey(key) {
+            return delete data[key];
         };
 
         /**
@@ -83,13 +115,15 @@
 
             try {
                 if (fs.existsSync(STORE_FILENAME)) {
-                    var data = fs.readFileSync(STORE_FILENAME, 'utf8');
-                    var rawData = JSON.parse(data);
+                    var fileData = fs.readFileSync(STORE_FILENAME, 'utf8');
+                    var rawData = JSON.parse(fileData);
 
                     data = {};
                     _.each(rawData, function(entry) {
                         data[entry.key] = { value: entry.value, description: entry.description };
                     });
+
+                    console.log(data);
                 }
             } catch (ex) {
                 log.error('Load store from file failed.', { error: ex.error, message: ex.message });

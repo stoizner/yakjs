@@ -13,6 +13,12 @@ yak.api.DeleteInstanceRequest = function DeleteInstanceRequest() {
     this.type = 'request.removeInstance';
 
     /**
+     * Create unique request id.
+     * @type {string}
+     */
+    this.id = yak.api.guid();
+
+    /**
     * Name of the instance.
     * @type {string}
     */
