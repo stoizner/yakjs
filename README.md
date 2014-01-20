@@ -11,7 +11,7 @@ Get started in less than 55 seconds. If you have already installed [node.js](htt
 
 **Download**
 
-Go to the **[latest release package 0.3.0](https://github.com/cobuChris/yak-js/releases)**.
+Go to the **[latest release package 0.4.0-rc](https://github.com/cobuChris/yak-js/releases)**.
 Download zip package and extract it.
 
 
