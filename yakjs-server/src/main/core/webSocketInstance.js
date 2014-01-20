@@ -75,6 +75,12 @@ yak.WebSocketInstance = function WebSocketInstance(yakServer, name, port) {
     this.autoStartEnabled = false;
 
     /**
+     * Number of active plugins.
+     * @type {number}
+     */
+    this.activePluginCount = 0;
+
+    /**
      * @type {Array.<yak.PluginWorker>}
      */
     var pluginInstances = [];
@@ -138,7 +144,9 @@ yak.WebSocketInstance = function WebSocketInstance(yakServer, name, port) {
      */
     function instantiatePlugins() {
         log.info('Instantiate and initialize plugins.', { count: self.plugins.length });
+
         pluginInstances = [];
+        self.activePluginCount = 0;
 
         for(var i=0; i<self.plugins.length; i++) {
             var pluginName = self.plugins[i].trim();
@@ -155,6 +163,7 @@ yak.WebSocketInstance = function WebSocketInstance(yakServer, name, port) {
                 // that other plugins can be terminated.
                 try {
                     initializePlugin(plugin);
+                    self.activePluginCount++;
                 } catch (ex) {
                     log.error('Initialization failed.', { plugin: pluginName });
                     log.debug({ error: ex.message });

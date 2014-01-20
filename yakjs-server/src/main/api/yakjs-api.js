@@ -310,10 +310,22 @@ yak.api.InstanceInfo = function InstanceInfo() {
     this.description = null;
 
     /**
-    *
-    * @type {number}
-    */
+     * Number of current active connections
+     * @type {number}
+     */
     this.connectionCount = 0;
+
+    /**
+     * Number of total Assigned plugins
+     * @type {number}
+     */
+    this.pluginTotalCount = 0;
+
+    /**
+     * Number of active plugins
+     * @type {number}
+     */
+    this.pluginActiveCount = 0;
 
     /**
     *

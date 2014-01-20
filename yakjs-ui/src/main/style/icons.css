@@ -9,3 +9,6 @@
 
 .icon-key-dark { background: url('icons/key.svg') no-repeat center; background-size:15px 15px; opacity: 0.5;}
 .icon-plugin-dark { background: url('icons/puzzle.svg') no-repeat center; background-size:15px 15px; opacity: 0.5;}
+.icon-instance-dark { background: url('icons/cog-dark.svg') no-repeat center; background-size:15px 15px; opacity: 0.5;}
+
+.icon-connections-dark { background: url('icons/link-dark.svg') no-repeat center; background-size:15px 15px; opacity: 0.5;}
