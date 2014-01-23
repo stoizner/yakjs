@@ -16,17 +16,16 @@ yak.logCache = [];
  * @param message
  * @param data
  */
-yak.cacheAppender = function cacheAppender(level, category, message, data) {
+yak.cacheLogAppender = function cacheLogAppender(level, category, message, data) {
     'use strict';
 
     var logInfo = new yak.api.LogInfo();
-
     var info = message;
 
     if (data) {
         var dataText = JSON.stringify(data);
-        if (dataText.length > 200) {
-            dataText = dataText.substr(0, 197) + '...';
+        if (dataText.length > 500) {
+            dataText = dataText.substr(0, 500) + '...';
         }
         info += ' | ' + dataText;
     }
@@ -36,9 +35,9 @@ yak.cacheAppender = function cacheAppender(level, category, message, data) {
     logInfo.time = (new Date()).toISOString();
     logInfo.category = category;
 
-    yak.logCache .push(logInfo);
+    yak.logCache.push(logInfo);
 
-    if (yak.logCache .length > yak.MAX_ITEMS_LOG_CACHE) {
-        yak.logCache .slice(yak.MAX_ITEMS_LOG_CACHE, yak.logCache.length-yak.MAX_ITEMS_LOG_CACHE);
+    if (yak.logCache.length > yak.MAX_ITEMS_LOG_CACHE) {
+        yak.logCache = yak.logCache.slice(yak.logCache.length - yak.MAX_ITEMS_LOG_CACHE);
     }
 };

@@ -28,7 +28,7 @@ yak.Logger = function Logger(category) {
      */
     (function constructor() {
         appenders.console = consoleAppender;
-        appenders.cache = yak.cacheAppender;
+        appenders.cache = yak.cacheLogAppender;
     }());
 
     /**
@@ -76,7 +76,7 @@ yak.Logger = function Logger(category) {
      * @return {Array.<yak.api.LogInfo>}
      */
     this.getLogs = function getLogs() {
-        return yak.logCache;
+        return _.toArray(yak.logCache);
     };
 
     /**
