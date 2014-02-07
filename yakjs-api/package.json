@@ -1,6 +1,6 @@
 {
   "name": "yakjs-api",
-  "version": "0.4.0-rc.2",
+  "version": "0.4.0-rc.3",
   "devDependencies": {
     "grunt": "~0.4.1",
     "grunt-contrib-jshint": "~0.6.3",
@@ -9,11 +9,8 @@
     "grunt-contrib-concat": "~0.3.0",
     "grunt-contrib-copy": "~0.4.1"
   },
-  "description": "YakJs api",
-  "main": "build/yakjs-api.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "description": "YAKjs WebSocket Servers with JavaScript Plugins based on nodejs",
+  "main": "yakjs-api.js",
   "repository": "",
   "author": "Christian Schuller",
   "license": "MIT"
