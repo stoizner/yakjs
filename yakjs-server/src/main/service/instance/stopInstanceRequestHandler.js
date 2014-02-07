@@ -1,10 +1,10 @@
 /**
  * StopInstanceRequestHandler
  * @constructor
- * @param {yak.YakServer} cloudServer
+ * @param {yak.YakServer} yakServer
  * @implements {yakServiceMessageHandler}
  */
-yak.StopInstanceRequestHandler = function StopInstanceRequestHandler(cloudServer) {
+yak.StopInstanceRequestHandler = function StopInstanceRequestHandler(yakServer) {
     'use strict';
 
     /** @type {yak.StartInstanceRequestHandler} */
@@ -20,10 +20,10 @@ yak.StopInstanceRequestHandler = function StopInstanceRequestHandler(cloudServer
     */
     this.handle = function handle(message, connection) {
         try {
-            cloudServer.stopInstance(message.instanceName);
+            yakServer.stopInstance(message.instanceName);
             connection.send(new yak.api.StartInstanceResponse());
         } catch (ex) {
-            cloudServer.serviceInstance.log.error(ex.message);
+            yakServer.serviceInstance.log.error(ex.message);
         }
     };
 

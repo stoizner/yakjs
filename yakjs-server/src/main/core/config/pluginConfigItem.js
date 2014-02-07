@@ -6,9 +6,6 @@ yak.PluginConfigItem = function PluginConfigItem() {
 
     'use strict';
 
-    /** @type {yak.InstanceConfigItem} */
-    var self = this;
-
     /**
      * Name of the plugin (Has to be unique)
      * @type {null|string}
@@ -25,10 +22,4 @@ yak.PluginConfigItem = function PluginConfigItem() {
      * @type {null|string}
      */
     this.code = null;
-
-    /** Constructor */
-    function constructor() {
-    }
-
-    constructor();
 };

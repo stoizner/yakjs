@@ -14,8 +14,6 @@ var _ = require('underscore');
 
     var configManager = new yak.ConfigManager();
     configManager.load();
-    configManager.save();
-
     store.load();
 
     var yakServer = new yak.YakServer(configManager);

@@ -6,9 +6,6 @@ yak.InstanceConfigItem = function InstanceConfigItem() {
 
     'use strict';
 
-    /** @type {yak.InstanceConfigItem} */
-    var self = this;
-
     /**
      * Server port
      * @type {number} default: 8080;
@@ -37,10 +34,4 @@ yak.InstanceConfigItem = function InstanceConfigItem() {
      * @type {Array.<string>}
      */
     this.plugins = [];
-
-    /** Constructor */
-    function constructor() {
-    }
-
-    constructor();
 };

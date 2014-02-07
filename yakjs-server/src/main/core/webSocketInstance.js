@@ -114,12 +114,11 @@ yak.WebSocketInstance = function WebSocketInstance(yakServer, name, port) {
      * Stop server instance.
      */
     this.stop = function stop() {
-
+        log.info('Stop WebSocketServer Instance', { name: self.name, state: self.state });
         try {
             if (server && self.state === yak.InstanceState.RUNNING) {
                 self.state = yak.InstanceState.STOPPING;
                 terminatePlugins();
-                log.info('Stopping WebSocket Instance.');
                 server.close();
                 server = null;
                 self.state = yak.InstanceState.STOPPED;
@@ -196,11 +195,8 @@ yak.WebSocketInstance = function WebSocketInstance(yakServer, name, port) {
      */
     function terminatePlugins() {
         log.info('Terminate all plugins.', { count: self.plugins.length });
-        pluginInstances = [];
 
-        for(var i=0; i<pluginInstances.length; i++) {
-            var pluginInstance = pluginInstances[i];
-
+        _.each(pluginInstances, function(pluginInstance) {
             // A termination fail, shall not stop the loop, so
             // that other plugins can be terminated.
             try {
@@ -208,7 +204,9 @@ yak.WebSocketInstance = function WebSocketInstance(yakServer, name, port) {
             } catch (ex) {
                 log.error('Could not terminate plugin', { plugin: pluginInstance.name, error: ex, stack: ex.stack });
             }
-        }
+        });
+
+        pluginInstances = [];
     }
 
     /**
