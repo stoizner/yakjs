@@ -1,11 +1,2 @@
-/yakjs-server/build
-/yakjs-server/.build
-/yakjs-server/.dist
-/yakjs-ui/.build
-/yakjs-ui/.dist
-/yakjs-api/build
 /yakjs-package/release
-
-yakjs-ui
-
 dist
