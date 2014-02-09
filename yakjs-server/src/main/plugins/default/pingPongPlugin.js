@@ -15,8 +15,9 @@ yak.PingPongPlugin = function PingPongPlugin() {
 
     /**
      * @param {yak.WebSocketConnection} connection
+     * @param {yak.WebSocketInstance} instance
      */
-    this.onNewConnection = function onNewConnection(connection) {};
+    this.onNewConnection = function onNewConnection(connection, instance) {};
 
     /**
      * @param {yak.WebSocketMessage} message
@@ -28,6 +29,13 @@ yak.PingPongPlugin = function PingPongPlugin() {
             connection.send('pong');
         }
     };
+
+    /**
+     * Connection closed event. Note that the connection is no longer part of instance.getConnections().
+     * @param {yak.WebSocketConnection} connection
+     * @param {yak.WebSocketInstance} instance
+     */
+    this.onConnectionClosed = function onConnectionClosed(connection, instance) {};
 
     /**
      * @param {yak.WebSocketInstance} instance
