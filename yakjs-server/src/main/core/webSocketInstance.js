@@ -255,14 +255,20 @@ yak.WebSocketInstance = function WebSocketInstance(yakServer, name, port) {
         socket.on('close', function() {
             self.log.info('Connection closed ', { connectionId: connection.id });
             delete connections[connection.id];
+
+            pluginsOnConnectionClosed(connection);
         });
 
         socket.on('error', function() {
             self.log.info('Connection closed with error' , { connectionId: connection.id });
             delete connections[connection.id];
+
+            pluginsOnConnectionClosed(connection);
         });
 
         socket.on('message', createMessageHandler(connection));
+
+        pluginsOnNewConnection(connection);
     }
 
     /**
@@ -299,6 +305,50 @@ yak.WebSocketInstance = function WebSocketInstance(yakServer, name, port) {
         } else {
             self.log.warn('Plugin.onMessage(data, connection, instance) not found.', { pluginName: pluginInstance.name });
         }
+    }
+
+    /**
+     * Notify all plugins that a new connection has been established
+     * @param {yak.WebSocketConnection} connection
+     */
+    function pluginsOnNewConnection(connection) {
+
+        _.each(pluginInstances, function(pluginInstance) {
+
+            if (pluginInstance.onNewConnection) {
+                try {
+                    self.log.info('Plugin.onNewConnection', { pluginName: pluginInstance.name });
+                    pluginInstance.onNewConnection(connection, self);
+                } catch (ex) {
+                    self.log.error('Plugin.onNewConnection failed.', { pluginName: pluginInstance.name, error: ex.name, message:ex.message });
+                }
+            } else {
+                self.log.warn('Plugin.onNewConnection(connection, instance) not found', { pluginName: pluginInstance.name });
+            }
+
+        });
+    }
+
+    /**
+     * Notify all plugins that a connection has been closed
+     * @param {yak.WebSocketConnection} connection
+     */
+    function pluginsOnConnectionClosed(connection) {
+
+        _.each(pluginInstances, function(pluginInstance) {
+
+            if (pluginInstance.onConnectionClosed) {
+                try {
+                    self.log.info('Plugin.onConnectionClosed', { pluginName: pluginInstance.name });
+                    pluginInstance.onConnectionClosed(connection, self);
+                } catch (ex) {
+                    self.log.error('Plugin.onConnectionClosed failed.', { pluginName: pluginInstance.name, error: ex.name, message:ex.message });
+                }
+            } else {
+                self.log.warn('Plugin.onConnectionClosed(connection, instance) not found', { pluginName: pluginInstance.name });
+            }
+
+        });
     }
 
     constructor();

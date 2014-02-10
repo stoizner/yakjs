@@ -13,8 +13,9 @@ yak.ui.EmptyPluginTemplate = function Plugin() {
 
     /**
      * @param {yak.WebSocketConnection} connection
+     * @param {yak.WebSocketInstance} instance
      */
-    this.onNewConnection = function onNewConnection(connection) {};
+    this.onNewConnection = function onNewConnection(connection, instance) {};
 
     /**
      * @param {yak.WebSocketMessage} message
@@ -22,6 +23,13 @@ yak.ui.EmptyPluginTemplate = function Plugin() {
      * @param {yak.WebSocketInstance} instance
      */
     this.onMessage = function onMessage(message, connection, instance) {};
+
+    /**
+     * Connection closed event. Note that the connection is no longer part of instance.getConnections().
+     * @param {yak.WebSocketConnection} connection
+     * @param {yak.WebSocketInstance} instance
+     */
+    this.onConnectionClosed = function onConnectionClosed(connection, instance) {};
 
     /**
      * @param {yak.WebSocketInstance} instance
