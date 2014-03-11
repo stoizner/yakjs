@@ -73,7 +73,7 @@ yak.PluginManager = function PluginManager(configManager) {
 
         if (plugin.PluginConstructor !== null) {
             plugins[plugin.name] = plugin;
-            updateAndSaveConfig();
+            // updateAndSaveConfig();
         }
     };
 
@@ -83,7 +83,7 @@ yak.PluginManager = function PluginManager(configManager) {
     this.removePlugin = function removePlugin(name) {
         if (plugins.hasOwnProperty(name)) {
             delete plugins[name];
-            updateAndSaveConfig();
+            // updateAndSaveConfig();
         }
     };
 
@@ -132,7 +132,7 @@ yak.PluginManager = function PluginManager(configManager) {
 
         // if (plugin.PluginConstructor !== null) {
         plugins[name] = plugin;
-        updateAndSaveConfig();
+        // updateAndSaveConfig();
         //}
     };
 
@@ -159,7 +159,7 @@ yak.PluginManager = function PluginManager(configManager) {
     /**
      * Update config and save it.
      */
-    function updateAndSaveConfig() {
+    this.updateAndSaveConfig = function updateAndSaveConfig() {
 
         configManager.config.plugins = [];
 
@@ -177,7 +177,7 @@ yak.PluginManager = function PluginManager(configManager) {
         }
 
         configManager.save();
-    }
+    };
 
     constructor();
 };

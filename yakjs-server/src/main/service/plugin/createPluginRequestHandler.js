@@ -35,6 +35,7 @@ yak.CreatePluginRequestHandler = function CreatePluginRequestHandler(cloudServer
 
                 if (codeCheck.isValid) {
                     cloudServer.pluginManager.createOrUpdatePlugin(message.name, message.description, message.code);
+                    cloudServer.pluginManager.updateAndSaveConfig();
                     sendSuccessResponse(connection);
                 } else {
                     sendInvalidCodeResponse(codeCheck, connection);

@@ -8,12 +8,20 @@ yak.require = function yakRequire(id) {
     'use strict';
 
     var module;
+    var npm = require('npm');
+    npm.load();
 
     if (yak.exports.hasOwnProperty(id)) {
         module = yak.exports[id];
     } else {
+
+        npm.commands.list(function (er, data) {
+            console.log('list:' , { data: data });
+        });
+
         module = require(id);
     }
 
     return module;
 };
+

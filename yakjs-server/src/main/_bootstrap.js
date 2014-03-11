@@ -16,6 +16,9 @@ var _ = require('underscore');
     configManager.load();
     store.load();
 
+    var installer = new yak.PluginModuleInstaller(configManager);
+    installer.installRequiredModules();
+
     var yakServer = new yak.YakServer(configManager);
     var serviceInstance = new yak.ServiceInstance('service', configManager.config.servicePort, yakServer);
 

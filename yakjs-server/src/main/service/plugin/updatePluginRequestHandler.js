@@ -31,6 +31,7 @@ yak.UpdatePluginRequestHandler = function UpdatePluginRequestHandler(yakServer) 
                 if (codeCheck.isValid) {
                     yakServer.pluginManager.removePlugin(request.pluginName);
                     yakServer.pluginManager.createOrUpdatePlugin(request.name, request.description, request.code);
+                    yakServer.pluginManager.updateAndSaveConfig();
                     sendSuccessResponse(connection);
                 } else {
                     sendInvalidCodeResponse(codeCheck, connection);

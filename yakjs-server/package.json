@@ -17,6 +17,7 @@
   "license": "MIT",
   "dependencies": {
     "underscore": "~1.5.2",
-    "ws": "~0.4.31"
+    "ws": "~0.4.31",
+    "npm": "^1.4.4"
   }
 }

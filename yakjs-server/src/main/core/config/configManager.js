@@ -29,7 +29,7 @@ yak.ConfigManager = function ConfigManager() {
     var log = new yak.Logger(self.constructor.name);
 
     /**
-     * @type {null|yak.Config}
+     * @type {yak.Config}
      */
     this.config = null;
 

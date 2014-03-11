@@ -1,10 +1,10 @@
 /**
  * DeletePluginRequestHandler
  * @constructor
- * @param {yak.YakServer} cloudServer
+ * @param {yak.YakServer} yakServer
  * @implements {yak.ServiceMessageHandler}
  */
-yak.DeletePluginRequestHandler = function DeletePluginRequestHandler(cloudServer) {
+yak.DeletePluginRequestHandler = function DeletePluginRequestHandler(yakServer) {
 
     'use strict';
 
@@ -21,14 +21,15 @@ yak.DeletePluginRequestHandler = function DeletePluginRequestHandler(cloudServer
     this.handle = function handle(message, connection) {
 
         try {
-            if (cloudServer.pluginManager.hasPlugin(message.pluginName)) {
-                cloudServer.pluginManager.removePlugin(message.pluginName);
+            if (yakServer.pluginManager.hasPlugin(message.pluginName)) {
+                yakServer.pluginManager.removePlugin(message.pluginName);
+                yakServer.pluginManager.updateAndSaveConfig();
                 sendSuccessResponse(connection);
             } else {
                 sendPluginNotFoundResponse(message, connection);
             }
         } catch (ex) {
-            cloudServer.serviceInstance.log.error(ex.message);
+            yakServer.serviceInstance.log.error(ex.message);
         }
     };
 

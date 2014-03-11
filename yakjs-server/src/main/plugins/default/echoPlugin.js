@@ -4,9 +4,11 @@
  * @constructor
  * @implements {yak.PluginWorker}
  */
-yak.EchoPlugin = function EchoPlugin() {
+yak.EchoPlugin = function EchoPlugin(require) {
 
     'use strict';
+
+    var _ = require('underscore');
 
     /**
      * @param {yak.WebSocketInstance} instance
