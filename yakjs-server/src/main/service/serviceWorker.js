@@ -39,7 +39,7 @@ yak.ServiceWorker = function ServiceWorker(yakServer) {
         apiMap['request.getInstances'] = new yak.GetInstancesRequestHandler(yakServer);
         apiMap['request.createInstance'] = new yak.CreateInstanceRequestHandler(yakServer);
         apiMap['request.updateInstance'] = new yak.UpdateInstanceRequestHandler(yakServer);
-        apiMap['request.deleteInstance'] = new yak.DeleteInstanceRequestHandler(yakServer);
+        apiMap['request.removeInstance'] = new yak.DeleteInstanceRequestHandler(yakServer);
 
         // Plugin
         apiMap['request.getPlugins'] = new yak.GetPluginsRequestHandler(yakServer);

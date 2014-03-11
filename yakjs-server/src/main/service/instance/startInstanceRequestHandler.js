@@ -26,6 +26,7 @@ yak.StartInstanceRequestHandler = function StartInstanceRequestHandler(yakServer
     this.handle = function handle(request, connection) {
         try {
             yakServer.startInstance(request.instanceName);
+            yakServer.updateAndSaveConfig();
             connection.send(new yak.api.StartInstanceResponse());
         } catch (ex) {
             yakServer.serviceInstance.log.error(ex.message);

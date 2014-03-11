@@ -2,8 +2,9 @@
  * YakServer
  * @constructor
  * @param {yak.ConfigManager} configManager
+ * @param {yak.PluginManager} pluginManager
  */
-yak.YakServer = function YakServer(configManager) {
+yak.YakServer = function YakServer(configManager, pluginManager) {
 
     'use strict';
 
@@ -30,14 +31,13 @@ yak.YakServer = function YakServer(configManager) {
     /**
      * @type {yak.PluginManager}
      */
-    this.pluginManager = new yak.PluginManager(configManager);
+    this.pluginManager = pluginManager;
 
     /**
      * Constructor
      */
     function constructor() {
         createInstancesFromConfig();
-        createPluginsFromConfig();
     }
 
     /**
@@ -69,7 +69,7 @@ yak.YakServer = function YakServer(configManager) {
             throw new Error('Instance already added', { instance: instance.name });
         } else {
             instances[instance.name] = instance;
-            updateAndSaveConfig();
+            // updateAndSaveConfig();
         }
     };
 
@@ -82,7 +82,7 @@ yak.YakServer = function YakServer(configManager) {
         if (instances.hasOwnProperty(instanceName)) {
             instances[instanceName].stop();
             delete instances[instanceName];
-            updateAndSaveConfig();
+            // updateAndSaveConfig();
         }
     };
 
@@ -130,7 +130,7 @@ yak.YakServer = function YakServer(configManager) {
         if (instances.hasOwnProperty(name)) {
             instances[name].start();
             instances[name].autoStartEnabled = true;
-            updateAndSaveConfig();
+            // updateAndSaveConfig();
         }  else {
             throw new Error('Instance not found', { instance: name });
         }
@@ -145,7 +145,7 @@ yak.YakServer = function YakServer(configManager) {
         if (instances.hasOwnProperty(name)) {
             instances[name].stop();
             instances[name].autoStartEnabled = false;
-            updateAndSaveConfig();
+            // updateAndSaveConfig();
         }  else {
             throw new Error('PluginConstructor not found!', { instance: name });
         }
@@ -154,7 +154,7 @@ yak.YakServer = function YakServer(configManager) {
     /**
      * Update config and save it.
      */
-    function updateAndSaveConfig() {
+    this.updateAndSaveConfig = function updateAndSaveConfig() {
         log.info('YakServer.updateAndSaveConfig');
         configManager.config.instances = [];
 
@@ -174,7 +174,7 @@ yak.YakServer = function YakServer(configManager) {
         }
 
         configManager.save();
-    }
+    };
 
     /**
      * Create instances from configuration.
@@ -193,27 +193,6 @@ yak.YakServer = function YakServer(configManager) {
                 instance.autoStartEnabled = instanceConfig.autoStartEnabled;
 
                 self.addInstance(instance);
-            }
-        );
-    }
-
-    /**
-     * Create instances from configuration.
-     */
-    function createPluginsFromConfig() {
-
-        configManager.config.plugins.forEach(
-
-            /**
-             * @param {yak.PluginConfigItem} pluginConfig
-             */
-            function(pluginConfig) {
-                var plugin = new yak.Plugin();
-                plugin.name = pluginConfig.name;
-                plugin.description = pluginConfig.description;
-                plugin.code = pluginConfig.code;
-
-                self.pluginManager.addOrUpdatePlugin(plugin);
             }
         );
     }

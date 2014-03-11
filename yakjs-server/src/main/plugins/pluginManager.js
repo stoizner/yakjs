@@ -90,9 +90,10 @@ yak.PluginManager = function PluginManager(configManager) {
     /**
      * Create a plugin instance.
      * @param {string} name
-     * @return {null|yak.PluginWorker}
+     * @return {*}
+     * @param {function} [require]
      */
-    this.createPluginInstance = function createPluginInstance(name) {
+    this.createPluginInstance = function createPluginInstance(name, require) {
         log.info('Create plugin instance', { pluginName: name });
         var pluginInstance = null;
 
@@ -101,7 +102,8 @@ yak.PluginManager = function PluginManager(configManager) {
 
             try {
                 if (typeof plugin.PluginConstructor === 'function') {
-                    pluginInstance = new plugin.PluginConstructor(yak.require);
+                    var requireContext = require || yak.require;
+                    pluginInstance = new plugin.PluginConstructor(requireContext);
                     pluginInstance.name = name;
                 } else {
                     log.warn('No constructor function available, can not create plugin instance. ', { plugin: name });
@@ -177,6 +179,27 @@ yak.PluginManager = function PluginManager(configManager) {
         }
 
         configManager.save();
+    };
+
+    /**
+     * Create instances from configuration.
+     */
+    this.createPluginsFromConfig = function createPluginsFromConfig() {
+
+        configManager.config.plugins.forEach(
+
+            /**
+             * @param {yak.PluginConfigItem} pluginConfig
+             */
+            function(pluginConfig) {
+                var plugin = new yak.Plugin();
+                plugin.name = pluginConfig.name;
+                plugin.description = pluginConfig.description;
+                plugin.code = pluginConfig.code;
+
+                self.addOrUpdatePlugin(plugin);
+            }
+        );
     };
 
     constructor();

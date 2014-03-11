@@ -32,7 +32,7 @@ yak.ui.StoreListView = function StoreListView(parent, context, viewModel) {
 
     this.handleRefreshClick = function() { viewModel.reloadAndRefreshList(); };
     this.handleNewStoreItemClick = function() { viewModel.activateStoreEditPanel(); };
-    this.activate = viewModel.activate;
+    this.activate = function() { viewModel.activate(); };
 
     /**
      * Constructor

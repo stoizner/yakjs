@@ -38,6 +38,7 @@ yak.ui.StoreListViewModel = function StoreListViewModel(context) {
         console.log('yak.ui.StoreListViewModel.constructor');
         context.eventBus.on(yak.api.GetStoreKeyInfoResponse).register(handleGetStoreKeyInfoResponse);
         context.eventBus.on(yak.api.DeleteStoreItemResponse).register(self.reloadAndRefreshList);
+        context.eventBus.on(yak.api.SetStoreValueResponse).register(self.reloadAndRefreshList);
         context.eventBus.on(yak.api.GetStoreValueResponse).register(handleGetStoreValueResponse);
     }
 

@@ -21,6 +21,7 @@ yak.StopInstanceRequestHandler = function StopInstanceRequestHandler(yakServer) 
     this.handle = function handle(message, connection) {
         try {
             yakServer.stopInstance(message.instanceName);
+            yakServer.updateAndSaveConfig();
             connection.send(new yak.api.StartInstanceResponse());
         } catch (ex) {
             yakServer.serviceInstance.log.error(ex.message);

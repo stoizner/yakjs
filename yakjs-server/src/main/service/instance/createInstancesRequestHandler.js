@@ -1,10 +1,10 @@
 /**
  * CreateInstanceRequestHandler
  * @constructor
- * @param {yak.YakServer} cloudServer
+ * @param {yak.YakServer} yakServer
  * @implements {yakServiceMessageHandler}
  */
-yak.CreateInstanceRequestHandler = function CreateInstanceRequestHandler(cloudServer) {
+yak.CreateInstanceRequestHandler = function CreateInstanceRequestHandler(yakServer) {
 
     'use strict';
 
@@ -31,15 +31,16 @@ yak.CreateInstanceRequestHandler = function CreateInstanceRequestHandler(cloudSe
                 response.message = 'Cannot create instance: Name is already used.';
                 connection.send(response);
             } else {
-                var newInstance = new yak.WebSocketInstance(cloudServer, message.name, message.port);
+                var newInstance = new yak.WebSocketInstance(yakServer, message.name, message.port);
                 newInstance.description = message.description;
                 newInstance.plugins = message.plugins;
 
-                cloudServer.addInstance(newInstance);
+                yakServer.addInstance(newInstance);
+                yakServer.updateAndSaveConfig();
                 connection.send(new yak.api.CreateInstanceResponse());
             }
         } catch (ex) {
-            cloudServer.serviceInstance.log.error(ex.message);
+            yakServer.serviceInstance.log.error(ex.message);
         }
     };
 
@@ -50,7 +51,7 @@ yak.CreateInstanceRequestHandler = function CreateInstanceRequestHandler(cloudSe
     function checkInstanceName(name) {
 
         var isNameAlreadyUsed = false;
-        var instances = cloudServer.getInstances();
+        var instances = yakServer.getInstances();
 
         for(var i=0; i<instances.length; i++) {
             if (instances[i].name.trim() === name.trim()) {

@@ -61,6 +61,7 @@ module.exports = function(grunt) {
                     { flatten:true, src: ['README.md', 'LICENSE', '*.bat', '*.sh'], dest: distDirectory + '/' },
                     { flatten:false, src: ['node_modules/ws/**'], dest: distDirectory},
                     { flatten:false, src: ['node_modules/underscore/**'], dest: distDirectory},
+                    { flatten:false, src: ['node_modules/npm/**'], dest: distDirectory},
                     { flatten:true, cwd: srcDirectory + 'shell/', src: ['*.bat', '*.sh'], dest: distDirectory + '/', expand: true }
                 ]
             }

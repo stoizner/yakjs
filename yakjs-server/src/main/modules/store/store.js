@@ -122,8 +122,6 @@
                     _.each(rawData, function(entry) {
                         data[entry.key] = { value: entry.value, description: entry.description };
                     });
-
-                    console.log(data);
                 }
             } catch (ex) {
                 log.error('Load store from file failed.', { error: ex.error, message: ex.message });

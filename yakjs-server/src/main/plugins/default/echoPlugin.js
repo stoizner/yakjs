@@ -8,7 +8,7 @@ yak.EchoPlugin = function EchoPlugin(require) {
 
     'use strict';
 
-    var _ = require('underscore');
+    var _ = require('underscore', 'underscore');
 
     /**
      * @param {yak.WebSocketInstance} instance

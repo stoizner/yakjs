@@ -16,17 +16,20 @@ var _ = require('underscore');
     configManager.load();
     store.load();
 
-    var installer = new yak.PluginModuleInstaller(configManager);
-    installer.installRequiredModules();
+    var pluginManager = new yak.PluginManager(configManager);
+    pluginManager.createPluginsFromConfig();
 
-    var yakServer = new yak.YakServer(configManager);
-    var serviceInstance = new yak.ServiceInstance('service', configManager.config.servicePort, yakServer);
+    var installer = new yak.PluginModuleInstaller(pluginManager);
+    installer.installRequiredModules(function(){
+        var yakServer = new yak.YakServer(configManager, pluginManager);
+        var serviceInstance = new yak.ServiceInstance('service', configManager.config.servicePort, yakServer);
 
-    yakServer.start(serviceInstance);
+        yakServer.start(serviceInstance);
 
-    log.info('........................................');
-    log.info('. YAKjs server initialized and running .');
-    log.info('........................................');
+        log.info('........................................');
+        log.info('. YAKjs server initialized and running .');
+        log.info('........................................');
+    });
 }());
 
 

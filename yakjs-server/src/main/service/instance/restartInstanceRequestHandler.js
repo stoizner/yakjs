@@ -27,6 +27,7 @@ yak.RestartInstanceRequestHandler = function RestartInstanceRequestHandler(yakSe
         try {
             yakServer.stopInstance(request.instanceName);
             yakServer.startInstance(request.instanceName);
+            yakServer.updateAndSaveConfig();
             connection.send(new yak.api.RestartInstanceResponse());
         } catch (ex) {
             yakServer.serviceInstance.log.error(ex.message);

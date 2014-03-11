@@ -24,7 +24,6 @@ yak.GetPluginsRequestHandler = function GetPluginsRequestHandler(cloudServer) {
      * @param {yak.WebSocketConnection} connection
      */
     this.handle = function handle(message, connection) {
-
         try {
             var plugins = cloudServer.pluginManager.getPlugins();
 
@@ -40,7 +39,6 @@ yak.GetPluginsRequestHandler = function GetPluginsRequestHandler(cloudServer) {
 
                 response.plugins.push(pluginInfo);
             }
-            console.log(response);
             connection.send(response);
         } catch (ex) {
             cloudServer.serviceInstance.log.error(ex.message);

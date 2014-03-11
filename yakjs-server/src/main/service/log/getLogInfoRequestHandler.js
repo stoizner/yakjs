@@ -20,7 +20,6 @@ yak.GetLogInfoRequestHandler = function GetLogInfoRequestHandler(yakServer) {
 
             response.logs = logger.getLogs();
 
-            console.log(response.logs.length);
             connection.send(response);
         } catch (ex) {
             yakServer.serviceInstance.log.error(ex.message);

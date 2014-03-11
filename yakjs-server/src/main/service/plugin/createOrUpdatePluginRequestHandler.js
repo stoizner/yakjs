@@ -1,10 +1,10 @@
 /**
  * CreateOrUpdatePluginRequestHandler
  * @constructor
- * @param {yak.YakServer} cloudServer
+ * @param {yak.YakServer} yakServer
  * @implements {yak.ServiceMessageHandler}
  */
-yak.CreateOrUpdatePluginRequestHandler = function CreateOrUpdatePluginRequestHandler(cloudServer) {
+yak.CreateOrUpdatePluginRequestHandler = function CreateOrUpdatePluginRequestHandler(yakServer) {
     'use strict';
 
     /**
@@ -25,13 +25,13 @@ yak.CreateOrUpdatePluginRequestHandler = function CreateOrUpdatePluginRequestHan
     this.handle = function handle(message, connection) {
 
         try {
-            if (cloudServer.pluginManager.hasPlugin(message.name)) {
+            if (yakServer.pluginManager.hasPlugin(message.name)) {
                 updatePlugin(message, connection);
             } else {
                 createPlugin(message, connection);
             }
         } catch (ex) {
-            cloudServer.serviceInstance.log.error(ex.message);
+            yakServer.serviceInstance.log.error(ex.message);
         }
     };
 
@@ -47,7 +47,7 @@ yak.CreateOrUpdatePluginRequestHandler = function CreateOrUpdatePluginRequestHan
         updatePluginRequest.code = message.code;
         updatePluginRequest.description = message.description;
 
-        var updateHandler = new yak.UpdatePluginRequestHandler(cloudServer);
+        var updateHandler = new yak.UpdatePluginRequestHandler(yakServer);
         updateHandler.handle(updatePluginRequest, connection);
     }
 
@@ -62,7 +62,7 @@ yak.CreateOrUpdatePluginRequestHandler = function CreateOrUpdatePluginRequestHan
         createPluginRequest.code = message.code;
         createPluginRequest.description = message.description;
 
-        var createHandler = new yak.CreatePluginRequestHandler(cloudServer);
+        var createHandler = new yak.CreatePluginRequestHandler(yakServer);
         createHandler.handle(createPluginRequest, connection);
     }
 

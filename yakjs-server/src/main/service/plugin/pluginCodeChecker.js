@@ -41,9 +41,10 @@ yak.PluginCodeChecker = function PluginCodeChecker() {
             for (var i=0; i<lines.length; i++) {
                 var line = lines[i];
 
-                if (line.indexOf('console.log') >= 0) {
-                    result.errors.push(i + ': For logging, please use instance.log.info() instead of console.log()');
-                }
+//              Recommend logger instead of console.log. Temporally removed, because user want to use console.log
+//              if (line.indexOf('console.log') >= 0) {
+//                    result.errors.push(i + ': For logging, please use instance.log.info() instead of console.log()');
+//              }
             }
         }
 

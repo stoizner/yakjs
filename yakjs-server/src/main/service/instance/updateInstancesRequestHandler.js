@@ -1,14 +1,14 @@
 /**
  * UpdateInstanceRequestHandler
  * @constructor
- * @param {yak.YakServer} cloudServer
+ * @param {yak.YakServer} yakServer
  * @implements {yakServiceMessageHandler}
  */
-yak.UpdateInstanceRequestHandler = function UpdateInstanceRequestHandler(cloudServer) {
+yak.UpdateInstanceRequestHandler = function UpdateInstanceRequestHandler(yakServer) {
 
     'use strict';
 
-    /** @type {yak.CreateInstanceRequestHandler} */
+    /** @type {yak.UpdateInstanceRequestHandler} */
     var self = this;
 
     /** Constructor */
@@ -20,19 +20,18 @@ yak.UpdateInstanceRequestHandler = function UpdateInstanceRequestHandler(cloudSe
     * @param {yak.WebSocketConnection} connection
     */
     this.handle = function handle(message, connection) {
-
         try {
 
             var foundInstance = checkInstanceName(message.instanceName);
 
             if (foundInstance) {
-                var instance = new yak.WebSocketInstance(cloudServer, message.name, message.port);
+                var instance = new yak.WebSocketInstance(yakServer, message.name, message.port);
                 instance.description = message.description;
                 instance.plugins = message.plugins;
 
-                console.log('updateInstance', instance);
-                cloudServer.removeInstance(message.instanceName);
-                cloudServer.addInstance(instance);
+                yakServer.removeInstance(message.instanceName);
+                yakServer.addInstance(instance);
+                yakServer.updateAndSaveConfig();
 
                 connection.send(new yak.api.UpdateInstanceResponse());
             } else {
@@ -42,7 +41,7 @@ yak.UpdateInstanceRequestHandler = function UpdateInstanceRequestHandler(cloudSe
                 connection.send(response);
             }
         } catch (ex) {
-            cloudServer.serviceInstance.log.error(ex.message);
+            yakServer.serviceInstance.log.error(ex.message);
         }
     };
 
@@ -53,7 +52,7 @@ yak.UpdateInstanceRequestHandler = function UpdateInstanceRequestHandler(cloudSe
     function checkInstanceName(name) {
 
         var isNameAlreadyUsed = false;
-        var instances = cloudServer.getInstances();
+        var instances = yakServer.getInstances();
 
         for(var i=0; i<instances.length; i++) {
             if (instances[i].name.trim() === name.trim()) {
