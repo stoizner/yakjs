@@ -119,7 +119,8 @@ yak.PluginModuleInstaller = function PluginModuleInstaller(pluginManager) {
         npm.commands.install(modulesToInstall, function(error, data) {
             log.info('Required modules installed', { error: error });
 
-            updateModules(requiredModules);
+            // Only install required modules. Do not update it at startup
+            // updateModules(requiredModules);
         });
     }
 
