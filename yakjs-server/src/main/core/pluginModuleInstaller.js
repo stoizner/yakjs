@@ -113,15 +113,26 @@ yak.PluginModuleInstaller = function PluginModuleInstaller(pluginManager) {
      * @param requiredModules
      */
     function installRequiredModules(requiredModules) {
-        var modulesToInstall = _.without(requiredModules, installedModules);
-        log.info('Start installing modules.', { modulesToInstall: modulesToInstall });
+        var modulesToInstall = _.difference(requiredModules, installedModules);
 
-        npm.commands.install(modulesToInstall, function(error, data) {
-            log.info('Required modules installed', { error: error });
+        log.debug('Installed modules.', { installedModules: installedModules });
+        log.debug('Required modules.', { requiredModules: requiredModules });
+        log.debug('Modules to install', { modulesToInstall: modulesToInstall });
 
-            // Only install required modules. Do not update it at startup
-            // updateModules(requiredModules);
-        });
+        if (modulesToInstall.length > 0) {
+            log.info('Installing required NPM modules');
+
+            npm.commands.install(modulesToInstall, function(error, data) {
+                log.info('Required modules installed', { error: error });
+
+                // Only install required modules. Do not update it at startup
+                // updateModules(requiredModules);
+
+                finishedCallback();
+            });
+        } else {
+            finishedCallback();
+        }
     }
 
     /**
