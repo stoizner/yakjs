@@ -9,35 +9,43 @@ module.exports = function(grunt) {
 
     var pkg = grunt.file.readJSON('package.json');
 
-    /**
-     * Base Directories
-     */
-    var currentDirectory = './';
-    var buildDirectory = currentDirectory + 'build/';
-    var tempDirectory = currentDirectory + 'dist/temp/';
-    var distDirectory = currentDirectory + 'dist/' + pkg.name + '/';
-    var srcDirectory = currentDirectory + 'src/main/';
+    var distDirectory = './dist/';
+    var pkgDirectory = './dist/';
+    var srcDirectory = './src/';
+    var libDirectory = srcDirectory + 'lib/';
+
+    var banner = ['/**',
+            ' * ' + pkg.name,
+            ' * @version ' + pkg.version,
+            ' * @author ' + pkg.author,
+            ' * @created ' + grunt.template.today('yyyy-mm-dd'),
+            ' * @license ' + pkg.license,
+        ' */\n'].join('\n');
 
     // Project configuration.
     grunt.initConfig({
         pkg: pkg,
+
+        clean: [pkgDirectory],
+
         uglify: {
             options: {
-                banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
+                banner: banner
             },
             build: {
-                src: '<%= pkg.name %>.js',
-                dest: '<%= pkg.name %>.min.js'
+                src: pkgDirectory + pkg.name + '.js',
+                dest: pkgDirectory + pkg.name + '.min.js'
             }
         },
+
         concat: {
             options: {
-                separator: ''
+                separator: '\n'
             },
-            dist: {
+            server: {
                 options: {
                     process: function(src, filepath) {
-                        grunt.log.writeln(filepath);
+                        // grunt.log.writeln(filepath);
                         return src;
                     }
                 },
@@ -45,26 +53,46 @@ module.exports = function(grunt) {
                 src: [
                     srcDirectory + '_namespaces.js',
                     srcDirectory + 'api/**/*.js',
-                    srcDirectory + 'core/**/*.js',
-                    srcDirectory + 'modules/**/*.js',
-                    srcDirectory + 'plugins/**/*.js',
-                    srcDirectory + 'service/**/*.js',
+                    srcDirectory + 'server/**/*.js',
                     srcDirectory + '_bootstrap.js'
                 ],
                 dest: distDirectory + pkg.name + '.js',
                 nonull: true
+            },
+            api: {
+                options: {
+                    process: function(src, filepath) {
+                        // grunt.log.writeln(filepath);
+                        return src;
+                    }
+                },
+                banner: '(c) ' + pkg.author,
+                src: [
+                    srcDirectory + '_namespaces.js',
+                    srcDirectory + 'api/**/*.js'
+                ],
+                dest: distDirectory + pkg.name + '.api.js',
+                nonull: true
             }
         },
+
         copy: {
             dist: {
                 files: [
-                    { flatten:true, src: ['README.md', 'LICENSE', '*.bat', '*.sh'], dest: distDirectory + '/' },
+                    { flatten:true, src: ['README.md', 'LICENSE'], dest: distDirectory + '/' },
                     { flatten:false, src: ['node_modules/ws/**'], dest: distDirectory},
                     { flatten:false, src: ['node_modules/underscore/**'], dest: distDirectory},
                     { flatten:false, src: ['node_modules/npm/**'], dest: distDirectory},
-                    { flatten:true, cwd: srcDirectory + 'shell/', src: ['*.bat', '*.sh'], dest: distDirectory + '/', expand: true }
+                    { flatten:true, cwd: srcDirectory + '/server/shell/', src: ['*.bat', '*.sh'], dest: distDirectory + '/', expand: true }
                 ]
             }
+        },
+
+        eslint: {
+            options: {
+                config: '.eslintrc'
+            },
+            target: [srcDirectory + '**/*.js', '!' + srcDirectory + '**/_module*.js']
         }
     });
 
@@ -72,22 +100,13 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-compress');
+    grunt.loadNpmTasks('grunt-contrib-clean');
+    grunt.loadNpmTasks('grunt-eslint');
 
-    // TASK: mkDirRelease
-    // Creates release directory.
-    grunt.registerTask('mkDirRelease', ['version', 'concat'], function(arg) {
-        // Create release directory
-        grunt.file.mkdir(distDirectory + '/release');
-    });
-
-    // TASK: version
-    // Display current version to console
-    grunt.registerTask('version', 'Display current version', function(arg) {
-        var msg = 'version ' + pkg.version;
-        grunt.log.writeln(msg);
-    });
+    grunt.registerTask('compile', ['clean', 'concat:server', 'concat:api', 'copy', 'uglify']);
+    grunt.registerTask('build', ['compile', 'eslint']);
+    grunt.registerTask('release', ['build', 'compress']);
 
     // TASK: default
-    grunt.registerTask('default', ['version', 'concat', 'copy']);
-
+    grunt.registerTask('default', ['build']);
 };

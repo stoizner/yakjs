@@ -1,0 +1,29 @@
+{
+    "env": {
+        "browser": true,
+        "node": true
+    },
+    "globals": {
+        "yak": true,
+        "_": true
+    },
+    "rules": {
+        "eqeqeq": 0,
+        "no-use-before-define": 0,
+        "no-unused-vars": 0,
+
+        "valid-jsdoc": [2, {
+            "requireReturn": false,
+            "requireParamDescription": false,
+            "prefer": {
+                "return": "returns"
+            }
+        }],
+
+        "quotes": [2, "single"],
+        "strict": 2,
+        "func-names": 2,
+
+        "curly": 2
+    }
+}
