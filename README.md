@@ -3,8 +3,6 @@
 
 This tool is for developing, rapid prototyping, testing, integrating and simulating WebSocket communication.
 
-YAKjs is a [jsFiddle](http://jsfiddle.net/) like tool for WebSockets.   
-
 ## Get started
 
 Get started in less than 55 seconds. If you have already installed [node.js](http://nodejs.org/).
