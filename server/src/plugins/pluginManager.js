@@ -14,6 +14,11 @@ yak.PluginManager = function PluginManager() {
     var PLUGINS_DIR = './plugins/';
 
     /**
+     * @type {string}
+     */
+    var PLUGIN_FILENAME_POSTFIX = '.plugin.js';
+
+    /**
      * Filesystem
      */
     var fs = require('fs');
@@ -38,23 +43,23 @@ yak.PluginManager = function PluginManager() {
      */
     this.loadPlugins = function loadPlugins() {
         log.info('Loading plugins from plugin directory', {dir:PLUGINS_DIR});
-        var pluginFilenames = getPluginFilenames();
 
-        log.debug('pluginFilenames', {pluginFilenames: pluginFilenames});
+        var pluginFilenames = getPluginFilenames();
+        log.info('Plugin files found.', {filesFound: pluginFilenames.length, pluginFilenames: pluginFilenames});
+
         readAndParsePluginFiles(pluginFilenames);
-    }
+    };
 
     /**
      * Read file content and parse it.
      * @param {!Array.<string>} filenames
-     * @returns {!Object.<string, yak.Plugin>}
      */
     function readAndParsePluginFiles(filenames) {
         var fileContent = readPluginFiles(filenames);
 
         _.each(fileContent, function parse(content, filename) {
             try {
-                var plugin = parsePluginFile(filename, content)
+                var plugin = parsePluginFile(filename, content);
                 self.addOrUpdatePlugin(plugin);
             } catch(ex) {
                 log.warn('Can not load plugin.', {filename: filename, error: ex.message});
@@ -66,7 +71,7 @@ yak.PluginManager = function PluginManager() {
      * Parse file content to plugin
      * @param {string} filename
      * @param {string} content
-     * @return {yak.Plugin}
+     * @returns {yak.Plugin} The plugin.
      */
     function parsePluginFile(filename, content) {
         var plugin = new yak.Plugin();
@@ -81,10 +86,16 @@ yak.PluginManager = function PluginManager() {
             throw new Error('Can not parse JsDoc comments.');
         }
 
-        plugin.name = getJsDocTagValue(jsdoc, 'name');
+        plugin.id = filename.replace(PLUGIN_FILENAME_POSTFIX, '');
+
+        // This shall be the target way (TODO: Name/ID handling)
+        //plugin.name = getJsDocTagValue(jsdoc, 'name');
+
+        // COMPATIBILITY This is currently for intercompatibility
+        plugin.name = plugin.id;
+
         plugin.description = getJsDocTagValue(jsdoc, 'description');
         plugin.version = getJsDocTagValue(jsdoc, 'version');
-        plugin.filename = filename;
         plugin.jsDoc = jsdoc;
 
         var pluginFunction = extractPluginFunction(content);
@@ -102,9 +113,9 @@ yak.PluginManager = function PluginManager() {
     }
 
     /**
-     *
      * @param {{tags: Array.<{title:string, description:string}>}} jsDoc
      * @param {string} tagName
+     * @returns {string} The value of a JsDoc tag.
      */
     function getJsDocTagValue(jsDoc, tagName) {
         var value = null;
@@ -120,7 +131,7 @@ yak.PluginManager = function PluginManager() {
 
     /**
      * @param {string} content
-     * @returns {string}
+     * @returns {string} The JsDoc documentation from the file content.
      */
     function extractJsDocPart(content) {
         var jsDoc = null;
@@ -135,7 +146,7 @@ yak.PluginManager = function PluginManager() {
 
     /**
      * @param {string} content
-     * @returns {{name:string, func:string}}
+     * @returns {{name:string, func:string}} The plugin function code from the file content.
      */
     function extractPluginFunction(content) {
         var pluginFunction = null;
@@ -145,7 +156,7 @@ yak.PluginManager = function PluginManager() {
             pluginFunction = {
                 name: matchedGroups[1],
                 func: matchedGroups[0]
-            }
+            };
         }
 
         return pluginFunction;
@@ -153,7 +164,7 @@ yak.PluginManager = function PluginManager() {
 
     /**
      * @param {!Array.<string>} filenames
-     * @returns {!Object.<string, string>}
+     * @returns {!Object.<string, string>} Map with all file content.
      */
     function readPluginFiles(filenames) {
         var contentMap = {};
@@ -168,30 +179,30 @@ yak.PluginManager = function PluginManager() {
                 log.warn('Could not read plugin file.', {filename: filename, error: ex.message});
             }
         });
-        log.debug('readPluginFiles', {filesRead: _.toArray(contentMap).length});
+        log.info('Plugin files read.', {filesRead: _.toArray(contentMap).length});
 
         return contentMap;
     }
 
     /**
      * Search for plugin files in plugin directory.
-     * @returns {!Array.<string>}
+     * @returns {!Array.<string>} List of plugin filenames found in the PLUGINS_DIR folder.
      */
     function getPluginFilenames() {
-        var files =  fs.readdirSync(PLUGINS_DIR)
-        var filenames =  _.filter(files, function useFilesWithJsEnding(filename) {
-            return filename.lastIndexOf('.js') === (filename.length - 3);
-        })
+        var files =  fs.readdirSync(PLUGINS_DIR);
+        var filenames =  _.filter(files, function useFilesWithPluginPostfix(filename) {
+            return filename.lastIndexOf(PLUGIN_FILENAME_POSTFIX) === (filename.length - PLUGIN_FILENAME_POSTFIX.length);
+        });
 
         return filenames;
     }
 
     /**
-     * @param {string} name
+     * @param {string} id
      * @returns {yak.Plugin} The plugin.
      */
-    this.getPlugin = function getPlugin(name) {
-        return plugins[name];
+    this.getPlugin = function getPlugin(id) {
+        return plugins[id];
     };
 
     /**
@@ -213,36 +224,67 @@ yak.PluginManager = function PluginManager() {
     };
 
     /**
-     * Check if plugin with given name exists.
-     * @param {string} name
-     * @returns {boolean} Whether plugin with given name exists or not.
+     * @param {yak.Plugin} plugin
      */
-    this.hasPlugin = function hasPlugin(name) {
-        return plugins.hasOwnProperty(name);
+    this.addOrUpdatePlugin = function addOrUpdatePlugin(plugin) {
+        if (_.has(plugins, plugin.id)) {
+            self.updatePlugin(plugin);
+        } else {
+            self.addPlugin(plugin);
+        }
+    };
+
+    /**
+     * Change the ID of an existing plugin.
+     * @param {string} originalId
+     * @param {string} newId
+     */
+    this.changePluginId = function changedPluginId(originalId, newId) {
+        log.info('changePluginId', {originalId: originalId, newId: newId});
+
+        var existingPlugin = plugins[originalId];
+
+        if (!existingPlugin) {
+            throw new Error('Cannot change plugin ID, no plugin found for originalId', {originalId: originalId});
+        }
+
+        delete plugins[originalId];
+
+        fs.unlinkSync(PLUGINS_DIR + originalId + PLUGIN_FILENAME_POSTFIX);
+
+        existingPlugin.id = newId;
+        plugins[newId] = existingPlugin;
+
+        self.savePlugin(existingPlugin);
     };
 
     /**
      * @param {yak.Plugin} plugin
      */
-    this.addOrUpdatePlugin = function addOrUpdatePlugin(plugin) {
-        if (plugin.PluginConstructor === null) {
-            plugin.PluginConstructor = createPluginConstructor(plugin.code);
-        }
-
-        if (plugin.PluginConstructor !== null) {
-            plugins[plugin.name] = plugin;
-            // savePlugin();
-        }
+    this.addPlugin = function addPlugin(plugin) {
+        plugin.PluginConstructor = createPluginConstructor(plugin.code);
+        plugins[plugin.id] = plugin;
     };
 
     /**
-     * @param {string} name The id of the plugin.
+     * @param {yak.Plugin} plugin
      */
-    this.removePlugin = function removePlugin(name) {
-        if (plugins.hasOwnProperty(name)) {
-            delete plugins[name];
-            // savePlugin();
+    this.updatePlugin = function updatePlugin(plugin) {
+        var existingPlugin = plugins[plugin.id];
+
+         _.extend(existingPlugin, plugin);
+        existingPlugin.PluginConstructor = createPluginConstructor(existingPlugin.code);
+    };
+
+    /**
+     * @param {string} id The id of the plugin.
+     */
+    this.removePlugin = function removePlugin(id) {
+        if (plugins.hasOwnProperty(id)) {
+            delete plugins[id];
         }
+
+        fs.unlinkSync(PLUGINS_DIR + id + PLUGIN_FILENAME_POSTFIX);
     };
 
     /**
@@ -277,26 +319,6 @@ yak.PluginManager = function PluginManager() {
     };
 
     /**
-     * @param {string} name
-     * @param {string} description
-     * @param {string} code
-     */
-    this.createOrUpdatePlugin = function createOrUpdatePlugin(name, description, code) {
-        log.info('createOrUpdatePlugin', { name: name, description: description, code: code });
-
-        var plugin = new yak.Plugin();
-        plugin.name = name;
-        plugin.description = description;
-        plugin.code = code;
-        plugin.PluginConstructor = createPluginConstructor(code);
-
-        // if (plugin.PluginConstructor !== null) {
-        plugins[name] = plugin;
-        // savePlugin();
-        //}
-    };
-
-    /**
      * Creates the constructor function to create a plugin instance.
      * @param {string} code
      * @returns {Function} The execution function of the plugin.
@@ -323,7 +345,7 @@ yak.PluginManager = function PluginManager() {
     this.savePlugins = function savePlugins() {
         log.info('savePlugins');
         _.each(plugins, function savePlugin(plugin) {
-            savePluginToFile(plugin);
+            self.savePlugin(plugin);
         });
     };
 
@@ -331,9 +353,9 @@ yak.PluginManager = function PluginManager() {
      * Save a plugin to the file system.
      * @param {yak.Plugin} plugin
      */
-    function savePluginToFile(plugin) {
+    this.savePlugin = function savePlugin(plugin) {
         try {
-            var pluginString = ''
+            var pluginString = '';
 
             var tags = [];
 
@@ -349,7 +371,6 @@ yak.PluginManager = function PluginManager() {
             // Create jsdoc part
             pluginString += '/**';
 
-
             _.each(tags, function toJsDocLine(tag) {
                 pluginString += ['\n * @', tag.title, ' '].join('');
 
@@ -358,18 +379,17 @@ yak.PluginManager = function PluginManager() {
                 } else if (tag.name) {
                     pluginString += tag.name.replace('\r\n', '\n').replace('\n', '\n * ');
                 }
-            })
+            });
 
             pluginString += '\n */\n';
-            // Add code.
             pluginString += plugin.code;
+            pluginString += '\n\n';
 
-            var filename = plugin.name.replace(' ', '-');
-
-            fs.writeFileSync(PLUGINS_DIR + filename + '.js', pluginString, {encoding: 'utf8'});
+            var fullFilename = PLUGINS_DIR + plugin.id + PLUGIN_FILENAME_POSTFIX;
+            fs.writeFileSync(fullFilename, pluginString, {encoding: 'utf8'});
 
         } catch(ex) {
             log.error('Could not save plugin to file system.', {pluginName: plugin.name, error: ex.message});
         }
-    }
+    };
 };

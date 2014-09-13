@@ -1,40 +1,55 @@
 /**
  * CreatePluginRequestHandler
  * @constructor
- * @param {yak.YakServer} cloudServer
+ * @param {yak.YakServer} yakjs
  * @implements {yak.ServiceMessageHandler}
  */
-yak.CreatePluginRequestHandler = function CreatePluginRequestHandler(cloudServer) {
+yak.CreatePluginRequestHandler = function CreatePluginRequestHandler(yakjs) {
     /**
      * @type {yak.PluginCodeChecker}
      */
     var pluginCodeChecker = new yak.PluginCodeChecker();
 
     /**
+     * @type {yak.Logger}
+     */
+    var log = new yak.Logger(this.constructor.name);
+
+    /**
      * @param {yak.api.CreatePluginRequest} message
      * @param {yak.WebSocketConnection} connection
      */
     this.handle = function handle(message, connection) {
-
         try {
-            if (cloudServer.pluginManager.hasPlugin(message.name)) {
+            var plugin = yakjs.pluginManager.getPlugin(message.name);
+
+            if (plugin) {
+                log.warn('Plugin already exists.', {id: message.name});
                 sendPluginAlreadyExistsResponse(message, connection);
-            } else if (message.name === null || message.name === '') {
-                sendInvalidNameResponse(message, connection);
             } else {
-
-                var codeCheck = pluginCodeChecker.checkCode(message.code);
-
-                if (codeCheck.isValid) {
-                    cloudServer.pluginManager.createOrUpdatePlugin(message.name, message.description, message.code);
-                    cloudServer.pluginManager.savePlugins();
-                    sendSuccessResponse(connection);
+                if (message.name === null || message.name === '') {
+                    sendInvalidNameResponse(message, connection);
                 } else {
-                    sendInvalidCodeResponse(codeCheck, connection);
+                    var codeCheck = pluginCodeChecker.checkCode(message.code);
+
+                    if (codeCheck.isValid) {
+                        var newPlugin = new yak.Plugin();
+                        newPlugin.id = message.name;
+                        newPlugin.name = message.name;
+                        newPlugin.description = message.description;
+                        newPlugin.version = '0.1.0';
+                        newPlugin.code = message.code;
+
+                        yakjs.pluginManager.addPlugin(newPlugin);
+                        yakjs.pluginManager.savePlugin(newPlugin);
+                        sendSuccessResponse(connection);
+                    } else {
+                        sendInvalidCodeResponse(codeCheck, connection);
+                    }
                 }
             }
         } catch (ex) {
-            cloudServer.serviceInstance.log.error(ex.message);
+            log.error(ex.message);
         }
     };
 

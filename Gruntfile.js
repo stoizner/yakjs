@@ -9,12 +9,13 @@ module.exports = function(grunt) {
 
     var pkg = grunt.file.readJSON('package.json');
 
-    var distDir = './dist/' ;
-    var pkgDir = './dist/yakjs/';
-    var serverComponentDir = pkgDir + 'server/';
-
+    // Source and Project directories
     var serverDir = './server/';
     var serverSrcDir = serverDir + 'src/';
+
+    // Distribution directories.
+    var distDir = './dist/' ;
+    var pkgDir = './dist/yakjs/';
 
     var banner = ['/**',
             ' * ' + pkg.name,
@@ -35,8 +36,8 @@ module.exports = function(grunt) {
                 banner: banner
             },
             build: {
-                src: serverComponentDir + pkg.name + '.js',
-                dest: serverComponentDir + pkg.name + '.min.js'
+                src: pkgDir + pkg.name + '.js',
+                dest: pkgDir + pkg.name + '.min.js'
             }
         }
     });
@@ -59,7 +60,7 @@ module.exports = function(grunt) {
                         serverSrcDir + '**/*.js',
                         serverDir + '_bootstrap.js'
                 ],
-                dest: serverComponentDir + pkg.name + '.js',
+                dest: pkgDir + pkg.name + '.js',
                 nonull: true
             },
             api: {
@@ -74,7 +75,7 @@ module.exports = function(grunt) {
                         serverDir + '_namespaces.js',
                         serverSrcDir + 'api/**/*.js'
                 ],
-                dest: serverComponentDir + pkg.name + '.api.js',
+                dest: pkgDir + pkg.name + '.api.js',
                 nonull: true
             }
         }
@@ -84,16 +85,16 @@ module.exports = function(grunt) {
         copy: {
             server: {
                 files: [
-                    { flatten:true, src: ['README.md', 'LICENSE'], dest: serverComponentDir + '/' },
-                    { flatten:false, src: ['node_modules/ws/**'], dest: serverComponentDir},
-                    { flatten:false, src: ['node_modules/underscore/**'], dest: serverComponentDir},
-                    { flatten:false, src: ['node_modules/npm/**'], dest: serverComponentDir},
-                    { flatten:true, cwd: serverSrcDir + '/server/shell/', src: ['*.bat', '*.sh'], dest: serverComponentDir + '/', expand: true }
+                    { flatten:true, src: ['README.md', 'LICENSE'], dest: pkgDir + '/' },
+                    { flatten:false, src: ['node_modules/ws/**'], dest: pkgDir},
+                    { flatten:false, src: ['node_modules/underscore/**'], dest: pkgDir},
+                    { flatten:false, src: ['node_modules/npm/**'], dest: pkgDir},
+                    { flatten:true, cwd: serverSrcDir + 'shell/', src: ['*.bat', '*.sh'], dest: pkgDir + '/', expand: true }
                 ]
             },
             defaultPlugins : {
                 files: [
-                    { flatten:true, cwd: serverDir + 'plugins/', src: ['*.js'], dest: serverComponentDir + 'plugins/', expand: true }
+                    { flatten:true, cwd: serverDir + 'plugins/', src: ['*.js'], dest: pkgDir + 'plugins/', expand: true }
                 ]
             }
         }
@@ -104,7 +105,7 @@ module.exports = function(grunt) {
             options: {
                 config: '.eslintrc'
             },
-            server: [serverSrcDir + '**/*.js', '!' + serverSrcDir + '**/_module*.js']
+            server: [serverSrcDir + '**/*.js']
         }
     });
 

@@ -12,9 +12,11 @@ yak.DeletePluginRequestHandler = function DeletePluginRequestHandler(yakServer) 
     this.handle = function handle(message, connection) {
 
         try {
-            if (yakServer.pluginManager.hasPlugin(message.pluginName)) {
+
+            var plugin = yakServer.pluginManager.getPlugin(message.pluginName);
+
+            if (plugin) {
                 yakServer.pluginManager.removePlugin(message.pluginName);
-                yakServer.pluginManager.savePlugin();
                 sendSuccessResponse(connection);
             } else {
                 sendPluginNotFoundResponse(message, connection);

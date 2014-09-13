@@ -15,15 +15,22 @@ yak.UpdatePluginRequestHandler = function UpdatePluginRequestHandler(yakServer) 
      * @param {yak.WebSocketConnection} connection
      */
     this.handle = function handle(request, connection) {
-
         try {
             if (yakServer.pluginManager.hasPlugin(request.pluginName)) {
                 var codeCheck = pluginCodeChecker.checkCode(request.code);
 
                 if (codeCheck.isValid) {
-                    yakServer.pluginManager.removePlugin(request.pluginName);
-                    yakServer.pluginManager.createOrUpdatePlugin(request.name, request.description, request.code);
-                    yakServer.pluginManager.savePlugins();
+                    if (request.name !== request.pluginName) {
+                        yakServer.pluginManager.changePluginId(request.pluginName, request.name);
+                    }
+
+                    var plugin = yakServer.pluginManager.getPlugin(request.name);
+                    plugin.description = request.description;
+                    plugin.code = request.code;
+
+                    yakServer.pluginManager.updatePlugin(plugin);
+                    yakServer.pluginManager.savePlugin(plugin);
+
                     sendSuccessResponse(connection);
                 } else {
                     sendInvalidCodeResponse(codeCheck, connection);

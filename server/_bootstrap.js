@@ -14,6 +14,7 @@ var _ = require('underscore');
     configManager.load();
     store.load();
 
+    log.info('PluginManager');
     var pluginManager = new yak.PluginManager();
     pluginManager.loadPlugins();
 

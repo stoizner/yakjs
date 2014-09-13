@@ -4,16 +4,16 @@
  */
 yak.Plugin = function Plugin() {
     /**
+     * The plugin id.
+     * @type {?string}
+     */
+    this.id = null;
+
+    /**
      * The unique name of the plugin.
      * @type {?string}
      */
     this.name = null;
-
-    /**
-     * The filename of the plugin.
-     * @type {?string}
-     */
-    this.filename = null;
 
     /**
      * Description of the plugin.

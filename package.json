@@ -1,6 +1,6 @@
 {
-  "name": "yakjs-server",
-  "version": "0.6.0",
+  "name": "yakjs",
+  "version": "0.7.0-SNAPSHOT",
   "devDependencies": {
     "grunt": "~0.4.1",
     "grunt-contrib-clean": "^0.6.0",
@@ -14,8 +14,8 @@
     "grunt-eslint": "^1.0.1"
   },
   "description": "YAKjs WebSocket Servers with JavaScript Plugins based on nodejs",
-  "main": "build/yakjs-server.js",
-  "repository": "https://github.com/cobuChris/yak-js",
+  "main": "dist/server/yakjs-server.js",
+  "repository": "https://github.com/cschuller/yak-js",
   "author": "Christian Schuller",
   "license": "MIT",
   "dependencies": {
