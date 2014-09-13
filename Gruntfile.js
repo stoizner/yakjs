@@ -9,13 +9,19 @@ module.exports = function(grunt) {
 
     var pkg = grunt.file.readJSON('package.json');
 
+    var buildDir = './build/';
+
     // Source and Project directories
     var serverDir = './server/';
     var serverSrcDir = serverDir + 'src/';
+    var uiDir = './ui/';
+    var uiSrcDir = uiDir + 'src/';
 
     // Distribution directories.
     var distDir = './dist/' ;
+    var tmpDir = distDir + 'tmp/'
     var pkgDir = './dist/yakjs/';
+    var uiPkgDir = pkgDir + 'ui/';
 
     var banner = ['/**',
             ' * ' + pkg.name,
@@ -25,9 +31,14 @@ module.exports = function(grunt) {
             ' * @license ' + pkg.license,
         ' */\n'].join('\n');
 
+    var uiFooter = 'yak.ui.version = \'' + pkg.version + '\';\n';
+
     grunt.initConfig({
         pkg: pkg,
-        clean: [distDir]
+        clean: {
+            dist: [distDir],
+            tmp: [tmpDir]
+        }
     });
 
     grunt.config.merge({
@@ -48,12 +59,7 @@ module.exports = function(grunt) {
                 separator: '\n'
             },
             server: {
-                options: {
-                    process: function(src, filepath) {
-                        // grunt.log.writeln(filepath);
-                        return src;
-                    }
-                },
+                options: {},
                 banner: '(c) ' + pkg.author,
                 src: [
                         serverDir + '_namespaces.js',
@@ -64,18 +70,25 @@ module.exports = function(grunt) {
                 nonull: true
             },
             api: {
-                options: {
-                    process: function(src, filepath) {
-                        // grunt.log.writeln(filepath);
-                        return src;
-                    }
-                },
+                options: {},
                 banner: '(c) ' + pkg.author,
                 src: [
                         serverDir + '_namespaces.js',
                         serverSrcDir + 'api/**/*.js'
                 ],
-                dest: pkgDir + pkg.name + '.api.js',
+                dest: uiPkgDir + 'scripts/' + pkg.name + '-api.js',
+                nonull: true
+            },
+            ui: {
+                options: {},
+                banner: banner,
+                footer: uiFooter,
+                src: [
+                        uiDir + '_namespaces.js',
+                        uiSrcDir + '**/*.js',
+                        uiDir + '_bootstrap.js'
+                ],
+                dest: uiPkgDir + 'scripts/' + pkg.name + '-ui.js',
                 nonull: true
             }
         }
@@ -85,16 +98,27 @@ module.exports = function(grunt) {
         copy: {
             server: {
                 files: [
-                    { flatten:true, src: ['README.md', 'LICENSE'], dest: pkgDir + '/' },
-                    { flatten:false, src: ['node_modules/ws/**'], dest: pkgDir},
-                    { flatten:false, src: ['node_modules/underscore/**'], dest: pkgDir},
-                    { flatten:false, src: ['node_modules/npm/**'], dest: pkgDir},
-                    { flatten:true, cwd: serverSrcDir + 'shell/', src: ['*.bat', '*.sh'], dest: pkgDir + '/', expand: true }
+                    {flatten:true, src: ['README.md', 'LICENSE'], dest: pkgDir},
+                    {flatten:false, src: ['node_modules/ws/**'], dest: pkgDir},
+                    {flatten:false, src: ['node_modules/underscore/**'], dest: pkgDir},
+                    {flatten:false, src: ['node_modules/npm/**'], dest: pkgDir},
+                    {flatten:true, cwd: serverSrcDir + 'shell/', src: ['*.bat', '*.sh'], dest: pkgDir, expand: true}
                 ]
             },
             defaultPlugins : {
                 files: [
-                    { flatten:true, cwd: serverDir + 'plugins/', src: ['*.js'], dest: pkgDir + 'plugins/', expand: true }
+                    { flatten:true, cwd: serverDir + 'plugins/', src: ['*.js'], dest: pkgDir + 'plugins/', expand: true}
+                ]
+            },
+            ui: {
+                files: [
+                    {expand: true, cwd: uiSrcDir, src: ['**/*.*', '!**/*.less', '!**/*.js', '!**/*.mustache'], dest: uiPkgDir, filter: 'isFile'},
+                    {expand: true, cwd: uiDir, src: ['ext/**/*'], dest: uiPkgDir}
+                ]
+            },
+            less: {
+                files: [
+                    {expand: true, cwd: uiSrcDir, src: ['**/style/**.less'], dest: tmpDir + 'less/', filter: 'isFile'}
                 ]
             }
         }
@@ -121,6 +145,32 @@ module.exports = function(grunt) {
         }
     });
 
+    grunt.config.merge({
+        less: {
+            options: {
+                paths: [tmpDir + 'less/']
+            },
+            src: {
+                expand: true,
+                cwd:    tmpDir + 'less/',
+                src:    '**/*.less',
+                dest:   uiPkgDir,
+                ext:    '.css'
+            }
+        },
+    });
+    grunt.config.merge({
+        mustache: {
+            dist: {
+                files: {
+                    src: [uiSrcDir + '**/*.mustache']
+                },
+                srcMerge: uiSrcDir + 'index.html',
+                    target: uiPkgDir + 'index.html'
+            }
+        }
+    });
+
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-copy');
@@ -128,13 +178,16 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-eslint');
+    grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-contrib-watch');
 
-    grunt.registerTask('compile-server', ['concat:server', 'concat:api', 'uglify']);
-    grunt.registerTask('compile-ui', []);
+    grunt.loadTasks(buildDir + 'grunt-tasks');
 
-    grunt.registerTask('build-server', ['compile-server', 'copy', 'eslint:server']);
-    grunt.registerTask('build-ui', ['compile-ui']);
+    grunt.registerTask('compile-server', ['concat:server', 'concat:api', 'uglify']);
+    grunt.registerTask('compile-ui', ['concat:api', 'concat:ui', 'copy:ui', 'copy:less', 'less', 'mustache']);
+
+    grunt.registerTask('build-server', ['compile-server', 'copy:server', 'copy:defaultPlugins', 'eslint:server']);
+    grunt.registerTask('build-ui', ['compile-ui', 'clean:tmp']);
 
     grunt.registerTask('dev', ['compile', 'watch']);
     grunt.registerTask('compile', ['compile-server', 'compile-ui']);

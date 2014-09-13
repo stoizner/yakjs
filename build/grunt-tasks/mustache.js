@@ -14,14 +14,18 @@ module.exports = function(grunt) {
         var taskConfig = this.data;
         var allTemplatesAsScripts = '';
 
-        grunt.log.writeln(JSON.stringify( this.files));
+        // grunt.log.writeln(JSON.stringify( this.files));
 
+        var templateCount = 0;
         this.files.forEach(function(file) {
             file.src.forEach(function(sourceFileName) {
-                grunt.log.writeln(JSON.stringify(sourceFileName));
+                // grunt.log.writeln(JSON.stringify(sourceFileName));
                 allTemplatesAsScripts += getTemplate(sourceFileName);
+                templateCount++;
             });
         });
+
+        grunt.log.writeln(templateCount + ' Mustache template(s) found.');
 
         writeToTarget(allTemplatesAsScripts, taskConfig.srcMerge, taskConfig.target);
     });
