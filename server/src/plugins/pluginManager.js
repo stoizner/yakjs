@@ -59,7 +59,7 @@ yak.PluginManager = function PluginManager() {
 
         _.each(fileContent, function parse(content, filename) {
             try {
-                var plugin = parsePluginFile(filename, content);
+                var plugin = self.parsePluginContent(filename, content);
                 self.addOrUpdatePlugin(plugin);
             } catch(ex) {
                 log.warn('Can not load plugin.', {filename: filename, error: ex.message});
@@ -68,12 +68,13 @@ yak.PluginManager = function PluginManager() {
     }
 
     /**
-     * Parse file content to plugin
-     * @param {string} filename
+     * Parse file content to create a plugin.
+     * @param {string} name
      * @param {string} content
      * @returns {yak.Plugin} The plugin.
      */
-    function parsePluginFile(filename, content) {
+    this.parsePluginContent = function parsePluginContent(name, content) {
+        log.debug('Parse plugin content', {name:name, contentSize: content.length});
         var plugin = new yak.Plugin();
 
         var rawJsDoc = extractJsDocPart(content);
@@ -86,7 +87,8 @@ yak.PluginManager = function PluginManager() {
             throw new Error('Can not parse JsDoc comments.');
         }
 
-        plugin.id = filename.replace(PLUGIN_FILENAME_POSTFIX, '');
+        // Id shall not use postfix or js file ending.
+        plugin.id = name.replace('.plugin', '').replace('.js', '');
 
         // This shall be the target way (TODO: Name/ID handling)
         //plugin.name = getJsDocTagValue(jsdoc, 'name');
@@ -110,7 +112,7 @@ yak.PluginManager = function PluginManager() {
         log.debug('Plugin loaded.', {plugin: info});
 
         return plugin;
-    }
+    };
 
     /**
      * @param {{tags: Array.<{title:string, description:string}>}} jsDoc
@@ -143,6 +145,14 @@ yak.PluginManager = function PluginManager() {
 
         return jsDoc;
     }
+
+    /**
+     * @param {string} codeOrContent
+     * @returns {boolean} Whether the code or content of a plugin has a JsDoc block.
+     */
+    this.hasJsDoc = function hasJsDoc(codeOrContent) {
+        return (extractJsDocPart(codeOrContent) !== null);
+    };
 
     /**
      * @param {string} content
@@ -240,7 +250,7 @@ yak.PluginManager = function PluginManager() {
      * @param {string} newId
      */
     this.changePluginId = function changedPluginId(originalId, newId) {
-        log.info('changePluginId', {originalId: originalId, newId: newId});
+        log.info('Change Plugin ID.', {originalId: originalId, newId: newId});
 
         var existingPlugin = plugins[originalId];
 
@@ -368,7 +378,8 @@ yak.PluginManager = function PluginManager() {
                 tags = tags.concat(plugin.jsDoc.tags);
             }
 
-            // Create jsdoc part
+            tags = _.uniq(tags, function useOnlyUniqueTitles(tag) { return tag.title; });
+
             pluginString += '/**';
 
             _.each(tags, function toJsDocLine(tag) {

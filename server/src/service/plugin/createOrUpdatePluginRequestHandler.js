@@ -15,9 +15,11 @@ yak.CreateOrUpdatePluginRequestHandler = function CreateOrUpdatePluginRequestHan
      * @param {yak.WebSocketConnection} connection
      */
     this.handle = function handle(message, connection) {
-
         try {
-            if (yakServer.pluginManager.hasPlugin(message.name)) {
+            var pluginId = message.name.replace('.plugin', '');
+            var plugin = yakServer.pluginManager.getPlugin(pluginId);
+
+            if (plugin) {
                 updatePlugin(message, connection);
             } else {
                 createPlugin(message, connection);

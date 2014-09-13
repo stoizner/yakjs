@@ -11,35 +11,56 @@ yak.UpdatePluginRequestHandler = function UpdatePluginRequestHandler(yakServer) 
     var pluginCodeChecker = new yak.PluginCodeChecker();
 
     /**
+     * @type {yak.PluginManager}
+     */
+    var pluginManager = yakServer.pluginManager;
+
+    /**
+     * @type {yak.Logger}
+     */
+    var log = new yak.Logger(this.constructor.name);
+
+    /**
      * @param {yak.api.UpdatePluginRequest} request
      * @param {yak.WebSocketConnection} connection
      */
     this.handle = function handle(request, connection) {
         try {
-            if (yakServer.pluginManager.hasPlugin(request.pluginName)) {
+            var originalPluginId = request.pluginName.replace('.plugin', '');
+            var plugin = pluginManager.getPlugin(originalPluginId);
+
+            if (plugin) {
                 var codeCheck = pluginCodeChecker.checkCode(request.code);
 
                 if (codeCheck.isValid) {
-                    if (request.name !== request.pluginName) {
-                        yakServer.pluginManager.changePluginId(request.pluginName, request.name);
+                    var pluginId = request.name.replace('.plugin', '');
+
+                    if (pluginId !== originalPluginId) {
+                        pluginManager.changePluginId(originalPluginId, pluginId);
                     }
 
-                    var plugin = yakServer.pluginManager.getPlugin(request.name);
+                    if (pluginManager.hasJsDoc(request.code)) {
+                        var parsedPlugin = pluginManager.parsePluginContent(request.code);
+                        plugin = _.extend(plugin, parsedPlugin);
+                    }
+
                     plugin.description = request.description;
                     plugin.code = request.code;
 
-                    yakServer.pluginManager.updatePlugin(plugin);
-                    yakServer.pluginManager.savePlugin(plugin);
+                    pluginManager.updatePlugin(plugin);
+                    pluginManager.savePlugin(plugin);
 
                     sendSuccessResponse(connection);
                 } else {
+                    log.warn('Can not update plugin. Code is not valid.', {id: originalPluginId, codeCheck: codeCheck});
                     sendInvalidCodeResponse(codeCheck, connection);
                 }
             } else {
+                log.warn('Can not update plugin. Plugin not found.', {id: originalPluginId});
                 sendPluginNotFoundResponse(request, connection);
             }
         } catch (ex) {
-            yakServer.serviceInstance.log.error(ex.message);
+            log.error(ex.message);
         }
     };
 

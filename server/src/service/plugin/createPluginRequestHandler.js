@@ -21,29 +21,27 @@ yak.CreatePluginRequestHandler = function CreatePluginRequestHandler(yakjs) {
      */
     this.handle = function handle(message, connection) {
         try {
-            var plugin = yakjs.pluginManager.getPlugin(message.name);
-
-            if (plugin) {
-                log.warn('Plugin already exists.', {id: message.name});
-                sendPluginAlreadyExistsResponse(message, connection);
+            if (message.name === null || message.name === '') {
+                log.warn('Invalid plugin name', {name: message.name});
+                sendInvalidNameResponse(message, connection);
             } else {
-                if (message.name === null || message.name === '') {
-                    sendInvalidNameResponse(message, connection);
+                var pluginId = message.name.replace('.plugin', '');
+                var plugin = yakjs.pluginManager.getPlugin(pluginId);
+
+                if (plugin) {
+                    log.warn('Plugin already exists.', {id: pluginId});
+                    sendPluginAlreadyExistsResponse(message, connection);
                 } else {
                     var codeCheck = pluginCodeChecker.checkCode(message.code);
 
                     if (codeCheck.isValid) {
-                        var newPlugin = new yak.Plugin();
-                        newPlugin.id = message.name;
-                        newPlugin.name = message.name;
-                        newPlugin.description = message.description;
-                        newPlugin.version = '0.1.0';
-                        newPlugin.code = message.code;
-
+                        var newPlugin = yakjs.pluginManager.parsePluginContent(pluginId, message.code);
                         yakjs.pluginManager.addPlugin(newPlugin);
                         yakjs.pluginManager.savePlugin(newPlugin);
+
                         sendSuccessResponse(connection);
                     } else {
+                        log.warn('Plugin code is not valid.', {codeCheck: codeCheck});
                         sendInvalidCodeResponse(codeCheck, connection);
                     }
                 }

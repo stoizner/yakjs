@@ -10,13 +10,12 @@ yak.DeletePluginRequestHandler = function DeletePluginRequestHandler(yakServer) 
      * @param {yak.WebSocketConnection} connection
      */
     this.handle = function handle(message, connection) {
-
         try {
-
-            var plugin = yakServer.pluginManager.getPlugin(message.pluginName);
+            var pluginId = message.pluginName.replace('.plugin', '');
+            var plugin = yakServer.pluginManager.getPlugin(pluginId);
 
             if (plugin) {
-                yakServer.pluginManager.removePlugin(message.pluginName);
+                yakServer.pluginManager.removePlugin(pluginId);
                 sendSuccessResponse(connection);
             } else {
                 sendPluginNotFoundResponse(message, connection);

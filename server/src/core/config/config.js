@@ -13,9 +13,4 @@ yak.Config = function Config() {
      * @type {Array.<yak.InstanceConfigItem>}
      */
     this.instances = [];
-
-//    /**
-//     * @type {Array.<yak.PluginConfigItem>}
-//     */
-//    this.plugins = [];
 };

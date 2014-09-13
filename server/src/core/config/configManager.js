@@ -116,37 +116,6 @@ yak.ConfigManager = function ConfigManager() {
         self.config.instances = instanceConfig.instances;
     }
 
-//    /**
-//     * Load plugins from file.
-//     */
-//    function loadPlugins() {
-//        log.info('Loading plugins from directory ', {pluginsDir: PLUGINS_DIR});
-//
-//        /**
-//         * @type {yak.PluginConfig}
-//         */
-//        var pluginConfig = null;
-//
-//        if (fs.existsSync(PLUGINS_DIR)) {
-//            try {
-//                var data = fs.readFileSync(PLUGINS_DIR, 'utf8');
-//                pluginConfig = JSON.parse(data);
-//            }  catch(e) {
-//                // Ignore error
-//                log.info('Plugins could not be loaded.', { error: e.message });
-//            }
-//        } else {
-//            throw new Error('Plugin directory not found.', {pluginsDir: PLUGINS_DIR});
-//        }
-//
-//        if (!pluginConfig) {
-//            log.info('Plugin config does not exist or could not be loaded. No plugins loaded.');
-//            pluginConfig = new yak.PluginConfig();
-//        }
-//
-//        self.config.plugins = pluginConfig.plugins;
-//    }
-
     /**
      * Save configuration.
      */
