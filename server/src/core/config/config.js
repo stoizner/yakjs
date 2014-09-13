@@ -7,10 +7,11 @@ yak.Config = function Config() {
      * The API service web socket service port.
      * @type {number}
      */
-    this.servicePort = 8790;
+    this.servicePort = 8791;
 
     /**
-     * @type {Array.<yak.InstanceConfigItem>}
+     * The hHTTP Port for the yak ui.
+     * @type {number}
      */
-    this.instances = [];
+    this.httpPort = 8790;
 };

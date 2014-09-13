@@ -152,7 +152,7 @@ yak.YakServer = function YakServer(configManager, pluginManager) {
      */
     this.updateAndSaveConfig = function updateAndSaveConfig() {
         log.info('YakServer.updateAndSaveConfig');
-        configManager.config.instances = [];
+        configManager.instances = [];
 
         for(var key in instances) {
             if (instances.hasOwnProperty(key)) {
@@ -165,7 +165,7 @@ yak.YakServer = function YakServer(configManager, pluginManager) {
                 instanceConfigItem.port = instance.port;
                 instanceConfigItem.autoStartEnabled = instance.autoStartEnabled;
 
-                configManager.config.instances.push(instanceConfigItem);
+                configManager.instances.push(instanceConfigItem);
             }
         }
 
@@ -177,7 +177,7 @@ yak.YakServer = function YakServer(configManager, pluginManager) {
      */
     function createInstancesFromConfig() {
 
-        configManager.config.instances.forEach(
+        configManager.instances.forEach(
 
             /**
              * @param {yak.InstanceConfigItem} instanceConfig

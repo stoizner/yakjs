@@ -29,10 +29,9 @@ yak.ConfigManager = function ConfigManager() {
     this.config = null;
 
     /**
-     * Constructor
+     * @type {Array.<yak.InstanceConfigItem>}
      */
-    function constructor() {
-    }
+    this.instances = [];
 
     /**
      * Load configuration.
@@ -47,7 +46,7 @@ yak.ConfigManager = function ConfigManager() {
         self.config = new yak.Config();
 
         try {
-            loadServerConfig();
+            loadConfig();
             loadInstances();
             // loadPlugins();
         } catch (ex) {
@@ -60,30 +59,22 @@ yak.ConfigManager = function ConfigManager() {
     /**
      * Load server config from file.
      */
-    function loadServerConfig() {
+    function loadConfig() {
         log.info('Load server configuration from file', { filename: BASE_CONFIG_FILENAME });
-
-        /**
-         * @type {yak.ServerConfig}
-         */
-        var serverConfig = null;
 
         if (fs.existsSync(BASE_CONFIG_FILENAME)) {
             try {
                 var data = fs.readFileSync(BASE_CONFIG_FILENAME, 'utf8');
-                serverConfig = JSON.parse(data);
+                self.config = JSON.parse(data);
             } catch(e) {
                 // Ignore error
-                log.info('Server config could not be loaded.', { error: e.message });
+                log.info('YAKjs config could not be loaded. Using default config.', { error: e.message });
+                self.config = new yak.Config();
             }
+        } else {
+            log.info('YAKjs config does not exist. Using default config.');
+            self.config = new yak.Config();
         }
-
-        if (!serverConfig) {
-            log.info('Server config does not exist or could not be loaded. Using default config.');
-            serverConfig = new yak.ServerConfig();
-        }
-
-        self.config.servicePort = serverConfig.servicePort;
     }
 
     /**
@@ -113,7 +104,7 @@ yak.ConfigManager = function ConfigManager() {
             createDefaultInstanceConfig(instanceConfig);
         }
 
-        self.config.instances = instanceConfig.instances;
+        self.instances = instanceConfig.instances;
     }
 
     /**
@@ -128,7 +119,7 @@ yak.ConfigManager = function ConfigManager() {
 
         log.info('Save instance configuration to file.');
         var instanceConfig = new yak.InstanceConfig();
-        instanceConfig.instances = self.config.instances;
+        instanceConfig.instances = self.instances;
         fs.writeFile(INSTANCE_CONFIG_FILENAME, JSON.stringify(instanceConfig));
 
 //        log.info('Save plugin configuration to file.');

@@ -21,6 +21,7 @@
   "license": "MIT",
   "dependencies": {
     "doctrine": "^0.5.2",
+    "express": "^4.9.0",
     "npm": "^1.4.4",
     "underscore": "~1.5.2",
     "ws": "~0.4.31"

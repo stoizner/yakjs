@@ -48,9 +48,9 @@ yak.ServiceInstance = function ServiceInstance(name, port, yakServer) {
 
     /**
      * Server port
-     * @type {number} default: 8790;
+     * @type {number} default: 8791;
      */
-    this.port = port || 8790;
+    this.port = port || 8791;
 
     /**
      * @type {yak.Logger}

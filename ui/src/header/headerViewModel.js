@@ -22,7 +22,7 @@ yak.ui.HeaderViewModel = function HeaderViewModel(context) {
      * The default websocket uri used for the service port of the yak server.
      * @type {string}
      */
-    var DEFAULT_WEBSOCKET_URI = 'ws://localhost:8790';
+    var DEFAULT_WEBSOCKET_URI = 'ws://localhost:8791';
 
     /**
      * Is a websocket connection established?
@@ -59,7 +59,7 @@ yak.ui.HeaderViewModel = function HeaderViewModel(context) {
         context.eventBus.on(yak.ui.WebSocketCloseEvent).register(function() {
             console.log('on yak.ui.WebSocketCloseEvent');
             self.isWebSocketConnected = false;
-            context.eventBus.post(new yak.ui.UpdateNotificationCommand('Please connect to service port of yakjs-server. The default port is 8790. For example: ws://localhost:8790'));
+            context.eventBus.post(new yak.ui.UpdateNotificationCommand('Please connect to service port of yakjs-server. The default port is 8791. For example: ws://localhost:8791'));
 
             self.onWebSocketConnectedChanged();
         });

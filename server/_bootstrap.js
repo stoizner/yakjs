@@ -18,6 +18,9 @@ var _ = require('underscore');
     var pluginManager = new yak.PluginManager();
     pluginManager.loadPlugins();
 
+    var webServer = new yak.UiWebServer(configManager.config);
+    webServer.start();
+
     var installer = new yak.PluginModuleInstaller(pluginManager);
     installer.installRequiredModules(function installFinishedCallback(){
         var yakServer = new yak.YakServer(configManager, pluginManager);
