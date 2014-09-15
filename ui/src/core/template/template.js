@@ -1,6 +1,5 @@
 /**
  * TemplateEngine
- * @class
  * @constructor
  */
 yak.ui.Template = function Template(template) {

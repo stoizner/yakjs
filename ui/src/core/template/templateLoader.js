@@ -1,6 +1,5 @@
 /**
  * TemplateLoader
- * @class
  * @constructor
  * @param {Mustache} mustache
  */

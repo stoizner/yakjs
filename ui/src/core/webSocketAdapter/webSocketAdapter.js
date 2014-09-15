@@ -1,6 +1,5 @@
 /**
  * WebSocketAdapter
- * @class
  * @constructor
  * @param {cobu.EventBus} eventBus
  */

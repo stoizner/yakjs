@@ -31,5 +31,6 @@ var _ = require('underscore');
         log.info('........................................');
         log.info('. YAKjs server initialized and running .');
         log.info('........................................');
+        log.info('')
     });
 }());

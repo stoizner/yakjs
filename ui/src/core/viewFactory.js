@@ -1,6 +1,5 @@
 /**
  * ViewContext
- * @class
  * @constructor
  * @param {yak.ui.ViewContext} viewContext
  * @param {yak.ui.ViewModelContext} viewModelContext

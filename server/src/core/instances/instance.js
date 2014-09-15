@@ -1,8 +1,8 @@
 /**
- * ServerInstance
+ * Instance
  * @interface
  */
-yak.ServerInstance = function ServerInstance() {
+yak.Instance = function Instance() {
     /**
      * The unique instance name.
      * @type {null}

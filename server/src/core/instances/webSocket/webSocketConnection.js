@@ -1,6 +1,5 @@
 /**
  * WebSocketConnection
- * @class
  * @constructor
  * @param {WebSocket} [socket]
  */

@@ -1,6 +1,5 @@
 /**
  * ViewModelContext
- * @class
  * @constructor
  */
 yak.ui.ViewModelContext = function ViewModelContext() {

@@ -1,6 +1,5 @@
 /**
  * PluginCodeChecker
- * @class
  * @constructor
  */
 yak.PluginCodeChecker = function PluginCodeChecker() {

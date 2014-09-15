@@ -1,6 +1,5 @@
 /**
  * WebSocketMessage
- * @class
  * @constructor
  * @param {string} data
  */

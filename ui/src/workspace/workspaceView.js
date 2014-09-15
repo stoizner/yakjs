@@ -1,6 +1,5 @@
 /**
  * WorkspaceView
- * @class
  * @constructor
  * @param {yak.ui.ViewContext} context
  * @param {jQuery} parent

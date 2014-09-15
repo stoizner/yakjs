@@ -1,6 +1,5 @@
 /**
  * ViewContext
- * @class
  * @constructor
  */
 yak.ui.ViewContext = function ViewContext() {

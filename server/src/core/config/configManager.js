@@ -65,7 +65,9 @@ yak.ConfigManager = function ConfigManager() {
         if (fs.existsSync(BASE_CONFIG_FILENAME)) {
             try {
                 var data = fs.readFileSync(BASE_CONFIG_FILENAME, 'utf8');
-                self.config = JSON.parse(data);
+                var parsedConfig = JSON.parse(data);
+
+                self.config = _.extend(new yak.Config(), parsedConfig);
             } catch(e) {
                 // Ignore error
                 log.info('YAKjs config could not be loaded. Using default config.', { error: e.message });

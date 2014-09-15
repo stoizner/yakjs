@@ -1,6 +1,5 @@
 /**
  * HeaderView
- * @class
  * @constructor
  * @param {$} parent
  * @param {yak.ui.ViewContext} context

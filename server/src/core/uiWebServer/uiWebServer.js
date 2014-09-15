@@ -26,13 +26,15 @@ yak.UiWebServer = function UiWebServer(config) {
      * Start listening.
      */
     this.start = function start() {
-        log.info('Starting web server for YAKjs UI.', {httpPort: config.httpPort});
+        try {
+            app.set('port', config.httpPort);
+            app.use(express.static(path.join('./ui/')));
 
-        app.set('port', config.httpPort);
-        app.use(express.static(path.join('./ui/')));
-
-        http.createServer(app).listen(app.get('port'), function listen(){
-            log.info('Express server listening on port ' + app.get('port'));
-        });
+            http.createServer(app).listen(app.get('port'), function listen(){
+                log.info('Web server for YAKjs UI running.', {httpPort: config.httpPort});
+            });
+        } catch(ex) {
+            log.warn('Could not start Web server for YAKjs UI.', {httpPort: config.httpPort});
+        }
     };
 };

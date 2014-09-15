@@ -1,6 +1,5 @@
 /**
  * NotificationViewModel
- * @class
  * @constructor
  * @param {yak.ui.ViewModelContext} context
  */
