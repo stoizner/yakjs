@@ -30,6 +30,14 @@ yak.UiWebServer = function UiWebServer(config) {
             app.set('port', config.httpPort);
             app.use(express.static(path.join('./ui/')));
 
+            app.get('/scripts/yakjs-ui-config.js', function handleConfigRequest(req, res) {
+                var uiConfig = {
+                    webSocketUri: ['ws://', req.hostname, ':', config.servicePort].join('')
+                };
+
+                res.send(['var yak = yak || {}; yak.config = ', JSON.stringify(uiConfig), ';\n'].join(''));
+            });
+
             http.createServer(app).listen(app.get('port'), function listen(){
                 log.info('Web server for YAKjs UI running.', {httpPort: config.httpPort});
             });

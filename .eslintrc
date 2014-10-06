@@ -5,7 +5,8 @@
     },
     "globals": {
         "yak": true,
-        "_": true
+        "_": true,
+        "$": true
     },
     "rules": {
         "eqeqeq": 0,

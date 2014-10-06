@@ -1,3 +1,0 @@
-<component name="DependencyValidationManager">
-  <scope name="yakjs" pattern="file:yakjs-api//*||file:yakjs-package//*||file:yakjs-server//*||file:yakjs-ui//*" />
-</component>

@@ -1,9 +1,7 @@
 /*global ko:false, cobu:false, Mustache:false */
 
-$(document).ready(function() {
+$(document).ready(function bootstrap() {
     'use strict';
-
-    console.log('ready');
 
     var eventBus = new cobu.EventBus();
     eventBus.diagnostics().onError(handleEventBusError);
@@ -23,9 +21,31 @@ $(document).ready(function() {
 
     viewFactory.create($('.workspace'), yak.ui.WorkspaceView, yak.ui.WorkspaceViewModel);
 
+    connectToYakJsServer(eventBus);
+
     //var workspaceView = new yak.ui.WorkspaceView($(document), viewContext);
 });
 
+/**
+ * Connect to the YakJs server
+ * @param {cobu.EventBus} eventBus
+ */
+function connectToYakJsServer(eventBus) {
+    'use strict';
+
+    eventBus.post(new yak.ui.WebSocketConnectCommand(yak.config.webSocketUri));
+
+    eventBus.on(yak.ui.WebSocketOpenEvent).register(function handleOpenEvent() {
+        console.log('on yak.ui.WebSocketOpenEvent');
+        eventBus.post(new yak.ui.UpdateNotificationCommand(null));
+    });
+
+    eventBus.on(yak.ui.WebSocketCloseEvent).register(function handleCloseEvent() {
+        console.log('on yak.ui.WebSocketCloseEvent');
+        self.isWebSocketConnected = false;
+        eventBus.post(new yak.ui.UpdateNotificationCommand('Can not connect to yakjs-server or connection closed. Is YakJs running?'));
+    });
+}
 
 //noinspection JSHint
 /**

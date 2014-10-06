@@ -26,16 +26,16 @@ yak.ui.WebSocketAdapter = function WebSocketAdapter(eventBus) {
 
     /**
      * Connect to web socket server.
-     * @param wsUri
+     * @param {string} uri The websocket URI.
      */
-    this.connect = function connect(wsUri) {
+    this.connect = function connect(uri) {
         try {
 
             if (websocket) {
                 websocket.close();
             }
 
-            websocket = new WebSocket(wsUri);
+            websocket = new WebSocket(uri);
             websocket.onopen = handleOpen;
             websocket.onclose = handleClose;
             websocket.onmessage = handleMessage;
@@ -77,8 +77,7 @@ yak.ui.WebSocketAdapter = function WebSocketAdapter(eventBus) {
     }
 
     /**
-     *
-     * @param event
+     * @param {?} event
      */
     function handleOpen(event) {
         console.log('CONNECTED');
@@ -91,8 +90,7 @@ yak.ui.WebSocketAdapter = function WebSocketAdapter(eventBus) {
     }
 
     /**
-     *
-     * @param event
+     * @param {?} event
      */
     function handleClose(event) {
         console.log('DISCONNECTED');
@@ -105,8 +103,7 @@ yak.ui.WebSocketAdapter = function WebSocketAdapter(eventBus) {
     }
 
     /**
-     *
-     * @param event
+     * @param {?} event
      */
     function handleMessage(event) {
 
@@ -124,7 +121,7 @@ yak.ui.WebSocketAdapter = function WebSocketAdapter(eventBus) {
     }
 
     /**
-     * @param event
+     * @param {?} event
      */
     function handleError(event) {
 

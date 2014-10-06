@@ -19,47 +19,10 @@ yak.ui.HeaderView = function HeaderView(parent, context, viewModel) {
     var template = context.template.load('header');
 
     /**
-     * Connection State CSS class
-     */
-    this.classConnectionState = context.ko.observable();
-
-    /**
-     * WebSocket uri input
-     */
-    this.webSocketUri = context.ko.observable();
-
-    /**
      * Constructor
      */
     function constructor() {
         parent.html(template.build({ version: yak.ui.version}));
-
-        $('#webSocketConnect').click(handleConnectClick);
-
-        viewModel.onWebSocketConnectedChanged = updateConnectionState;
-
-        self.webSocketUri(viewModel.webSocketUri);
-
-        context.ko.applyBindings(self, parent[0]);
-    }
-
-    /**
-     * Update Connection State
-     */
-    function updateConnectionState() {
-        console.log('updateConnectionState ' + viewModel.isWebSocketConnected);
-        if (viewModel.isWebSocketConnected) {
-            self.classConnectionState('state-connected');
-        } else {
-            self.classConnectionState('state-error');
-        }
-    }
-
-    /**
-     * Handle connect button click.
-     */
-    function handleConnectClick() {
-        viewModel.connect(self.webSocketUri());
     }
 
     constructor();
