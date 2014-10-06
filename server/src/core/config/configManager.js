@@ -48,7 +48,6 @@ yak.ConfigManager = function ConfigManager() {
         try {
             loadConfig();
             loadInstances();
-            // loadPlugins();
         } catch (ex) {
             log.error('Load configuration failed unexpected.', { error: ex.message });
         }
@@ -74,8 +73,10 @@ yak.ConfigManager = function ConfigManager() {
                 self.config = new yak.Config();
             }
         } else {
-            log.info('YAKjs config does not exist. Using default config.');
+            log.info('YAKjs config does not exist. Create and use default config.');
             self.config = new yak.Config();
+
+            fs.writeFile(BASE_CONFIG_FILENAME, JSON.stringify(self.config, null, 4));
         }
     }
 
@@ -113,21 +114,12 @@ yak.ConfigManager = function ConfigManager() {
      * Save configuration.
      */
     this.save = function save() {
-
-        log.info('Save server configuration to file.');
-        var serverConfig = new yak.ServerConfig();
-        serverConfig.servicePort = self.config.servicePort;
-        fs.writeFile(BASE_CONFIG_FILENAME, JSON.stringify(serverConfig));
+        log.info('Save Config to file.');
 
         log.info('Save instance configuration to file.');
         var instanceConfig = new yak.InstanceConfig();
         instanceConfig.instances = self.instances;
         fs.writeFile(INSTANCE_CONFIG_FILENAME, JSON.stringify(instanceConfig));
-
-//        log.info('Save plugin configuration to file.');
-//        var pluginConfig = new yak.PluginConfig();
-//        pluginConfig.plugins = self.config.plugins;
-//        fs.writeFile(PLUGINS_DIR, JSON.stringify(pluginConfig));
     };
 
     /**

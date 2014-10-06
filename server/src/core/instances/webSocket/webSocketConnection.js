@@ -10,26 +10,20 @@ yak.WebSocketConnection = function WebSocketConnection(socket) {
     var self = this;
 
     /**
-    * @type {yak.Logger}
-    */
+     * @type {yak.Logger}
+     */
     var log = new yak.Logger(self.constructor.name);
 
     /**
-    * Unique Id of the web socket connection.
-    * @type {string}
-    */
-    this.id = null;
+     * Unique Id of the web socket connection.
+     * @type {string}
+     */
+    this.id = yak.guid();
 
     /**
-    * @type {WebSocket|null}
-    */
+     * @type {WebSocket|null}
+     */
     this.socket = socket || null;
-
-    /** Constructor */
-    function constructor() {
-        //noinspection JSHint
-        self.id = yak.guid();
-    }
 
     /**
      * Send data on connection.
@@ -51,6 +45,4 @@ yak.WebSocketConnection = function WebSocketConnection(socket) {
     function sendAsJson(obj) {
         self.socket.send(JSON.stringify(obj));
     }
-
-    constructor();
 };
