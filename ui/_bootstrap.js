@@ -43,7 +43,7 @@ function connectToYakJsServer(eventBus) {
     eventBus.on(yak.ui.WebSocketCloseEvent).register(function handleCloseEvent() {
         console.log('on yak.ui.WebSocketCloseEvent');
         self.isWebSocketConnected = false;
-        eventBus.post(new yak.ui.UpdateNotificationCommand('Can not connect to yakjs-server or connection closed. Is YakJs running?'));
+        eventBus.post(new yak.ui.UpdateNotificationCommand('Can not connect to yakjs-server or connection closed. Is YAKjs running?'));
     });
 }
 
