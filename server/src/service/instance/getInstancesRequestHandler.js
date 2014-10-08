@@ -5,6 +5,8 @@
  * @implements {yak.ServiceMessageHandler}
  */
 yak.GetInstancesRequestHandler = function GetInstancesRequestHandler(yakServer) {
+    'use strict';
+
     /**
      * @type {yak.StartInstanceRequestHandler}
      */
@@ -15,26 +17,24 @@ yak.GetInstancesRequestHandler = function GetInstancesRequestHandler(yakServer) 
     * @param {yak.WebSocketConnection} connection
     */
     this.handle = function handle(message, connection) {
-
         try {
-            var instances = yakServer.getInstances();
+            var entities = yakServer.instanceManager.getInstanceEntities();
             var response = new yak.api.GetInstancesResponse();
 
-            for(var i = 0; i < instances.length; i++) {
-                var instance = instances[i];
-
+            _.each(entities, function convert(entity) {
                 var instanceInfo = new yak.api.InstanceInfo();
-                instanceInfo.name = instance.name;
-                instanceInfo.connectionCount = instance.getConnections().length;
-                instanceInfo.pluginTotalCount = instance.plugins.length;
-                instanceInfo.pluginActiveCount = instance.activePluginCount;
-                instanceInfo.port = instance.port;
-                instanceInfo.state = instance.state;
-                instanceInfo.plugins = instance.plugins;
-                instanceInfo.description = instance.description;
+                instanceInfo.name = entity.name;
+                instanceInfo.connectionCount = entity.getConnections().length;
+                instanceInfo.pluginTotalCount = entity.plugins.length;
+                instanceInfo.pluginActiveCount = entity.activePluginCount;
+                instanceInfo.port = entity.port;
+                instanceInfo.state = entity.state;
+                instanceInfo.plugins = entity.plugins;
+                instanceInfo.description = entity.description;
 
                 response.instances.push(instanceInfo);
-            }
+            });
+
             connection.send(response);
         } catch (ex) {
             yakServer.serviceInstance.log.error(ex.message);

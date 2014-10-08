@@ -1,23 +1,13 @@
 /**
- * Instance
- * @interface
+ * InstanceConfigItem
+ * @constructor
  */
 yak.Instance = function Instance() {
     /**
-     * The unique instance name.
-     * @type {null}
+     * Server port
+     * @type {number} default: 8080;
      */
-    this.name = null;
-
-    /**
-     * Start instance.
-     */
-    this.start = function start() {};
-
-    /**
-     * Stop instance.
-     */
-    this.stop = function stop() {};
+    this.port = 8080;
 
     /**
      * Description
@@ -26,7 +16,19 @@ yak.Instance = function Instance() {
     this.description = '';
 
     /**
-     * @type {yak.Logger}
+     * Unique instance name.
+     * @type {string}
      */
-    this.log = new yak.Logger('');
+    this.name = '';
+
+    /**
+     * Start instance after server started.
+     * @type {boolean}
+     */
+    this.autoStartEnabled = false;
+
+    /**
+     * @type {Array.<string>}
+     */
+    this.plugins = [];
 };

@@ -5,6 +5,8 @@
  * @implements {yak.ServiceMessageHandler}
  */
 yak.StartInstanceRequestHandler = function StartInstanceRequestHandler(yakServer) {
+    'use strict';
+
     /**
      * @type {yak.StartInstanceRequestHandler}
      */
@@ -16,8 +18,7 @@ yak.StartInstanceRequestHandler = function StartInstanceRequestHandler(yakServer
      */
     this.handle = function handle(request, connection) {
         try {
-            yakServer.startInstance(request.instanceName);
-            yakServer.updateAndSaveConfig();
+            yakServer.instanceManager.start(request.instanceName);
             connection.send(new yak.api.StartInstanceResponse());
         } catch (ex) {
             yakServer.serviceInstance.log.error(ex.message);

@@ -5,6 +5,8 @@
  * @implements {yakServiceMessageHandler}
  */
 yak.CreateInstanceRequestHandler = function CreateInstanceRequestHandler(yakServer) {
+    'use strict';
+
     /**
      * @type {yak.CreateInstanceRequestHandler}
      */
@@ -15,7 +17,6 @@ yak.CreateInstanceRequestHandler = function CreateInstanceRequestHandler(yakServ
     * @param {yak.WebSocketConnection} connection
     */
     this.handle = function handle(message, connection) {
-
         try {
 
             var isNameAlreadyUsed = checkInstanceName(message.name);
@@ -26,12 +27,14 @@ yak.CreateInstanceRequestHandler = function CreateInstanceRequestHandler(yakServ
                 response.message = 'Cannot create instance: Name is already used.';
                 connection.send(response);
             } else {
-                var newInstance = new yak.WebSocketInstance(yakServer, message.name, message.port);
+                var newInstance = new yak.Instance();
+                newInstance.name = message.name;
+                newInstance.port = message.port;
                 newInstance.description = message.description;
                 newInstance.plugins = message.plugins;
 
-                yakServer.addInstance(newInstance);
-                yakServer.updateAndSaveConfig();
+                yakServer.instanceManager.addOrUpdateInstance(newInstance);
+
                 connection.send(new yak.api.CreateInstanceResponse());
             }
         } catch (ex) {
@@ -47,14 +50,13 @@ yak.CreateInstanceRequestHandler = function CreateInstanceRequestHandler(yakServ
     function checkInstanceName(name) {
 
         var isNameAlreadyUsed = false;
-        var instances = yakServer.getInstances();
+        var instances = yakServer.instanceManager.getInstances();
 
-        for(var i = 0; i < instances.length; i++) {
-            if (instances[i].name.trim() === name.trim()) {
+        _.each(instances, function checkIfNameIsAlreadyInUse(instance) {
+            if (instance.name.trim() === name.trim()) {
                 isNameAlreadyUsed = true;
-                break;
             }
-        }
+        });
 
         return isNameAlreadyUsed;
     }

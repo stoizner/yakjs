@@ -14,16 +14,20 @@ var _ = require('underscore');
     configManager.load();
     store.load();
 
-    log.info('PluginManager');
+    log.info('Setup PluginManager');
     var pluginManager = new yak.PluginManager();
     pluginManager.loadPlugins();
+
+    log.info('Setup InstanceManager');
+    var instanceManager = new yak.InstanceManager(pluginManager);
+    instanceManager.loadInstances();
 
     var webServer = new yak.UiWebServer(configManager.config);
     webServer.start();
 
     var installer = new yak.PluginModuleInstaller(pluginManager);
     installer.installRequiredModules(function installFinishedCallback(){
-        var yakServer = new yak.YakServer(configManager, pluginManager);
+        var yakServer = new yak.YakServer(configManager, pluginManager, instanceManager);
         var serviceInstance = new yak.ServiceInstance('service', configManager.config.servicePort, yakServer);
 
         yakServer.start(serviceInstance);
@@ -31,6 +35,6 @@ var _ = require('underscore');
         log.info('........................................');
         log.info('. YAKjs server initialized and running .');
         log.info('........................................');
-        log.info('')
+        log.info('');
     });
 }());

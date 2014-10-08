@@ -1,0 +1,9 @@
+{
+    "port": "9010",
+    "description": "Responses the received message.",
+    "name": "echo test server",
+    "plugins": [
+        "Echo"
+    ],
+    "autoStartEnabled": true
+}

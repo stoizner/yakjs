@@ -5,6 +5,8 @@
  * @implements {yakServiceMessageHandler}
  */
 yak.DeleteInstanceRequestHandler = function DeleteInstanceRequestHandler(yakServer) {
+    'use strict';
+
     /**
      * @type {yak.DeleteInstanceRequestHandler}
      */
@@ -16,8 +18,7 @@ yak.DeleteInstanceRequestHandler = function DeleteInstanceRequestHandler(yakServ
     */
     this.handle = function handle(message, connection) {
         try {
-            yakServer.removeInstance(message.instanceName);
-            yakServer.updateAndSaveConfig();
+            yakServer.instanceManager.removeInstance(message.instanceName);
             connection.send(new yak.api.DeleteInstanceResponse());
         } catch (ex) {
             yakServer.serviceInstance.log.error(ex.message);

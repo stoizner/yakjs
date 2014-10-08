@@ -1,10 +1,10 @@
 /* global module:false */
 
 /**
- * Gruntfile for yakjs-server
- * @param grunt
+ * Gruntfile for yakjs
+ * @param {?} grunt
  */
-module.exports = function(grunt) {
+module.exports = function grunt(grunt) {
     'use strict';
 
     var pkg = grunt.file.readJSON('package.json');
@@ -18,8 +18,8 @@ module.exports = function(grunt) {
     var uiSrcDir = uiDir + 'src/';
 
     // Distribution directories.
-    var distDir = './dist/' ;
-    var tmpDir = distDir + 'tmp/'
+    var distDir = './dist/';
+    var tmpDir = distDir + 'tmp/';
     var pkgDir = './dist/yakjs/';
     var uiPkgDir = pkgDir + 'ui/';
 
@@ -105,9 +105,14 @@ module.exports = function(grunt) {
                     {flatten:true, cwd: serverSrcDir + 'shell/', src: ['*.bat', '*.sh'], dest: pkgDir, expand: true}
                 ]
             },
-            defaultPlugins : {
+            defaultPlugins: {
                 files: [
                     { flatten:true, cwd: serverDir + 'plugins/', src: ['*.js'], dest: pkgDir + 'plugins/', expand: true}
+                ]
+            },
+            defaultInstances: {
+                files: [
+                    { flatten:true, cwd: serverDir + 'instances/', src: ['*.json'], dest: pkgDir + 'instances/', expand: true}
                 ]
             },
             ui: {
@@ -157,8 +162,9 @@ module.exports = function(grunt) {
                 dest:   uiPkgDir,
                 ext:    '.css'
             }
-        },
+        }
     });
+
     grunt.config.merge({
         mustache: {
             dist: {
@@ -186,10 +192,10 @@ module.exports = function(grunt) {
     grunt.registerTask('compile-server', ['concat:server', 'concat:api', 'uglify']);
     grunt.registerTask('compile-ui', ['concat:api', 'concat:ui', 'copy:ui', 'copy:less', 'less', 'mustache']);
 
-    grunt.registerTask('build-server', ['compile-server', 'copy:server', 'copy:defaultPlugins', 'eslint:server']);
+    grunt.registerTask('build-server', ['compile-server', 'copy:server', 'copy:defaultPlugins', 'copy:defaultInstances', 'eslint:server']);
     grunt.registerTask('build-ui', ['compile-ui', 'clean:tmp']);
 
-    grunt.registerTask('dev', ['compile', 'watch']);
+    grunt.registerTask('dev', ['build-server', 'build-ui', 'watch']);
     grunt.registerTask('compile', ['compile-server', 'compile-ui']);
     grunt.registerTask('build', ['clean', 'build-server', 'build-ui']);
 

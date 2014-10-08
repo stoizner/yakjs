@@ -1,12 +1,12 @@
 /**
  * WebSocketInstance
  * @constructor
- * @implements {yak.ServerInstance}
- * @param {yak.YakServer} yakServer
+ * @implements {yak.InstanceEntity}
+ * @param {yak.PluginManager} pluginManager
  * @param {string} [name] Unique instance name.
  * @param {number} [port]
  */
-yak.WebSocketInstance = function WebSocketInstance(yakServer, name, port) {
+yak.WebSocketInstance = function WebSocketInstance(pluginManager, name, port) {
     /**
      * @type {?}
      */
@@ -69,6 +69,12 @@ yak.WebSocketInstance = function WebSocketInstance(yakServer, name, port) {
     this.state = yak.InstanceState.STOPPED;
 
     /**
+     * If state is in error, more information about the error.
+     * @type {?string}
+     */
+    this.error = null;
+
+    /**
      * Start instance after server started.
      * @type {boolean}
      */
@@ -124,8 +130,8 @@ yak.WebSocketInstance = function WebSocketInstance(yakServer, name, port) {
                 self.state = yak.InstanceState.STOPPED;
             }
         } catch (ex) {
-            log.error('Could not stop instance: ', { error: ex.message, ex: ex, stack: ex.stack });
-            self.state = yak.Instanceyake.ERROR;
+            log.info('Could not stop instance, maybe instance is not running.', { error: ex.message, ex: ex, stack: ex.stack });
+            self.state = yak.InstanceState.STOPPED;
         }
     };
 
@@ -136,6 +142,22 @@ yak.WebSocketInstance = function WebSocketInstance(yakServer, name, port) {
         log.info('Start websocket server instance.', { port: self.port });
         server = new WebSocketServer({port: self.port});
         server.on('connection', handleConnection);
+        server.on('error', handleError);
+    }
+
+    /**
+     * @param {?} error
+     */
+    function handleError(error) {
+        if (error.code === 'EADDRINUSE') {
+            self.state = yak.InstanceState.ERROR;
+            self.error = 'Port is already in use.';
+        } else {
+            self.state = yak.InstanceState.ERROR;
+            self.error = 'net error ' + error.code;
+        }
+
+        log.info('Handle instance error', {instance: self.name, state: self.state, error: self.error});
     }
 
     /**
@@ -151,7 +173,7 @@ yak.WebSocketInstance = function WebSocketInstance(yakServer, name, port) {
             var pluginName = self.plugins[i].trim();
 
             log.info('Instantiate plugin.', { plugin: pluginName });
-            var plugin = yakServer.pluginManager.createPluginInstance(pluginName);
+            var plugin = pluginManager.createPluginInstance(pluginName);
 
             if (plugin !== null) {
 
