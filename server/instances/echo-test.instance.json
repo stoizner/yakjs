@@ -1,7 +1,8 @@
 {
+    "id": "echo-test",
     "port": "9010",
     "description": "Responses the received message.",
-    "name": "echo test server",
+    "name": "echo test service",
     "plugins": [
         "Echo"
     ],

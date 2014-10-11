@@ -3,6 +3,8 @@
  * @constructor
  */
 yak.api.CreateInstanceRequest = function CreateInstanceRequest() {
+    'use strict';
+
     /**
      * Command for the service API.
      * @type {string}
@@ -16,26 +18,13 @@ yak.api.CreateInstanceRequest = function CreateInstanceRequest() {
     this.id = yak.api.guid();
 
     /**
-     * Unique name of instance.
-     * @type {string}
+     * The original instance id.
+     * @type {?string}
      */
-    this.name = null;
+    this.instanceId = null;
 
     /**
-     * Some description.
-     * @type {string}
+     * @type {yak.api.Instance}
      */
-    this.description = null;
-
-    /**
-     *
-     * @type {number}
-     */
-    this.port = 0;
-
-    /**
-     * Name of plugins that shall be used by this instance.
-     * @type {Array.<string>}
-     */
-    this.plugins = [];
+    this.instance = null;
 };

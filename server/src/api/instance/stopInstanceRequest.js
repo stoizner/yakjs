@@ -3,10 +3,12 @@
  * @constructor
  */
 yak.api.StopInstanceRequest = function StopInstanceRequest() {
+    'use strict';
+
     /**
-    * Command for the service API.
-    * @type {string}
-    */
+     * Command for the service API.
+     * @type {string}
+     */
     this.type = 'request.stopInstance';
 
     /**
@@ -16,8 +18,8 @@ yak.api.StopInstanceRequest = function StopInstanceRequest() {
     this.id = yak.api.guid();
 
     /**
-    * Name of the instance.
-    * @type {string}
-    */
-    this.instanceName = null;
+     * ID of the instance.
+     * @type {string}
+     */
+    this.instanceId = null;
 };

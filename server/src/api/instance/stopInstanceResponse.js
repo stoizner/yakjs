@@ -3,10 +3,12 @@
  * @constructor
  */
 yak.api.StopInstanceResponse = function StopInstanceResponse() {
+    'use strict';
+
     /**
-    * Command for the service API.
-    * @type {string}
-    */
+     * Command for the service API.
+     * @type {string}
+     */
     this.type = 'response.stopInstance';
 
     /**
@@ -22,8 +24,8 @@ yak.api.StopInstanceResponse = function StopInstanceResponse() {
     this.success = true;
 
     /**
-    * Optional: Message if no success.
-    * @type {string}
-    */
+     * Optional: Message if no success.
+     * @type {string}
+     */
     this.message = '';
 };

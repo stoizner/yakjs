@@ -3,10 +3,12 @@
  * @constructor
  */
 yak.api.GetInstancesResponse = function GetInstancesResponse() {
+    'use strict';
+
     /**
-    * Command for the service API.
-    * @type {string}
-    */
+     * Command for the service API.
+     * @type {string}
+     */
     this.type = 'response.getInstances';
 
     /**
@@ -16,8 +18,8 @@ yak.api.GetInstancesResponse = function GetInstancesResponse() {
     this.requestId = null;
 
     /**
-    * List of available cloud instances as InstanceInfo array.
-    * @type {Array.<yak.api.InstanceInfo>}
-    */
+     * List of available instances as InstanceInfo.
+     * @type {Array.<yak.api.InstanceInfo>}
+     */
     this.instances = [];
 };

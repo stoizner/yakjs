@@ -1,12 +1,14 @@
 /**
- * RemoveInstanceRequest
+ * DeleteInstanceRequest
  * @constructor
  */
 yak.api.DeleteInstanceRequest = function DeleteInstanceRequest() {
+    'use strict';
+
     /**
-    * Command for the service API.
-    * @type {string}
-    */
+     * Command for the service API.
+     * @type {string}
+     */
     this.type = 'request.removeInstance';
 
     /**
@@ -16,8 +18,8 @@ yak.api.DeleteInstanceRequest = function DeleteInstanceRequest() {
     this.id = yak.api.guid();
 
     /**
-    * Name of the instance.
-    * @type {string}
-    */
-    this.instanceName = null;
+     * Name of the instance.
+     * @type {string}
+     */
+    this.instanceId = null;
 };

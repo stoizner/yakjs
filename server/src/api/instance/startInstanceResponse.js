@@ -3,6 +3,8 @@
  * @constructor
  */
 yak.api.StartInstanceResponse = function StartInstanceResponse() {
+    'use strict';
+
     /**
      * Command for the service API.
      * @type {string}

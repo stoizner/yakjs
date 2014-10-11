@@ -1,8 +1,8 @@
 /**
  * InstanceListView
  * @constructor
- * @param {yak.ui.ViewContext} context
  * @param {jQuery} parent
+ * @param {yak.ui.ViewContext} context
  * @param {yak.ui.InstanceListViewModel} viewModel
  */
 yak.ui.InstanceListView = function InstanceListView(parent, context, viewModel) {
@@ -25,7 +25,7 @@ yak.ui.InstanceListView = function InstanceListView(parent, context, viewModel) 
 
     var contextMenuActions = {};
 
-    this.handleNewInstanceClick = function() { viewModel.activateInstanceEditPanel(); };
+    this.handleNewInstanceClick = function handle() { viewModel.activateInstanceEditPanel(); };
     this.handleRefreshClick = viewModel.reloadAndRefreshList;
     this.activate = viewModel.activate;
 
@@ -58,7 +58,7 @@ yak.ui.InstanceListView = function InstanceListView(parent, context, viewModel) 
 
         viewModel.items.sort(yak.ui.nameCompare);
 
-        _.each(viewModel.items, function(item) {
+        _.each(viewModel.items, function toHTML(item) {
             html += itemTemplate.build(item);
         });
 
@@ -67,9 +67,12 @@ yak.ui.InstanceListView = function InstanceListView(parent, context, viewModel) 
         $('.list-item-open-context', itemContainer).contextMenu($('#instance-item-context'), handleMenuClicked);
     };
 
-    function handleContextEdit(name) {
+    /**
+     * @param {string} id The instance id.
+     */
+    function handleContextEdit(id) {
 
-        var contextItem = _.findWhere(viewModel.items, { name: name});
+        var contextItem = _.findWhere(viewModel.items, { id: id});
         viewModel.activateInstanceEditPanel(contextItem);
     }
 
@@ -82,12 +85,12 @@ yak.ui.InstanceListView = function InstanceListView(parent, context, viewModel) 
 
     /**
      * Handle context menu item clicked event.
-     * @param event
-     * @param context
+     * @param {yak.ui.ViewContext} context
+     * @param {jQuery.Event} event
      */
     function handleMenuClicked(context, event) {
 
-        var instanceName = context.closest('.list-item').attr('data-instance');
+        var instanceName = context.closest('.list-item').attr('data-id');
         var menuAction = $(event.target).attr('data-menu');
 
         // Registered callback functions lookup for context menu actions.

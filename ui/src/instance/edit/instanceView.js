@@ -23,6 +23,7 @@ yak.ui.InstanceView = function InstanceView(parent, context, viewModel) {
      */
     var selectPluginTemplate = context.template.load('selectPluginItem');
 
+    this.id = context.ko.observable('');
     this.name = context.ko.observable('');
     this.port = context.ko.observable('');
     this.description = context.ko.observable('');
@@ -34,10 +35,8 @@ yak.ui.InstanceView = function InstanceView(parent, context, viewModel) {
         console.log('yak.ui.InstanceView.constructor', self);
         parent.html(template.build());
 
-        //$('#instance-save', parent).click(handleSaveClick);
-
         viewModel.onInstanceInfoChanged = handleInstanceInfoChanged;
-        viewModel.onSelectPluginItemsChanged = createPluginList;
+        viewModel.onSelectPluginItemsChanged = updatePluginList;
         context.ko.applyBindings(self, parent[0]);
 
         $('.plugin-list', parent).click(handleSelectPluginClick);
@@ -45,15 +44,14 @@ yak.ui.InstanceView = function InstanceView(parent, context, viewModel) {
 
     /**
      * View is being activated.
-     * @param [data]
+     * @param {?} [data]
      */
     this.activate = function activate(data) {
         viewModel.activate(data);
     };
 
     /**
-     *
-     * @param event
+     * @param {?} event
      */
     function handleSelectPluginClick(event) {
         var plugin = $(event.target).closest('.select-plugin-item');
@@ -69,26 +67,27 @@ yak.ui.InstanceView = function InstanceView(parent, context, viewModel) {
         console.log('InstanceView.handleInstanceInfoChanged', viewModel.instanceItem);
 
         if (viewModel.instanceItem) {
+            self.id(viewModel.instanceItem.id);
             self.name(viewModel.instanceItem.name);
             self.description(viewModel.instanceItem.description);
             self.port(viewModel.instanceItem.port);
         } else {
+            self.id('');
             self.name('');
             self.description('');
             self.port('');
         }
 
-        createPluginList();
+        updatePluginList();
     }
 
     /**
-     *
+     * Update the DOM plugin list.
      */
-    function createPluginList() {
-
+    function updatePluginList() {
         var html = '';
 
-        _.each(viewModel.selectPluginItems, function(plugin) {
+        _.each(viewModel.selectPluginItems, function toHTML(plugin) {
             html += selectPluginTemplate.build(plugin);
         });
 
@@ -100,13 +99,13 @@ yak.ui.InstanceView = function InstanceView(parent, context, viewModel) {
      */
     this.handleSaveClick = function handleSaveClick() {
         var instanceItem = new yak.ui.InstanceItem();
+        instanceItem.id = self.id();
         instanceItem.name = self.name();
         instanceItem.description = self.description();
         instanceItem.port = self.port();
 
         viewModel.createOrUpdate(instanceItem);
     };
-
 
     /**
      * Handle cancel button click

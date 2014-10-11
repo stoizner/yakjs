@@ -66,7 +66,7 @@ yak.ui.InstanceViewModel = function InstanceViewModel(context) {
 
         self.selectPluginItems = [];
 
-        _.each(response.plugins, function (pluginsInfo) {
+        _.each(response.plugins, function toItem(pluginsInfo) {
             var item = new yak.ui.SelectPluginItem();
             item.name = pluginsInfo.name;
             item.description = pluginsInfo.description;
@@ -83,25 +83,27 @@ yak.ui.InstanceViewModel = function InstanceViewModel(context) {
 
     /**
      * Create or update a new websocket instance.
-     * @param {yak.ui.InstanceItem} instance
+     * @param {yak.ui.InstanceItem} instanceItem
      */
-    this.createOrUpdate = function createOrUpdate(instance) {
-        console.log('InstanceViewModel.createOrUpdate', { instance: instance });
+    this.createOrUpdate = function createOrUpdate(instanceItem) {
+        console.log('InstanceViewModel.createOrUpdate', { instanceItem: instanceItem });
+
         var request = null;
 
         if (self.instanceItem === null) {
             request = new yak.api.CreateInstanceRequest();
-            $.extend(request, instance);
+            request.instanceId = self.instanceItem.id;
+            request.instance = _.extend(new yak.api.Instance(), instanceItem);
         } else {
             request = new yak.api.UpdateInstanceRequest();
-            $.extend(request, instance);
-            request.instanceName = self.instanceItem.name;
+            request.instance = _.extend(new yak.api.Instance(), instanceItem);
+            request.instanceId = self.instanceItem.id;
         }
 
-        request.plugins = [];
+        request.instance.plugins = [];
 
-        _.each(_.where(self.selectPluginItems, { isActive: true }), function (selectPluginItem) {
-            request.plugins.push(selectPluginItem.name);
+        _.each(_.where(self.selectPluginItems, { isActive: true }), function select(selectPluginItem) {
+            request.instance.plugins.push(selectPluginItem.name);
         });
 
         context.webSocket.send(request);

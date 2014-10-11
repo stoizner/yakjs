@@ -6,6 +6,12 @@ yak.ui.InstanceItem = function InstanceItem() {
     'use strict';
 
     /**
+     * ID of the instance
+     * @type {string}
+     */
+    this.id = '';
+
+    /**
      * Name of the instance
      * @type {string}
      */

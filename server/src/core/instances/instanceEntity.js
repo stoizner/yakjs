@@ -3,8 +3,16 @@
  * @interface
  */
 yak.InstanceEntity = function InstanceEntity() {
+    'use strict';
+
     /**
-     * The unique instance name.
+     * The unique instance ID.
+     * @type {string}
+     */
+    this.id = '';
+
+    /**
+     * The instance name.
      * @type {null}
      */
     this.name = null;

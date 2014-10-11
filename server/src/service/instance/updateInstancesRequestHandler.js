@@ -19,17 +19,11 @@ yak.UpdateInstanceRequestHandler = function UpdateInstanceRequestHandler(yakServ
     this.handle = function handle(message, connection) {
         try {
             // Name has changed so remove instance with old name
-            if (message.instanceName !== message.name) {
-                yakServer.instanceManager.removeInstance(message.instanceName);
+            if (message.instanceId !== message.instance.id) {
+                yakServer.instanceManager.removeInstance(message.instanceId);
             }
 
-            var instance = new yak.Instance();
-            instance.name = message.name;
-            instance.port = message.port;
-            instance.description = message.description;
-            instance.plugins = message.plugins;
-
-            yakServer.instanceManager.addOrUpdateInstance(instance);
+            yakServer.instanceManager.addOrUpdateInstance(message.instance);
 
             connection.send(new yak.api.UpdateInstanceResponse());
 

@@ -3,10 +3,12 @@
  * @constructor
  * @implements {yak.InstanceEntity}
  * @param {yak.PluginManager} pluginManager
- * @param {string} [name] Unique instance name.
- * @param {number} [port]
+ * @param {string} id Unique instance id.
+ * @param {number} port The port number to use.
  */
-yak.WebSocketInstance = function WebSocketInstance(pluginManager, name, port) {
+yak.WebSocketInstance = function WebSocketInstance(pluginManager, id, port) {
+    'use strict';
+
     /**
      * @type {?}
      */
@@ -30,6 +32,18 @@ yak.WebSocketInstance = function WebSocketInstance(pluginManager, name, port) {
     var connections = {};
 
     /**
+     * The instance id.
+     * @type {string}
+     */
+    this.id = id || '';
+
+    /**
+     * Instance name.
+     * @type {string}
+     */
+    this.name = '';
+
+    /**
      * Server port
      * @type {number} default: 8080;
      */
@@ -42,12 +56,6 @@ yak.WebSocketInstance = function WebSocketInstance(pluginManager, name, port) {
     this.description = '';
 
     /**
-     * Unique instance name.
-     * @type {string}
-     */
-    this.name = name || '';
-
-    /**
      * @type {Array.<string>}
      */
     this.plugins = [];
@@ -55,7 +63,7 @@ yak.WebSocketInstance = function WebSocketInstance(pluginManager, name, port) {
     /**
      * @type {yak.Logger}
      */
-    var log = new yak.Logger(name);
+    var log = new yak.Logger(id);
 
     /**
      * Expose logger.
@@ -92,23 +100,17 @@ yak.WebSocketInstance = function WebSocketInstance(pluginManager, name, port) {
     var pluginInstances = [];
 
     /**
-     * Constructor
-     */
-    function constructor() {
-    }
-
-    /**
      * Start server instance
      */
     this.start = function start() {
-        log.info('Start WebSocketServer Instance', { name: self.name });
+        log.info('Start WebSocketServer Instance', { id: self.id });
         try {
             if (self.state !== yak.InstanceState.RUNNING) {
                 instantiatePlugins();
                 startServer();
                 self.state = yak.InstanceState.RUNNING;
             } else {
-                log.info('Can not start, Instance already running.', { name: self.name });
+                log.info('Can not start, Instance already running.', { id: self.id });
             }
         } catch (ex) {
             log.error('Could not start instance: ', { error: ex.message, ex: ex, stack: ex.stack });
@@ -157,7 +159,7 @@ yak.WebSocketInstance = function WebSocketInstance(pluginManager, name, port) {
             self.error = 'net error ' + error.code;
         }
 
-        log.info('Handle instance error', {instance: self.name, state: self.state, error: self.error});
+        log.info('Handle instance error.', {id: self.id, state: self.state, error: self.error});
     }
 
     /**
@@ -373,6 +375,4 @@ yak.WebSocketInstance = function WebSocketInstance(pluginManager, name, port) {
 
         });
     }
-
-    constructor();
 };

@@ -3,6 +3,14 @@
  * @constructor
  */
 yak.api.InstanceInfo = function InstanceInfo() {
+    'use strict';
+
+    /**
+     * ID of the instance
+     * @type {string}
+     */
+    this.id = null;
+
     /**
      * Name of the instance
      * @type {string}

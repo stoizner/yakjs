@@ -19,7 +19,7 @@ yak.ui.InstanceListViewModel = function InstanceListViewModel(context) {
     /**
      * @type {Function}
      */
-    this.onItemsChanged = yak.ui.noop;
+    this.onItemsChanged = _.noop;
 
     /**
      * Constructor
@@ -43,34 +43,34 @@ yak.ui.InstanceListViewModel = function InstanceListViewModel(context) {
 
     /**
      * Start instance.
-     * @param {string} name
+     * @param {string} id
      */
-    this.startInstance = function startInstance(name) {
-        context.webSocket.send(new yak.api.StartInstanceRequest(), { instanceName: name });
+    this.startInstance = function startInstance(id) {
+        context.webSocket.send(new yak.api.StartInstanceRequest(), { instanceId: id });
     };
 
     /**
      * Stop instance.
-     * @param {string} name
+     * @param {string} id
      */
-    this.stopInstance = function stopInstance(name) {
-        context.webSocket.send(new yak.api.StopInstanceRequest(), { instanceName: name });
+    this.stopInstance = function stopInstance(id) {
+        context.webSocket.send(new yak.api.StopInstanceRequest(), { instanceId: id });
     };
 
     /**
      * Restart instance.
-     * @param {string} name
+     * @param {string} id
      */
-    this.restartInstance = function stopInstance(name) {
-        context.webSocket.send(new yak.api.RestartInstanceRequest(), { instanceName: name });
+    this.restartInstance = function restartInstance(id) {
+        context.webSocket.send(new yak.api.RestartInstanceRequest(), { instanceId: id });
     };
 
     /**
      * Delete instance.
-     * @param {string} name
+     * @param {string} id
      */
-    this.deleteInstance = function stopInstance(name) {
-        context.webSocket.send(new yak.api.DeleteInstanceRequest(), { instanceName: name });
+    this.deleteInstance = function deleteInstance(id) {
+        context.webSocket.send(new yak.api.DeleteInstanceRequest(), { instanceId: id });
     };
 
     /**
@@ -93,7 +93,7 @@ yak.ui.InstanceListViewModel = function InstanceListViewModel(context) {
      * @param {yak.api.GetInstancesResponse} response
      */
     function handleGetInstancesResponse(response) {
-        console.log('handleGetInstancesResponse');
+        console.log('handleGetInstancesResponse', {response:response});
 
         self.items = response.instances;
         self.onItemsChanged();

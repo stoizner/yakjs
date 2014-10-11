@@ -3,6 +3,8 @@
  * @constructor
  */
 yak.api.RestartInstanceRequest = function RestartInstanceRequest() {
+    'use strict';
+
     /**
      * Command for the service API.
      * @type {string}
@@ -19,5 +21,5 @@ yak.api.RestartInstanceRequest = function RestartInstanceRequest() {
      * Name of the instance.
      * @type {string}
      */
-    this.instanceName = null;
+    this.instanceId = null;
 };

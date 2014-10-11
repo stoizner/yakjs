@@ -3,10 +3,12 @@
  * @constructor
  */
 yak.api.StartInstanceRequest = function StartInstanceRequest() {
+    'use strict';
+
     /**
-    * Command for the service API.
-    * @type {string}
-    */
+     * Command for the service API.
+     * @type {string}
+     */
     this.type = 'request.startInstance';
 
     /**
@@ -19,5 +21,5 @@ yak.api.StartInstanceRequest = function StartInstanceRequest() {
     * Name of the instance.
     * @type {string}
     */
-    this.instanceName = null;
+    this.instanceId = null;
 };

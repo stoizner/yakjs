@@ -17,7 +17,7 @@ yak.InstanceManager = function InstanceManager(pluginManager) {
     /**
      * @type {string}
      */
-    var PLUGIN_FILENAME_POSTFIX = '.json';
+    var PLUGIN_FILENAME_POSTFIX = '.instance.json';
 
     /**
      * Filesystem
@@ -61,6 +61,7 @@ yak.InstanceManager = function InstanceManager(pluginManager) {
         _.each(fileContent, function parse(content, filename) {
             try {
                 var instance = JSON.parse(content);
+                instance.id = filename.replace(PLUGIN_FILENAME_POSTFIX, '');
 
                 if (instance) {
                     self.addOrUpdateInstance(instance);
@@ -146,8 +147,8 @@ yak.InstanceManager = function InstanceManager(pluginManager) {
      * @param {yak.Instance} instance
      */
     this.addOrUpdateInstance = function addOrUpdateInstance(instance) {
-        log.debug('addOrUpdateInstance', {name: instance.name});
-        if (instance.name && _.has(instances, instance.name)) {
+        log.debug('addOrUpdateInstance', {id: instance.id});
+        if (instance.id && instances[instance.id]) {
             self.updateInstance(instance);
         } else {
             self.addInstance(instance);
@@ -158,8 +159,8 @@ yak.InstanceManager = function InstanceManager(pluginManager) {
      * @param {yak.Instance} instance
      */
     this.addInstance = function addInstance(instance) {
-        log.debug('addInstance', {name: instance.name});
-        instances[instance.name] = instance;
+        log.debug('addInstance', {id: instance.id});
+        instances[instance.id] = instance;
 
         self.saveInstance(instance);
         updateEntity(instance);
@@ -169,8 +170,8 @@ yak.InstanceManager = function InstanceManager(pluginManager) {
      * @param {yak.Instance} instance
      */
     this.updateInstance = function updateInstance(instance) {
-        log.debug('updateInstance', {name: instance.name});
-        var existingInstance = instances[instance.name];
+        log.debug('updateInstance', {id: instance.id});
+        var existingInstance = instances[instance.id];
          _.extend(existingInstance, instance);
 
         self.saveInstance(existingInstance);
@@ -182,26 +183,26 @@ yak.InstanceManager = function InstanceManager(pluginManager) {
      * @param {yak.Instance} instance
      */
     function updateEntity(instance) {
-        if (instanceEntities[instance.name]) {
-            instanceEntities[instance.name].stop();
+        if (instanceEntities[instance.id]) {
+            instanceEntities[instance.id].stop();
         }
 
-        instanceEntities[instance.name] = self.createInstanceEntity(instance);
+        instanceEntities[instance.id] = self.createInstanceEntity(instance);
 
         if (instance.autoStartEnabled) {
-            instanceEntities[instance.name].start();
+            instanceEntities[instance.id].start();
         }
     }
 
     /**
-     * @param {string} name The name of the instance.
+     * @param {string} id The ID of the instance.
      */
-    this.removeInstance = function removeInstance(name) {
-        log.debug('Remove instance', {instance: name});
-        if (instances.hasOwnProperty(name)) {
-            delete instances[name];
+    this.removeInstance = function removeInstance(id) {
+        log.debug('Remove instance', {id: id});
+        if (instances.hasOwnProperty(id)) {
+            delete instances[id];
 
-            var filename = toFilename(name);
+            var filename = toFilename(id);
         }
 
         try {
@@ -210,9 +211,9 @@ yak.InstanceManager = function InstanceManager(pluginManager) {
             log.warn('Could not remove file ' + filename, {error: ex.message});
         }
 
-        if (instanceEntities[name]) {
-            instanceEntities[name].stop();
-            delete instanceEntities[name];
+        if (instanceEntities[id]) {
+            instanceEntities[id].stop();
+            delete instanceEntities[id];
         }
     };
 
@@ -222,17 +223,18 @@ yak.InstanceManager = function InstanceManager(pluginManager) {
      * @returns {*} The instance entity.
      */
     this.createInstanceEntity = function createInstanceEntity(instance) {
-        log.info('Create instance entity.', {name: instance.name});
+        log.info('Create instance entity.', {id: instance.id});
         var entity = null;
 
         try {
-            entity = new yak.WebSocketInstance(pluginManager, instance.name, instance.port);
+            entity = new yak.WebSocketInstance(pluginManager, instance.id, instance.port);
+            entity.name = instance.name;
             entity.description = instance.description;
             entity.plugins = instance.plugins;
             entity.autoStartEnabled = instance.autoStartEnabled;
         } catch(ex) {
             entity = null;
-            log.error('Can not create instance entity', { name: name, error: ex.message });
+            log.error('Can not create instance entity', { id: instance.id, error: ex.message });
             log.debug('Error Stack', { stack: ex.stack });
         }
 
@@ -254,49 +256,49 @@ yak.InstanceManager = function InstanceManager(pluginManager) {
      * @param {yak.Instance} instance
      */
     this.saveInstance = function saveInstance(instance) {
-        log.debug('Save instance', {instance: instance.name});
-        var filename = toFilename(instance.name);
+        log.debug('Save instance', {id: instance.id});
+        var filename = toFilename(instance.id);
 
         try {
             fs.writeFileSync(filename, JSON.stringify(instance, null, 4), {encoding: 'utf8'});
         } catch(ex) {
-            log.error('Could not save instance to file system.', {instance: instance.name, filename: filename, error: ex.message});
+            log.error('Could not save instance to file system.', {instance: instance.id, filename: filename, error: ex.message});
         }
     };
 
     /**
      * Start an instance entity.
-     * @param {string} name The name of the instance.
+     * @param {string} id The id of the instance.
      * @throws {Error} Instance entity not found.
      */
-    this.start = function start(name) {
-        log.info('Start instance', { instance: name });
-        if (instanceEntities[name]) {
-            instanceEntities[name].start();
+    this.start = function start(id) {
+        log.info('Start instance', { instance: id });
+        if (instanceEntities[id]) {
+            instanceEntities[id].start();
 
-            var instance = self.getInstance(name);
+            var instance = self.getInstance(id);
             instance.autoStartEnabled = true;
             self.saveInstance(instance);
         }  else {
-            throw new Error('Instance entity not found.', { instance: name });
+            throw new Error('Instance entity not found.', { instance: id });
         }
     };
 
     /**
      * Stop an instance entity.
-     * @param {string} name The name of the instance.
+     * @param {string} id The ID of the instance.
      * @throws {Error} Instance entity not found.
      */
-    this.stop = function stop(name) {
-        log.info('Stop instance', { instance: name });
-        if (instanceEntities[name]) {
-            instanceEntities[name].stop();
+    this.stop = function stop(id) {
+        log.info('Stop instance', { instance: id });
+        if (instanceEntities[id]) {
+            instanceEntities[id].stop();
 
-            var instance = self.getInstance(name);
+            var instance = self.getInstance(id);
             instance.autoStartEnabled = false;
             self.saveInstance(instance);
         }  else {
-            throw new Error('Instance entity not found.', { instance: name });
+            throw new Error('Instance entity not found.', { instance: id });
         }
     };
 
@@ -312,7 +314,7 @@ yak.InstanceManager = function InstanceManager(pluginManager) {
             function createEntityFromInstance(instance) {
                 var entity = self.createInstanceEntity(instance);
                 if (entity) {
-                    instanceEntities[instance.name] = entity;
+                    instanceEntities[instance.id] = entity;
                 }
             }
         );
@@ -320,10 +322,10 @@ yak.InstanceManager = function InstanceManager(pluginManager) {
 
     /**
      * Get the full filename + path out of the instance name.
-     * @param {string} instanceName
+     * @param {string} instanceId
      * @returns {string} The filename to the instance config file.
      */
-    function toFilename(instanceName) {
-        return INSTANCES_DIR + instanceName + PLUGIN_FILENAME_POSTFIX;
+    function toFilename(instanceId) {
+        return INSTANCES_DIR + instanceId + PLUGIN_FILENAME_POSTFIX;
     }
 };

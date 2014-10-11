@@ -27,11 +27,7 @@ yak.CreateInstanceRequestHandler = function CreateInstanceRequestHandler(yakServ
                 response.message = 'Cannot create instance: Name is already used.';
                 connection.send(response);
             } else {
-                var newInstance = new yak.Instance();
-                newInstance.name = message.name;
-                newInstance.port = message.port;
-                newInstance.description = message.description;
-                newInstance.plugins = message.plugins;
+                var newInstance = _.clone(message.instance);
 
                 yakServer.instanceManager.addOrUpdateInstance(newInstance);
 
