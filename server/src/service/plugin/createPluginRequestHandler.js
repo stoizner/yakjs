@@ -35,7 +35,19 @@ yak.CreatePluginRequestHandler = function CreatePluginRequestHandler(yakjs) {
                     var codeCheck = pluginCodeChecker.checkCode(message.code);
 
                     if (codeCheck.isValid) {
-                        var newPlugin = yakjs.pluginManager.parsePluginContent(pluginId, message.code);
+                        var newPlugin = null;
+
+                        if (yakjs.pluginManager.hasJsDoc( message.code)) {
+                            newPlugin = yakjs.pluginManager.parsePluginContent(pluginId, message.code);
+                        } else {
+                            newPlugin = new yak.Plugin();
+                            newPlugin.id = pluginId;
+                            newPlugin.name = pluginId;
+                            newPlugin.version = message.version;
+                            newPlugin.description = message.description;
+                            newPlugin.code = message.code;
+                        }
+
                         yakjs.pluginManager.addPlugin(newPlugin);
                         yakjs.pluginManager.savePlugin(newPlugin);
 

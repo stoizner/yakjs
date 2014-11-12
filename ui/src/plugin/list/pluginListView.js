@@ -25,14 +25,9 @@ yak.ui.PluginListView = function PluginListView(parent, context, viewModel) {
 
     var contextMenuActions = {};
 
-    /**
-     * @type {jQuery}
-     */
-    var fileDropZone = null;
-
-    this.handleNewPluginClick = function() { viewModel.activatePluginEditPanel(); };
-    this.handleRefreshClick = function() { viewModel.reloadAndRefreshList(); };
-    this.activate = function() { viewModel.activate(); };
+    this.handleNewPluginClick = function handleNewPluginClick() { viewModel.activatePluginEditPanel(); };
+    this.handleRefreshClick = function handleRefreshClick() { viewModel.reloadAndRefreshList(); };
+    this.activate = function activate() { viewModel.activate(); };
 
     /**
      * Constructor
@@ -41,77 +36,13 @@ yak.ui.PluginListView = function PluginListView(parent, context, viewModel) {
         console.log('yak.ui.PluginListView.constructor');
         parent.html(template.build());
 
-        fileDropZone = $('.drop-file');
-
         contextMenuActions.edit = handleContextMenuEdit;
         contextMenuActions.delete = viewModel.deletePlugin;
-        contextMenuActions.saveAsJavaScriptFile = handleSaveAsJavaScriptFile;
 
-        viewModel.onItemsChanged = function() { self.createList(); };
+        viewModel.onItemsChanged = function onItemsChanged() { self.createList(); };
 
         context.ko.applyBindings(self, parent[0]);
         self.createList();
-
-        fileDropZone.bind('drop', handleJsFileDrop);
-        fileDropZone.bind('dragover', handleJsFileDragOver);
-        fileDropZone.bind('dragleave', handleJsFileDragLeave);
-    }
-
-    /**
-     * @param event
-     */
-    function handleJsFileDragOver(event) {
-        event.stopPropagation();
-        event.preventDefault();
-        event.originalEvent.dataTransfer.dropEffect = 'copy';
-
-        fileDropZone.addClass('state-drag-over');
-    }
-
-    /**
-     * @param event
-     */
-    function handleJsFileDragLeave(event) {
-        fileDropZone.removeClass('state-drag-over');
-    }
-
-    /**
-     * @param event
-     */
-    function handleJsFileDrop(event) {
-        console.log('handleJsFileDrop', event);
-        fileDropZone.removeClass('state-drag-over');
-
-        event.stopPropagation();
-        event.preventDefault();
-
-        var files = event.originalEvent.target.files || event.originalEvent.dataTransfer.files;
-        console.log(files);
-
-        _.each(files, function(file) {
-
-            if (file.type.match('application/javascript')) {
-                console.log('file uploaded', file);
-                var reader = new FileReader();
-
-                // Closure to capture the file information.
-                reader.onload = (function(theFile) {
-                    return function(e) {
-                        var fileName = file.name;
-                        var content = e.target.result;
-                        var pluginName = fileName.substr(0, fileName.lastIndexOf('.js')).trim();
-                        console.log({pluginName: pluginName, fileName: fileName, content: content});
-
-                        viewModel.createOrUpdatePlugin(pluginName, content);
-                    };
-                })(file);
-
-                // Read in the image file as a data URL.
-                reader.readAsText(file);
-            } else {
-                console.warn('Drop only JavaScript files with *.js ending.');
-            }
-        });
     }
 
     /**
@@ -134,8 +65,8 @@ yak.ui.PluginListView = function PluginListView(parent, context, viewModel) {
     };
 
     /**
+     * @param {jQuery} context
      * @param event
-     * @param context
      */
     function handleMenuClicked(context, event) {
 
@@ -150,24 +81,11 @@ yak.ui.PluginListView = function PluginListView(parent, context, viewModel) {
     }
 
     /**
-     * @param pluginName
+     * @param {string} pluginName
      */
     function handleContextMenuEdit(pluginName) {
         var contextItem = _.findWhere(viewModel.items, { name: pluginName});
         viewModel.activatePluginEditPanel(contextItem);
-    }
-
-    /**
-     * @param pluginName
-     */
-    function handleSaveAsJavaScriptFile(pluginName) {
-        var contextItem = _.findWhere(viewModel.items, { name: pluginName});
-
-        var downloadLink = document.createElement('a');
-        downloadLink.href = 'data:application/json,' + encodeURIComponent(contextItem.code);
-        downloadLink.download = pluginName + '.js';
-        downloadLink.target = '_blank';
-        downloadLink.click();
     }
 
     /**

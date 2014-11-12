@@ -49,6 +49,7 @@ yak.ui.EditStoreEntryViewModel = function EditStoreEntryViewModel(context) {
             context.webSocket.send(request);
         } else {
             self.item = null;
+            self.onItemChanged();
         }
     };
 

@@ -35,6 +35,11 @@ yak.ui.PluginView = function PluginView(parent, context, viewModel) {
      */
     this.description = context.ko.observable('');
 
+    /**
+     * Form: Version of the plugin
+     */
+    this.version = context.ko.observable('');
+
     this.classStateSyntaxError = context.ko.observable('');
     this.classStateSyntaxErrorTitle = context.ko.observable('');
 
@@ -121,10 +126,12 @@ yak.ui.PluginView = function PluginView(parent, context, viewModel) {
         if (viewModel.pluginItem) {
             self.name(viewModel.pluginItem.name);
             self.description(viewModel.pluginItem.description);
+            self.version(viewModel.pluginItem.version);
             codeEditor.setValue(viewModel.pluginItem.code);
         } else {
             self.name('');
             self.description('');
+            self.version('0.0.0');
             codeEditor.setValue(yak.ui.EmptyPluginTemplate.toString());
         }
     }
@@ -137,6 +144,7 @@ yak.ui.PluginView = function PluginView(parent, context, viewModel) {
         pluginItem.name = self.name();
         pluginItem.description = self.description();
         pluginItem.code = codeEditor.getValue();
+        pluginItem.version = self.version();
 
         viewModel.createOrUpdate(pluginItem);
     };

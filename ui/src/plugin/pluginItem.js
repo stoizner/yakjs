@@ -6,20 +6,22 @@ yak.ui.PluginItem = function PluginItem() {
     'use strict';
 
     /**
-     *
-     * @type {string}
+     * @type {?string}
      */
     this.name = null;
 
     /**
-     *
-     * @type {string}
+     * @type {?string}
      */
     this.description = null;
 
     /**
-     *
-     * @type {string}
+     * @type {?string}
+     */
+    this.version = null;
+
+    /**
+     * @type {?string}
      */
     this.code = null;
 };

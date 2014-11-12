@@ -55,6 +55,9 @@ yak.ServiceWorker = function ServiceWorker(yakServer) {
         apiMap['request.getStoreValue'] = new yak.GetStoreValueRequestHandler(yakServer);
         apiMap['request.setStoreValue'] = new yak.SetStoreValueRequestHandler(yakServer);
         apiMap['request.deleteStoreItem'] = new yak.DeleteStoreItemRequestHandler(yakServer);
+
+        // File Upload
+        apiMap['request.UploadFileRequest'] = new yak.FileUploadRequestHandler(yakServer);
     }
 
     /**

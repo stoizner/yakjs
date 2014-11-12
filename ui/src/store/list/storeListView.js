@@ -25,14 +25,9 @@ yak.ui.StoreListView = function StoreListView(parent, context, viewModel) {
 
     var contextMenuActions = {};
 
-    /**
-     * @type {jQuery}
-     */
-    var fileDropZone = null;
-
-    this.handleRefreshClick = function() { viewModel.reloadAndRefreshList(); };
-    this.handleNewStoreItemClick = function() { viewModel.activateStoreEditPanel(); };
-    this.activate = function() { viewModel.activate(); };
+    this.handleRefreshClick = function handleRefreshClick() { viewModel.reloadAndRefreshList(); };
+    this.handleNewStoreItemClick = function handleNewStoreItemClick() { viewModel.activateStoreEditPanel(); };
+    this.activate = function activate() { viewModel.activate(); };
 
     /**
      * Constructor
@@ -40,8 +35,6 @@ yak.ui.StoreListView = function StoreListView(parent, context, viewModel) {
     function constructor() {
         console.log('yak.ui.StoreListView.constructor');
         parent.html(template.build());
-
-        fileDropZone = $('.drop-file');
 
         viewModel.onItemsChanged = handleItemsChanged;
 
@@ -51,14 +44,10 @@ yak.ui.StoreListView = function StoreListView(parent, context, viewModel) {
 
         context.ko.applyBindings(self, parent[0]);
         self.createList();
-
-        fileDropZone.bind('drop', handleFileDrop);
-        fileDropZone.bind('dragover', handleFileDragOver);
-        fileDropZone.bind('dragleave', handleFileDragLeave);
     }
 
     /**
-     * @param event
+     * @param {jQuery.Event} event
      */
     function handleFileDragOver(event) {
         event.stopPropagation();
@@ -69,14 +58,14 @@ yak.ui.StoreListView = function StoreListView(parent, context, viewModel) {
     }
 
     /**
-     * @param event
+     * @param {jQuery.Event} event
      */
     function handleFileDragLeave(event) {
         fileDropZone.removeClass('state-drag-over');
     }
 
     /**
-     * @param event
+     * @param {jQuery.Event} event
      */
     function handleFileDrop(event) {
         console.log('handleFileDrop', { event: event });
@@ -149,8 +138,8 @@ yak.ui.StoreListView = function StoreListView(parent, context, viewModel) {
     }
 
     /**
-     * @param event
      * @param context
+     * @param event
      */
     function handleMenuClicked(context, event) {
 

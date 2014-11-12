@@ -272,6 +272,7 @@ yak.PluginManager = function PluginManager() {
      * @param {yak.Plugin} plugin
      */
     this.addPlugin = function addPlugin(plugin) {
+        log.info('Add plugin instance', { pluginId: plugin.id });
         plugin.PluginConstructor = createPluginConstructor(plugin.code);
         plugins[plugin.id] = plugin;
     };
@@ -280,6 +281,7 @@ yak.PluginManager = function PluginManager() {
      * @param {yak.Plugin} plugin
      */
     this.updatePlugin = function updatePlugin(plugin) {
+        log.info('Update plugin instance', { pluginId: plugin.id });
         var existingPlugin = plugins[plugin.id];
 
          _.extend(existingPlugin, plugin);
@@ -290,6 +292,7 @@ yak.PluginManager = function PluginManager() {
      * @param {string} id The id of the plugin.
      */
     this.removePlugin = function removePlugin(id) {
+        log.info('Remove plugin instance', { pluginId: id });
         if (plugins.hasOwnProperty(id)) {
             delete plugins[id];
         }

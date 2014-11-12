@@ -30,7 +30,7 @@ yak.WebSocketConnection = function WebSocketConnection(socket) {
      * @param {string|object} data
      */
     this.send = function send(data) {
-        log.debug('Sending message', {type: data.type});
+        log.debug('Sending message', {type: data.type, data:data});
         if (typeof data === 'object') {
             sendAsJson(data);
         } else {

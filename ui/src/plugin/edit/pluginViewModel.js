@@ -48,7 +48,7 @@ yak.ui.PluginViewModel = function PluginViewModel(context) {
 
     /**
      * Create or update a plugin for a websocket instance.
-     * @param {yak.ui.InstanceItem} instance
+     * @param {yak.ui.PluginItem} instance
      */
     this.createOrUpdate = function createOrUpdate(instance) {
         console.log('PluginViewModel.createOrUpdate', { instance: instance });

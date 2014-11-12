@@ -8,9 +8,12 @@
             <li data-panel="panel-instance" class="state-active">Instances</li>
             <li data-panel="panel-plugin">Plugins</li>
             <li data-panel="panel-store">Store</li>
-            <li data-panel="panel-log">Logs</li>
         </ul>
     </nav>
+
+    <div class="workspace-drop" data-bind="visible: isNavigationVisible">
+        <div class="drop-panel" data-view="fileUploadView"></div>
+    </div>
 
     <!-- Panels -->
     <div class="workspace-panels">

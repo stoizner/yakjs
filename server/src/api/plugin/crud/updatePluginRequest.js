@@ -34,6 +34,12 @@ yak.api.UpdatePluginRequest = function UpdatePluginRequest() {
     this.description = null;
 
     /**
+     * The semantic version number of the plugin (optional)
+     * @type {?string}
+     */
+    this.version = null;
+
+    /**
     * The plugin code.
     * @type {string}
     */

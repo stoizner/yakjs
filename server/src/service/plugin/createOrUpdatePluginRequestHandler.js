@@ -40,6 +40,7 @@ yak.CreateOrUpdatePluginRequestHandler = function CreateOrUpdatePluginRequestHan
         updatePluginRequest.name = message.name;
         updatePluginRequest.code = message.code;
         updatePluginRequest.description = message.description;
+        updatePluginRequest.version = message.version;
 
         var updateHandler = new yak.UpdatePluginRequestHandler(yakServer);
         updateHandler.handle(updatePluginRequest, connection);
@@ -55,6 +56,7 @@ yak.CreateOrUpdatePluginRequestHandler = function CreateOrUpdatePluginRequestHan
         createPluginRequest.name = message.name;
         createPluginRequest.code = message.code;
         createPluginRequest.description = message.description;
+        createPluginRequest.version = message.version;
 
         var createHandler = new yak.CreatePluginRequestHandler(yakServer);
         createHandler.handle(createPluginRequest, connection);

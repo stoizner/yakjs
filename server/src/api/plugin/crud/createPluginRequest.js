@@ -28,6 +28,12 @@ yak.api.CreatePluginRequest = function CreatePluginRequest() {
     this.description = null;
 
     /**
+     * The semantic version number of the plugin (optional)
+     * @type {?string}
+     */
+    this.version = null;
+
+    /**
     * Plugin Code.
     * @type {string}
     */

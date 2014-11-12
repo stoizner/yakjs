@@ -37,6 +37,30 @@
     opacity:0.75;
 }
 
+.header-logo-stars-icon {
+    position: absolute;
+    top: -2px;
+    left: 15px;
+    width: 64px;
+    height: 64px;
+    -webkit-animation:spin 4s linear infinite;
+    -moz-animation:spin 4s linear infinite;
+    animation:spin 4s linear infinite;
+}
+
+@-webkit-keyframes spin {
+    from { -webkit-transform: rotate(0deg) scale(0.5); }
+    to { -webkit-transform: rotate(360deg) scale(0.5);}
+}
+@-moz-keyframes spin {
+    from { -moz-transform: rotate(0deg) scale(0.5);}
+    to { -moz-transform: rotate(360deg) scale(0.5);}
+}
+@-o-keyframes spin {
+    from { -o-transform: rotate(0deg) scale(0.5);}
+    to { -o-transform: rotate(360deg) scale(0.5);}
+}
+
 .header-text {
     position: absolute;
     top: 10px;

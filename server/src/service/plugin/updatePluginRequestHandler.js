@@ -46,6 +46,7 @@ yak.UpdatePluginRequestHandler = function UpdatePluginRequestHandler(yakServer) 
 
                     plugin.description = request.description;
                     plugin.code = request.code;
+                    plugin.version = request.version;
 
                     pluginManager.updatePlugin(plugin);
                     pluginManager.savePlugin(plugin);

@@ -25,11 +25,12 @@ yak.GetPluginsRequestHandler = function GetPluginsRequestHandler(cloudServer) {
 
                 var pluginInfo = new yak.api.PluginInfo();
 
-                // COMPATIBILITY (TODO: Add id to public API)
+                pluginInfo.id = plugin.id;
                 pluginInfo.name = plugin.id;
 
                 pluginInfo.description = plugin.description;
                 pluginInfo.code = plugin.code;
+                pluginInfo.version = plugin.version;
 
                 response.plugins.push(pluginInfo);
             }

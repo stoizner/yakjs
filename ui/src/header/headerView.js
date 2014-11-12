@@ -23,6 +23,19 @@ yak.ui.HeaderView = function HeaderView(parent, context, viewModel) {
      */
     function constructor() {
         parent.html(template.build({ version: yak.ui.version}));
+
+        viewModel.onNotificationActiveChanged = showKnockoutAnimation;
+    }
+
+    /**
+     * @param {boolean} enabled
+     */
+    function showKnockoutAnimation(enabled) {
+        if (enabled) {
+            $('.header-logo-stars-icon').show();
+        } else {
+            $('.header-logo-stars-icon').hide();
+        }
     }
 
     constructor();

@@ -12,7 +12,6 @@ yak.SetStoreValueRequestHandler = function SetStoreValueRequestHandler(yakServer
     * @param {yak.WebSocketConnection} connection
     */
     this.handle = function handle(request, connection) {
-
         try {
             var logger = yakServer.getLogger();
             logger.debug('SetStoreValueRequestHandler', { request: request });
@@ -20,7 +19,7 @@ yak.SetStoreValueRequestHandler = function SetStoreValueRequestHandler(yakServer
             var response = new yak.api.SetStoreValueResponse();
             response.requestId = request.id;
 
-            store.setValue(request.key,  request.value,  request.description);
+            store.setValue(request.key,  request.value);
 
             connection.send(response);
         } catch (ex) {

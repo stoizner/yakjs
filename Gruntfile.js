@@ -29,7 +29,7 @@ module.exports = function grunt(grunt) {
             ' * @author ' + pkg.author,
             ' * @created ' + grunt.template.today('yyyy-mm-dd'),
             ' * @license ' + pkg.license,
-        ' */\n'].join('\n');
+        ' */\n\n'].join('\n');
 
     var uiFooter = 'yak.ui.version = \'' + pkg.version + '\';\n';
 
@@ -59,8 +59,9 @@ module.exports = function grunt(grunt) {
                 separator: '\n'
             },
             server: {
-                options: {},
-                banner: '(c) ' + pkg.author,
+                options: {
+                    banner: banner,
+                },
                 src: [
                         serverDir + '_namespaces.js',
                         serverSrcDir + '**/*.js',
@@ -70,8 +71,9 @@ module.exports = function grunt(grunt) {
                 nonull: true
             },
             api: {
-                options: {},
-                banner: '(c) ' + pkg.author,
+                options: {
+                    banner: banner
+                },
                 src: [
                         serverDir + '_namespaces.js',
                         serverSrcDir + 'api/**/*.js'
@@ -80,15 +82,24 @@ module.exports = function grunt(grunt) {
                 nonull: true
             },
             ui: {
-                options: {},
-                banner: banner,
-                footer: uiFooter,
+                options: {
+                    banner: banner,
+                    footer: uiFooter
+                },
                 src: [
                         uiDir + '_namespaces.js',
                         uiSrcDir + '**/*.js',
                         uiDir + '_bootstrap.js'
                 ],
                 dest: uiPkgDir + 'scripts/' + pkg.name + '-ui.js',
+                nonull: true
+            },
+            less: {
+                options: {},
+                src: [
+                        uiSrcDir + '**/*.less'
+                ],
+                dest: tmpDir + 'less/' + pkg.name + '-style.less',
                 nonull: true
             }
         }
@@ -115,15 +126,15 @@ module.exports = function grunt(grunt) {
                     { flatten:true, cwd: serverDir + 'instances/', src: ['*.json'], dest: pkgDir + 'instances/', expand: true}
                 ]
             },
+            defaultStores: {
+                files: [
+                    { flatten:true, cwd: serverDir + 'stores/', src: ['*.*'], dest: pkgDir + 'stores/', expand: true}
+                ]
+            },
             ui: {
                 files: [
                     {expand: true, cwd: uiSrcDir, src: ['**/*.*', '!**/*.less', '!**/*.js', '!**/*.mustache'], dest: uiPkgDir, filter: 'isFile'},
                     {expand: true, cwd: uiDir, src: ['ext/**/*'], dest: uiPkgDir}
-                ]
-            },
-            less: {
-                files: [
-                    {expand: true, cwd: uiSrcDir, src: ['**/style/**.less'], dest: tmpDir + 'less/', filter: 'isFile'}
                 ]
             }
         }
@@ -146,6 +157,13 @@ module.exports = function grunt(grunt) {
                 options: {
                     spawn: false
                 }
+            },
+            client: {
+                files: [uiDir + '**/*.*'],
+                tasks: ['compile-ui'],
+                options: {
+                    spawn: false
+                }
             }
         }
     });
@@ -158,8 +176,8 @@ module.exports = function grunt(grunt) {
             src: {
                 expand: true,
                 cwd:    tmpDir + 'less/',
-                src:    '**/*.less',
-                dest:   uiPkgDir,
+                src:    pkg.name + '-style.less',
+                dest:   uiPkgDir + 'style/',
                 ext:    '.css'
             }
         }
@@ -190,9 +208,15 @@ module.exports = function grunt(grunt) {
     grunt.loadTasks(buildDir + 'grunt-tasks');
 
     grunt.registerTask('compile-server', ['concat:server', 'concat:api', 'uglify']);
-    grunt.registerTask('compile-ui', ['concat:api', 'concat:ui', 'copy:ui', 'copy:less', 'less', 'mustache']);
+    grunt.registerTask('compile-ui', ['concat:api', 'concat:ui', 'concat:less', 'copy:ui', 'less', 'mustache']);
 
-    grunt.registerTask('build-server', ['compile-server', 'copy:server', 'copy:defaultPlugins', 'copy:defaultInstances', 'eslint:server']);
+    grunt.registerTask('build-server', [
+        'compile-server',
+        'copy:server',
+        'copy:defaultPlugins',
+        'copy:defaultInstances',
+        'copy:defaultStores',
+        'eslint:server']);
     grunt.registerTask('build-ui', ['compile-ui', 'clean:tmp']);
 
     grunt.registerTask('dev', ['build-server', 'build-ui', 'watch']);

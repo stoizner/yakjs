@@ -15,11 +15,5 @@ yak.ui.StoreItem = function StoreItem() {
      *
      * @type {?string}
      */
-    this.description = null;
-
-    /**
-     *
-     * @type {?string}
-     */
     this.value = null;
 };

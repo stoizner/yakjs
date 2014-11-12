@@ -59,20 +59,35 @@ yak.InstanceManager = function InstanceManager(pluginManager) {
         var fileContent = readInstanceFiles(filenames);
 
         _.each(fileContent, function parse(content, filename) {
-            try {
-                var instance = JSON.parse(content);
-                instance.id = filename.replace(PLUGIN_FILENAME_POSTFIX, '');
-
-                if (instance) {
-                    self.addOrUpdateInstance(instance);
-                } else {
-                    log.warn('Instance is not defined.', {filename: filename});
-                }
-            } catch(ex) {
-                log.warn('Can not load instance. Maybe the instance file is not a valid json.', {filename: filename, error: ex.message});
+            var instance = self.parseInstance(filename, content);
+            if (instance) {
+                self.addOrUpdateInstance(instance);
+            } else {
+                log.warn('Instance is not defined.', {filename: filename});
             }
         });
     }
+
+    /**
+     * @param {string} filename The instance id will be generated out of the filename.
+     * @param {string} content The file json content.
+     * @returns {yak.Instance} The parsed instance.
+     */
+    this.parseInstance = function parseInstance(filename, content) {
+        /**
+         * @type {yak.Instance}
+         */
+        var instance = null;
+
+        try {
+            instance = JSON.parse(content);
+            instance.id = filename.replace(PLUGIN_FILENAME_POSTFIX, '');
+        } catch(ex) {
+            log.warn('Can not load instance. Maybe the instance file is not a valid json.', {filename: filename, error: ex.message});
+        }
+
+        return instance;
+    };
 
     /**
      * @param {!Array.<string>} filenames

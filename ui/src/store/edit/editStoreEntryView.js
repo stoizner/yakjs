@@ -31,11 +31,6 @@ yak.ui.EditStoreEntryView = function EditStoreEntryView(parent, context, viewMod
     this.key = context.ko.observable('');
 
     /**
-     * Form: Description of the plugin
-     */
-    this.description = context.ko.observable('');
-
-    /**
      * Constructor
      */
     function constructor() {
@@ -75,11 +70,13 @@ yak.ui.EditStoreEntryView = function EditStoreEntryView(parent, context, viewMod
     function handleItemChanged() {
         if (viewModel.item) {
             self.key(viewModel.item.key);
-            self.description(viewModel.item.description);
-            codeEditor.setValue(viewModel.item.value);
+            if (viewModel.item.value) {
+                codeEditor.setValue(viewModel.item.value);
+            } else {
+                codeEditor.setValue('');
+            }
         } else {
             self.key('');
-            self.description('');
             codeEditor.setValue('');
         }
     }
@@ -90,7 +87,6 @@ yak.ui.EditStoreEntryView = function EditStoreEntryView(parent, context, viewMod
     this.handleSaveClick = function handleSaveClick() {
         var item = {
             key: self.key(),
-            description: self.description(),
             value: codeEditor.getValue()
         };
         viewModel.createOrUpdate(item);
