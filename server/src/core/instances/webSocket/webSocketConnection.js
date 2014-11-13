@@ -26,23 +26,27 @@ yak.WebSocketConnection = function WebSocketConnection(socket) {
     this.socket = socket || null;
 
     /**
-     * Send data on connection.
+     * Sends data over the WebSocket connection.
      * @param {string|object} data
      */
     this.send = function send(data) {
-        log.debug('Sending message', {type: data.type, data:data});
-        if (typeof data === 'object') {
-            sendAsJson(data);
-        } else {
-            self.socket.send(data);
-        }
+        log.debug('Sending message', {type: data.type, data: data});
+
+        var isObject = typeof data === 'object';
+        var message = isObject ? JSON.stringify(data) : data;
+
+        sendMessage(message);
     };
 
     /**
-     * Send data on connection.
-     * @param {object} obj
+     * Sends a message over the WebSocket connection.
+     * @param {string} message
      */
-    function sendAsJson(obj) {
-        self.socket.send(JSON.stringify(obj));
+    function sendMessage(message) {
+        if (self.socket.readyState === self.socket.OPEN) {
+            self.socket.send(message);
+        } else {
+            log.info('Could not send message, the WebSocket connection is no longer open.');
+        }
     }
 };
