@@ -5,6 +5,8 @@
       <excludeFolder url="file://$MODULE_DIR$/cobu-ws-cloud-api/node_modules" />
       <excludeFolder url="file://$MODULE_DIR$/cobu-ws-cloud-server/node_modules" />
       <excludeFolder url="file://$MODULE_DIR$/cobu-ws-cloud-ui/node_modules" />
+      <excludeFolder url="file://$MODULE_DIR$/dist" />
+      <excludeFolder url="file://$MODULE_DIR$/ui/ext" />
       <excludeFolder url="file://$MODULE_DIR$/yakjs-api/dist" />
       <excludeFolder url="file://$MODULE_DIR$/yakjs-package/dist" />
       <excludeFolder url="file://$MODULE_DIR$/yakjs-server/dist" />
@@ -12,6 +14,9 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="express-DefinitelyTyped" level="application" />
+    <orderEntry type="library" name="Node.js v0.10.23 Core Modules" level="application" />
+    <orderEntry type="library" name="yak-js node_modules" level="project" />
   </component>
 </module>
 

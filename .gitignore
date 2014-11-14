@@ -1,2 +1,4 @@
-/yakjs-package/release
+node_modules
 dist
+ui/bower_components
+.idea/

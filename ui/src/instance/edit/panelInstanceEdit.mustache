@@ -1,0 +1,36 @@
+<div class="panel-toolbar">
+    <ul class="panel-actions">
+        <li><button data-bind="click: handleSaveClick">Save</button></li>
+        <li><button data-bind="click: handleCancelClick">Cancel</button></li>
+    </ul>
+</div>
+
+<div class="form-line error-line">
+    <div class="line-label"></div>
+    <div class="error-line-text">{{error-text-here}}</div>
+</div>
+
+<div class="form">
+    <div class="form-line">
+        <div class="line-label">Id</div>
+        <div class="line-input"><input data-bind="value:id" type="text" /></div>
+    </div>
+    <div class="form-line">
+        <div class="line-label">Name</div>
+        <div class="line-input"><input data-bind="value:name" type="text" /></div>
+    </div>
+    <div class="form-line">
+        <div class="line-label">Port</div>
+        <div class="line-input"><input data-bind="value:port" type="text" /></div>
+    </div>
+    <div class="form-line">
+        <div class="line-label">Description</div>
+        <div class="line-input"><input data-bind="value:description" type="text" /></div>
+    </div>
+    <div class="form-line">
+        <div class="line-label">Plugins</div>
+        <div class="line-input">
+            <div class="plugin-list"></div>
+        </div>
+    </div>
+</div>
