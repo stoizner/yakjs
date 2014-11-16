@@ -1,0 +1,29 @@
+{
+  "name": "yakjs",
+  "version": "0.7.0-SNAPSHOT",
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-contrib-clean": "^0.6.0",
+    "grunt-contrib-compress": "~0.5.2",
+    "grunt-contrib-concat": "~0.3.0",
+    "grunt-contrib-copy": "~0.4.1",
+    "grunt-contrib-jshint": "~0.6.3",
+    "grunt-contrib-less": "^0.11.4",
+    "grunt-contrib-nodeunit": "~0.2.0",
+    "grunt-contrib-uglify": "~0.2.2",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-eslint": "^1.0.1"
+  },
+  "description": "YAKjs WebSocket Servers with JavaScript Plugins based on nodejs",
+  "main": "dist/server/yakjs-server.js",
+  "repository": "https://github.com/cschuller/yak-js",
+  "author": "Christian Schuller",
+  "license": "MIT",
+  "dependencies": {
+    "doctrine": "^0.5.2",
+    "express": "^4.9.0",
+    "npm": "^1.4.4",
+    "underscore": "~1.5.2",
+    "ws": "~0.4.31"
+  }
+}

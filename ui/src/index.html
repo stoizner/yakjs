@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>YAKjs</title>
+        <link rel="stylesheet" href="style/yakjs-style.css" type="text/css">
+        <link rel="stylesheet" href="ext/codemirror/codemirror-yak.css">
+        <link rel="stylesheet" href="ext/codemirror/addon/show-hint-yak.css">
+
+        <script src="ext/codemirror/codemirror.js"></script>
+        <script src="ext/codemirror/javascript.js"></script>
+        <script src="ext/codemirror/addon/show-hint.js"></script>
+        <script src="ext/codemirror/addon/javascript-hint.js"></script>
+
+        <script src="ext/jquery.js"></script>
+        <script src="ext/underscore.js"></script>
+        <script src="ext/mustache.js"></script>
+        <script src="ext/cobu-eventbus.js"></script>
+        <script src="ext/yakjs-api.js"></script>
+        <script src="ext/knockout.js"></script>
+
+        <script src="scripts/yakjs-api.js"></script>
+        <script src="scripts/yakjs-ui-config.js"></script>
+        <script src="scripts/yakjs-ui.js"></script>
+    </head>
+
+    <body>
+        <div class="banner">
+            <div class="banner-wrap">
+
+            </div>
+        </div>
+
+        <div class="header"></div>
+        <div class="workspace"></div>
+
+        {{mustache-templates-all}}
+
+    </body>
+</html>
