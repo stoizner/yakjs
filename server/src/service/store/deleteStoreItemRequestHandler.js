@@ -20,9 +20,7 @@ yak.DeleteStoreItemRequestHandler = function DeleteStoreItemRequestHandler(yakSe
             var logger = yakServer.getLogger();
             logger.debug('DeleteStoreItemRequestHandler', { request: request });
 
-            var response = new yak.api.DeleteStoreItemResponse();
-            response.requestId = request.id;
-
+            var response = new yak.api.DeleteStoreItemResponse(request.id);
             response.success = store.deleteKey(request.key);
 
             connection.send(response);

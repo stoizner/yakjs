@@ -6,19 +6,19 @@
  */
 yak.DeletePluginRequestHandler = function DeletePluginRequestHandler(yakServer) {
     /**
-     * @param {yak.api.DeletePluginRequest} message
+     * @param {yak.api.DeletePluginRequest} request
      * @param {yak.WebSocketConnection} connection
      */
-    this.handle = function handle(message, connection) {
+    this.handle = function handle(request, connection) {
         try {
-            var pluginId = message.pluginName.replace('.plugin', '');
+            var pluginId = request.pluginName.replace('.plugin', '');
             var plugin = yakServer.pluginManager.getPlugin(pluginId);
 
             if (plugin) {
                 yakServer.pluginManager.removePlugin(pluginId);
-                sendSuccessResponse(connection);
+                sendSuccessResponse(request, connection);
             } else {
-                sendPluginNotFoundResponse(message, connection);
+                sendPluginNotFoundResponse(request, connection);
             }
         } catch (ex) {
             yakServer.serviceInstance.log.error(ex.message);
@@ -27,22 +27,23 @@ yak.DeletePluginRequestHandler = function DeletePluginRequestHandler(yakServer) 
 
     /**
      * Send success response
+     * @param {yak.DeletePluginRequest} request
      * @param {yak.WebSocketConnection} connection
      */
-    function sendSuccessResponse(connection) {
-        var response = new yak.api.DeletePluginResponse();
+    function sendSuccessResponse(request, connection) {
+        var response = new yak.api.DeletePluginResponse(request.id);
         connection.send(response);
     }
 
     /**
      * Send an error response
-     * @param {yak.DeletePluginRequest} message
+     * @param {yak.DeletePluginRequest} request
      * @param {yak.WebSocketConnection} connection
      */
-    function sendPluginNotFoundResponse(message, connection) {
-        var response = new yak.api.DeletePluginResponse();
+    function sendPluginNotFoundResponse(request, connection) {
+        var response = new yak.api.DeletePluginResponse(request.id);
         response.success = false;
-        response.message = 'Can not find plugin: ' + message.pluginName;
+        response.message = 'Can not find plugin: ' + request.pluginName;
         connection.send(response);
     }
 };

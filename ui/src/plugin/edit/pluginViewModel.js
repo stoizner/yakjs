@@ -25,8 +25,6 @@ yak.ui.PluginViewModel = function PluginViewModel(context) {
      * Constructor
      */
     function constructor() {
-        context.eventBus.on(yak.api.CreatePluginResponse).register(handleResponse);
-        context.eventBus.on(yak.api.UpdatePluginResponse).register(handleResponse);
     }
 
     /**
@@ -63,7 +61,7 @@ yak.ui.PluginViewModel = function PluginViewModel(context) {
             request.pluginName = self.pluginItem.name;
         }
 
-        context.webSocket.send(request);
+        context.webSocket.sendRequest(request, handleResponse);
     };
 
     /**

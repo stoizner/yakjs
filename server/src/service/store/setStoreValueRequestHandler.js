@@ -5,6 +5,9 @@
  * @implements {yak.ServiceMessageHandler}
  */
 yak.SetStoreValueRequestHandler = function SetStoreValueRequestHandler(yakServer) {
+    /**
+     * @type {yak.Store}
+     */
     var store = yak.require('store');
 
     /**
@@ -14,9 +17,9 @@ yak.SetStoreValueRequestHandler = function SetStoreValueRequestHandler(yakServer
     this.handle = function handle(request, connection) {
         try {
             var logger = yakServer.getLogger();
-            logger.debug('SetStoreValueRequestHandler', { request: request });
+            logger.debug('SetStoreValueRequestHandler', {request: request});
 
-            var response = new yak.api.SetStoreValueResponse();
+            var response = new yak.api.SetStoreValueResponse(request.id);
             response.requestId = request.id;
 
             store.setValue(request.key,  request.value);

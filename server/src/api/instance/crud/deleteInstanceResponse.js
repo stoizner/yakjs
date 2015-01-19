@@ -2,8 +2,9 @@
  * DeleteInstanceResponse
  * @constructor
  * @implements {yak.api.Response}
+ * @param {string} requestId
  */
-yak.api.DeleteInstanceResponse = function DeleteInstanceResponse() {
+yak.api.DeleteInstanceResponse = function DeleteInstanceResponse(requestId) {
     'use strict';
 
     /**
@@ -14,9 +15,9 @@ yak.api.DeleteInstanceResponse = function DeleteInstanceResponse() {
 
     /**
      * The original request id.
-     * @type {null}
+     * @type {string}
      */
-    this.requestId = null;
+    this.requestId = requestId;
 
     /**
      * Whether the request was successfully or not.

@@ -18,6 +18,12 @@ yak.ui.WebSocketAdapter = function WebSocketAdapter(eventBus) {
     this.onerror = null;
 
     /**
+     * Response to request callback map.
+     * @type {Object<string, function(yak.api.Response)>}
+     */
+    var requestResponseCallbackMap = {};
+
+    /**
      * Constructor
      */
     function constructor() {
@@ -51,23 +57,39 @@ yak.ui.WebSocketAdapter = function WebSocketAdapter(eventBus) {
     };
 
     /**
+     * Send a request to the YAKjs server
+     * @param {yak.api.Request} request
+     * @param {Function} responseCallback Callback function for handling response message.
+     */
+    this.sendRequest = function sendRequest(request, responseCallback) {
+        if (!request.id) {
+            throw new Error('Can not send a request without an request id.');
+        }
+        requestResponseCallbackMap[request.id] = responseCallback;
+
+        send(request);
+    };
+
+    /**
+     * Deprecated send method.
+     */
+    this.send = function send() {
+        throw new Error('Not supported any more. Please use sendRequest.');
+    };
+
+    /**
      *
      * @param {string|object} message
-     * @param {object} [options] Optional options.
      */
-    this.send = function send(message, options) {
+    function send(message) {
         if (typeof message === 'object') {
-            if (options) {
-                message =  _.extend(message, _.pick(options, _.keys(message)));
-            }
-
             console.log('WebSocketAdapter.send', message);
 
             websocket.send(JSON.stringify(message));
         } else {
             websocket.send(message);
         }
-    };
+    }
 
     /**
      * @param {yak.ui.WebSocketConnectCommand} command
@@ -106,7 +128,6 @@ yak.ui.WebSocketAdapter = function WebSocketAdapter(eventBus) {
      * @param {?} event
      */
     function handleMessage(event) {
-
         var msg = null;
 
         try {
@@ -116,16 +137,33 @@ yak.ui.WebSocketAdapter = function WebSocketAdapter(eventBus) {
         }
 
         if (msg) {
-            eventBus.post(msg);
+            if (isResponse(msg)) {
+                var callback = requestResponseCallbackMap[msg.requestId];
+                delete requestResponseCallbackMap[msg.requestId];
+
+                if (callback) {
+                    callback(msg);
+                }
+            } else {
+                eventBus.post(msg);
+            }
         }
+    }
+
+    /**
+     * Check if a received websocket message is a response.
+     * @param {Object} message
+     * @returns {boolean} Whether received message is a response.
+     */
+    function isResponse(message) {
+        return message.type && message.type.indexOf('response') === 0;
     }
 
     /**
      * @param {?} event
      */
     function handleError(event) {
-
-        console.log(event);
+        console.warn('yak.ui.WebSocketAdapter.handleError', {event: event});
 
         if (self.onerror) {
             self.onerror();

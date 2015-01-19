@@ -2,8 +2,9 @@
  * DeleteStoreItemResponse
  * @constructor
  * @implements {yak.api.Response}
+ * @param {string} requestId
  */
-yak.api.DeleteStoreItemResponse = function DeleteStoreItemResponse() {
+yak.api.DeleteStoreItemResponse = function DeleteStoreItemResponse(requestId) {
     /**
      * Command for the service API.
      * @type {string}
@@ -12,9 +13,9 @@ yak.api.DeleteStoreItemResponse = function DeleteStoreItemResponse() {
 
     /**
      * The original request id.
-     * @type {null}
+     * @type {string}
      */
-    this.requestId = null;
+    this.requestId = requestId;
 
     /**
      * Was setting store value successful.

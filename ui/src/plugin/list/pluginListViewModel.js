@@ -26,8 +26,6 @@ yak.ui.PluginListViewModel = function PluginListViewModel(context) {
      */
     function constructor() {
         console.log('yak.ui.PluginListViewModel.constructor');
-        context.eventBus.on(yak.api.GetPluginsResponse).register(handleGetPluginsResponse);
-        context.eventBus.on(yak.api.DeletePluginResponse).register(handleDeletePluginResponse);
     }
 
     /**
@@ -35,7 +33,7 @@ yak.ui.PluginListViewModel = function PluginListViewModel(context) {
      */
     this.activate = function activate() {
         console.log('yak.ui.PluginListViewModel.active');
-        context.webSocket.send(new yak.api.GetPluginsRequest());
+        context.webSocket.sendRequest(new yak.api.GetPluginsRequest(), handleGetPluginsResponse);
     };
 
     /**
@@ -43,7 +41,9 @@ yak.ui.PluginListViewModel = function PluginListViewModel(context) {
      * @param {string} name
      */
     this.deletePlugin = function deletePlugin(name) {
-        context.webSocket.send(new yak.api.DeletePluginRequest(), { pluginName: name });
+        var request = new yak.api.DeletePluginRequest();
+        request.pluginName = name;
+        context.webSocket.sendRequest(request, handleDeletePluginResponse);
     };
 
     /**
@@ -59,7 +59,7 @@ yak.ui.PluginListViewModel = function PluginListViewModel(context) {
      */
     this.reloadAndRefreshList = function reloadAndRefreshList() {
         // SMELL: Make the refresh not so brutal.
-        context.webSocket.send(new yak.api.GetPluginsRequest());
+        context.webSocket.sendRequest(new yak.api.GetPluginsRequest(), handleGetPluginsResponse);
     };
 
     /**
@@ -73,7 +73,7 @@ yak.ui.PluginListViewModel = function PluginListViewModel(context) {
         request.name = name;
         request.code = code;
         request.description = '';
-        context.webSocket.send(request);
+        context.webSocket.sendRequest(request, self.reloadAndRefreshList);
     };
 
     /**
@@ -83,7 +83,7 @@ yak.ui.PluginListViewModel = function PluginListViewModel(context) {
         console.log('handleGetPluginsResponse', response);
 
         self.items = [];
-        _.each(response.plugins, function(plugin) {
+        _.each(response.plugins, function toItem(plugin) {
             var item = new yak.ui.PluginItem();
             _.extend(item, plugin);
             self.items.push(item);

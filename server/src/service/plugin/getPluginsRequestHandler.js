@@ -1,24 +1,24 @@
 /**
  * GetPluginsRequestHandler
  * @constructor
- * @param {yak.YakServer} cloudServer
+ * @param {yak.YakServer} yakServer
  * @implements {yak.ServiceMessageHandler}
  */
-yak.GetPluginsRequestHandler = function GetPluginsRequestHandler(cloudServer) {
+yak.GetPluginsRequestHandler = function GetPluginsRequestHandler(yakServer) {
     /**
      * @type {yak.GetPluginsRequestHandler}
      */
     var self = this;
 
     /**
-     * @param {yak.WebSocketMessage} message
+     * @param {yak.api.GetPluginsRequest} request
      * @param {yak.WebSocketConnection} connection
      */
-    this.handle = function handle(message, connection) {
+    this.handle = function handle(request, connection) {
         try {
-            var plugins = cloudServer.pluginManager.getPlugins();
+            var plugins = yakServer.pluginManager.getPlugins();
 
-            var response = new yak.api.GetPluginsResponse();
+            var response = new yak.api.GetPluginsResponse(request.id);
 
             for(var i = 0; i < plugins.length; i++) {
                 var plugin = plugins[i];
@@ -36,7 +36,7 @@ yak.GetPluginsRequestHandler = function GetPluginsRequestHandler(cloudServer) {
             }
             connection.send(response);
         } catch (ex) {
-            cloudServer.serviceInstance.log.error(ex.message);
+            yakServer.serviceInstance.log.error(ex.message);
         }
     };
 };

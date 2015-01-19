@@ -2,8 +2,9 @@
  * UploadFileResponse
  * @constructor
  * @implements {yak.api.Response}
+ * @param {string} requestId
  */
-yak.api.UploadFileResponse = function UploadFileResponse() {
+yak.api.UploadFileResponse = function UploadFileResponse(requestId) {
     'use strict';
 
     /**
@@ -13,9 +14,9 @@ yak.api.UploadFileResponse = function UploadFileResponse() {
 
     /**
      * The original request id.
-     * @type {null}
+     * @type {string}
      */
-    this.requestId = null;
+    this.requestId = requestId;
 
     /**
      * Whether the request was successfully or not.

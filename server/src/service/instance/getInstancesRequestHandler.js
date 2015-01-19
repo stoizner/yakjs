@@ -13,13 +13,13 @@ yak.GetInstancesRequestHandler = function GetInstancesRequestHandler(yakServer) 
     var self = this;
 
     /**
-    * @param {yak.WebSocketMessage} message
+    * @param {yak.api.GetInstancesRequest} request
     * @param {yak.WebSocketConnection} connection
     */
-    this.handle = function handle(message, connection) {
+    this.handle = function handle(request, connection) {
         try {
             var entities = yakServer.instanceManager.getInstanceEntities();
-            var response = new yak.api.GetInstancesResponse();
+            var response = new yak.api.GetInstancesResponse(request.id);
 
             _.each(entities, _.partial(addToResponseAsInstanceInfo, response));
 

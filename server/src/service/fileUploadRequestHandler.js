@@ -59,8 +59,7 @@ yak.FileUploadRequestHandler = function FileUploadRequestHandler(yakServer) {
      * @param {yak.WebSocketConnection} connection
      */
     function addOrUpdateStore(request, connection) {
-        var response = new yak.api.UploadFileResponse();
-        response.requestId = request.id;
+        var response = new yak.api.UploadFileResponse(request.id);
         response.success = true;
 
         var storeKey = request.filename.replace(STORE_EXTENSION, '');
@@ -79,8 +78,7 @@ yak.FileUploadRequestHandler = function FileUploadRequestHandler(yakServer) {
      * @param {yak.WebSocketConnection} connection
      */
     function addOrUpdateInstance(request, connection) {
-        var response = new yak.api.UploadFileResponse();
-        response.requestId = request.id;
+        var response = new yak.api.UploadFileResponse(request.id);
         response.success = false;
 
         var instance =  yakServer.instanceManager.parseInstance(request.filename, request.content);
@@ -100,8 +98,7 @@ yak.FileUploadRequestHandler = function FileUploadRequestHandler(yakServer) {
      * @param {yak.WebSocketConnection} connection
      */
     function addOrUpdatePlugin(request, connection) {
-        var response = new yak.api.UploadFileResponse();
-        response.requestId = request.id;
+        var response = new yak.api.UploadFileResponse(request.id);
         response.success = false;
 
         if (pluginManager.hasJsDoc(request.content)) {

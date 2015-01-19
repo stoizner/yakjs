@@ -2,8 +2,9 @@
  * SetStoreValueResponse
  * @constructor
  * @implements {yak.api.Response}
+ * @param {string} requestId
  */
-yak.api.SetStoreValueResponse = function SetStoreValueResponse() {
+yak.api.SetStoreValueResponse = function SetStoreValueResponse(requestId) {
     /**
      * Command for the service API.
      * @type {string}
@@ -12,9 +13,9 @@ yak.api.SetStoreValueResponse = function SetStoreValueResponse() {
 
     /**
      * The original request id.
-     * @type {null}
+     * @type {string}
      */
-    this.requestId = null;
+    this.requestId = requestId;
 
     /**
      * Was setting store value successful.

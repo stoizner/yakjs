@@ -23,6 +23,13 @@ yak.ui.FileUploadViewModel = function FileUploadViewModel(context) {
         uploadFileRequest.content = content;
         uploadFileRequest.enableInstanceRestart = true;
 
-        context.webSocket.send(uploadFileRequest);
+        context.webSocket.sendRequest(uploadFileRequest, handleUploadFileResponse);
     };
+
+    /**
+     * @param {yak.api.UploadFileResponse} response
+     */
+    function handleUploadFileResponse(response) {
+        console.log('handleUploadFileResponse', {response: response});
+    }
 };

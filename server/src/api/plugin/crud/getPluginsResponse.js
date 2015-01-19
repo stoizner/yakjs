@@ -2,8 +2,9 @@
  * GetPluginsResponse
  * @constructor
  * @implements {yak.api.Response}
+ * @param {string} requestId
  */
-yak.api.GetPluginsResponse = function GetPluginsResponse() {
+yak.api.GetPluginsResponse = function GetPluginsResponse(requestId) {
     /**
     * Command for the service API.
     * @type {string}
@@ -12,9 +13,9 @@ yak.api.GetPluginsResponse = function GetPluginsResponse() {
 
     /**
      * The original request id.
-     * @type {null}
+     * @type {string}
      */
-    this.requestId = null;
+    this.requestId = requestId;
 
     /**
     * List of available cloud Plugins as InstanceInfo array.

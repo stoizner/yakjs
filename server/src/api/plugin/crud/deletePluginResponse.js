@@ -2,8 +2,9 @@
  * RemovePluginResponse
  * @constructor
  * @implements {yak.api.Response}
+ * @param {string} requestId
  */
-yak.api.DeletePluginResponse = function DeletePluginResponse() {
+yak.api.DeletePluginResponse = function DeletePluginResponse(requestId) {
     /**
     * Command for the service API.
     * @type {string}
@@ -12,9 +13,9 @@ yak.api.DeletePluginResponse = function DeletePluginResponse() {
 
     /**
      * The original request id.
-     * @type {null}
+     * @type {string}
      */
-    this.requestId = null;
+    this.requestId = requestId;
 
     /**
     * Whether the request was successfully or not.

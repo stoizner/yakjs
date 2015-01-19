@@ -2,8 +2,9 @@
  * GetLogInfoResponse
  * @constructor
  * @implements {yak.api.Response}
+ * @param {string} requestId
  */
-yak.api.GetLogInfoResponse = function GetLogInfoResponse() {
+yak.api.GetLogInfoResponse = function GetLogInfoResponse(requestId) {
     /**
      * Command for the service API.
      * @type {string}
@@ -12,9 +13,9 @@ yak.api.GetLogInfoResponse = function GetLogInfoResponse() {
 
     /**
      * The original request id.
-     * @type {null}
+     * @type {string}
      */
-    this.requestId = null;
+    this.requestId = requestId;
 
     /**
      * List of log information.

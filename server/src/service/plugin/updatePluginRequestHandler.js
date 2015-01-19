@@ -51,10 +51,10 @@ yak.UpdatePluginRequestHandler = function UpdatePluginRequestHandler(yakServer) 
                     pluginManager.updatePlugin(plugin);
                     pluginManager.savePlugin(plugin);
 
-                    sendSuccessResponse(connection);
+                    sendSuccessResponse(request, connection);
                 } else {
                     log.warn('Can not update plugin. Code is not valid.', {id: originalPluginId, codeCheck: codeCheck});
-                    sendInvalidCodeResponse(codeCheck, connection);
+                    sendInvalidCodeResponse(request, codeCheck, connection);
                 }
             } else {
                 log.warn('Can not update plugin. Plugin not found.', {id: originalPluginId});
@@ -67,20 +67,22 @@ yak.UpdatePluginRequestHandler = function UpdatePluginRequestHandler(yakServer) 
 
     /**
      * Send success response
+     * @param {yak.api.UpdatePluginRequest} request
      * @param {yak.WebSocketConnection} connection
      */
-    function sendSuccessResponse(connection) {
-        var response = new yak.api.UpdatePluginResponse();
+    function sendSuccessResponse(request, connection) {
+        var response = new yak.api.UpdatePluginResponse(request.id);
         connection.send(response);
     }
 
     /**
      * Send an error response
+     * @param {yak.api.UpdatePluginRequest} request
      * @param {yak.RemovePluginRequest} message
      * @param {yak.WebSocketConnection} connection
      */
-    function sendPluginNotFoundResponse(message, connection) {
-        var response = new yak.api.DeletePluginResponse();
+    function sendPluginNotFoundResponse(request, message, connection) {
+        var response = new yak.api.DeletePluginResponse(request.id);
         response.success = false;
         response.message = 'Can not find plugin: ' + message.pluginName;
         connection.send(response);
@@ -88,11 +90,12 @@ yak.UpdatePluginRequestHandler = function UpdatePluginRequestHandler(yakServer) 
 
     /**
      * Send an error response
+     * @param {yak.api.UpdatePluginRequest} request
      * @param {{isValid:boolean, errors:[]}} codeCheck
      * @param {yak.WebSocketConnection} connection
      */
-    function sendInvalidCodeResponse(codeCheck, connection) {
-        var response = new yak.api.CreatePluginResponse();
+    function sendInvalidCodeResponse(request, codeCheck, connection) {
+        var response = new yak.api.CreatePluginResponse(request.id);
         response.success = false;
         response.message = 'Code is not valid: \n';
         response.message += codeCheck.errors.join('\n');

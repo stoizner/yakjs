@@ -33,9 +33,6 @@ yak.ui.InstanceViewModel = function InstanceViewModel(context) {
      * Constructor
      */
     function constructor() {
-        context.eventBus.on(yak.api.CreateInstanceResponse).register(handleResponse);
-        context.eventBus.on(yak.api.UpdateInstanceResponse).register(handleResponse);
-        context.eventBus.on(yak.api.GetPluginsResponse).register(handleGetPluginsResponse);
     }
 
     /**
@@ -54,7 +51,7 @@ yak.ui.InstanceViewModel = function InstanceViewModel(context) {
 
         self.onInstanceInfoChanged();
 
-        context.webSocket.send(new yak.api.GetPluginsRequest());
+        context.webSocket.sendRequest(new yak.api.GetPluginsRequest(), handleGetPluginsResponse);
     };
 
     /**
@@ -105,7 +102,7 @@ yak.ui.InstanceViewModel = function InstanceViewModel(context) {
             request.instance.plugins.push(selectPluginItem.name);
         });
 
-        context.webSocket.send(request);
+        context.webSocket.sendRequest(request, handleResponse);
     };
 
     /**

@@ -2,8 +2,9 @@
  * CreatePluginResponse
  * @constructor
  * @implements {yak.api.Response}
+ * @param {string} requestId
  */
-yak.api.CreatePluginResponse = function CreatePluginResponse() {
+yak.api.CreatePluginResponse = function CreatePluginResponse(requestId) {
     /**
     * Command for the service API.
     * @type {string}
@@ -12,9 +13,9 @@ yak.api.CreatePluginResponse = function CreatePluginResponse() {
 
     /**
      * The original request id.
-     * @type {null}
+     * @type {string}
      */
-    this.requestId = null;
+    this.requestId = requestId;
 
     /**
     * Whether the request was successfully or not.

@@ -2,8 +2,9 @@
  * GetStoreKeyInfoResponse
  * @constructor
  * @implements {yak.api.Response}
+ * @param {string} requestId
  */
-yak.api.GetStoreKeyInfoResponse = function GetStoreKeyInfoResponse() {
+yak.api.GetStoreKeyInfoResponse = function GetStoreKeyInfoResponse(requestId) {
     /**
      * Command for the service API.
      * @type {string}
@@ -12,9 +13,9 @@ yak.api.GetStoreKeyInfoResponse = function GetStoreKeyInfoResponse() {
 
     /**
      * The original request id.
-     * @type {null}
+     * @type {string}
      */
-    this.requestId = null;
+    this.requestId = requestId;
 
     /**
      * List of log information.

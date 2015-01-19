@@ -13,13 +13,13 @@ yak.StopInstanceRequestHandler = function StopInstanceRequestHandler(yakServer) 
     var self = this;
 
     /**
-    * @param {yak.WebSocketMessage} message
+    * @param {yak.api.StopInstanceRequest} request
     * @param {yak.WebSocketConnection} connection
     */
-    this.handle = function handle(message, connection) {
+    this.handle = function handle(request, connection) {
         try {
-            yakServer.instanceManager.stop(message.instanceId);
-            connection.send(new yak.api.StartInstanceResponse());
+            yakServer.instanceManager.stop(request.instanceId);
+            connection.send(new yak.api.StopInstanceResponse(request.id));
         } catch (ex) {
             yakServer.serviceInstance.log.error(ex.message);
         }

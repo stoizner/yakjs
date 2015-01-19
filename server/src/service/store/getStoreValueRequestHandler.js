@@ -5,6 +5,9 @@
  * @implements {yak.ServiceMessageHandler}
  */
 yak.GetStoreValueRequestHandler = function GetStoreValueRequestHandler(yakServer) {
+    /**
+     * @type {yak.Store}
+     */
     var store = yak.require('store');
 
     /**
@@ -18,8 +21,7 @@ yak.GetStoreValueRequestHandler = function GetStoreValueRequestHandler(yakServer
             var key = request.key;
 
             logger.debug('GetStoreValueRequestHandler', { key: key });
-            var response = new yak.api.GetStoreValueResponse();
-            response.requestId = request.id;
+            var response = new yak.api.GetStoreValueResponse(request.id);
 
             var storeItem = store.getStoreItem(key);
 

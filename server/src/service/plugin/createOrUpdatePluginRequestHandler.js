@@ -11,18 +11,18 @@ yak.CreateOrUpdatePluginRequestHandler = function CreateOrUpdatePluginRequestHan
     var pluginCodeChecker = new yak.PluginCodeChecker();
 
     /**
-     * @param {yak.api.CreateOrUpdatePluginRequest} message
+     * @param {yak.api.CreateOrUpdatePluginRequest} request
      * @param {yak.WebSocketConnection} connection
      */
-    this.handle = function handle(message, connection) {
+    this.handle = function handle(request, connection) {
         try {
-            var pluginId = message.name.replace('.plugin', '');
+            var pluginId = request.name.replace('.plugin', '');
             var plugin = yakServer.pluginManager.getPlugin(pluginId);
 
             if (plugin) {
-                updatePlugin(message, connection);
+                updatePlugin(request, connection);
             } else {
-                createPlugin(message, connection);
+                createPlugin(request, connection);
             }
         } catch (ex) {
             yakServer.serviceInstance.log.error(ex.message);

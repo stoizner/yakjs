@@ -2,8 +2,9 @@
  * GetInstancesResponse
  * @constructor
  * @implements {yak.api.Response}
+ * @param {string} requestId
  */
-yak.api.GetInstancesResponse = function GetInstancesResponse() {
+yak.api.GetInstancesResponse = function GetInstancesResponse(requestId) {
     'use strict';
 
     /**
@@ -14,9 +15,9 @@ yak.api.GetInstancesResponse = function GetInstancesResponse() {
 
     /**
      * The original request id.
-     * @type {null}
+     * @type {string}
      */
-    this.requestId = null;
+    this.requestId = requestId;
 
     /**
      * List of available instances as InstanceInfo.

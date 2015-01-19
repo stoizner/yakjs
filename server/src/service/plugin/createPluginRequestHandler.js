@@ -16,45 +16,45 @@ yak.CreatePluginRequestHandler = function CreatePluginRequestHandler(yakjs) {
     var log = new yak.Logger(this.constructor.name);
 
     /**
-     * @param {yak.api.CreatePluginRequest} message
+     * @param {yak.api.CreatePluginRequest} request
      * @param {yak.WebSocketConnection} connection
      */
-    this.handle = function handle(message, connection) {
+    this.handle = function handle(request, connection) {
         try {
-            if (message.name === null || message.name === '') {
-                log.warn('Invalid plugin name', {name: message.name});
-                sendInvalidNameResponse(message, connection);
+            if (request.name === null || request.name === '') {
+                log.warn('Invalid plugin name', {name: request.name});
+                sendInvalidNameResponse(request, connection);
             } else {
-                var pluginId = message.name.replace('.plugin', '');
+                var pluginId = request.name.replace('.plugin', '');
                 var plugin = yakjs.pluginManager.getPlugin(pluginId);
 
                 if (plugin) {
                     log.warn('Plugin already exists.', {id: pluginId});
-                    sendPluginAlreadyExistsResponse(message, connection);
+                    sendPluginAlreadyExistsResponse(request, connection);
                 } else {
-                    var codeCheck = pluginCodeChecker.checkCode(message.code);
+                    var codeCheck = pluginCodeChecker.checkCode(request.code);
 
                     if (codeCheck.isValid) {
                         var newPlugin = null;
 
-                        if (yakjs.pluginManager.hasJsDoc( message.code)) {
-                            newPlugin = yakjs.pluginManager.parsePluginContent(pluginId, message.code);
+                        if (yakjs.pluginManager.hasJsDoc(request.code)) {
+                            newPlugin = yakjs.pluginManager.parsePluginContent(pluginId, request.code);
                         } else {
                             newPlugin = new yak.Plugin();
                             newPlugin.id = pluginId;
                             newPlugin.name = pluginId;
-                            newPlugin.version = message.version;
-                            newPlugin.description = message.description;
-                            newPlugin.code = message.code;
+                            newPlugin.version = request.version;
+                            newPlugin.description = request.description;
+                            newPlugin.code = request.code;
                         }
 
                         yakjs.pluginManager.addPlugin(newPlugin);
                         yakjs.pluginManager.savePlugin(newPlugin);
 
-                        sendSuccessResponse(connection);
+                        sendSuccessResponse(request, connection);
                     } else {
                         log.warn('Plugin code is not valid.', {codeCheck: codeCheck});
-                        sendInvalidCodeResponse(codeCheck, connection);
+                        sendInvalidCodeResponse(request, codeCheck, connection);
                     }
                 }
             }
@@ -64,45 +64,47 @@ yak.CreatePluginRequestHandler = function CreatePluginRequestHandler(yakjs) {
     };
 
     /**
-     * Send success response
+     * Send success response.
+     * @param {yak.CreatePluginRequest} request
      * @param {yak.WebSocketConnection} connection
      */
-    function sendSuccessResponse(connection) {
-        var response = new yak.api.CreatePluginResponse();
+    function sendSuccessResponse(request, connection) {
+        var response = new yak.api.CreatePluginResponse(request.id);
         connection.send(response);
     }
 
     /**
-     * Send an error response
-     * @param {yak.CreatePluginRequest} message
+     * Send an error response.
+     * @param {yak.CreatePluginRequest} request
      * @param {yak.WebSocketConnection} connection
      */
-    function sendPluginAlreadyExistsResponse(message, connection) {
-        var response = new yak.api.CreatePluginResponse();
+    function sendPluginAlreadyExistsResponse(request, connection) {
+        var response = new yak.api.CreatePluginResponse(request.id);
         response.success = false;
-        response.message = 'Cannot create plugin: Name \'' + message.name + '\' is already used.';
+        response.message = 'Cannot create plugin: Name \'' + request.name + '\' is already used.';
         connection.send(response);
     }
 
     /**
-     * Send an error response
-     * @param {yak.CreatePluginRequest} message
+     * Send an error response.
+     * @param {yak.CreatePluginRequest} request
      * @param {yak.WebSocketConnection} connection
      */
-    function sendInvalidNameResponse(message, connection) {
-        var response = new yak.api.CreatePluginResponse();
+    function sendInvalidNameResponse(request, connection) {
+        var response = new yak.api.CreatePluginResponse(request.id);
         response.success = false;
         response.message = 'Name is not valid.';
         connection.send(response);
     }
 
     /**
-     * Send an error response
+     * Send an error response.
+     * @param {yak.CreatePluginRequest} request
      * @param {{isValid:boolean, errors:[]}} codeCheck
      * @param {yak.WebSocketConnection} connection
      */
-    function sendInvalidCodeResponse(codeCheck, connection) {
-        var response = new yak.api.CreatePluginResponse();
+    function sendInvalidCodeResponse(request, codeCheck, connection) {
+        var response = new yak.api.CreatePluginResponse(request.id);
         response.success = false;
         response.message = 'Code is not valid: \n';
         response.message += codeCheck.errors.join('\n');

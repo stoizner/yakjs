@@ -2,8 +2,9 @@
  * RestartInstanceResponse
  * @constructor
  * @implements {yak.api.Response}
+ * @param {string} requestId
  */
-yak.api.RestartInstanceResponse = function RestartInstanceResponse() {
+yak.api.RestartInstanceResponse = function RestartInstanceResponse(requestId) {
     'use strict';
 
     /**
@@ -14,9 +15,9 @@ yak.api.RestartInstanceResponse = function RestartInstanceResponse() {
 
     /**
      * The original request id.
-     * @type {null}
+     * @type {string}
      */
-    this.requestId = null;
+    this.requestId = requestId;
 
     /**
      * Whether the request was successfully or not.

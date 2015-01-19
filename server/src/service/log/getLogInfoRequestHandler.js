@@ -6,14 +6,14 @@
  */
 yak.GetLogInfoRequestHandler = function GetLogInfoRequestHandler(yakServer) {
     /**
-     * @param {yak.WebSocketMessage} message
+     * @param {yak.api.GetLogInfoRequest} request
      * @param {yak.WebSocketConnection} connection
      */
-    this.handle = function handle(message, connection) {
+    this.handle = function handle(request, connection) {
 
         try {
             var logger = yakServer.getLogger();
-            var response = new yak.api.GetLogInfoResponse();
+            var response = new yak.api.GetLogInfoResponse(request.id);
 
             response.logs = logger.getLogs();
 

@@ -13,13 +13,13 @@ yak.DeleteInstanceRequestHandler = function DeleteInstanceRequestHandler(yakServ
     var self = this;
 
     /**
-    * @param {yak.WebSocketMessage} message
+    * @param {yak.api.DeleteInstanceRequest} request
     * @param {yak.WebSocketConnection} connection
     */
-    this.handle = function handle(message, connection) {
+    this.handle = function handle(request, connection) {
         try {
-            yakServer.instanceManager.removeInstance(message.instanceId);
-            connection.send(new yak.api.DeleteInstanceResponse());
+            yakServer.instanceManager.removeInstance(request.instanceId);
+            connection.send(new yak.api.DeleteInstanceResponse(request.id));
         } catch (ex) {
             yakServer.serviceInstance.log.error(ex.message);
         }

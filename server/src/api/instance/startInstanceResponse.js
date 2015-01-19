@@ -2,8 +2,9 @@
  * StartInstanceResponse
  * @constructor
  * @implements {yak.api.Response}
+ * @param {string} requestId
  */
-yak.api.StartInstanceResponse = function StartInstanceResponse() {
+yak.api.StartInstanceResponse = function StartInstanceResponse(requestId) {
     'use strict';
 
     /**
@@ -14,9 +15,9 @@ yak.api.StartInstanceResponse = function StartInstanceResponse() {
 
     /**
      * The original request id.
-     * @type {null}
+     * @type {string}
      */
-    this.requestId = null;
+    this.requestId = requestId;
 
     /**
     * Whether the request was successfully or not.

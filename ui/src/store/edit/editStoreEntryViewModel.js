@@ -24,14 +24,12 @@ yak.ui.EditStoreEntryViewModel = function EditStoreEntryViewModel(context) {
     /**
      * @type {Function}
      */
-    this.onItemChanged = yak.ui.noop;
+    this.onItemChanged = _.noop;
 
     /**
      * Constructor
      */
     function constructor() {
-        context.eventBus.on(yak.api.GetStoreValueResponse).register(handleGetStoreValueResponse);
-        context.eventBus.on(yak.api.SetStoreValueResponse).register(handleSetStoreValueResponse);
     }
 
     /**
@@ -46,7 +44,7 @@ yak.ui.EditStoreEntryViewModel = function EditStoreEntryViewModel(context) {
             request.key = keyInfo.key;
 
             lastRequestId = request.id;
-            context.webSocket.send(request);
+            context.webSocket.sendRequest(request, handleGetStoreValueResponse);
         } else {
             self.item = null;
             self.onItemChanged();
@@ -68,7 +66,7 @@ yak.ui.EditStoreEntryViewModel = function EditStoreEntryViewModel(context) {
         request.value = self.item.value;
 
         lastRequestId = request.id;
-        context.webSocket.send(request);
+        context.webSocket.sendRequest(request, handleSetStoreValueResponse);
     };
 
     /**

@@ -36,10 +36,6 @@ yak.ui.StoreListViewModel = function StoreListViewModel(context) {
      */
     function constructor() {
         console.log('yak.ui.StoreListViewModel.constructor');
-        context.eventBus.on(yak.api.GetStoreKeyInfoResponse).register(handleGetStoreKeyInfoResponse);
-        context.eventBus.on(yak.api.DeleteStoreItemResponse).register(self.reloadAndRefreshList);
-        context.eventBus.on(yak.api.SetStoreValueResponse).register(self.reloadAndRefreshList);
-        context.eventBus.on(yak.api.GetStoreValueResponse).register(handleGetStoreValueResponse);
     }
 
     /**
@@ -47,7 +43,7 @@ yak.ui.StoreListViewModel = function StoreListViewModel(context) {
      */
     this.activate = function activate() {
         console.log('yak.ui.StoreListViewModel.active');
-        context.webSocket.send(new yak.api.GetStoreKeyInfoRequest());
+        context.webSocket.sendRequest(new yak.api.GetStoreKeyInfoRequest(), handleGetStoreKeyInfoResponse);
     };
 
     /**
@@ -55,15 +51,15 @@ yak.ui.StoreListViewModel = function StoreListViewModel(context) {
      */
     this.reloadAndRefreshList = function reloadAndRefreshList() {
         // SMELL: Make the refresh not so brutal.
-        context.webSocket.send(new yak.api.GetStoreKeyInfoRequest());
+        context.webSocket.sendRequest(new yak.api.GetStoreKeyInfoRequest(), handleGetStoreKeyInfoResponse);
     };
 
     /**
-     * @param key
+     * @param {string} key
      */
     this.deleteEntry = function deleteEntry(key) {
-        console.log('deleteEntry', { key: key });
-        context.webSocket.send(new yak.api.DeleteStoreItemRequest(key));
+        console.log('deleteEntry', {key: key});
+        context.webSocket.sendRequest(new yak.api.DeleteStoreItemRequest(key), self.reloadAndRefreshList);
     };
 
     /**
@@ -95,7 +91,7 @@ yak.ui.StoreListViewModel = function StoreListViewModel(context) {
 
         lastGetValueRequestId = request.id;
         lastGetValueRequestCallback = callback;
-        context.webSocket.send(request);
+        context.webSocket.sendRequest(request, handleGetStoreValueResponse);
     };
 
     /**
@@ -112,7 +108,7 @@ yak.ui.StoreListViewModel = function StoreListViewModel(context) {
         request.description = self.item.description;
         request.value = self.item.value;
 
-        context.webSocket.send(request);
+        context.webSocket.sendRequest(request, self.reloadAndRefreshList);
     };
 
     /**
