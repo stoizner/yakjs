@@ -1,6 +1,7 @@
 /**
  * GetPluginsResponse
  * @constructor
+ * @implements {yak.api.Response}
  */
 yak.api.GetPluginsResponse = function GetPluginsResponse() {
     /**

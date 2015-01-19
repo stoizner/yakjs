@@ -1,6 +1,7 @@
 /**
  * DeleteInstanceResponse
  * @constructor
+ * @implements {yak.api.Response}
  */
 yak.api.DeleteInstanceResponse = function DeleteInstanceResponse() {
     'use strict';

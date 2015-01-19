@@ -1,6 +1,7 @@
 /**
  * GetStoreKeyInfoRequest
  * @constructor
+ * @implements {yak.api.Request}
  */
 yak.api.GetStoreKeyInfoRequest = function GetStoreKeyInfoRequest() {
     /**

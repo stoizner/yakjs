@@ -1,6 +1,7 @@
 /**
  * Get server log information
  * @constructor
+ * @implements {yak.api.Request}
  */
 yak.api.GetLogInfoRequest = function GetLogInfoRequest() {
     /**

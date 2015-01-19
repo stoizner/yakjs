@@ -1,6 +1,7 @@
 /**
  * CreateOrUpdatePluginRequest
  * @constructor
+ * @implements {yak.api.Request}
  */
 yak.api.CreateOrUpdatePluginRequest = function CreateOrUpdatePluginRequest() {
     /**

@@ -1,6 +1,7 @@
 /**
  * DeleteInstanceRequest
  * @constructor
+ * @implements {yak.api.Request}
  */
 yak.api.DeleteInstanceRequest = function DeleteInstanceRequest() {
     'use strict';

@@ -1,6 +1,7 @@
 /**
  * RemovePluginRequest
  * @constructor
+ * @implements {yak.api.Request}
  */
 yak.api.DeletePluginRequest = function DeletePluginRequest() {
     /**

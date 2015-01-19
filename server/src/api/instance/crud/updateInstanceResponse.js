@@ -1,6 +1,7 @@
 /**
  * UpdateInstanceResponse
  * @constructor
+ * @implements {yak.api.Response}
  */
 yak.api.UpdateInstanceResponse = function UpdateInstanceResponse() {
     /**

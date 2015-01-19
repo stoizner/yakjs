@@ -1,6 +1,7 @@
 /**
  * UploadFileResponse
  * @constructor
+ * @implements {yak.api.Response}
  */
 yak.api.UploadFileResponse = function UploadFileResponse() {
     'use strict';

@@ -1,6 +1,7 @@
 /**
  * StopInstanceResponse
  * @constructor
+ * @implements {yak.api.Response}
  */
 yak.api.StopInstanceResponse = function StopInstanceResponse() {
     'use strict';

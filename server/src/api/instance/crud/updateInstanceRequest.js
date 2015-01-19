@@ -1,6 +1,7 @@
 /**
  * UpdateInstanceRequest
  * @constructor
+ * @implements {yak.api.Request}
  */
 yak.api.UpdateInstanceRequest = function UpdateInstanceRequest() {
     'use strict';

@@ -1,6 +1,7 @@
 /**
  * DeleteStoreItemResponse
  * @constructor
+ * @implements {yak.api.Response}
  */
 yak.api.DeleteStoreItemResponse = function DeleteStoreItemResponse() {
     /**

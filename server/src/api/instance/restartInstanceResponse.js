@@ -1,6 +1,7 @@
 /**
  * RestartInstanceResponse
  * @constructor
+ * @implements {yak.api.Response}
  */
 yak.api.RestartInstanceResponse = function RestartInstanceResponse() {
     'use strict';

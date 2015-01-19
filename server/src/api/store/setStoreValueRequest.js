@@ -1,6 +1,7 @@
 /**
  * SetStoreValueRequest
  * @constructor
+ * @implements {yak.api.Request}
  */
 yak.api.SetStoreValueRequest = function SetStoreValueRequest() {
     /**

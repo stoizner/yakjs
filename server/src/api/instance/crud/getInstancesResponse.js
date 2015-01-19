@@ -1,6 +1,7 @@
 /**
  * GetInstancesResponse
  * @constructor
+ * @implements {yak.api.Response}
  */
 yak.api.GetInstancesResponse = function GetInstancesResponse() {
     'use strict';

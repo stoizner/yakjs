@@ -1,6 +1,7 @@
 /**
  * DeleteStoreItemRequest
  * @constructor
+ * @implements {yak.api.Request}
  * @param {string} key The key of the store item to delete.
  */
 yak.api.DeleteStoreItemRequest = function DeleteStoreItemRequest(key) {

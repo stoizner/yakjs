@@ -1,6 +1,7 @@
 /**
  * CreateOrUpdatePluginResponse
  * @constructor
+ * @implements {yak.api.Response}
  */
 yak.api.CreateOrUpdatePluginResponse = function CreateOrUpdatePluginResponse() {
     /**

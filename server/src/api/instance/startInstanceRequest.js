@@ -1,6 +1,7 @@
 /**
  * StartInstanceRequest
  * @constructor
+ * @implements {yak.api.Request}
  */
 yak.api.StartInstanceRequest = function StartInstanceRequest() {
     'use strict';

@@ -1,6 +1,7 @@
 /**
  * Upload a file to add or update an instance, plugin or store.
  * @constructor
+ * @implements {yak.api.Request}
  */
 yak.api.UploadFileRequest = function UploadFileRequest() {
     'use strict';

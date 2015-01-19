@@ -1,6 +1,7 @@
 /**
  * GetStoreKeyInfoResponse
  * @constructor
+ * @implements {yak.api.Response}
  */
 yak.api.GetStoreKeyInfoResponse = function GetStoreKeyInfoResponse() {
     /**

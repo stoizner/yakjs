@@ -1,6 +1,7 @@
 /**
  * GetLogInfoResponse
  * @constructor
+ * @implements {yak.api.Response}
  */
 yak.api.GetLogInfoResponse = function GetLogInfoResponse() {
     /**

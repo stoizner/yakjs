@@ -1,6 +1,7 @@
 /**
  * SetStoreValueResponse
  * @constructor
+ * @implements {yak.api.Response}
  */
 yak.api.SetStoreValueResponse = function SetStoreValueResponse() {
     /**

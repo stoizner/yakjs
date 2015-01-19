@@ -1,6 +1,7 @@
 /**
  * CreatePluginRequest
  * @constructor
+ * @implements {yak.api.Request}
  */
 yak.api.CreatePluginRequest = function CreatePluginRequest() {
     /**

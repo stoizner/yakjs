@@ -1,6 +1,7 @@
 /**
  * RemovePluginResponse
  * @constructor
+ * @implements {yak.api.Response}
  */
 yak.api.DeletePluginResponse = function DeletePluginResponse() {
     /**
