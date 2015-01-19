@@ -92,7 +92,6 @@ yak.ui.InstanceViewModel = function InstanceViewModel(context) {
 
         if (self.instanceItem === null) {
             request = new yak.api.CreateInstanceRequest();
-            request.instanceId = self.instanceItem.id;
             request.instance = _.extend(new yak.api.Instance(), instanceItem);
         } else {
             request = new yak.api.UpdateInstanceRequest();
