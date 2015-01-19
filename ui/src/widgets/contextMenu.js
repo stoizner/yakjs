@@ -87,7 +87,6 @@
          */
         function closeContextMenu() {
             if (isMenuOpen) {
-                console.log('handleMenuMouseOut');
                 element.removeClass('state-context-open');
                 isMenuOpen = false;
             }
