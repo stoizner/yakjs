@@ -24,7 +24,7 @@
         }],
 
         "quotes": [2, "single"],
-        "strict": 1,
+        "strict": 0,
         "func-names": 2,
         "curly": 2
     }
