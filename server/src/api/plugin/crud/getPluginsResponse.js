@@ -18,8 +18,14 @@ yak.api.GetPluginsResponse = function GetPluginsResponse(requestId) {
     this.requestId = requestId;
 
     /**
-    * List of available cloud Plugins as InstanceInfo array.
-    * @type {Array.<yak.api.PluginInfo>}
-    */
+     * Whether the request was successfully or not.
+     * @type {boolean}
+     */
+    this.success = true;
+
+    /**
+     * List of available cloud Plugins as InstanceInfo array.
+     * @type {Array<yak.api.PluginInfo>}
+     */
     this.plugins = [];
 };

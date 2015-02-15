@@ -18,14 +18,14 @@ yak.api.UpdateInstanceResponse = function UpdateInstanceResponse(requestId) {
     this.requestId = requestId;
 
     /**
-    * Whether the request was successfully or not.
-    * @type {boolean}
-    */
+     * Whether the request was successfully or not.
+     * @type {boolean}
+     */
     this.success = true;
 
     /**
-    * Optional: Message if no success.
-    * @type {string}
-    */
+     * Optional: Message if no success.
+     * @type {string}
+     */
     this.message = '';
 };

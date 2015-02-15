@@ -33,7 +33,7 @@ yak.ui.InstanceListViewModel = function InstanceListViewModel(context) {
      */
     this.activate = function activate() {
         console.log('yak.ui.InstanceListViewModel.active');
-        context.webSocket.sendRequest(new yak.api.GetInstancesRequest(), handleGetInstancesResponse);
+        context.adapter.sendRequest(new yak.api.GetInstancesRequest(), handleGetInstancesResponse);
     };
 
     /**
@@ -43,7 +43,7 @@ yak.ui.InstanceListViewModel = function InstanceListViewModel(context) {
     this.startInstance = function startInstance(id) {
         var request = new yak.api.StartInstanceRequest();
         request.instanceId = id;
-        context.webSocket.sendRequest(request, self.reloadAndRefreshList);
+        context.adapter.sendRequest(request, self.reloadAndRefreshList);
     };
 
     /**
@@ -53,7 +53,7 @@ yak.ui.InstanceListViewModel = function InstanceListViewModel(context) {
     this.stopInstance = function stopInstance(id) {
         var request = new yak.api.StopInstanceRequest();
         request.instanceId = id;
-        context.webSocket.sendRequest(request, self.reloadAndRefreshList);
+        context.adapter.sendRequest(request, self.reloadAndRefreshList);
     };
 
     /**
@@ -63,7 +63,7 @@ yak.ui.InstanceListViewModel = function InstanceListViewModel(context) {
     this.restartInstance = function restartInstance(id) {
         var request = new yak.api.RestartInstanceRequest();
         request.instanceId = id;
-        context.webSocket.sendRequest(request, self.reloadAndRefreshList);
+        context.adapter.sendRequest(request, self.reloadAndRefreshList);
     };
 
     /**
@@ -73,7 +73,7 @@ yak.ui.InstanceListViewModel = function InstanceListViewModel(context) {
     this.deleteInstance = function deleteInstance(id) {
         var request = new yak.api.DeleteInstanceRequest();
         request.instanceId = id;
-        context.webSocket.sendRequest(request, self.reloadAndRefreshList);
+        context.adapter.sendRequest(request, self.reloadAndRefreshList);
     };
 
     /**
@@ -89,7 +89,7 @@ yak.ui.InstanceListViewModel = function InstanceListViewModel(context) {
      */
     this.reloadAndRefreshList = function reloadAndRefreshList() {
         // SMELL: Make the refresh not so brutal.
-        context.webSocket.sendRequest(new yak.api.GetInstancesRequest(), handleGetInstancesResponse);
+        context.adapter.sendRequest(new yak.api.GetInstancesRequest(), handleGetInstancesResponse);
     };
 
     /**

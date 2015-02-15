@@ -32,33 +32,32 @@ yak.FileUploadRequestHandler = function FileUploadRequestHandler(yakServer) {
     var log = new yak.Logger(self.constructor.name);
 
     /**
-    * @param {yak.api.UploadFileRequest} request
-    * @param {yak.WebSocketConnection} connection
-    */
-    this.handle = function handle(request, connection) {
-        try {
-            if (isPlugin(request.filename)) {
-                log.info('isPlugin');
-                addOrUpdatePlugin(request, connection);
-            }
-
-            if (isInstance(request.filename)) {
-                addOrUpdateInstance(request, connection);
-            }
-
-            if (isStore(request.filename)) {
-                addOrUpdateStore(request, connection);
-            }
-        } catch (ex) {
-            yakServer.serviceInstance.log.error(ex.message);
+     * @param {yak.api.UploadFileRequest} request
+     * @returns {!yak.api.UploadFileResponse} response
+     */
+    this.handle = function handle(request) {
+        var response;
+        if (isPlugin(request.filename)) {
+            log.info('isPlugin');
+            response = addOrUpdatePlugin(request);
         }
+
+        if (isInstance(request.filename)) {
+            response = addOrUpdateInstance(request);
+        }
+
+        if (isStore(request.filename)) {
+            response = addOrUpdateStore(request);
+        }
+
+        return response;
     };
 
     /**
      * @param {yak.api.UploadFileRequest} request
-     * @param {yak.WebSocketConnection} connection
+     * @returns {!yak.api.UploadFileResponse} response
      */
-    function addOrUpdateStore(request, connection) {
+    function addOrUpdateStore(request) {
         var response = new yak.api.UploadFileResponse(request.id);
         response.success = true;
 
@@ -70,14 +69,14 @@ yak.FileUploadRequestHandler = function FileUploadRequestHandler(yakServer) {
         var instances = yakServer.instanceManager.getInstances();
         _.each(instances, function restart(instance) { restartInstance(instance.id); });
 
-        connection.send(response);
+        return response;
     }
 
     /**
      * @param {yak.api.UploadFileRequest} request
-     * @param {yak.WebSocketConnection} connection
+     * @returns {!yak.api.UploadFileResponse} response
      */
-    function addOrUpdateInstance(request, connection) {
+    function addOrUpdateInstance(request) {
         var response = new yak.api.UploadFileResponse(request.id);
         response.success = false;
 
@@ -90,21 +89,20 @@ yak.FileUploadRequestHandler = function FileUploadRequestHandler(yakServer) {
             response.success = true;
         }
 
-        connection.send(response);
+       return response;
     }
 
     /**
      * @param {yak.api.UploadFileRequest} request
-     * @param {yak.WebSocketConnection} connection
+     * @returns {!yak.api.UploadFileResponse} response
      */
-    function addOrUpdatePlugin(request, connection) {
+    function addOrUpdatePlugin(request) {
         var response = new yak.api.UploadFileResponse(request.id);
         response.success = false;
 
         if (pluginManager.hasJsDoc(request.content)) {
             try {
                 var parsedPlugin = pluginManager.parsePluginContent(request.filename, request.content);
-                console.warn(parsedPlugin);
 
                 pluginManager.addOrUpdatePlugin(parsedPlugin);
                 response.success = true;
@@ -115,14 +113,14 @@ yak.FileUploadRequestHandler = function FileUploadRequestHandler(yakServer) {
             } catch (ex) {
                 response.success = false;
                 response.message = 'Add or update plugin failed: ' + ex.message;
-                console.warn(ex);
+                log.warn(ex);
             }
         } else {
             response.success = false;
             response.message = 'JsDoc not found. Every plugin file must start with a valid JsDoc documentation.';
         }
 
-        connection.send(response);
+        return response;
     }
 
     /**

@@ -33,7 +33,7 @@ yak.ui.PluginListViewModel = function PluginListViewModel(context) {
      */
     this.activate = function activate() {
         console.log('yak.ui.PluginListViewModel.active');
-        context.webSocket.sendRequest(new yak.api.GetPluginsRequest(), handleGetPluginsResponse);
+        context.adapter.sendRequest(new yak.api.GetPluginsRequest(), handleGetPluginsResponse);
     };
 
     /**
@@ -43,7 +43,7 @@ yak.ui.PluginListViewModel = function PluginListViewModel(context) {
     this.deletePlugin = function deletePlugin(name) {
         var request = new yak.api.DeletePluginRequest();
         request.pluginName = name;
-        context.webSocket.sendRequest(request, handleDeletePluginResponse);
+        context.adapter.sendRequest(request, handleDeletePluginResponse);
     };
 
     /**
@@ -59,7 +59,7 @@ yak.ui.PluginListViewModel = function PluginListViewModel(context) {
      */
     this.reloadAndRefreshList = function reloadAndRefreshList() {
         // SMELL: Make the refresh not so brutal.
-        context.webSocket.sendRequest(new yak.api.GetPluginsRequest(), handleGetPluginsResponse);
+        context.adapter.sendRequest(new yak.api.GetPluginsRequest(), handleGetPluginsResponse);
     };
 
     /**
@@ -73,7 +73,7 @@ yak.ui.PluginListViewModel = function PluginListViewModel(context) {
         request.name = name;
         request.code = code;
         request.description = '';
-        context.webSocket.sendRequest(request, self.reloadAndRefreshList);
+        context.adapter.sendRequest(request, self.reloadAndRefreshList);
     };
 
     /**

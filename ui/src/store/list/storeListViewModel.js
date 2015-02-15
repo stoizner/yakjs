@@ -43,7 +43,7 @@ yak.ui.StoreListViewModel = function StoreListViewModel(context) {
      */
     this.activate = function activate() {
         console.log('yak.ui.StoreListViewModel.active');
-        context.webSocket.sendRequest(new yak.api.GetStoreKeyInfoRequest(), handleGetStoreKeyInfoResponse);
+        context.adapter.sendRequest(new yak.api.GetStoreKeyInfoRequest(), handleGetStoreKeyInfoResponse);
     };
 
     /**
@@ -51,7 +51,7 @@ yak.ui.StoreListViewModel = function StoreListViewModel(context) {
      */
     this.reloadAndRefreshList = function reloadAndRefreshList() {
         // SMELL: Make the refresh not so brutal.
-        context.webSocket.sendRequest(new yak.api.GetStoreKeyInfoRequest(), handleGetStoreKeyInfoResponse);
+        context.adapter.sendRequest(new yak.api.GetStoreKeyInfoRequest(), handleGetStoreKeyInfoResponse);
     };
 
     /**
@@ -59,7 +59,7 @@ yak.ui.StoreListViewModel = function StoreListViewModel(context) {
      */
     this.deleteEntry = function deleteEntry(key) {
         console.log('deleteEntry', {key: key});
-        context.webSocket.sendRequest(new yak.api.DeleteStoreItemRequest(key), self.reloadAndRefreshList);
+        context.adapter.sendRequest(new yak.api.DeleteStoreItemRequest(key), self.reloadAndRefreshList);
     };
 
     /**
@@ -91,7 +91,7 @@ yak.ui.StoreListViewModel = function StoreListViewModel(context) {
 
         lastGetValueRequestId = request.id;
         lastGetValueRequestCallback = callback;
-        context.webSocket.sendRequest(request, handleGetStoreValueResponse);
+        context.adapter.sendRequest(request, handleGetStoreValueResponse);
     };
 
     /**
@@ -108,7 +108,7 @@ yak.ui.StoreListViewModel = function StoreListViewModel(context) {
         request.description = self.item.description;
         request.value = self.item.value;
 
-        context.webSocket.sendRequest(request, self.reloadAndRefreshList);
+        context.adapter.sendRequest(request, self.reloadAndRefreshList);
     };
 
     /**

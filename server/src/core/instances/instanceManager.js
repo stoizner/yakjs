@@ -145,7 +145,6 @@ yak.InstanceManager = function InstanceManager(pluginManager) {
      * @returns {Array.<yak.Instance>} List of instances.
      */
     this.getInstances = function getInstances() {
-        log.debug('getInstances', {instances: instances});
         return _.values(instances);
     };
 
@@ -154,7 +153,6 @@ yak.InstanceManager = function InstanceManager(pluginManager) {
      * @returns {Array.<yak.InstanceEntity>} List of instance entities.
      */
     this.getInstanceEntities = function getInstanceEntities() {
-        log.debug('getInstanceEntities', {instanceEntities: instanceEntities});
         return _.values(instanceEntities);
     };
 
@@ -162,7 +160,6 @@ yak.InstanceManager = function InstanceManager(pluginManager) {
      * @param {yak.Instance} instance
      */
     this.addOrUpdateInstance = function addOrUpdateInstance(instance) {
-        log.debug('addOrUpdateInstance', {id: instance.id});
         if (instance.id && instances[instance.id]) {
             self.updateInstance(instance);
         } else {
@@ -174,7 +171,6 @@ yak.InstanceManager = function InstanceManager(pluginManager) {
      * @param {yak.Instance} instance
      */
     this.addInstance = function addInstance(instance) {
-        log.debug('addInstance', {id: instance.id});
         instances[instance.id] = instance;
 
         self.saveInstance(instance);
@@ -185,7 +181,6 @@ yak.InstanceManager = function InstanceManager(pluginManager) {
      * @param {yak.Instance} instance
      */
     this.updateInstance = function updateInstance(instance) {
-        log.debug('updateInstance', {id: instance.id});
         var existingInstance = instances[instance.id];
          _.extend(existingInstance, instance);
 
@@ -213,7 +208,6 @@ yak.InstanceManager = function InstanceManager(pluginManager) {
      * @param {string} id The ID of the instance.
      */
     this.removeInstance = function removeInstance(id) {
-        log.debug('Remove instance', {id: id});
         if (instances.hasOwnProperty(id)) {
             delete instances[id];
 
@@ -271,7 +265,6 @@ yak.InstanceManager = function InstanceManager(pluginManager) {
      * @param {yak.Instance} instance
      */
     this.saveInstance = function saveInstance(instance) {
-        log.debug('Save instance', {id: instance.id});
         var filename = toFilename(instance.id);
 
         try {

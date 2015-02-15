@@ -8,4 +8,10 @@ yak.api.Response = function Response() {
      * @type {?string}
      */
     this.requestId = null;
+
+    /**
+     * Whether the request was successfully or not.
+     * @type {boolean}
+     */
+    this.success = true;
 };

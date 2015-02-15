@@ -6,10 +6,11 @@ $(document).ready(function bootstrap() {
     var eventBus = new cobu.EventBus();
     eventBus.diagnostics().onError(handleEventBusError);
 
-    var webSocketAdapter = new yak.ui.WebSocketAdapter(eventBus);
+    //var webSocketAdapter = new yak.ui.WebSocketAdapter(eventBus);
+    var httpAdapter = new yak.ui.HttpAdapter(eventBus);
 
     var viewModelContext = new yak.ui.ViewModelContext();
-    viewModelContext.webSocket = webSocketAdapter;
+    viewModelContext.adapter = httpAdapter;
     viewModelContext.eventBus = eventBus;
 
     var viewContext = new yak.ui.ViewContext();
@@ -21,7 +22,7 @@ $(document).ready(function bootstrap() {
 
     viewFactory.create($('.workspace'), yak.ui.WorkspaceView, yak.ui.WorkspaceViewModel);
 
-    connectToYakJsServer(eventBus);
+    //connectToYakJsServer(eventBus);
 
     //var workspaceView = new yak.ui.WorkspaceView($(document), viewContext);
 });

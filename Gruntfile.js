@@ -109,10 +109,12 @@ module.exports = function grunt(grunt) {
         copy: {
             server: {
                 files: [
-                    {flatten:true, src: ['README.md', 'LICENSE'], dest: pkgDir},
+                    {flatten:true, src: ['README.md', 'LICENSE', 'package.json'], dest: pkgDir},
                     {flatten:false, src: ['node_modules/ws/**'], dest: pkgDir},
                     {flatten:false, src: ['node_modules/underscore/**'], dest: pkgDir},
                     {flatten:false, src: ['node_modules/npm/**'], dest: pkgDir},
+                    {flatten:false, src: ['node_modules/express/**'], dest: pkgDir},
+                    {flatten:false, src: ['node_modules/body-parser/**'], dest: pkgDir},
                     {flatten:true, cwd: serverSrcDir + 'shell/', src: ['*.bat', '*.sh'], dest: pkgDir, expand: true}
                 ]
             },

@@ -51,7 +51,7 @@ yak.ui.InstanceViewModel = function InstanceViewModel(context) {
 
         self.onInstanceInfoChanged();
 
-        context.webSocket.sendRequest(new yak.api.GetPluginsRequest(), handleGetPluginsResponse);
+        context.adapter.sendRequest(new yak.api.GetPluginsRequest(), handleGetPluginsResponse);
     };
 
     /**
@@ -102,7 +102,7 @@ yak.ui.InstanceViewModel = function InstanceViewModel(context) {
             request.instance.plugins.push(selectPluginItem.name);
         });
 
-        context.webSocket.sendRequest(request, handleResponse);
+        context.adapter.sendRequest(request, handleResponse);
     };
 
     /**

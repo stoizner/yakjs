@@ -61,7 +61,7 @@ yak.ui.PluginViewModel = function PluginViewModel(context) {
             request.pluginName = self.pluginItem.name;
         }
 
-        context.webSocket.sendRequest(request, handleResponse);
+        context.adapter.sendRequest(request, handleResponse);
     };
 
     /**

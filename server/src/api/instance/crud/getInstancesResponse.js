@@ -20,6 +20,12 @@ yak.api.GetInstancesResponse = function GetInstancesResponse(requestId) {
     this.requestId = requestId;
 
     /**
+     * Whether the request was successfully or not.
+     * @type {boolean}
+     */
+    this.success = true;
+
+    /**
      * List of available instances as InstanceInfo.
      * @type {Array.<yak.api.InstanceInfo>}
      */

@@ -11,9 +11,9 @@ yak.ui.ViewModelContext = function ViewModelContext() {
     var self = this;
 
     /**
-     * @type {yak.ui.WebSocketAdapter}
+     * @type {yak.ui.HttpAdapter}
      */
-    this.webSocket = null;
+    this.adapter = null;
 
     /**
      * @type {cobu.EventBus}

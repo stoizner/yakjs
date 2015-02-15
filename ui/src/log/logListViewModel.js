@@ -34,7 +34,7 @@ yak.ui.LogListViewModel = function LogListViewModel(context) {
      */
     this.activate = function activate() {
         console.log('yak.ui.LogListViewModel.active');
-        context.webSocket.sendRequest(new yak.api.GetLogInfoRequest(), _.noop);
+        context.adapter.sendRequest(new yak.api.GetLogInfoRequest(), _.noop);
     };
 
     /**
@@ -42,7 +42,7 @@ yak.ui.LogListViewModel = function LogListViewModel(context) {
      */
     this.reloadAndRefreshList = function reloadAndRefreshList() {
         // SMELL: Make the refresh not so brutal.
-        context.webSocket.sendRequest(new yak.api.GetLogInfoRequest(), _.noop);
+        context.adapter.sendRequest(new yak.api.GetLogInfoRequest(), _.noop);
     };
 
     /**

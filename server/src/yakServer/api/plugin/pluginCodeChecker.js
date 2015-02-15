@@ -3,10 +3,7 @@
  * @constructor
  */
 yak.PluginCodeChecker = function PluginCodeChecker() {
-    /**
-     * @type {yak.PluginCodeChecker}
-     */
-    var self = this;
+    'use strict';
 
     /**
      * @type {yak.Logger}
@@ -33,8 +30,18 @@ yak.PluginCodeChecker = function PluginCodeChecker() {
             result.errors.push('No function found.');
         }
 
+        try {
+            // Function is a form of eval, but we are using it here for executing custom plugin code.
+
+            /*eslint-disable no-new-func */
+            var constructor = new Function('return ' + code)();
+            /*eslint-enable no-new-func */
+        } catch (ex) {
+            var errorMessage = ['No valid plugin code.',  ex.name, ex.message].join(' ');
+            result.errors.push(errorMessage);
+        }
+
         if (result.errors.length > 0) {
-            log.debug('Code has errors.', {code: code, result:result});
             result.isValid = false;
         }
 

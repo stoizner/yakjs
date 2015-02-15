@@ -17,9 +17,10 @@ yak.YakServer = function YakServer(configManager, pluginManager, instanceManager
     var log = new yak.Logger(self.constructor.name);
 
     /**
-     * @type {yak.WebSocketInstance}
+     * The HTTP Server
+     * @type {yak.HttpServer}
      */
-    this.serviceInstance = null;
+    var webServer = new yak.HttpServer(self, configManager.config);
 
     /**
      * @type {yak.PluginManager}
@@ -40,12 +41,10 @@ yak.YakServer = function YakServer(configManager, pluginManager, instanceManager
     /**
      * @param {yak.ServerInstance} serviceInstance
      */
-    this.start = function start(serviceInstance) {
+    this.start = function start() {
         log.info('YakServer.start');
-        if (serviceInstance) {
-            self.serviceInstance = serviceInstance;
-            self.serviceInstance.start();
-        }
+
+        webServer.start();
 
         var instanceEntities = self.instanceManager.getInstanceEntities();
 

@@ -2,31 +2,22 @@
  * GetInstancesRequestHandler
  * @constructor
  * @param {yak.YakServer} yakServer
- * @implements {yak.ServiceMessageHandler}
+ * @implements {yak.RequestHandler}
  */
 yak.GetInstancesRequestHandler = function GetInstancesRequestHandler(yakServer) {
     'use strict';
 
     /**
-     * @type {yak.StartInstanceRequestHandler}
+     * @param {yak.api.GetInstancesRequest} request
+     * @returns {yak.api.GetInstancesResponse} response
      */
-    var self = this;
+    this.handle = function handle(request) {
+        var entities = yakServer.instanceManager.getInstanceEntities();
+        var response = new yak.api.GetInstancesResponse(request.id);
 
-    /**
-    * @param {yak.api.GetInstancesRequest} request
-    * @param {yak.WebSocketConnection} connection
-    */
-    this.handle = function handle(request, connection) {
-        try {
-            var entities = yakServer.instanceManager.getInstanceEntities();
-            var response = new yak.api.GetInstancesResponse(request.id);
+        _.each(entities, _.partial(addToResponseAsInstanceInfo, response));
 
-            _.each(entities, _.partial(addToResponseAsInstanceInfo, response));
-
-            connection.send(response);
-        } catch (ex) {
-            yakServer.serviceInstance.log.error(ex.message);
-        }
+        return response;
     };
 
     /**

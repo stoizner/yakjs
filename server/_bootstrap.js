@@ -22,15 +22,14 @@ var _ = require('underscore');
     var instanceManager = new yak.InstanceManager(pluginManager);
     instanceManager.loadInstances();
 
-    var webServer = new yak.UiWebServer(configManager.config);
-    webServer.start();
+    //var webServer = new yak.HttpServer(configManager.config);
+    //webServer.start();
 
     var installer = new yak.PluginModuleInstaller(pluginManager);
+
     installer.installRequiredModules(function installFinishedCallback(){
         var yakServer = new yak.YakServer(configManager, pluginManager, instanceManager);
-        var serviceInstance = new yak.ServiceInstance('service', configManager.config.servicePort, yakServer);
-
-        yakServer.start(serviceInstance);
+        yakServer.start();
 
         log.info('........................................');
         log.info('. YAKjs server initialized and running .');

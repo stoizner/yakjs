@@ -44,7 +44,7 @@ yak.ui.EditStoreEntryViewModel = function EditStoreEntryViewModel(context) {
             request.key = keyInfo.key;
 
             lastRequestId = request.id;
-            context.webSocket.sendRequest(request, handleGetStoreValueResponse);
+            context.adapter.sendRequest(request, handleGetStoreValueResponse);
         } else {
             self.item = null;
             self.onItemChanged();
@@ -66,7 +66,7 @@ yak.ui.EditStoreEntryViewModel = function EditStoreEntryViewModel(context) {
         request.value = self.item.value;
 
         lastRequestId = request.id;
-        context.webSocket.sendRequest(request, handleSetStoreValueResponse);
+        context.adapter.sendRequest(request, handleSetStoreValueResponse);
     };
 
     /**

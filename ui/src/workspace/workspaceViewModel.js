@@ -32,8 +32,8 @@ yak.ui.WorkspaceViewModel = function WorkspaceViewModel(context) {
      */
     function constructor() {
         context.eventBus.on(yak.ui.ActivatePanelCommand).register(handleActivatePanel);
-        context.eventBus.on(yak.ui.WebSocketOpenEvent).register(handleWebSocketOpen);
-        context.eventBus.on(yak.ui.WebSocketCloseEvent).register(handleWebSocketClosed);
+        self.activePanel = 'panel-instance';
+        self.onActivePanelChanged();
     }
 
     /**
@@ -43,22 +43,6 @@ yak.ui.WorkspaceViewModel = function WorkspaceViewModel(context) {
         console.log('handleActivatePanel', command);
         self.activePanel = command.panelName;
         self.activePanelData = command.data;
-        self.onActivePanelChanged();
-    }
-
-    /**
-     * Handle event when web socket was opened.
-     */
-    function handleWebSocketOpen() {
-        self.activePanel = 'panel-instance';
-        self.onActivePanelChanged();
-    }
-
-    /**
-     * Handle event when web socket was closed.
-     */
-    function handleWebSocketClosed() {
-        self.activePanel = null;
         self.onActivePanelChanged();
     }
 
