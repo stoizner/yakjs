@@ -1,5 +1,5 @@
 /**
- * WebSocketClosedEvent
+ * WebSocketErrorEvent
  * @constructor
  */
 yak.ui.WebSocketErrorEvent = function WebSocketErrorEvent() {
