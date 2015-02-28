@@ -30,6 +30,12 @@ yak.ui.InstanceViewModel = function InstanceViewModel(context) {
     this.onSelectPluginItemsChanged = yak.ui.noop;
 
     /**
+     * Callback for received error response.
+     * @type {function(string)}
+     */
+    this.onErrorResponse = _.noop;
+
+    /**
      * Constructor
      */
     function constructor() {
@@ -132,6 +138,8 @@ yak.ui.InstanceViewModel = function InstanceViewModel(context) {
 
         if (response.success) {
             context.eventBus.post(new yak.ui.ActivatePanelCommand('panel-instance'));
+        } else {
+            self.onErrorResponse(response.message);
         }
     }
 

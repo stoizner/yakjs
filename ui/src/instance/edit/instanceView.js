@@ -23,7 +23,6 @@ yak.ui.InstanceView = function InstanceView(parent, context, viewModel) {
      */
     var selectPluginTemplate = context.template.load('selectPluginItem');
 
-    this.id = context.ko.observable('');
     this.name = context.ko.observable('');
     this.port = context.ko.observable('');
     this.description = context.ko.observable('');
@@ -37,6 +36,8 @@ yak.ui.InstanceView = function InstanceView(parent, context, viewModel) {
 
         viewModel.onInstanceInfoChanged = handleInstanceInfoChanged;
         viewModel.onSelectPluginItemsChanged = updatePluginList;
+        viewModel.onErrorResponse = handleErrorResponse;
+
         context.ko.applyBindings(self, parent[0]);
 
         $('.plugin-list', parent).click(handleSelectPluginClick);
@@ -47,6 +48,7 @@ yak.ui.InstanceView = function InstanceView(parent, context, viewModel) {
      * @param {?} [data]
      */
     this.activate = function activate(data) {
+        parent.find('.error-line').hide();
         viewModel.activate(data);
     };
 
@@ -61,18 +63,24 @@ yak.ui.InstanceView = function InstanceView(parent, context, viewModel) {
     }
 
     /**
+     * @param {string} message
+     */
+    function handleErrorResponse(message) {
+        parent.find('.error-line').show();
+        parent.find('.error-line-text').html(message);
+    }
+
+    /**
      * Handle Instance Info Changed event.
      */
     function handleInstanceInfoChanged() {
         console.log('InstanceView.handleInstanceInfoChanged', viewModel.instanceItem);
 
         if (viewModel.instanceItem) {
-            self.id(viewModel.instanceItem.id);
             self.name(viewModel.instanceItem.name);
             self.description(viewModel.instanceItem.description);
             self.port(viewModel.instanceItem.port);
         } else {
-            self.id('');
             self.name('');
             self.description('');
             self.port('');
@@ -98,8 +106,9 @@ yak.ui.InstanceView = function InstanceView(parent, context, viewModel) {
      * Handle Save Button Click
      */
     this.handleSaveClick = function handleSaveClick() {
-        var instanceItem = new yak.ui.InstanceItem();
-        instanceItem.id = self.id();
+        parent.find('.error-line').hide();
+
+        var instanceItem = new yak.ui.InstanceItem(self.name());
         instanceItem.name = self.name();
         instanceItem.description = self.description();
         instanceItem.port = self.port();

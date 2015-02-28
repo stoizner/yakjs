@@ -12,13 +12,21 @@ yak.UpdateInstanceRequestHandler = function UpdateInstanceRequestHandler(yakServ
      * @returns {yak.api.UpdateInstanceResponse} response
      */
     this.handle = function handle(request) {
-        // Name has changed so remove instance with old name
-        if (request.instanceId !== request.instance.id) {
-            yakServer.instanceManager.removeInstance(request.instanceId);
+        var response = new yak.api.UpdateInstanceResponse(request.id);
+        var validator = new yak.api.InstanceValidator(request.instance);
+
+        if (validator.isValid()) {
+            // Name has changed so remove instance with old name
+            if (request.instanceId !== request.instance.id) {
+                yakServer.instanceManager.removeInstance(request.instanceId);
+            }
+
+            yakServer.instanceManager.addOrUpdateInstance(request.instance);
+        } else {
+            response.success = false;
+            response.message = validator.getMessage();
         }
 
-        yakServer.instanceManager.addOrUpdateInstance(request.instance);
-
-        return new yak.api.UpdateInstanceResponse(request.id);
+        return response;
     };
 };

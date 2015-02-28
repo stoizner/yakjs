@@ -12,10 +12,17 @@ yak.CreateInstanceRequestHandler = function CreateInstanceRequestHandler(yakServ
      * @returns {yak.api.CreateInstanceResponse} response
      */
     this.handle = function handle(request) {
-       var newInstance = _.clone(request.instance);
+        var newInstance = _.clone(request.instance);
+        var response = new yak.api.CreateInstanceResponse(request.id);
+        var validator = new yak.api.InstanceValidator(newInstance);
 
-        yakServer.instanceManager.addInstance(newInstance);
+        if (validator.isValid()) {
+            yakServer.instanceManager.addInstance(newInstance);
+        } else {
+            response.success = false;
+            response.message = validator.getMessage();
+        }
 
-       return new yak.api.CreateInstanceResponse(request.id);
+        return response;
     };
 };

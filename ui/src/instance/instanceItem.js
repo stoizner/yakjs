@@ -1,15 +1,16 @@
 /**
  * Instance Item.
  * @constructor
+ * @param {string} id
  */
-yak.ui.InstanceItem = function InstanceItem() {
+yak.ui.InstanceItem = function InstanceItem(id) {
     'use strict';
 
     /**
      * ID of the instance
      * @type {string}
      */
-    this.id = '';
+    this.id = id;
 
     /**
      * Name of the instance
