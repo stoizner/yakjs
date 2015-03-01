@@ -1,5 +1,5 @@
 /**
- * CreateInstanceRequest
+ * Validate properties of {yak.api.Instance}.
  * @constructor
  * @param {!yak.api.Instance} instance
  */
