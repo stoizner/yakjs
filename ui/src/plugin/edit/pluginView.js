@@ -3,8 +3,8 @@
 /**
  * PluginListView
  * @constructor
- * @param {yak.ui.ViewContext} context
  * @param {jQuery} parent
+ * @param {yak.ui.ViewContext} context
  * @param {yak.ui.PluginViewModel} viewModel
  */
 yak.ui.PluginView = function PluginView(parent, context, viewModel) {
@@ -56,6 +56,8 @@ yak.ui.PluginView = function PluginView(parent, context, viewModel) {
         //$('#instance-save', parent).click(handleSaveClick);
 
         viewModel.onPluginItemChanged = handlePluginItemChanged;
+        viewModel.onErrorResponse = handleErrorResponse;
+
         context.ko.applyBindings(self, parent[0]);
 
         CodeMirror.commands.autocomplete = yak.ui.codeEditorAutoComplete;
@@ -74,8 +76,16 @@ yak.ui.PluginView = function PluginView(parent, context, viewModel) {
     }
 
     /**
+     * @param {string} message
+     */
+    function handleErrorResponse(message) {
+        parent.find('.error-line').show();
+        parent.find('.error-line-text').html(message);
+    }
+
+    /**
      * Display the current cursor position in the editor status bar.
-     * @param instance
+     * @param {?} instance
      */
     function handleCodeCursorActivity(instance) {
         var cursorPosition = instance.getCursor();
@@ -85,20 +95,22 @@ yak.ui.PluginView = function PluginView(parent, context, viewModel) {
 
     /**
      * Handle if code in editor was change to perform a syntax check.
+     * @param {string} doc
+     * @param {string} change
      */
     function handleCodeEditorChange(doc, change) {
         console.log('handleCodeEditorChange');
 
         try {
             var code = codeEditor.getValue();
-            (function() {
-                //noinspection JSHint
+            (function checkIfCodeThrowsError() {
+                /*eslint-disable no-new-func */
                 new Function('return ' + code)();
+                /*eslint-enable no-new-func */
             })();
             self.classStateSyntaxError('');
             self.classStateSyntaxErrorTitle('');
         } catch(ex) {
-            console.log(change);
             console.log(ex);
 
             self.classStateSyntaxError('state-syntax-error');

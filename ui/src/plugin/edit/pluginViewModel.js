@@ -22,6 +22,12 @@ yak.ui.PluginViewModel = function PluginViewModel(context) {
     this.onPluginItemChanged = yak.ui.noop;
 
     /**
+     * Callback for received error response.
+     * @type {function(string)}
+     */
+    this.onErrorResponse = _.noop;
+
+    /**
      * Constructor
      */
     function constructor() {
@@ -79,6 +85,8 @@ yak.ui.PluginViewModel = function PluginViewModel(context) {
 
         if (response.success) {
             context.eventBus.post(new yak.ui.ActivatePanelCommand('panel-plugin'));
+        } else {
+            self.onErrorResponse(response.message);
         }
     }
 

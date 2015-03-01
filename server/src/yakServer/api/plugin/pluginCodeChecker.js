@@ -37,7 +37,7 @@ yak.PluginCodeChecker = function PluginCodeChecker() {
             var constructor = new Function('return ' + code)();
             /*eslint-enable no-new-func */
         } catch (ex) {
-            var errorMessage = ['No valid plugin code.',  ex.name, ex.message].join(' ');
+            var errorMessage = [ex.name, ex.message].join(' ');
             result.errors.push(errorMessage);
         }
 
