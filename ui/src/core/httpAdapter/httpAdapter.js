@@ -29,6 +29,8 @@ yak.ui.HttpAdapter = function HttpAdapter(eventBus) {
      * @param {Function} responseCallback Callback function for handling response message.
      */
     this.sendRequest = function sendRequest(request, responseCallback) {
+        console.log('Sending request', {request: request});
+
         if (!request.id) {
             throw new Error('Can not send a request without an request id.');
         }
