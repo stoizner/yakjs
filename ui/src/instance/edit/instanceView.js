@@ -16,7 +16,7 @@ yak.ui.InstanceView = function InstanceView(parent, context, viewModel) {
     /**
      * @type {yak.ui.Template}
      */
-    var template = context.template.load('panelInstanceEdit');
+    var template = context.template.load('instanceEdit');
 
     /**
      * @type {yak.ui.Template}

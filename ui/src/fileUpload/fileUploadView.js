@@ -64,6 +64,7 @@ yak.ui.FileUploadView = function FileUploadView(parent, context, viewModel) {
         var files = event.originalEvent.target.files || event.originalEvent.dataTransfer.files;
         console.log(files);
 
+        viewModel.clearFileUploadInfo();
         _.each(files, handleDroppedFile);
     }
 
@@ -78,6 +79,8 @@ yak.ui.FileUploadView = function FileUploadView(parent, context, viewModel) {
         // Closure to capture the file information.
         reader.onload = _.partial(handleFileLoaded, file);
 
+        viewModel.createFileUploadInfo(file.name);
+
         // Read in the file as a data URL.
         reader.readAsText(file);
     }
@@ -90,9 +93,6 @@ yak.ui.FileUploadView = function FileUploadView(parent, context, viewModel) {
     function handleFileLoaded(file, event) {
         var fileName = file.name;
         var content = event.target.result;
-//
-//        var pluginName = fileName.substr(0, fileName.lastIndexOf('.js')).trim();
-//        console.log({pluginName: pluginName, fileName: fileName, content: content});
 
         viewModel.uploadFile(fileName, content);
     }

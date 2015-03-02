@@ -1,11 +1,16 @@
-<div class="panel-toolbar">
-    <ul class="panel-actions">
-        <li><button data-bind="click: handleNewStoreItemClick">New Entry</button></li>
-        <li><button data-bind="click: handleRefreshClick">Refresh</button></li>
-    </ul>
+<div class="header-panel">
+    <div class="header-panel-header">
+        <ul class="toolbar">
+            <li class="toolbar-item"><button data-bind="click: handleNewStoreItemClick">New Entry</button></li>
+            <li class="toolbar-item"><button data-bind="click: handleRefreshClick">Refresh</button></li>
+        </ul>
+    </div>
+    <div class="header-panel-body">
+        <div class="scroll-panel">
+            <div class="list store-items"></div>
+        </div>
+    </div>
 </div>
-
-<div class="list store-items"></div>
 
 <div id="store-item-context" class="context-menu store-item-context">
     <ul>

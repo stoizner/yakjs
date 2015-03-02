@@ -1,12 +1,16 @@
-<div class="panel-toolbar">
-    <ul class="panel-actions">
-        <li><button data-bind="click: handleNewInstanceClick">New Instance</button></li>
-        <li><button data-bind="click: handleRefreshClick">Refresh</button></li>
-    </ul>
-</div>
 
-<div class="list instance-items">
-
+<div class="header-panel">
+    <div class="header-panel-header">
+        <ul class="toolbar">
+            <li class="toolbar-item"><button data-bind="click: handleNewInstanceClick">New Instance</button></li>
+            <li class="toolbar-item"><button data-bind="click: handleRefreshClick">Refresh</button></li>
+        </ul>
+    </div>
+    <div class="header-panel-body">
+        <div class="scroll-panel">
+            <div class="list instance-items"></div>
+        </div>
+    </div>
 </div>
 
 <div id="instance-item-context" class="context-menu instance-item-context">

@@ -127,7 +127,7 @@ yak.HttpServer = function HttpServer(yakServer, config) {
         apiMap['request.deleteStoreItem'] = new yak.DeleteStoreItemRequestHandler(yakServer);
 
         // File Upload
-        apiMap['request.UploadFileRequest'] = new yak.FileUploadRequestHandler(yakServer);
+        apiMap['request.uploadFileRequest'] = new yak.FileUploadRequestHandler(yakServer);
     }
 
     constructor();

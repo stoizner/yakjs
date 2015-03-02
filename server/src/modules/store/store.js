@@ -37,8 +37,8 @@
 
         /**
          * Set a store value.
-         * @param {string} key
-         * @param {?} value
+         * @param {string} key The document key.
+         * @param {?} value The document
          */
         this.setValue = function setValue(key, value) {
             var item = data[key];
@@ -55,7 +55,7 @@
 
         /**
          * Get a store value
-         * @param {string} key
+         * @param {string} key The document key.
          * @returns {*} The stored value.
          */
         this.getValue = function getValue(key) {

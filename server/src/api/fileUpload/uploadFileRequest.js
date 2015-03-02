@@ -9,7 +9,7 @@ yak.api.UploadFileRequest = function UploadFileRequest() {
     /**
      * @type {string}
      */
-    this.type = 'request.UploadFileRequest';
+    this.type = 'request.uploadFileRequest';
 
     /**
      * Create unique request id.

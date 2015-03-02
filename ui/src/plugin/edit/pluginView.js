@@ -23,7 +23,7 @@ yak.ui.PluginView = function PluginView(parent, context, viewModel) {
     /**
      * @type {yak.ui.Template}
      */
-    var template = context.template.load('panelPluginEdit');
+    var template = context.template.load('pluginEdit');
 
     /**
      * Form:  Name of the plugin

@@ -17,11 +17,6 @@ yak.FileUploadRequestHandler = function FileUploadRequestHandler(yakServer) {
     var STORE_EXTENSION = '.store.txt';
 
     /**
-     * @type {yak.PluginManager}
-     */
-    var pluginManager = yakServer.pluginManager;
-
-    /**
      * @type {yak.Store}
      */
     var store = yak.require('store');
@@ -61,8 +56,8 @@ yak.FileUploadRequestHandler = function FileUploadRequestHandler(yakServer) {
         var response = new yak.api.UploadFileResponse(request.id);
         response.success = true;
 
-        var storeKey = request.filename.replace(STORE_EXTENSION, '');
-        store.setValue(storeKey, request.content);
+        var documentKey = request.filename.replace(STORE_EXTENSION, '');
+        store.setValue(documentKey, request.content);
 
         // Restart every instance, because currently there is no way
         // to determine which plugin uses a store key.
@@ -98,11 +93,12 @@ yak.FileUploadRequestHandler = function FileUploadRequestHandler(yakServer) {
      */
     function addOrUpdatePlugin(request) {
         var response = new yak.api.UploadFileResponse(request.id);
-        response.success = false;
+        var pluginManager = yakServer.pluginManager;
 
         if (pluginManager.hasJsDoc(request.content)) {
             try {
-                var parsedPlugin = pluginManager.parsePluginContent(request.filename, request.content);
+                var pluginName = request.filename.replace(PLUGIN_EXTENSION, '');
+                var parsedPlugin = pluginManager.parsePluginContent(pluginName, request.content);
 
                 pluginManager.addOrUpdatePlugin(parsedPlugin);
                 response.success = true;

@@ -10,7 +10,7 @@ yak.api.UploadFileResponse = function UploadFileResponse(requestId) {
     /**
      * @type {string}
      */
-    this.type = 'response.UploadFileResponse';
+    this.type = 'response.uploadFileResponse';
 
     /**
      * The original request id.

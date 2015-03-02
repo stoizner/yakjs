@@ -1,11 +1,16 @@
-<div class="panel-toolbar">
-    <ul class="panel-actions-left">
-        <li><button data-bind="click: handleNewPluginClick">New Plugin</button></li>
-        <li><button data-bind="click: handleRefreshClick">Refresh</button></li>
-    </ul>
+<div class="header-panel">
+    <div class="header-panel-header">
+        <ul class="toolbar">
+            <li class="toolbar-item"><button data-bind="click: handleNewPluginClick">New Plugin</button></li>
+            <li class="toolbar-item"><button data-bind="click: handleRefreshClick">Refresh</button></li>
+        </ul>
+    </div>
+    <div class="header-panel-body">
+        <div class="scroll-panel">
+            <div class="list plugin-items"></div>
+        </div>
+    </div>
 </div>
-
-<div class="list plugin-items"></div>
 
 <div id="plugin-item-context" class="context-menu plugin-item-context">
     <ul>
