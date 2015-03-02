@@ -20,61 +20,6 @@ div, input, li {
     margin-right: auto;
 }
 
-
-.list {
-    position: absolute;
-    top: 50px;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    overflow: auto;
-}
-
-.list-item {
-    position:relative;
-    height:30px;
-    border-bottom:1px solid #F0F0F0;
-    font: 12px/30px 'roboto';
-    color: #303030;
-    overflow:hidden;
-    cursor:context-menu;
-    background: #ffffff;
-}
-
-.list-item.state-context-open {
-   background:#F5F5F5;
-}
-
-.list-item-cell {
-   display:inline-block;
-   margin: 0;
-   height:30px;
-   vertical-align:top;
-}
-
-.list-item-icon {
-    display:inline-block;
-    margin: 0;
-    height:30px;
-    width: 30px;
-    vertical-align:top;
-}
-
-.list-item-open-context {
-    width: 30px;
-    opacity: 1;
-    background: url('icons/context-accent.svg') no-repeat center;
-    background-size:20px 20px;
-    cursor: pointer;
-}
-
-.list-item-open-context:hover {
-    width: 30px;
-    opacity: 1;
-    background: #4787C7 url('icons/context-white.svg') no-repeat center;
-    background-size:20px 20px;
-}
-
 .instance-item-state { width:30px; opacity:0.5; }
 .instance-item-port { width:60px; color: #000000; }
 .instance-item-name { width:250px; }
@@ -140,15 +85,14 @@ div, input, li {
 .context-menu li:hover {
     background:#4787C7;
     color: #ffffff;
-    border-top: 0px solid #E0E0E0;
-    border-bottom: 0px solid #E0E0E0;
+    border-top: 0 solid #E0E0E0;
+    border-bottom: 0 solid #E0E0E0;
 }
 
 .form {
-    margin-top: 10px;
+    margin: 10px 0;
     background: #ffffff;
-    padding: 0 10px;
-    overflow: auto;
+    padding: 10px 10px;
 }
 
 .form-line {
@@ -211,33 +155,28 @@ div, input, li {
 
 .codeEditor {
     position: absolute;
-    top: 190px;
+    top: 0;
     left: 0;
     right: 0;
-    bottom: 40px;
+    bottom: 0;
 }
 
 .codeEditor-store {
     position: absolute;
-    top: 110px;
+    top: 0;
     left: 0;
     right: 0;
-    bottom: 40px;
+    bottom: 0;
 }
 
 .codeEditor-status {
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    height: 30px;
-    font-size: 0;
+    height: 50px;
 }
 
 .codeEditor-status .status-item {
     display: inline-block;
     height: 30px;
-    margin: 0 10px 0 0;
+    margin: 10px 10px 10px 0;
     background: #ffffff;
     vertical-align: top;
 }
