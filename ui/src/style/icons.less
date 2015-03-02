@@ -1,3 +1,9 @@
+.icon-size {
+    background: no-repeat center;
+    background-size: 16px 16px;
+    opacity: 0.65;
+}
+
 .icon-yak { background: url('icons/yak.png') no-repeat center; }
 .icon-yak-white { background: url('icons/yak-white.png') no-repeat center; }
 .icon-yak-stars { background: url('icons/stars.svg') no-repeat center; }
@@ -8,8 +14,33 @@
 .icon-context-accent { background: url('icons/context-accent.svg') no-repeat center; background-size:20px 20px; }
 .icon-context-white { background: url('icons/context-white.svg') no-repeat center; background-size:20px 20px; }
 
-.icon-key-dark { background: url('icons/key.svg') no-repeat center; background-size:15px 15px; opacity: 0.5;}
-.icon-plugin-dark { background: url('icons/puzzle.svg') no-repeat center; background-size:15px 15px; opacity: 0.5;}
-.icon-instance-dark { background: url('icons/cog-dark.svg') no-repeat center; background-size:15px 15px; opacity: 0.5;}
+.icon-key-dark,
+.icon-store-dark {
+    .icon-size;
+    background-image: url('icons/key.svg');
+}
 
-.icon-connections-dark { background: url('icons/link-dark.svg') no-repeat center; background-size:15px 15px; opacity: 0.5;}
+.icon-plugin-dark {
+    .icon-size;
+    background-image: url('icons/puzzle.svg');
+}
+
+.icon-instance-dark {
+    .icon-size;
+    background-image: url('icons/cog-dark.svg');
+}
+
+.icon-connections-dark {
+    .icon-size;
+    background-image: url('icons/link-dark.svg');
+}
+
+.icon-success-false {
+    .icon-size;
+    background-image: url('icons/warning.svg');
+}
+
+.icon-success-true {
+    .icon-size;
+    background-image: url('icons/check.svg');
+}
