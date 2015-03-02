@@ -11,7 +11,6 @@ yak.ui.nameCompare = function nameCompare(a, b) {
      */
     var result = 0;
 
-
     if (a.name < b.name) {
         result = -1;
     } else if (a.name > b.name) {
