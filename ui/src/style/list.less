@@ -1,0 +1,84 @@
+
+.list {
+    display: block;
+    width: 100%;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.list-item {
+    display: block;
+    height: 30px;
+    border-bottom:1px solid #F0F0F0;
+    font: 12px/30px 'roboto';
+    color: #303030;
+    overflow: hidden;
+    cursor:context-menu;
+    background: #ffffff;
+}
+
+div.list-item {
+    display: block;
+    height: 30px;
+    border-bottom:1px solid #F0F0F0;
+    font: 12px/30px 'roboto';
+    color: #303030;
+    overflow: hidden;
+    cursor:context-menu;
+    background: #ffffff;
+}
+
+.list-item[data-selected] {
+    background: @color-mulberry-light;
+}
+
+
+.list-item.state-context-open {
+    background:#F5F5F5;
+}
+
+.list-item-cell {
+    padding-right: 10px;
+    height: 30px;
+    overflow: hidden;
+    float: left;
+}
+
+.list-item-cell-max {
+    float: left;
+    padding-right: 10px;
+}
+
+.list-item-cell-full {
+    float: left;
+    height: 30px;
+    overflow: hidden;
+}
+
+.list-item-icon {
+    float: left;
+    width: 30px;
+    height: 30px;
+}
+
+.list-item-icon-right {
+    float: right;
+    width: 30px;
+    height: 30px;
+}
+
+.list-item-open-context {
+    width: 30px;
+    opacity: 1;
+    background: url('icons/context-accent.svg') no-repeat center;
+    background-size:20px 20px;
+    cursor: pointer;
+}
+
+.list-item-open-context:hover {
+    width: 30px;
+    opacity: 1;
+    background: #4787C7 url('icons/context-white.svg') no-repeat center;
+    background-size:20px 20px;
+}

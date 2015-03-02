@@ -1,0 +1,43 @@
+@header-height-large: 70px;
+@header-height-default: 50px;
+
+.header-panel {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    overflow: hidden;
+
+    .header-panel-header {
+        position: absolute;
+        top: 0;
+        right: 0;
+        left: 0;
+        height: @header-height-default;
+    }
+
+    .header-panel-body {
+        position: absolute;
+        top: @header-height-default;
+        right: 0;
+        bottom: 0;
+        left: 0;
+    }
+}
+
+.header-panel-header {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: @header-height-default;
+}
+
+.header-panel.mod-large > .header-panel-header {
+    height: @header-height-large;
+}
+
+.header-panel.mod-large > .header-panel-body {
+    top: @header-height-large;
+}
