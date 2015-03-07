@@ -27,6 +27,11 @@ yak.FileUploadRequestHandler = function FileUploadRequestHandler(yakServer) {
     var log = new yak.Logger(self.constructor.name);
 
     /**
+     * @type {yak.api.PluginValidator}
+     */
+    var pluginValidator = new yak.api.PluginValidator();
+
+    /**
      * @param {yak.api.UploadFileRequest} request
      * @returns {!yak.api.UploadFileResponse} response
      */
@@ -95,25 +100,18 @@ yak.FileUploadRequestHandler = function FileUploadRequestHandler(yakServer) {
         var response = new yak.api.UploadFileResponse(request.id);
         var pluginManager = yakServer.pluginManager;
 
-        if (pluginManager.hasJsDoc(request.content)) {
-            try {
-                var pluginName = request.filename.replace(PLUGIN_EXTENSION, '');
-                var parsedPlugin = pluginManager.parsePluginContent(pluginName, request.content);
+        var pluginName = request.filename.replace(PLUGIN_EXTENSION, '');
+        var parsedPlugin = pluginManager.parsePluginContent(pluginName, request.content);
 
-                pluginManager.addOrUpdatePlugin(parsedPlugin);
-                response.success = true;
+        if (pluginValidator.isPluginValid(parsedPlugin)) {
+            pluginManager.addOrUpdatePlugin(parsedPlugin);
 
-                if (request.enableInstanceRestart) {
-                    restartInstancesWithPlugin(parsedPlugin.name);
-                }
-            } catch (ex) {
-                response.success = false;
-                response.message = 'Add or update plugin failed: ' + ex.message;
-                log.warn(ex);
+            if (request.enableInstanceRestart) {
+                restartInstancesWithPlugin(parsedPlugin.name);
             }
         } else {
-            response.success = false;
-            response.message = 'JsDoc not found. Every plugin file must start with a valid JsDoc documentation.';
+            response = false;
+            response.message = pluginValidator.getMessage();
         }
 
         return response;

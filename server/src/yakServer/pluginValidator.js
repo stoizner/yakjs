@@ -49,6 +49,20 @@ yak.api.PluginValidator = function PluginValidator(pluginManager) {
     };
 
     /**
+     * Check if name and code for a plugin is valid.
+     * @returns {boolean} Whether the instance has valid values.
+     * @param {yak.Plugin} plugin
+     */
+    this.isPluginValid = function isPluginValid(plugin) {
+        allValuesValid = true;
+
+        validateName(plugin.name);
+        validateCode(plugin.code);
+
+        return allValuesValid;
+    };
+
+    /**
      * Get the validation error message.
      * @returns {string} The validation error message.
      */

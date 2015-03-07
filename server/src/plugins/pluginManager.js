@@ -78,13 +78,14 @@ yak.PluginManager = function PluginManager() {
         var plugin = new yak.Plugin();
 
         var rawJsDoc = extractJsDocPart(content);
-        if (!rawJsDoc) {
-            throw new Error('Missing plugin JsDoc documentation. Use JsDoc to document your plugin.');
-        }
+        var jsdoc = '';
 
-        var jsdoc = doctrine.parse(rawJsDoc, {unwrap: true});
-        if (!jsdoc) {
-            throw new Error('Can not parse JsDoc comments.');
+        if (rawJsDoc) {
+            jsdoc = doctrine.parse(rawJsDoc, {unwrap: true});
+
+            if (!jsdoc) {
+                log.warn('Could not parse jsdoc of plugin content.');
+            }
         }
 
         // Id shall not use postfix or js file ending.
