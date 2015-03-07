@@ -104,7 +104,11 @@ yak.FileUploadRequestHandler = function FileUploadRequestHandler(yakServer) {
         var parsedPlugin = pluginManager.parsePluginContent(pluginName, request.content);
 
         if (pluginValidator.isPluginValid(parsedPlugin)) {
+            parsedPlugin.version = parsedPlugin.version || '0.1.0';
+            parsedPlugin.description = parsedPlugin.description || 'Created via file upload ' + request.filename;
+
             pluginManager.addOrUpdatePlugin(parsedPlugin);
+            pluginManager.savePlugin(parsedPlugin);
 
             if (request.enableInstanceRestart) {
                 restartInstancesWithPlugin(parsedPlugin.name);
