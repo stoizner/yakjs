@@ -12,6 +12,8 @@ yak.FileUploadRequestHandler = function FileUploadRequestHandler(yakServer) {
      */
     var self = this;
 
+    var INTERNAL_ERROR_MESSAGE = 'Internal YAKjs error. To help us, please report that problem.';
+
     var PLUGIN_EXTENSION = '.plugin.js';
     var INSTANCE_EXTENSION = '.instance.json';
     var STORE_EXTENSION = '.store.txt';
@@ -59,15 +61,22 @@ yak.FileUploadRequestHandler = function FileUploadRequestHandler(yakServer) {
      */
     function addOrUpdateStore(request) {
         var response = new yak.api.UploadFileResponse(request.id);
-        response.success = true;
 
-        var documentKey = request.filename.replace(STORE_EXTENSION, '');
-        store.setValue(documentKey, request.content);
+        try {
+            var documentKey = request.filename.replace(STORE_EXTENSION, '');
+            store.setValue(documentKey, request.content);
 
-        // Restart every instance, because currently there is no way
-        // to determine which plugin uses a store key.
-        var instances = yakServer.instanceManager.getInstances();
-        _.each(instances, function restart(instance) { restartInstance(instance.id); });
+            // Restart every instance, because currently there is no way
+            // to determine which plugin uses a store key.
+            var instances = yakServer.instanceManager.getInstances();
+            _.each(instances, function restart(instance) { restartInstance(instance.id); });
+
+            response.success = true;
+        } catch(ex) {
+            log.warn(ex);
+            response.success = false;
+            response.message = INTERNAL_ERROR_MESSAGE;
+        }
 
         return response;
     }
@@ -78,18 +87,23 @@ yak.FileUploadRequestHandler = function FileUploadRequestHandler(yakServer) {
      */
     function addOrUpdateInstance(request) {
         var response = new yak.api.UploadFileResponse(request.id);
-        response.success = false;
 
-        var instance =  yakServer.instanceManager.parseInstance(request.filename, request.content);
+        try {
+            var instance = yakServer.instanceManager.parseInstance(request.filename, request.content);
 
-        if (instance) {
-            if (request.enableInstanceRestart) {
-                restartInstance(instance.id);
+            if (instance) {
+                yakServer.instanceManager.addOrUpdateInstance(instance);
+            } else {
+                response.success = false;
+                response.message = 'Instance json is not valid. ';
             }
-            response.success = true;
+        } catch(ex) {
+            log.warn(ex);
+            response.success = false;
+            response.message = INTERNAL_ERROR_MESSAGE;
         }
 
-       return response;
+        return response;
     }
 
     /**
@@ -98,26 +112,32 @@ yak.FileUploadRequestHandler = function FileUploadRequestHandler(yakServer) {
      */
     function addOrUpdatePlugin(request) {
         var response = new yak.api.UploadFileResponse(request.id);
-        var pluginManager = yakServer.pluginManager;
 
-        var pluginName = request.filename.replace(PLUGIN_EXTENSION, '');
-        var parsedPlugin = pluginManager.parsePluginContent(pluginName, request.content);
+        try {
+            var pluginManager = yakServer.pluginManager;
 
-        if (pluginValidator.isPluginValid(parsedPlugin)) {
-            parsedPlugin.version = parsedPlugin.version || '0.1.0';
-            parsedPlugin.description = parsedPlugin.description || 'Created via file upload ' + request.filename;
+            var pluginName = request.filename.replace(PLUGIN_EXTENSION, '');
+            var parsedPlugin = pluginManager.parsePluginContent(pluginName, request.content);
 
-            pluginManager.addOrUpdatePlugin(parsedPlugin);
-            pluginManager.savePlugin(parsedPlugin);
+            if (pluginValidator.isPluginValid(parsedPlugin)) {
+                parsedPlugin.version = parsedPlugin.version || '0.1.0';
+                parsedPlugin.description = parsedPlugin.description || 'Created via file upload ' + request.filename;
 
-            if (request.enableInstanceRestart) {
-                restartInstancesWithPlugin(parsedPlugin.name);
+                pluginManager.addOrUpdatePlugin(parsedPlugin);
+                pluginManager.savePlugin(parsedPlugin);
+
+                if (request.enableInstanceRestart) {
+                    restartInstancesWithPlugin(parsedPlugin.name);
+                }
+            } else {
+                response = false;
+                response.message = pluginValidator.getMessage();
             }
-        } else {
-            response = false;
-            response.message = pluginValidator.getMessage();
+        } catch(ex) {
+            log.warn(ex);
+            response.success = false;
+            response.message = INTERNAL_ERROR_MESSAGE;
         }
-
         return response;
     }
 
