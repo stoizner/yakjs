@@ -1,4 +1,4 @@
-.header {
+.app-bar {
     position: absolute;
     top: 0;
     right: 0;
@@ -6,36 +6,28 @@
     bottom: 0;
     background:#505050;
     overflow: hidden;
+    z-index: 50;
 }
 
-.header-wrap {
-    position: relative;
-    width: 980px;
-    height: 100%;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.header-logo {
+.app-bar-logo {
     position: absolute;
-    top: 0;
     bottom: 0;
+    height: 56px;
     left: 0;
     display:block;
-    width:120px;
-    background: #4787C7;
+    width: 80px;
 }
 
-.header-logo-icon {
+.app-bar-logo-icon {
     position: absolute;
     top: 0;
     right: 0;
     bottom: 0;
     left: 0;
-    opacity:0.75;
+    opacity: 1;
 }
 
-.header-logo-stars-icon {
+.app-bar-logo-stars-icon {
     position: absolute;
     top: -2px;
     left: 15px;
@@ -59,26 +51,25 @@
     to { -o-transform: rotate(360deg) scale(0.5);}
 }
 
-.header-text {
+.app-bar-text {
     position: absolute;
-    top: 10px;
-    left: 140px;
-    height: 35px;
+    bottom: 0;
+    left: 80px;
     vertical-align:middle;
-    float:left;
-    font: 25px/35px 'roboto-medium';
+    float: left;
+    font: 20px/24px 'roboto-medium';
     color: #f0f0f0;
-    margin-left:10px;
+    margin-left: 10px;
 }
 
-.header-links {
+.app-bar-links {
     position: absolute;
     top: 45px;
     left: 140px;
     bottom: 0;
 }
 
-.header-links a {
+.app-bar-links a {
     margin-left:10px;
     font: 11px/20px 'roboto';
     color: #909090;
@@ -86,7 +77,7 @@
     text-decoration:none;
 }
 
-.header-links a:hover {
+.app-bar-links a:hover {
     color: #4787C7;
     text-decoration:none
 }

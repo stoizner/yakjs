@@ -9,7 +9,7 @@ yak.ui.FileUploadView = function FileUploadView(parent, context, viewModel) {
     'use strict';
 
     /**
-     * @type {yak.ui.HeaderView}
+     * @type {yak.ui.AppBarView}
      */
     var self = this;
 

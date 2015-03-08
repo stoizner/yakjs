@@ -1,13 +1,13 @@
 /**
- * HeaderViewModel
+ * AppBarViewModel
  * @constructor
  * @param {yak.ui.ViewModelContext} context
  */
-yak.ui.HeaderViewModel = function HeaderViewModel(context) {
+yak.ui.AppBarViewModel = function AppBarViewModel(context) {
     'use strict';
 
     /**
-     * @type {yak.ui.HeaderViewModel}
+     * @type {yak.ui.AppBarViewModel}
      */
     var self = this;
 

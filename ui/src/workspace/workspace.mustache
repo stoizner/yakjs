@@ -1,29 +1,55 @@
-<div class="notification" data-bind="visible: isNotificationVisible"></div>
+<div class="header-panel mod-tall">
+    <div class="header-panel-header">
+        <div class="app-bar"></div>
+    </div>
+    <div class="header-panel-body">
+        <div class="tab-panel">
+            <div class="tab-panel-tabs">
+                <div class="dark-background-panel">
+                    <div class="center-panel">
+                        <ul>
+                            <li data-panel="panel-instance" class="state-active">Instances</li>
+                            <li data-panel="panel-plugin">Plugins</li>
+                            <li data-panel="panel-store">Store</li>
+                        </ul>
+                        <div class="tab-panel-tabs-indicator"></div>
+                        <div class="drop-panel" data-view="fileUploadView"></div>
+                    </div>
+                </div>
+            </div>
 
-<div class="workspace-main">
-
-    <!-- Navigation -->
-    <nav class="workspace-nav" data-bind="visible: isNavigationVisible, click: handleNavigationClick">
-        <ul>
-            <li data-panel="panel-instance" class="state-active">Instances</li>
-            <li data-panel="panel-plugin">Plugins</li>
-            <li data-panel="panel-store">Store</li>
-        </ul>
-    </nav>
-
-    <div class="workspace-drop" data-bind="visible: isNavigationVisible">
-        <div class="drop-panel" data-view="fileUploadView"></div>
+            <div class="tab-panel-panels">
+                <div class="center-panel">
+                    <div class="dynamic-panel">
+                        <div class="dynamic-panel-top">
+                            <div class="notification" data-bind="visible: isNotificationVisible"></div>
+                        </div>
+                        <div class="dynamic-panel-center">
+                            <div class="dynamic-panel-center-content">
+                                <div class="panel" data-panel="panel-instance"></div>
+                                <div class="panel" data-panel="panel-instance-edit"></div>
+                                <div class="panel" data-panel="panel-plugin"></div>
+                                <div class="panel" data-panel="panel-plugin-edit"></div>
+                                <div class="panel" data-panel="panel-log"></div>
+                                <div class="panel" data-panel="panel-store"></div>
+                                <div class="panel" data-panel="panel-storeEntry-edit"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- Panels -->
-    <div class="workspace-panels">
-        <div class="panel panel-instance"></div>
-        <div class="panel panel-instance-edit"></div>
-        <div class="panel panel-plugin"></div>
-        <div class="panel panel-plugin-edit"></div>
-        <div class="panel panel-log"></div>
-        <div class="panel panel-store"></div>
-        <div class="panel panel-storeEntry-edit"></div>
-    </div>
 
+    <!--<div class="panel">-->
+
+        <!--&lt;!&ndash; Navigation &ndash;&gt;-->
+
+        <!--&lt;!&ndash; Panels &ndash;&gt;-->
+        <!--<div class="workspace-panels">-->
+            <!---->
+        <!--</div>-->
+
+    <!--</div>-->
 </div>

@@ -1,22 +1,22 @@
 /**
- * HeaderView
+ * AppBarView
  * @constructor
  * @param {$} parent
  * @param {yak.ui.ViewContext} context
- * @param {yak.ui.HeaderViewModel} viewModel
+ * @param {yak.ui.AppBarViewModel} viewModel
  */
-yak.ui.HeaderView = function HeaderView(parent, context, viewModel) {
+yak.ui.AppBarView = function AppBarView(parent, context, viewModel) {
     'use strict';
 
     /**
-     * @type {yak.ui.HeaderView}
+     * @type {yak.ui.AppBarView}
      */
     var self = this;
 
     /**
      * @type {yak.ui.Template}
      */
-    var template = context.template.load('header');
+    var template = context.template.load('appBar');
 
     /**
      * Constructor

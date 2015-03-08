@@ -7,7 +7,7 @@ yak.ui.FileUploadViewModel = function FileUploadViewModel(context) {
     'use strict';
 
     /**
-     * @type {yak.ui.HeaderViewModel}
+     * @type {yak.ui.AppBarViewModel}
      */
     var self = this;
 

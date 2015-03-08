@@ -22,34 +22,8 @@ $(document).ready(function bootstrap() {
 
     viewFactory.create($('.workspace'), yak.ui.WorkspaceView, yak.ui.WorkspaceViewModel);
     viewFactory.create($('[data-view=fileUploadReportView]'), yak.ui.FileUploadReportView, yak.ui.FileUploadReportViewModel);
-
-    //connectToYakJsServer(eventBus);
-
-    //var workspaceView = new yak.ui.WorkspaceView($(document), viewContext);
 });
 
-/**
- * Connect to the YakJs server
- * @param {cobu.EventBus} eventBus
- */
-function connectToYakJsServer(eventBus) {
-    'use strict';
-
-    eventBus.post(new yak.ui.WebSocketConnectCommand(yak.config.webSocketUri));
-
-    eventBus.on(yak.ui.WebSocketOpenEvent).register(function handleOpenEvent() {
-        console.log('on yak.ui.WebSocketOpenEvent');
-        eventBus.post(new yak.ui.UpdateNotificationCommand(null));
-    });
-
-    eventBus.on(yak.ui.WebSocketCloseEvent).register(function handleCloseEvent() {
-        console.log('on yak.ui.WebSocketCloseEvent');
-        self.isWebSocketConnected = false;
-        eventBus.post(new yak.ui.UpdateNotificationCommand('Can not connect to yakjs-server or connection closed. Is YAKjs running?'));
-    });
-}
-
-//noinspection JSHint
 /**
  * EventBus error handler
  * @param {cobu.EventBusError} eventBusError

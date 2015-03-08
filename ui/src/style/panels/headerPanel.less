@@ -1,5 +1,5 @@
-@header-height-large: 70px;
-@header-height-default: 50px;
+@header-height-tall: @app-bar-height;
+@header-height: @tool-bar-height;
 
 .header-panel {
     position: absolute;
@@ -14,12 +14,12 @@
         top: 0;
         right: 0;
         left: 0;
-        height: @header-height-default;
+        height: @header-height;
     }
 
     .header-panel-body {
         position: absolute;
-        top: @header-height-default;
+        top: @header-height;
         right: 0;
         bottom: 0;
         left: 0;
@@ -31,13 +31,13 @@
     top: 0;
     right: 0;
     left: 0;
-    height: @header-height-default;
+    height: @header-height;
 }
 
-.header-panel.mod-large > .header-panel-header {
-    height: @header-height-large;
+.header-panel.mod-tall > .header-panel-header {
+    height: @header-height-tall;
 }
 
-.header-panel.mod-large > .header-panel-body {
-    top: @header-height-large;
+.header-panel.mod-tall > .header-panel-body {
+    top: @header-height-tall;
 }
