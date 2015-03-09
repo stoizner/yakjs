@@ -25,7 +25,7 @@ yak.ui.WorkspaceViewModel = function WorkspaceViewModel(context) {
      * Callback function for active panel changed event.
      * @type {Function}
      */
-    this.onActivePanelChanged = yak.ui.noop;
+    this.onActivePanelViewChanged = yak.ui.noop;
 
     /**
      *  Constructor
@@ -33,7 +33,7 @@ yak.ui.WorkspaceViewModel = function WorkspaceViewModel(context) {
     function constructor() {
         context.eventBus.on(yak.ui.ActivatePanelCommand).register(handleActivatePanel);
         self.activePanel = 'panel-instance';
-        self.onActivePanelChanged();
+        self.onActivePanelViewChanged();
     }
 
     /**
@@ -43,7 +43,7 @@ yak.ui.WorkspaceViewModel = function WorkspaceViewModel(context) {
         console.log('handleActivatePanel', command);
         self.activePanel = command.panelName;
         self.activePanelData = command.data;
-        self.onActivePanelChanged();
+        self.onActivePanelViewChanged();
     }
 
     /**
@@ -53,7 +53,7 @@ yak.ui.WorkspaceViewModel = function WorkspaceViewModel(context) {
     this.activatePanel = function activatePanel(name, data) {
         self.activePanel = name;
         self.activePanelData = data || null;
-        self.onActivePanelChanged();
+        self.onActivePanelViewChanged();
     };
 
     constructor();

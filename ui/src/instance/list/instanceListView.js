@@ -59,19 +59,48 @@ yak.ui.InstanceListView = function InstanceListView(parent, context, viewModel) 
         viewModel.items.sort(yak.ui.nameCompare);
 
         _.each(viewModel.items, function toHTML(item) {
+            item.isInstanceRunning = item.state === 'running';
             html += itemTemplate.build(item);
         });
 
         itemContainer.html(html);
 
         $('.list-item-open-context', itemContainer).contextMenu($('#instance-item-context'), handleMenuClicked);
+
+        parent.find('[data-command=edit]').click(handleEditClick);
+        parent.find('[data-command=start]').click(handleStartClick);
+        parent.find('[data-command=stop]').click(handleStopClick);
     };
+
+    /**
+     * @param {jQuery.Event} event
+     */
+    function handleEditClick(event) {
+        var instanceId = $(event.target).closest('[data-id]').attr('data-id');
+        var contextItem = _.findWhere(viewModel.items, { id: instanceId});
+        viewModel.activateInstanceEditPanel(contextItem);
+    }
+
+    /**
+     * @param {jQuery.Event} event
+     */
+    function handleStartClick(event) {
+        var instanceId = $(event.target).closest('[data-id]').attr('data-id');
+        viewModel.startInstance(instanceId);
+    }
+
+    /**
+     * @param {jQuery.Event} event
+     */
+    function handleStopClick(event) {
+        var instanceId = $(event.target).closest('[data-id]').attr('data-id');
+        viewModel.stopInstance(instanceId);
+    }
 
     /**
      * @param {string} id The instance id.
      */
     function handleContextEdit(id) {
-
         var contextItem = _.findWhere(viewModel.items, { id: id});
         viewModel.activateInstanceEditPanel(contextItem);
     }

@@ -27,3 +27,29 @@
 .button:hover {
     color: @color-teal-900;
 }
+
+.text-button {
+    .no-select;
+    display: inline-block;
+    position: relative;
+    min-width: 64px;
+    height: 32px;
+    border-radius: 2px;
+    background-color: #fff;
+    font: 12px / 32px 'roboto-bold';
+    color: @color-teal-500;
+    cursor: pointer;
+    text-transform: uppercase;
+    margin: 0 4px;
+    padding: 0 8px;
+}
+
+.text-button:active {
+    box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2);
+    transition-delay: 0s;
+}
+
+.text-button:hover {
+    color: @color-teal-900;
+}
+

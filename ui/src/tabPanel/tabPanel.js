@@ -22,23 +22,40 @@ yak.ui.TabPanel = function TabPanel(element) {
     var activeTabIndicator = null;
 
     /**
+     * @type {!Object<{id: string, tab: string>}
+     */
+    var panels = {};
+
+    /**
      * @type {function(string)}
      */
     this.onTabChanged = _.noop;
 
     /**
-     * Setup tab widget.
+     * Setup tab widget. {HTMLElement}
      */
     function constructor() {
         element.find('.tab-panel-tabs').click(handleTabPanelClick);
 
         activeTabIndicator = element.find('.tab-panel-tabs-indicator ');
+
+        var panelElements = element.find('.tab-panel-panels [data-panel]');
+        panelElements.hide();
+
+        _.each(panelElements, function toPanel(htmlElement) {
+            var element = $(htmlElement);
+            var panel = {};
+            panel.id = element.attr('data-panel');
+            panel.tab = element.attr('data-tab') || panel.id;
+            panels[panel.id] = panel;
+        });
     }
 
     /**
      * @param {jQuery.Event} event
      */
     function handleTabPanelClick(event) {
+        console.log('handleTabPanelClick');
         var target = $(event.target).closest('li');
         var panelId = target.attr('data-panel');
 
@@ -49,15 +66,21 @@ yak.ui.TabPanel = function TabPanel(element) {
      * @param {string} panelId
      */
     this.switchTo = function switchTo(panelId) {
-        if (panelId) {
-            element.find('.tab-panel-tabs li').removeClass('state-active');
+        var panel = panels[panelId];
 
-            var tab = element.find('.tab-panel-tabs li[data-panel=' + panelId + ']');
-            tab.addClass('state-active');
+        if (panel) {
+            var tab = element.find('.tab-panel-tabs li[data-panel=' + panel.tab + ']');
 
-            showPanel(panelId);
-            setTabIndicatorTo(tab);
-            self.onTabChanged(panelId);
+            if (tab) {
+                element.find('.tab-panel-tabs li').removeClass('state-active');
+                tab.addClass('state-active');
+
+                showPanel(panelId);
+                setTabIndicatorTo(tab);
+                self.onTabChanged(panelId);
+            }
+        } else {
+            throw new Error('Panel does not exist.', {panelId: panelId});
         }
     };
 

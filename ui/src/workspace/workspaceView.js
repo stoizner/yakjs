@@ -16,7 +16,7 @@ yak.ui.WorkspaceView = function WorkspaceView(parent, context, viewModel) {
     /**
      * @type {Object.<string, object>}
      */
-    var panelViews = {};
+    var panels = {};
 
     /**
      * @type {yak.ui.Template}
@@ -38,17 +38,18 @@ yak.ui.WorkspaceView = function WorkspaceView(parent, context, viewModel) {
         context.viewFactory.create($('.notification', parent), yak.ui.NotificationView, yak.ui.NotificationViewModel);
         context.viewFactory.create($('[data-view=fileUploadView]', parent), yak.ui.FileUploadView, yak.ui.FileUploadViewModel);
 
-        panelViews['panel-instance'] = context.viewFactory.create($('.panel[data-panel=panel-instance]', parent), yak.ui.InstanceListView, yak.ui.InstanceListViewModel);
-        panelViews['panel-instance-edit'] = context.viewFactory.create($('.panel[data-panel=panel-instance-edit]', parent), yak.ui.InstanceView, yak.ui.InstanceViewModel);
-        panelViews['panel-plugin'] = context.viewFactory.create($('.panel[data-panel=panel-plugin]', parent), yak.ui.PluginListView, yak.ui.PluginListViewModel);
-        panelViews['panel-plugin-edit'] = context.viewFactory.create($('.panel[data-panel=panel-plugin-edit]', parent), yak.ui.PluginView, yak.ui.PluginViewModel);
-        panelViews['panel-store'] = context.viewFactory.create($('.panel[data-panel=panel-store]', parent), yak.ui.StoreListView, yak.ui.StoreListViewModel);
-        panelViews['panel-storeEntry-edit'] = context.viewFactory.create($('.panel[data-panel=panel-storeEntry-edit]', parent), yak.ui.EditStoreEntryView, yak.ui.EditStoreEntryViewModel);
+        panels['panel-instance'] = context.viewFactory.create($('.panel[data-panel=panel-instance]', parent), yak.ui.InstanceListView, yak.ui.InstanceListViewModel);
+        panels['panel-instance-edit'] = context.viewFactory.create($('.panel[data-panel=panel-instance-edit]', parent), yak.ui.InstanceView, yak.ui.InstanceViewModel);
 
-        tabPanel = new yak.ui.TabPanel(parent.find('.tab-panel'));
+        panels['panel-plugin'] = context.viewFactory.create($('.panel[data-panel=panel-plugin]', parent), yak.ui.PluginListView, yak.ui.PluginListViewModel);
+        panels['panel-plugin-edit'] = context.viewFactory.create($('.panel[data-panel=panel-plugin-edit]', parent), yak.ui.PluginView, yak.ui.PluginViewModel);
+        panels['panel-store'] = context.viewFactory.create($('.panel[data-panel=panel-store]', parent), yak.ui.StoreListView, yak.ui.StoreListViewModel);
+        panels['panel-storeEntry-edit'] = context.viewFactory.create($('.panel[data-panel=panel-storeEntry-edit]', parent), yak.ui.EditStoreEntryView, yak.ui.EditStoreEntryViewModel);
+
+        tabPanel = new yak.ui.TabPanel(parent.find('.main-navigation'));
         tabPanel.onTabChanged = handleTabChanged;
 
-        viewModel.onActivePanelChanged = switchToPanel;
+        viewModel.onActivePanelViewChanged = switchToPanel;
         switchToPanel();
     }
 
@@ -64,9 +65,9 @@ yak.ui.WorkspaceView = function WorkspaceView(parent, context, viewModel) {
      * @param {string} panelId
      */
     function handleTabChanged(panelId) {
-        if (panelViews.hasOwnProperty(viewModel.activePanel)) {
-            panelViews[panelId].activate(viewModel.activePanelData);
-            viewModel.activatePanel = panelId;
+        if (panels.hasOwnProperty(viewModel.activePanel)) {
+            panels[panelId].activate(viewModel.activePanelData);
+            viewModel.activePanel = panelId;
         } else {
             console.log('No view found.', { activePanel: viewModel.activePanel });
         }
