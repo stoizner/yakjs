@@ -70,6 +70,7 @@ yak.ui.InstanceListView = function InstanceListView(parent, context, viewModel) 
         parent.find('[data-command=edit]').click(handleEditClick);
         parent.find('[data-command=start]').click(handleStartClick);
         parent.find('[data-command=stop]').click(handleStopClick);
+        parent.find('[data-command=delete]').click(handleDeleteClick);
     };
 
     /**
@@ -95,6 +96,14 @@ yak.ui.InstanceListView = function InstanceListView(parent, context, viewModel) 
     function handleStopClick(event) {
         var instanceId = $(event.target).closest('[data-id]').attr('data-id');
         viewModel.stopInstance(instanceId);
+    }
+
+    /**
+     * @param {jQuery.Event} event
+     */
+    function handleDeleteClick(event) {
+        var instanceId = $(event.target).closest('[data-id]').attr('data-id');
+        viewModel.deleteInstance(instanceId);
     }
 
     /**
