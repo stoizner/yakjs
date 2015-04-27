@@ -66,7 +66,6 @@ yak.ui.InstanceListViewModel = function InstanceListViewModel(context) {
         context.adapter.sendRequest(request, self.reloadAndRefreshList);
     };
 
-
     /**
      * Show and activate the instance edit panel.
      * @param {yak.api.InstanceInfo} [item]
