@@ -1,26 +1,24 @@
-<div class="header-panel">
+<section class="header-panel mod-tall">
     <div class="header-panel-header">
         <div class="white-space-block"></div>
         <ul class="tool-bar">
             <li class="tool-bar-item">
-                <div class="button" data-bind="click: handleNewPluginClick"><div class="center">New Plugin</div></div>
+                <div class="button" data-command="create"><div class="center">New Plugin</div></div>
             </li>
             <li class="tool-bar-item">
-                <div class="button" data-bind="click: handleRefreshClick"><div class="center">Refresh</div></div>
+                <div class="button" data-command="refresh"><div class="center">Refresh</div></div>
             </li>
         </ul>
     </div>
     <div class="header-panel-body">
-        <div class="scroll-panel">
-            <div class="list plugin-items"></div>
-        </div>
+        <section class="footer-panel">
+            <div class="footer-panel-body">
+                <div class="card-panel">
+                    <div class="scroll-panel ">
+                        <div class="list plugin-items"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
     </div>
-</div>
-
-<div id="plugin-item-context" class="context-menu plugin-item-context">
-    <ul>
-        <li data-menu="edit">Edit</li>
-        <li class="seperator"></li>
-        <li data-menu="delete">Delete</li>
-    </ul>
-</div>
+</section>

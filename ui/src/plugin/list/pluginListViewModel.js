@@ -48,9 +48,15 @@ yak.ui.PluginListViewModel = function PluginListViewModel(context) {
 
     /**
      * Show and activate the plugin edit panel.
-     * @param {yak.ui.PluginItem} [item]
+     * @param {string} [name]
      */
-    this.activatePluginEditPanel = function activatePluginEditPanel(item) {
+    this.activatePluginEditPanel = function activatePluginEditPanel(name) {
+        var item = null;
+
+        if (name) {
+            item = _.findWhere(self.items, {name: name});
+        }
+
         context.eventBus.post(new yak.ui.ActivatePanelCommand('panel-plugin-edit', item));
     };
 

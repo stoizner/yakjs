@@ -1,8 +1,8 @@
 /**
  * PluginListView
  * @constructor
- * @param {yak.ui.ViewContext} context
  * @param {jQuery} parent
+ * @param {yak.ui.ViewContext} context
  * @param {yak.ui.PluginListViewModel} viewModel
  */
 yak.ui.PluginListView = function PluginListView(parent, context, viewModel) {
@@ -23,10 +23,9 @@ yak.ui.PluginListView = function PluginListView(parent, context, viewModel) {
      */
     var itemTemplate = context.template.load('pluginItem');
 
-    var contextMenuActions = {};
-
-    this.handleNewPluginClick = function handleNewPluginClick() { viewModel.activatePluginEditPanel(); };
-    this.handleRefreshClick = function handleRefreshClick() { viewModel.reloadAndRefreshList(); };
+    /**
+     * Activate the view.
+     */
     this.activate = function activate() { viewModel.activate(); };
 
     /**
@@ -36,65 +35,43 @@ yak.ui.PluginListView = function PluginListView(parent, context, viewModel) {
         console.log('yak.ui.PluginListView.constructor');
         parent.html(template.build());
 
-        contextMenuActions.edit = handleContextMenuEdit;
-        contextMenuActions.delete = viewModel.deletePlugin;
 
-        viewModel.onItemsChanged = function onItemsChanged() { self.createList(); };
+        parent.find('[data-command=create]').click(viewModel.activatePluginEditPanel);
+        parent.find('[data-command=refresh]').click(viewModel.reloadAndRefreshList);
+        parent.find('.plugin-items').click(handleListClick);
 
-        context.ko.applyBindings(self, parent[0]);
-        self.createList();
+        viewModel.onItemsChanged = function onItemsChanged() { createList(); };
+
+        createList();
+    }
+
+    /**
+     * @param {jQuery.Event} event
+     */
+    function handleListClick(event) {
+        var listItem = $(event.target).closest('.list-item');
+        var pluginName = listItem.attr('data-plugin');
+
+        if (pluginName) {
+            viewModel.activatePluginEditPanel(pluginName);
+        }
     }
 
     /**
      * Update panel list
      */
-    this.createList = function createList() {
-
+    function createList() {
         var html = '';
-        var itemContainer = $('.plugin-items', parent);
+        var itemContainer = parent.find('.plugin-items');
 
         viewModel.items.sort(yak.ui.nameCompare);
 
-        _.each(viewModel.items, function(item) {
+        _.each(viewModel.items, function createListItem(item) {
             html += itemTemplate.build(item);
         });
 
         itemContainer.html(html);
-
-        $('.list-item-open-context', itemContainer).contextMenu($('#plugin-item-context'), handleMenuClicked);
-    };
-
-    /**
-     * @param {jQuery} context
-     * @param event
-     */
-    function handleMenuClicked(context, event) {
-
-        var pluginName = context.closest('.list-item').attr('data-plugin');
-        var menuAction = $(event.target).attr('data-menu');
-
-        if (contextMenuActions.hasOwnProperty(menuAction)) {
-            contextMenuActions[menuAction](pluginName);
-        } else {
-            console.warn('No context menu handler found for ' + menuAction);
-        }
     }
-
-    /**
-     * @param {string} pluginName
-     */
-    function handleContextMenuEdit(pluginName) {
-        var contextItem = _.findWhere(viewModel.items, { name: pluginName});
-        viewModel.activatePluginEditPanel(contextItem);
-    }
-
-    /**
-     * Show and activate the plugin edit panel.
-     * @param {yak.ui.PluginItem} [item]
-     */
-    this.activatePluginEditPanel = function activatePluginEditPanel(item) {
-        context.eventBus.post(new yak.ui.ActivatePanelCommand('panel-plugin-edit', item));
-    };
 
     constructor();
 };
