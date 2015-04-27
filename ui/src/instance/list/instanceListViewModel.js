@@ -66,15 +66,6 @@ yak.ui.InstanceListViewModel = function InstanceListViewModel(context) {
         context.adapter.sendRequest(request, self.reloadAndRefreshList);
     };
 
-    /**
-     * Delete instance.
-     * @param {string} id
-     */
-    this.deleteInstance = function deleteInstance(id) {
-        var request = new yak.api.DeleteInstanceRequest();
-        request.instanceId = id;
-        context.adapter.sendRequest(request, self.reloadAndRefreshList);
-    };
 
     /**
      * Show and activate the instance edit panel.

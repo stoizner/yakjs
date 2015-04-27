@@ -3,12 +3,17 @@
         <div class="white-space-block"></div>
         <ul class="tool-bar">
             <li class="tool-bar-item">
-                <div class="button" data-bind="click: handleSaveClick">
+                <div class="button" data-command="save">
                     <div class="center">Save</div>
                 </div>
             </li>
+            <li class="tool-bar-item" data-item-command-visible="true">
+                <div class="button" data-command="delete" >
+                    <div class="center">Delete</div>
+                </div>
+            </li>
             <li class="tool-bar-item">
-                <div class="button" data-bind="click: handleCancelClick">
+                <div class="button" data-command="cancel">
                     <div class="center">Cancel</div>
                 </div>
             </li>

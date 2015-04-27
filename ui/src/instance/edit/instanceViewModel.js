@@ -61,6 +61,15 @@ yak.ui.InstanceViewModel = function InstanceViewModel(context) {
     };
 
     /**
+     * Delete instance.
+     */
+    this.deleteInstance = function deleteInstance() {
+        var request = new yak.api.DeleteInstanceRequest();
+        request.instanceId = self.instanceItem.id;
+        context.adapter.sendRequest(request, showPanelInstanceList);
+    };
+
+    /**
      *
      * @param {yak.api.GetPluginsResponse} response
      */
@@ -115,8 +124,15 @@ yak.ui.InstanceViewModel = function InstanceViewModel(context) {
      * Cancel instance edit.
      */
     this.cancel = function cancel() {
-        context.eventBus.post(new yak.ui.ActivatePanelCommand('panel-instance'));
+        showPanelInstanceList();
     };
+
+    /**
+     * Show the panel instance list.
+     */
+    function showPanelInstanceList() {
+        context.eventBus.post(new yak.ui.ActivatePanelCommand('panel-instance'));
+    }
 
     /**
      *

@@ -41,6 +41,12 @@ yak.ui.InstanceView = function InstanceView(parent, context, viewModel) {
         context.ko.applyBindings(self, parent[0]);
 
         $('.plugin-list', parent).click(handleSelectPluginClick);
+
+        parent.find('[data-command=save]').click(handleSaveCommand);
+        parent.find('[data-command=delete]').click(handleDeleteCommand);
+        parent.find('[data-command=cancel]').click(handleCancelCommand);
+
+        parent.find('[data-item-command-visible]').attr('data-item-command-visible', false);
     }
 
     /**
@@ -80,10 +86,12 @@ yak.ui.InstanceView = function InstanceView(parent, context, viewModel) {
             self.name(viewModel.instanceItem.name);
             self.description(viewModel.instanceItem.description);
             self.port(viewModel.instanceItem.port);
+            parent.find('[data-item-command-visible]').attr('data-item-command-visible', true);
         } else {
             self.name('');
             self.description('');
             self.port('');
+            parent.find('[data-item-command-visible]').attr('data-item-command-visible', false);
         }
 
         updatePluginList();
@@ -105,7 +113,7 @@ yak.ui.InstanceView = function InstanceView(parent, context, viewModel) {
     /**
      * Handle Save Button Click
      */
-    this.handleSaveClick = function handleSaveClick() {
+    function handleSaveCommand() {
         parent.find('.error-line').hide();
 
         var instanceItem = new yak.ui.InstanceItem(self.name());
@@ -114,14 +122,21 @@ yak.ui.InstanceView = function InstanceView(parent, context, viewModel) {
         instanceItem.port = self.port();
 
         viewModel.createOrUpdate(instanceItem);
-    };
+    }
 
     /**
      * Handle cancel button click
      */
-    this.handleCancelClick = function handleCancelClick() {
+    function handleCancelCommand() {
         viewModel.cancel();
-    };
+    }
+
+    /**
+     * Handle delete button click
+     */
+    function handleDeleteCommand() {
+        viewModel.deleteInstance();
+    }
 
     constructor();
 };
