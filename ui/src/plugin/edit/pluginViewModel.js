@@ -1,5 +1,5 @@
 /**
- * PluginViewModel
+ * ViewModel for editing a plugin.
  * @constructor
  * @param {yak.ui.ViewModelContext} context
  */
@@ -28,13 +28,6 @@ yak.ui.PluginViewModel = function PluginViewModel(context) {
     this.onErrorResponse = _.noop;
 
     /**
-     * Constructor
-     */
-    function constructor() {
-    }
-
-    /**
-     * Activate view
      * @param {string|object} data
      */
     this.activate = function activate(data) {
@@ -51,7 +44,7 @@ yak.ui.PluginViewModel = function PluginViewModel(context) {
     };
 
     /**
-     * Create or update a plugin for a websocket instance.
+     * Create or update a plugin
      * @param {yak.ui.PluginItem} instance
      */
     this.createOrUpdate = function createOrUpdate(instance) {
@@ -78,17 +71,30 @@ yak.ui.PluginViewModel = function PluginViewModel(context) {
     };
 
     /**
+     * @param {string} name
+     */
+    this.deletePlugin = function deletePlugin() {
+        if (self.pluginItem) {
+            var request = new yak.api.DeletePluginRequest();
+            request.pluginName = self.pluginItem.name;
+            context.adapter.sendRequest(request, showPluginPanel);
+        }
+    };
+
+    function showPluginPanel() {
+        context.eventBus.post(new yak.ui.ActivatePanelCommand('panel-plugin'));
+    }
+
+    /**
      * @param {yak.api.CreateInstanceResponse} response
      */
     function handleResponse(response) {
         console.log('handleResponse', response);
 
         if (response.success) {
-            context.eventBus.post(new yak.ui.ActivatePanelCommand('panel-plugin'));
+            showPluginPanel();
         } else {
             self.onErrorResponse(response.message);
         }
     }
-
-    constructor();
 };

@@ -53,7 +53,9 @@ yak.ui.PluginView = function PluginView(parent, context, viewModel) {
         console.log('yak.ui.InstanceView.constructor', self);
         parent.html(template.build());
 
-        //$('#instance-save', parent).click(handleSaveClick);
+        parent.find('[data-command=save]').click(handleSaveCommand);
+        parent.find('[data-command=delete]').click(handleDeleteCommand);
+        parent.find('[data-command=cancel]').click(handleCancelCommand);
 
         viewModel.onPluginItemChanged = handlePluginItemChanged;
         viewModel.onErrorResponse = handleErrorResponse;
@@ -151,7 +153,7 @@ yak.ui.PluginView = function PluginView(parent, context, viewModel) {
     /**
      * Handle Save Button Click
      */
-    this.handleSaveClick = function handleSaveClick() {
+    function handleSaveCommand() {
         var pluginItem = new yak.ui.PluginItem();
         pluginItem.name = self.name();
         pluginItem.description = self.description();
@@ -159,14 +161,21 @@ yak.ui.PluginView = function PluginView(parent, context, viewModel) {
         pluginItem.version = self.version();
 
         viewModel.createOrUpdate(pluginItem);
-    };
+    }
 
     /**
      * Handle cancel button click
      */
-    this.handleCancelClick = function handleCancelClick() {
+    function handleCancelCommand() {
         viewModel.cancel();
-    };
+    }
+
+    /**
+     * Handle delete click
+     */
+    function handleDeleteCommand() {
+        viewModel.deletePlugin();
+    }
 
     constructor();
 };

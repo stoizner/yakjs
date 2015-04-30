@@ -1,48 +1,67 @@
-<div class="header-panel">
-    <div class="header-panel-header">
+<div class="header-panel  mod-tall">
+    <header class="header-panel-header">
         <div class="white-space-block"></div>
         <ul class="tool-bar">
-            <li class="tool-bar-item"><div class="button" data-bind="click: handleSaveClick">Save</div></li>
-            <li class="tool-bar-item"><div class="button" data-bind="click: handleCancelClick">Cancel</div></li>
+            <li class="tool-bar-item">
+                <div class="button" data-command="save">
+                    <div class="center">Save</div>
+                </div>
+            </li>
+            <li class="tool-bar-item" data-item-command-visible="true">
+                <div class="button" data-command="delete" >
+                    <div class="center">Delete</div>
+                </div>
+            </li>
+            <li class="tool-bar-item">
+                <div class="button" data-command="cancel">
+                    <div class="center">Cancel</div>
+                </div>
+            </li>
         </ul>
-    </div>
-    <div class="header-panel-body">
+    </header>
+    <section class="header-panel-body">
         <div class="dynamic-panel">
-            <div class="dynamic-panel-top">
-                <div class="form-line error-line">
-                    <div class="error-line-text">{{error-text-here}}</div>
+            <header class="dynamic-panel-top">
+                <div class="content-block">
+                    <div class="form-line error-line">
+                        <div class="error-line-text">{{error-text-here}}</div>
+                    </div>
+                    <div class="form">
+                        <div class="form-line">
+                            <div class="line-label">Name</div>
+                            <div class="line-input"><input data-bind="value:name" type="text" /></div>
+                        </div>
+                        <div class="form-line">
+                            <div class="line-label">Version</div>
+                            <div class="line-input"><input data-bind="value:version" type="text" /></div>
+                        </div>
+                        <div class="form-line">
+                            <div class="line-label">Description</div>
+                            <div class="line-input"><input data-bind="value:description" type="text" /></div>
+                        </div>
+                    </div>
                 </div>
-                <div class="form">
-                    <div class="form-line">
-                        <div class="line-label">Name</div>
-                        <div class="line-input"><input data-bind="value:name" type="text" /></div>
-                    </div>
-                    <div class="form-line">
-                        <div class="line-label">Version</div>
-                        <div class="line-input"><input data-bind="value:version" type="text" /></div>
-                    </div>
-                    <div class="form-line">
-                        <div class="line-label">Description</div>
-                        <div class="line-input"><input data-bind="value:description" type="text" /></div>
-                    </div>
-                </div>
-            </div>
-            <div class="dynamic-panel-center">
+            </header>
+            <section class="dynamic-panel-center">
                 <div class="dynamic-panel-center-content">
-                    <div id="codeEditor" class="codeEditor"></div>
+                    <div class="content-panel mod-vertical-margin">
+                        <div id="codeEditor" class="codeEditor"></div>
+                    </div>
                 </div>
-            </div>
-            <div class="dynamic-panel-bottom codeEditor-status">
-                <div class="status-item">
-                    <div class="status-syntax" data-bind="class: classStateSyntaxError, attr: { title: classStateSyntaxErrorTitle }"></div>
+            </section>
+            <footer class="dynamic-panel-bottom codeEditor-status">
+                <div class="content-block">
+                    <div class="status-item">
+                        <div class="status-syntax" data-bind="class: classStateSyntaxError, attr: { title: classStateSyntaxErrorTitle }"></div>
+                    </div>
+                    <div class="status-item">
+                        <div class="status-line"><span data-bind="text: editorCursorLine"></span>:<span data-bind="text: editorCursorColumn"></span></div>
+                    </div>
+                    <div class="status-item">
+                        <div class="status-help">Press CTRL + SPACE for code completion.</div>
+                    </div>
                 </div>
-                <div class="status-item">
-                    <div class="status-line"><span data-bind="text: editorCursorLine"></span>:<span data-bind="text: editorCursorColumn"></span></div>
-                </div>
-                <div class="status-item">
-                    <div class="status-help">Press CTRL + SPACE for code completion.</div>
-                </div>
-            </div>
+            </footer>
         </div>
-    </div>
+    </section>
 </div>
