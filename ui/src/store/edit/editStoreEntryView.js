@@ -1,10 +1,9 @@
 /* global CodeMirror:false */
 
 /**
- * EditStoreEntryView
  * @constructor
- * @param {yak.ui.ViewContext} context
  * @param {jQuery} parent
+ * @param {yak.ui.ViewContext} context
  * @param {yak.ui.EditStoreEntryViewModel} viewModel
  */
 yak.ui.EditStoreEntryView = function EditStoreEntryView(parent, context, viewModel) {
@@ -40,6 +39,10 @@ yak.ui.EditStoreEntryView = function EditStoreEntryView(parent, context, viewMod
         viewModel.onItemChanged = handleItemChanged;
         context.ko.applyBindings(self, parent[0]);
 
+        parent.find('[data-command=save]').click(handleSaveCommand);
+        parent.find('[data-command=delete]').click(handleDeleteCommand);
+        parent.find('[data-command=cancel]').click(handleCancelCommand);
+
         CodeMirror.commands.autocomplete = yak.ui.codeEditorAutoComplete;
         CodeMirror.commands.autodocument = yak.ui.codeEditorAutoDocument;
 
@@ -50,9 +53,6 @@ yak.ui.EditStoreEntryView = function EditStoreEntryView(parent, context, viewMod
             indentUnit: 4,
             extraKeys: { 'Ctrl-Space': 'autocomplete', 'Ctrl-D': 'autodocument' }
         });
-
-        //codeEditor.on('change', handleCodeEditorChange);
-        //codeEditor.on('cursorActivity', handleCodeCursorActivity);
     }
 
     /**
@@ -81,23 +81,21 @@ yak.ui.EditStoreEntryView = function EditStoreEntryView(parent, context, viewMod
         }
     }
 
-    /**
-     * Handle Save Button Click
-     */
-    this.handleSaveClick = function handleSaveClick() {
+    function handleSaveCommand() {
         var item = {
             key: self.key(),
             value: codeEditor.getValue()
         };
         viewModel.createOrUpdate(item);
-    };
+    }
 
-    /**
-     * Handle cancel button click
-     */
-    this.handleCancelClick = function handleCancelClick() {
+    function handleCancelCommand() {
         viewModel.cancel();
-    };
+    }
+
+    function handleDeleteCommand() {
+        viewModel.deleteStore();
+    }
 
     constructor();
 };

@@ -23,7 +23,12 @@ yak.SetStoreValueRequestHandler = function SetStoreValueRequestHandler(yakServer
         var response = new yak.api.SetStoreValueResponse(request.id);
         response.requestId = request.id;
 
-        store.setValue(request.key,  request.value);
+        if (request.key) {
+            store.setValue(request.key, request.value);
+        } else {
+            response.success = false;
+            response.message = 'A store key must not be empty or null.';
+        }
 
         return response;
     };

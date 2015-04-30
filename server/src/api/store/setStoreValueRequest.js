@@ -23,12 +23,6 @@ yak.api.SetStoreValueRequest = function SetStoreValueRequest() {
     this.key = null;
 
     /**
-     * The key-value pair description.
-     * @type {null}
-     */
-    this.description = null;
-
-    /**
      * The store value.
      * @type {?string}
      */

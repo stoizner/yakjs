@@ -1,22 +1,18 @@
-<div class="header-panel">
-    <div class="header-panel-header">
+<div class="header-panel mod-tall">
+    <header class="header-panel-header">
+        <div class="white-space-block"></div>
         <ul class="tool-bar">
-            <li class="tool-bar-item"><div class="button" data-bind="click: handleNewStoreItemClick">New Entry</div></li>
-            <li class="tool-bar-item"><div class="button" data-bind="click: handleRefreshClick">Refresh</div></li>
+            <li class="tool-bar-item"><div class="button" data-command="create">New Entry</div></li>
+            <li class="tool-bar-item"><div class="button" data-command="refresh">Refresh</div></li>
         </ul>
-    </div>
-    <div class="header-panel-body">
-        <div class="scroll-panel">
-            <div class="list store-items"></div>
+    </header>
+    <section class="header-panel-body">
+        <div class="footer-panel">
+            <section class="footer-panel-body">
+                <div class="scroll-panel content-panel">
+                    <div class="list store-items"></div>
+                </div>
+            </section>
         </div>
-    </div>
-</div>
-
-<div id="store-item-context" class="context-menu store-item-context">
-    <ul>
-        <li data-menu="edit">Edit</li>
-        <li data-menu="saveAsFile">Save as file</li>
-        <li class="seperator"></li>
-        <li data-menu="delete">Delete</li>
-    </ul>
+    </section>
 </div>

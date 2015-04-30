@@ -8,10 +8,4 @@ yak.api.StoreKeyInfo = function StoreKeyInfo() {
      * @type {string}
      */
     this.key = null;
-
-    /**
-     * The store description for that key.
-     * @type {?string}
-     */
-    this.description = null;
 };

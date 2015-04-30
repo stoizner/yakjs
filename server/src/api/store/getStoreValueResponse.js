@@ -24,14 +24,19 @@ yak.api.GetStoreValueResponse = function GetStoreValueResponse(requestId) {
     this.key = null;
 
     /**
-     * The key-value pair description.
-     * @type {null}
-     */
-    this.description = null;
-
-    /**
      * The store value.
      * @type {?string}
      */
     this.value = null;
+
+    /**
+     * @type {boolean}
+     */
+    this.success = true;
+
+    /**
+     * An error message when request was not successfully.
+     * @type {string}
+     */
+    this.message = '';
 };

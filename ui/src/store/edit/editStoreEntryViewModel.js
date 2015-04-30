@@ -34,14 +34,14 @@ yak.ui.EditStoreEntryViewModel = function EditStoreEntryViewModel(context) {
 
     /**
      * Activate view
-     * @param {yak.api.StoreKeyInfo} keyInfo
+     * @param {string} key
      */
-    this.activate = function activate(keyInfo) {
-        console.log('EditStoreEntryViewModel.activate', { keyInfo:keyInfo });
+    this.activate = function activate(key) {
+        console.log('EditStoreEntryViewModel.activate', { key:key });
 
-        if (keyInfo) {
+        if (key) {
             var request = new yak.api.GetStoreValueRequest();
-            request.key = keyInfo.key;
+            request.key = key;
 
             lastRequestId = request.id;
             context.adapter.sendRequest(request, handleGetStoreValueResponse);
@@ -73,8 +73,22 @@ yak.ui.EditStoreEntryViewModel = function EditStoreEntryViewModel(context) {
      * Cancel instance edit.
      */
     this.cancel = function cancel() {
-        context.eventBus.post(new yak.ui.ActivatePanelCommand('panel-store'));
+        showStorePanel();
     };
+
+    /**
+     * @param {string} key
+     */
+    this.deleteStore = function deleteStore() {
+        if (self.item) {
+            console.log('deleteStore', {key: self.item.key});
+            context.adapter.sendRequest(new yak.api.DeleteStoreItemRequest(self.item.key), showStorePanel);
+        }
+    };
+
+    function showStorePanel() {
+        context.eventBus.post(new yak.ui.ActivatePanelCommand('panel-store'));
+    }
 
     /**
      * @param {yak.api.GetStoreValueResponse} response

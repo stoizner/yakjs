@@ -21,13 +21,18 @@ yak.GetStoreValueRequestHandler = function GetStoreValueRequestHandler(yakServer
         var key = request.key;
 
         logger.debug('GetStoreValueRequestHandler', { key: key });
+
         var response = new yak.api.GetStoreValueResponse(request.id);
 
-        var storeItem = store.getStoreItem(key);
+        if (key) {
+            var storeItem = store.getStoreItem(key);
 
-        response.key = key;
-        response.description = storeItem.description;
-        response.value = storeItem.value;
+            response.key = key;
+            response.value = storeItem.value;
+        } else {
+            response.success = false;
+            response.message = 'A store key must not be empty or null';
+        }
 
         return response;
     };

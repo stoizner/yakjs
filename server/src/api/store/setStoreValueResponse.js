@@ -22,4 +22,10 @@ yak.api.SetStoreValueResponse = function SetStoreValueResponse(requestId) {
      * @type {boolean}
      */
     this.success = true;
+
+    /**
+     * An error message when not successfully.
+     * @type {string}
+     */
+    this.message = '';
 };

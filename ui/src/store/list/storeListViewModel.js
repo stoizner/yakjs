@@ -55,14 +55,6 @@ yak.ui.StoreListViewModel = function StoreListViewModel(context) {
     };
 
     /**
-     * @param {string} key
-     */
-    this.deleteEntry = function deleteEntry(key) {
-        console.log('deleteEntry', {key: key});
-        context.adapter.sendRequest(new yak.api.DeleteStoreItemRequest(key), self.reloadAndRefreshList);
-    };
-
-    /**
      * @param {yak.api.GetLogInfoResponse} response
      */
     function handleGetStoreKeyInfoResponse(response) {
@@ -77,7 +69,7 @@ yak.ui.StoreListViewModel = function StoreListViewModel(context) {
      * @param {yak.api.StoreKeyInfo} [keyInfo]
      */
     this.activateStoreEditPanel = function activateStoreEditPanel(keyInfo) {
-        context.eventBus.post(new yak.ui.ActivatePanelCommand('panel-storeEntry-edit', keyInfo ));
+        context.eventBus.post(new yak.ui.ActivatePanelCommand('panel-storeEntry-edit', keyInfo));
     };
 
     /**
