@@ -22,6 +22,11 @@ yak.ui.StoreListView = function StoreListView(parent, context, viewModel) {
      */
     var itemTemplate = context.template.load('storeListItem');
 
+    /**
+     * @type {yak.ui.Template}
+     */
+    var groupTemplate = context.template.load('storeGroupItem');
+
     this.activate = function activate() { viewModel.activate(); };
 
     /**
@@ -33,7 +38,6 @@ yak.ui.StoreListView = function StoreListView(parent, context, viewModel) {
 
         parent.find('[data-command=create]').click(_.partial(viewModel.activateStoreEditPanel, null));
         parent.find('[data-command=refresh]').click(viewModel.reloadAndRefreshList);
-        parent.find('.store-items').click(handleListClick);
 
         viewModel.onItemsChanged = handleItemsChanged;
 
@@ -55,7 +59,7 @@ yak.ui.StoreListView = function StoreListView(parent, context, viewModel) {
     /**
      * Create the instance list.
      */
-    function createList() {
+    function createList2() {
         var html = '';
         var itemContainer = $('.store-items', parent);
 
@@ -64,6 +68,66 @@ yak.ui.StoreListView = function StoreListView(parent, context, viewModel) {
         });
 
         itemContainer.html(html);
+    }
+
+    function createList() {
+        var rootItemListContainer = parent.find('[data-list=items]');
+        var rootItemList = createItemList(viewModel.rootGroup.items);
+        rootItemListContainer.html(rootItemList);
+
+        var rootGroupsListContainer = parent.find('[data-list=groups]');
+        var rootGroupsList = createGroupList(viewModel.rootGroup.groups);
+        rootGroupsListContainer.html(rootGroupsList);
+
+        parent.find('[data-list=items]').click(handleListClick);
+    }
+
+    /**
+     * @param {!Object<string, !yak.ui.StoreGroupItem>} groupsMap
+     * @return {string} The group list HTML.
+     */
+    function createGroupList(groupsMap) {
+        var html = '';
+
+        var groups = _.toArray(groupsMap);
+
+        if (groups) {
+            groups = _.sortBy(groups, 'name');
+
+            _.each(groups, function appendGroupBlock(group) {
+                html += createGroupBlock(group);
+            });
+        }
+
+        return html;
+    }
+
+    /**
+     * @param {!yak.ui.StoreGroupItem} group
+     * @returns {string} The group item HTML
+     */
+    function createGroupBlock(group) {
+        var groupItem = {
+            name: group.name,
+            groups: createGroupList(group.groups),
+            items: createItemList(group.items)
+        };
+
+        return groupTemplate.build(groupItem);
+    }
+
+    /**
+     * @param {!Array<!yak.ui.StoreItem>} items
+     * @returns {string} The item list as HTML.
+     */
+    function createItemList(items) {
+        var html = '';
+
+        _.each(items, function createListItem(item) {
+            html += itemTemplate.build(item);
+        });
+
+        return html;
     }
 
     /**

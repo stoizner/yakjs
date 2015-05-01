@@ -22,6 +22,12 @@ yak.ui.StoreItem = function StoreItem(key) {
     this.name = '';
 
     /**
+     * The item namespace. (namespace + name = key)
+     * @type {string}
+     */
+    this.namespace = '';
+
+    /**
      * Initializes the items and extracts the name out of a namespaced key.
      */
     function constructor() {
@@ -30,6 +36,7 @@ yak.ui.StoreItem = function StoreItem(key) {
         // Key has a dot, so it is a namespaced key and the last part is the item name.
         // For example: Given com.yakjs.test-data then the name will be test-data
         if (lastDotIndex > 0) {
+            self.namespace = key.substring(0, lastDotIndex);
             self.name = key.substring(lastDotIndex + 1);
         } else {
             self.name = key;

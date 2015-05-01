@@ -27,6 +27,11 @@ yak.ui.StoreListViewModel = function StoreListViewModel(context) {
     this.items = [];
 
     /**
+     * @type {!yak.ui.StoreGroupItem}
+     */
+    this.rootGroup = new yak.ui.StoreGroupItem();
+
+    /**
      * @type {Function}
      */
     this.onItemsChanged = yak.ui.noop;
@@ -69,7 +74,61 @@ yak.ui.StoreListViewModel = function StoreListViewModel(context) {
         }
 
         self.items = _.map(response.keys, toStoreItem);
+
+        initializeGroupsBasedOnNamespacedKeys();
+
         self.onItemsChanged();
+    }
+
+    /**
+     * Initialize group structure based on namespaced keys.
+     */
+    function initializeGroupsBasedOnNamespacedKeys() {
+        self.rootGroup = new yak.ui.StoreGroupItem('');
+
+        /**
+         * @param {!yak.ui.StoreItem} item
+         */
+        function addToGroup(item) {
+            var group = self.rootGroup;
+            if (item.namespace) {
+                group = findOrCreateGroup(self.rootGroup.groups, item.namespace);
+            }
+
+            group.items.push(item);
+        }
+
+        _.each(self.items, addToGroup);
+    }
+
+    /**
+     * @param {!Object<string, !yak.ui.StoreGroupItem>} groups
+     * @param {string} namespacedGroupName Namespaced group name (e.g.: com.yakjs.group)
+     * @returns {!yak.ui.StoreGroupItem} The group for the group name.
+     */
+    function findOrCreateGroup(groups, namespacedGroupName) {
+        var namespaceIndex = namespacedGroupName.indexOf('.');
+        var groupName = namespacedGroupName;
+        var subGroupName = '';
+        var group;
+
+        if (namespaceIndex >= 0) {
+            groupName = namespacedGroupName.substring(0, namespaceIndex);
+            subGroupName = namespacedGroupName.substring(namespaceIndex + 1);
+        }
+
+        if (!groups[groupName]) {
+            group = new yak.ui.StoreGroupItem(groupName);
+            groups[groupName] = group;
+        } else {
+            group = groups[groupName];
+        }
+
+        if (subGroupName) {
+            group = findOrCreateGroup(group.groups, subGroupName);
+        }
+
+        return group;
     }
 
     /**
