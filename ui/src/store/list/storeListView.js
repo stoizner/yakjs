@@ -27,6 +27,12 @@ yak.ui.StoreListView = function StoreListView(parent, context, viewModel) {
      */
     var groupTemplate = context.template.load('storeGroupItem');
 
+    /**
+     *
+     * @type {yak.ui.ExpandFeature}
+     */
+    var expandFeature = null;
+
     this.activate = function activate() { viewModel.activate(); };
 
     /**
@@ -80,6 +86,8 @@ yak.ui.StoreListView = function StoreListView(parent, context, viewModel) {
         rootGroupsListContainer.html(rootGroupsList);
 
         parent.find('[data-list=items]').click(handleListClick);
+
+        expandFeature = new yak.ui.ExpandFeature(parent);
     }
 
     /**
