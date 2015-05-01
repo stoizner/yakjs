@@ -96,11 +96,8 @@ yak.ui.EditStoreEntryViewModel = function EditStoreEntryViewModel(context) {
     function handleGetStoreValueResponse(response) {
         console.log('handleGetStoreValueResponse', response);
 
-        self.item = {
-            key: response.key,
-            description: response.description,
-            value: response.value
-        };
+        self.item = new yak.ui.StoreItem(response.key);
+        self.item.value  = response.value;
 
         self.onItemChanged();
     }

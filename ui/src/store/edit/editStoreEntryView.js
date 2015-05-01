@@ -82,10 +82,9 @@ yak.ui.EditStoreEntryView = function EditStoreEntryView(parent, context, viewMod
     }
 
     function handleSaveCommand() {
-        var item = {
-            key: self.key(),
-            value: codeEditor.getValue()
-        };
+        var item = new yak.ui.StoreItem(self.key());
+        item.value = codeEditor.getValue();
+
         viewModel.createOrUpdate(item);
     }
 

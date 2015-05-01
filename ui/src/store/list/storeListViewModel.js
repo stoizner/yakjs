@@ -22,7 +22,7 @@ yak.ui.StoreListViewModel = function StoreListViewModel(context) {
     var lastGetValueRequestCallback = yak.ui.noop;
 
     /**
-     * @type {Array<yak.ui.StoreListItem>}
+     * @type {Array<yak.ui.StoreItem>}
      */
     this.items = [];
 
@@ -62,13 +62,13 @@ yak.ui.StoreListViewModel = function StoreListViewModel(context) {
 
         /**
          * @param {!yak.api.StoreKeyInfo} keyInfo
-         * @returns {yak.ui.StoreListItem} The store list item.
+         * @returns {yak.ui.StoreItem} The store list item.
          */
-        function toStoreListItem(keyInfo) {
-            return new yak.ui.StoreListItem(keyInfo.key);
+        function toStoreItem(keyInfo) {
+            return new yak.ui.StoreItem(keyInfo.key);
         }
 
-        self.items = _.map(response.keys, toStoreListItem);
+        self.items = _.map(response.keys, toStoreItem);
         self.onItemsChanged();
     }
 
@@ -105,7 +105,6 @@ yak.ui.StoreListViewModel = function StoreListViewModel(context) {
 
         var request = new yak.api.SetStoreValueRequest();
         request.key = self.item.key;
-        request.description = self.item.description;
         request.value = self.item.value;
 
         context.adapter.sendRequest(request, self.reloadAndRefreshList);
