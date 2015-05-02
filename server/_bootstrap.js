@@ -33,18 +33,11 @@ yak.global = {};
     var instanceManager = new yak.InstanceManager(pluginManager);
     instanceManager.loadInstances();
 
-    //var webServer = new yak.HttpServer(configManager.config);
-    //webServer.start();
+    var yakServer = new yak.YakServer(configManager, pluginManager, instanceManager);
+    yakServer.start();
 
-    var installer = new yak.PluginModuleInstaller(pluginManager);
-
-    installer.installRequiredModules(function installFinishedCallback(){
-        var yakServer = new yak.YakServer(configManager, pluginManager, instanceManager);
-        yakServer.start();
-
-        log.info('........................................');
-        log.info('. YAKjs server initialized and running .');
-        log.info('........................................');
-        log.info('');
-    });
+    log.info('........................................');
+    log.info('. YAKjs server initialized and running .');
+    log.info('........................................');
+    log.info('');
 }());

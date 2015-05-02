@@ -64,7 +64,6 @@ yak.PluginModuleInstaller = function PluginModuleInstaller(pluginManager) {
                 realName: dependency.realName,
                 version: dependency.version
             };
-            log.debug('Module', {name:moduleInfo.name, info:moduleInfo});
             installedModules.push(moduleInfo.name);
         });
 
