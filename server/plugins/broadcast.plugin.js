@@ -13,6 +13,8 @@
 function BroadcastPlugin(require) {
     'use strict';
 
+    var log = require('log');
+
     /**
      * @param {yak.WebSocketInstance} instance
      */
@@ -37,6 +39,7 @@ function BroadcastPlugin(require) {
             var conn = connections[i];
 
             if (conn.id !== connection.id) {
+                log.debug('Sending message to ' + connection.id);
                 conn.send(message.data);
             }
         }
@@ -54,3 +57,4 @@ function BroadcastPlugin(require) {
      */
     this.onTerminate = function onTerminate(instance) {};
 };
+
