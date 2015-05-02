@@ -26,11 +26,6 @@
         var fs = require('fs');
 
         /**
-         * @type {yak.Logger}
-         */
-        var log = new yak.Logger(self.constructor.name);
-
-        /**
          * @type {!Object.<string, yak.StoreItem>}
          */
         var data = {};
@@ -84,7 +79,7 @@
                 fs.unlinkSync(STORES_DIR + key + STORE_FILENAME_POSTFIX);
                 success = true;
             } catch (ex) {
-                log.warn('Could not delete store file.', {key: key});
+                throw new Error('Could not delete store file. (' + key + ')');
             }
 
             return success;
@@ -123,12 +118,11 @@
             try {
                 if (_.has(data, key)) {
                     var filename = STORES_DIR + key + STORE_FILENAME_POSTFIX;
-                    log.info('Save store item', { key: key, filename: filename});
                     fs.writeFile(filename, data[key].value);
                 }
                 saved = true;
             } catch (ex) {
-                log.warn('Could not save store to file.', {key: key});
+                throw new Error('Could not save store to file. (' + key + ')');
             }
 
             return saved;
@@ -138,8 +132,6 @@
          * Load store from file.
          */
         this.load = function load() {
-            log.info('Load stores from directory.', { directory: STORES_DIR });
-
             var storeFileNames = getStoreFilenames();
             var storeFileContent = readStoreFiles(storeFileNames);
 
@@ -166,10 +158,9 @@
                     fileContent = fileContent.replace('\r\n', '\n');
                     storeMap[filename] = fileContent;
                 } catch(ex) {
-                    log.warn('Could not read store file.', {filename: filename, error: ex.message});
+                    throw new Error('Could not read store file. ' + JSON.stringify({filename: filename, error: ex.message}));
                 }
             });
-            log.info('Store files read.', {filesRead: _.toArray(storeMap).length});
 
             return storeMap;
         }
