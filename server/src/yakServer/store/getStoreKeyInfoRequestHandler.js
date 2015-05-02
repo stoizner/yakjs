@@ -21,12 +21,14 @@ yak.GetStoreKeyInfoRequestHandler = function GetStoreKeyInfoRequestHandler(yakSe
         logger.debug('GetStoreKeyInfoRequestHandler', { request: request });
 
         var response = new yak.api.GetStoreKeyInfoResponse(request.id);
-         response.keys = [];
+        response.keys = [];
 
         var storeData = store.getStore();
 
-        _.each(storeData, function each(entry) {
-            response.keys.push({key: entry.key, description:entry.description});
+        response.keys = _.map(storeData, function toKeyInfo(item) {
+            var keyInfo = new yak.api.StoreKeyInfo();
+            keyInfo.key = item.key;
+            return keyInfo;
         });
 
        return response;

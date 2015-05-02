@@ -22,4 +22,15 @@ yak.api.GetStoreKeyInfoResponse = function GetStoreKeyInfoResponse(requestId) {
      * @type {Array.<yak.api.StoreKeyInfo>}
      */
     this.keys = [];
+
+    /**
+     * @type {boolean}
+     */
+    this.success = true;
+
+    /**
+     * An error message when request was not successfully.
+     * @type {string}
+     */
+    this.message = '';
 };
