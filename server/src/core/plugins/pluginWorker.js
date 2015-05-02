@@ -18,7 +18,7 @@ yak.PluginWorker = function PluginWorker(name) {
     /**
      * @param {yak.WebSocketInstance} instance
      */
-    this.onInitialize = function onInit(instance) {};
+    this.onInitialize = function onInitialize(instance) {};
 
     /**
      * @param {yak.WebSocketConnection} connection
@@ -43,5 +43,5 @@ yak.PluginWorker = function PluginWorker(name) {
     /**
      * @param {yak.WebSocketInstance} instance
      */
-    this.onTerminate = function onInit(instance) {};
+    this.onTerminate = function onTerminate(instance) {};
 };

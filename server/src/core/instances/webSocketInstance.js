@@ -201,16 +201,25 @@ yak.WebSocketInstance = function WebSocketInstance(pluginManager, id, port) {
      * @param {yak.PluginWorker} plugin
      */
     function initializePlugin(plugin) {
-        log.info('Initialize plugin.', { plugin: plugin.name });
+        log.info('Initialize plugin. @' + plugin.name);
+
+        var pluginLog = new yak.Logger(plugin.name + '.plugin');
+
         if (plugin.hasOwnProperty('onInitialize')) {
-            plugin.onInitialize(self);
+            try {
+                plugin.onInitialize(self);
 
-            // Add plugin instance to workers.
-            pluginInstances.push(plugin);
+                // Add plugin instance to workers.
+                pluginInstances.push(plugin);
 
-            log.info('Plugin initialized.', { plugin: plugin.name });
+                pluginLog.info('Plugin initialized.');
+                log.info('Plugin initialized. @' + plugin.name);
+            } catch (ex) {
+                pluginLog.error('onInitialize failed', {error: ex.message});
+                log.warn('onInitialize failed @' + pluginInstance.name, {error: ex.message});
+            }
         } else {
-            log.info('Plugin has no onInitialize function - skipped.', { plugin: plugin.name });
+            pluginLog.info('Plugin has no onInitialize function - skipped.');
         }
     }
 
@@ -237,13 +246,15 @@ yak.WebSocketInstance = function WebSocketInstance(pluginManager, id, port) {
      * @param {yak.PluginWorker} pluginInstance
      */
     function terminatePlugin(pluginInstance) {
+        var pluginLog = new yak.Logger(pluginInstance.name + '.plugin');
+
         log.info('Terminate plugin.', { plugin: pluginInstance.name });
 
         if (pluginInstance.hasOwnProperty('onTerminate')) {
             pluginInstance.onTerminate(self);
-            log.info('Plugin terminated.', { plugin: pluginInstance.name });
+            pluginLog.info('Plugin terminated.');
         } else {
-            log.info('Plugin has no onTerminate function - skipped.', { plugin: pluginInstance.name });
+            pluginLog.info('Plugin has no onTerminate function - skipped.', { plugin: pluginInstance.name });
         }
     }
 
@@ -304,7 +315,7 @@ yak.WebSocketInstance = function WebSocketInstance(pluginManager, id, port) {
 
         return function handleMessage(data, flags) {
 
-            log.info('Received websocket message ', { fromConnectionId: connection.id, data: data });
+            log.debug('Received websocket message ', { fromConnectionId: connection.id, data: data });
 
             for(var i = 0; i < pluginInstances.length; i++) {
                 pluginOnMessage(pluginInstances[i], data, connection);
@@ -319,16 +330,18 @@ yak.WebSocketInstance = function WebSocketInstance(pluginManager, id, port) {
      * @param {yak.WebSocketConnection} connection
      */
     function pluginOnMessage(pluginInstance, data, connection) {
+        var pluginLog = new yak.Logger(pluginInstance.name + '.plugin');
 
         if (pluginInstance.onMessage) {
             try {
-                self.log.info('Plugin.onMessage', { pluginName: pluginInstance.name });
+                pluginLog.info('onMessage', {pluginName: pluginInstance.name});
                 pluginInstance.onMessage(new yak.WebSocketMessage(data), connection, self);
             } catch (ex) {
-                self.log.error('Plugin.onMessage failed.', { pluginName: pluginInstance.name, error: ex.name, message:ex.message });
+                pluginLog.error('onMessage failed', {error: ex.message, data: data, connectionId: connection.id});
+                log.warn('onMessage failed @' + pluginInstance.name, {error: ex.message, data: data, connectionId: connection.id});
             }
         } else {
-            self.log.warn('Plugin.onMessage(data, connection, instance) not found.', { pluginName: pluginInstance.name });
+            pluginLog.warn('onMessage(data, connection, instance) not found.');
         }
     }
 
@@ -337,18 +350,20 @@ yak.WebSocketInstance = function WebSocketInstance(pluginManager, id, port) {
      * @param {yak.WebSocketConnection} connection
      */
     function pluginsOnNewConnection(connection) {
-
         _.each(pluginInstances, function callOnNewConnection(pluginInstance) {
+
+            var pluginLog = new yak.Logger(pluginInstance.name + '.plugin');
 
             if (pluginInstance.onNewConnection) {
                 try {
-                    self.log.info('Plugin.onNewConnection', { pluginName: pluginInstance.name });
+                    pluginLog.info('onNewConnection', {connectionId: connection.id});
                     pluginInstance.onNewConnection(connection, self);
                 } catch (ex) {
-                    self.log.error('Plugin.onNewConnection failed.', { pluginName: pluginInstance.name, error: ex.name, message:ex.message });
+                    pluginLog.error('onNewConnection failed.', {error: ex.message, connectionId: connection.id});
+                    log.warn('onNewConnection failed @' + pluginInstance.name, {error: ex.message, connectionId: connection.id});
                 }
             } else {
-                self.log.warn('Plugin.onNewConnection(connection, instance) not found', { pluginName: pluginInstance.name });
+                pluginLog.warn('onNewConnection(connection, instance) not found.');
             }
 
         });

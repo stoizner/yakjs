@@ -302,13 +302,14 @@ yak.PluginManager = function PluginManager() {
     };
 
     /**
-     * Create a plugin instance.
+     * Creates a plugin instance.
      * @param {string} name
-     * @param {function} [require]
-     * @returns {*} The plugin worker.
+     * @returns {*} A working plugin instance.
      */
-    this.createPluginInstance = function createPluginInstance(name, require) {
-        log.info('Create plugin instance', { pluginId: name });
+    this.createPluginInstance = function createPluginInstance(name) {
+        var pluginLog = new yak.Logger(name + '.plugin');
+        pluginLog.info('Create new plugin instance');
+
         var pluginInstance = null;
 
         if (plugins.hasOwnProperty(name)) {
@@ -316,21 +317,42 @@ yak.PluginManager = function PluginManager() {
 
             try {
                 if (typeof plugin.PluginConstructor === 'function') {
-                    var requireContext = require || yak.require;
+                    var requireContext = _.partial(pluginRequire, {log: pluginLog});
                     pluginInstance = new plugin.PluginConstructor(requireContext);
                     pluginInstance.name = name;
                 } else {
-                    log.warn('No constructor function available, can not create plugin instance. ', { plugin: name });
+                    pluginLog.error('No constructor function available, can not create plugin instance.');
                 }
             } catch(ex) {
                 pluginInstance = null;
-                log.error('Can not create plugin instance.', { plugin: name, error: ex.message });
-                log.debug('Error Stack', { stack: ex.stack });
+                pluginLog.error('Can not create plugin instance.', {error: ex.message });
             }
+        }
+
+        if (!pluginInstance) {
+            log.warn('Could not create a new plugin instance. @' + name);
         }
 
         return pluginInstance;
     };
+
+    /**
+     * Returns the plugin require context.
+     * @param {!Object<string, ?>} pluginModules
+     * @param {string} moduleId
+     * @returns {*}
+     */
+    function pluginRequire(pluginModules, moduleId) {
+        var module = _.noop;
+
+        if (_.has(pluginModules, moduleId)) {
+            module = pluginModules[moduleId];
+        } else {
+            module = yak.require(moduleId);
+        }
+
+        return module;
+    }
 
     /**
      * Creates the constructor function to create a plugin instance.
