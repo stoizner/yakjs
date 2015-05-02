@@ -115,6 +115,7 @@ module.exports = function grunt(grunt) {
                     {flatten:false, src: ['node_modules/npm/**'], dest: pkgDir},
                     {flatten:false, src: ['node_modules/express/**'], dest: pkgDir},
                     {flatten:false, src: ['node_modules/body-parser/**'], dest: pkgDir},
+                    {flatten:false, src: ['node_modules/log4js/**'], dest: pkgDir},
                     {flatten:true, cwd: serverSrcDir + 'shell/', src: ['*.bat', '*.sh'], dest: pkgDir, expand: true}
                 ]
             },
