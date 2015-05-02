@@ -42,7 +42,7 @@ yak.Logger = function Logger(logCategory) {
      * @param {*} [data]
      */
     this.warn = function warn(message, data) {
-        logger.warn(message, data);
+        logger.warn(message, data || '');
     };
 
     /**
@@ -50,7 +50,7 @@ yak.Logger = function Logger(logCategory) {
      * @param {*} [data]
      */
     this.debug = function debug(message, data) {
-        logger.debug(message, data);
+        logger.debug(message, data || '');
     };
 
     /**
@@ -58,7 +58,7 @@ yak.Logger = function Logger(logCategory) {
      * @param {*} [data]
      */
     this.error = function error(message, data) {
-        logger.error(message, data);
+        logger.error(message, data || '');
     };
 
     constructor();
