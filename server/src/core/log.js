@@ -10,6 +10,16 @@ yak.Log = function Log() {
 
     var fs = require('fs');
 
+    var appenders = {};
+
+    /**
+     * Maximal file size in bytes.
+     * @type {number}
+     */
+    var MAX_FILE_SIZE = 1048576;
+
+    var MAX_NUMBER_OF_FILES = 3;
+
     /**
      * Initializes the logging system.
      */
@@ -22,9 +32,9 @@ yak.Log = function Log() {
 
         log4js.loadAppender('file');
 
-        var fileAppender = log4js.appenders.file('logs/yakjs.log', null, 1048576, 3);
+        appenders.yakjs = log4js.appenders.file('logs/yakjs.log', null, MAX_FILE_SIZE, MAX_NUMBER_OF_FILES);
 
-        log4js.addAppender(fileAppender, 'yakjs');
+        log4js.addAppender(appenders.yakjs);
     }
 
     /**
@@ -32,7 +42,18 @@ yak.Log = function Log() {
      * @returns {?} The log4js logger.
      */
     this.getLogger = function getLogger(name) {
-        return log4js.getLogger('yakjs');
+        var logger = log4js.getLogger(name);
+
+        if (name.indexOf('.plugin') > 0) {
+            if (!appenders[name]) {
+                appenders[name] = log4js.appenders.file('logs/' + name + '.log', null, MAX_FILE_SIZE, MAX_NUMBER_OF_FILES);
+                log4js.addAppender(appenders[name], name);
+            }
+
+            logger = log4js.getLogger(name);
+        }
+
+        return logger;
     };
 
     constructor();
