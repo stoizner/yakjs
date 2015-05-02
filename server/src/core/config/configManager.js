@@ -30,8 +30,6 @@ yak.ConfigManager = function ConfigManager() {
      * Load configuration.
      */
     this.load = function load() {
-        log.info('Load configuration from files.', {filename: BASE_CONFIG_FILENAME});
-
         self.config = new yak.Config();
 
         try {
@@ -45,21 +43,21 @@ yak.ConfigManager = function ConfigManager() {
      * Load server config from file.
      */
     function loadConfig() {
-        log.info('Load configuration from file', { filename: BASE_CONFIG_FILENAME });
-
         if (fs.existsSync(BASE_CONFIG_FILENAME)) {
             try {
                 var data = fs.readFileSync(BASE_CONFIG_FILENAME, 'utf8');
                 var parsedConfig = JSON.parse(data);
 
                 self.config = _.extend(new yak.Config(), parsedConfig);
-            } catch(e) {
+
+                log.info('YAKjs configuration loaded', {filename: BASE_CONFIG_FILENAME});
+            } catch(ex) {
                 // Ignore error
-                log.info('YAKjs config could not be loaded. Using default config.', { error: e.message });
+                log.info('YAKjs configuration could not be loaded. Using default config.', {filename: BASE_CONFIG_FILENAME, error: ex.message});
                 self.config = new yak.Config();
             }
         } else {
-            log.info('YAKjs config does not exist. Create and use default config.');
+            log.info('YAKjs configuration does not exist. Create and use default config.', {filename: BASE_CONFIG_FILENAME});
             self.config = new yak.Config();
 
             fs.writeFile(BASE_CONFIG_FILENAME, JSON.stringify(self.config, null, 4));
