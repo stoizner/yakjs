@@ -12,24 +12,20 @@ yak.global = {};
     yak.global.log = new yak.Log();
     yak.global.regexGroup = yak.regexGroup;
 
-    var log = new yak.Logger('STARTUP');
+    var log = new yak.Logger('Startup');
 
     /**
      * @type {yak.Store}
      */
     var store = yak.require('store');
 
-    log.info('Starting YAK server');
-
     var configManager = new yak.ConfigManager();
     configManager.load();
     store.load();
 
-    log.info('Setup PluginManager');
     var pluginManager = new yak.PluginManager();
     pluginManager.loadPlugins();
 
-    log.info('Setup InstanceManager');
     var instanceManager = new yak.InstanceManager(pluginManager);
     instanceManager.loadInstances();
 
