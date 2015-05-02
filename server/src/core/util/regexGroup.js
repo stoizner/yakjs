@@ -4,7 +4,7 @@
  * @param {string} regexp
  * @returns {Array.<string>} When matches all matching groups or null.
  */
-yak.util.regexGroup = function regexGroup(text, regexp) {
+yak.regexGroup = function regexGroup(text, regexp) {
     var matchedGroups = null;
     var regex = new RegExp(regexp);
     var matches = regex.exec(text);

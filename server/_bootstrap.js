@@ -1,6 +1,17 @@
 var _ = require('underscore');
 
+/**
+ * Global singleton instances. Try to avoid putting instances to this global namespace.
+ * The global namespace will be initialized at bootstrapping.
+ * @type {Object}
+ */
+yak.global = {};
+
 (function bootstrap() {
+    // Initialize globals.
+    yak.global.log = new yak.Log();
+    yak.global.regexGroup = yak.regexGroup;
+
     var log = new yak.Logger('STARTUP');
 
     /**

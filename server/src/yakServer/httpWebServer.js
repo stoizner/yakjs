@@ -117,9 +117,6 @@ yak.HttpServer = function HttpServer(yakServer, config) {
         apiMap['request.deletePlugin'] = new yak.DeletePluginRequestHandler(yakServer);
         apiMap['request.updatePlugin'] = new yak.UpdatePluginRequestHandler(yakServer);
 
-        // Log
-        apiMap['request.getLogInfo'] = new yak.GetLogInfoRequestHandler(yakServer);
-
         // Store
         apiMap['request.getStoreKeyInfo'] = new yak.GetStoreKeyInfoRequestHandler(yakServer);
         apiMap['request.getStoreValue'] = new yak.GetStoreValueRequestHandler(yakServer);
