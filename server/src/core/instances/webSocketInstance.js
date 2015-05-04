@@ -216,7 +216,7 @@ yak.WebSocketInstance = function WebSocketInstance(pluginManager, id, port) {
                 log.info('Plugin initialized. @' + plugin.name);
             } catch (ex) {
                 pluginLog.error('onInitialize failed', {error: ex.message});
-                log.warn('onInitialize failed @' + pluginInstance.name, {error: ex.message});
+                log.warn('onInitialize failed @' + plugin.name, {error: ex.message});
             }
         } else {
             pluginLog.info('Plugin has no onInitialize function - skipped.');

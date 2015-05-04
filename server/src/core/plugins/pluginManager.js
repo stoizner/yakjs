@@ -338,9 +338,9 @@ yak.PluginManager = function PluginManager() {
 
     /**
      * Returns the plugin require context.
-     * @param {!Object<string, ?>} pluginModules
+     * @param {!Object<string, Function|Object>} pluginModules
      * @param {string} moduleId
-     * @returns {*}
+     * @returns {*} A require function with a plugin context.
      */
     function pluginRequire(pluginModules, moduleId) {
         var module = _.noop;
