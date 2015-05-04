@@ -15,8 +15,10 @@ yak.FileUploadRequestHandler = function FileUploadRequestHandler(yakServer) {
     var INTERNAL_ERROR_MESSAGE = 'Internal YAKjs error. To help us, please report that problem.';
 
     var PLUGIN_EXTENSION = '.plugin.js';
+    var PLUGIN_EXTENSION_OLD = '.js';
     var INSTANCE_EXTENSION = '.instance.json';
     var STORE_EXTENSION = '.store.txt';
+    var STORE_EXTENSION_OLD = '.txt';
 
     /**
      * @type {yak.Store}
@@ -39,17 +41,21 @@ yak.FileUploadRequestHandler = function FileUploadRequestHandler(yakServer) {
      */
     this.handle = function handle(request) {
         var response;
+
         if (isPlugin(request.filename)) {
-            log.info('isPlugin');
+            log.info('Handle plugin upload.', {filename:request.filename});
             response = addOrUpdatePlugin(request);
-        }
-
-        if (isInstance(request.filename)) {
+        } else if (isInstance(request.filename)) {
+            log.info('Handle instance upload.', {filename:request.filename});
             response = addOrUpdateInstance(request);
-        }
-
-        if (isStore(request.filename)) {
+        } else if (isStore(request.filename)) {
+            log.info('Handle store upload.', {filename:request.filename});
             response = addOrUpdateStore(request);
+        } else {
+            log.info('Handle unknown file. ', {filename:request.filename});
+            response = new yak.api.UploadFileResponse(request.id);
+            response.success = false;
+            response.message = 'Unknown file type. ' + request.filename;
         }
 
         return response;
@@ -64,6 +70,8 @@ yak.FileUploadRequestHandler = function FileUploadRequestHandler(yakServer) {
 
         try {
             var documentKey = request.filename.replace(STORE_EXTENSION, '');
+            documentKey = documentKey.replace(STORE_EXTENSION_OLD, '');
+
             store.setValue(documentKey, request.content);
 
             // Restart every instance, because currently there is no way
@@ -117,6 +125,8 @@ yak.FileUploadRequestHandler = function FileUploadRequestHandler(yakServer) {
             var pluginManager = yakServer.pluginManager;
 
             var pluginName = request.filename.replace(PLUGIN_EXTENSION, '');
+            pluginName = pluginName.replace(PLUGIN_EXTENSION_OLD, '');
+
             var parsedPlugin = pluginManager.parsePluginContent(pluginName, request.content);
 
             if (pluginValidator.isPluginValid(parsedPlugin)) {
@@ -175,7 +185,7 @@ yak.FileUploadRequestHandler = function FileUploadRequestHandler(yakServer) {
      * @returns {boolean} Whether this file is a plugin.
      */
     function isPlugin(filename) {
-        return filename.lastIndexOf(PLUGIN_EXTENSION) === (filename.length - PLUGIN_EXTENSION.length);
+        return (hasExtension(filename, PLUGIN_EXTENSION) || hasExtension(filename, PLUGIN_EXTENSION_OLD));
     }
 
     /**
@@ -184,7 +194,7 @@ yak.FileUploadRequestHandler = function FileUploadRequestHandler(yakServer) {
      * @returns {boolean} Whether this file is a instance.
      */
     function isInstance(filename) {
-        return filename.lastIndexOf(INSTANCE_EXTENSION) === (filename.length - INSTANCE_EXTENSION.length);
+        return hasExtension(filename, INSTANCE_EXTENSION);
     }
 
     /**
@@ -193,6 +203,18 @@ yak.FileUploadRequestHandler = function FileUploadRequestHandler(yakServer) {
      * @returns {boolean} Whether this file is a store.
      */
     function isStore(filename) {
-        return filename.lastIndexOf(STORE_EXTENSION) === (filename.length - STORE_EXTENSION.length);
+        return hasExtension(filename, STORE_EXTENSION) || hasExtension(filename, STORE_EXTENSION_OLD);
+    }
+
+    /**
+     * @param {string} filename
+     * @param {string} extension
+     * @returns {boolean} Whether a filename has a specific extension.
+     */
+    function hasExtension(filename, extension) {
+        var extensionIndex = filename.lastIndexOf(extension);
+        var hasFilenameExtension = (extensionIndex > 0 && extensionIndex === (filename.length - extension.length));
+        log.debug('hasExtension', {filename:filename, extension:extension, hasFilenameExtension:hasFilenameExtension});
+        return hasFilenameExtension;
     }
 };
