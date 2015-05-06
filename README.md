@@ -1,38 +1,29 @@
-![alt text](https://raw.github.com/cobuChris/yak-js/master/yakjs-ui/doc/header.png "screenshot")
-### Speed up client development using plug&play JavaScript WebSocket servers
+Fast prototyping and simulation of WebSocket servers with JavaScript plugins based on nodejs.
 
 This tool is for developing, rapid prototyping, testing, integrating and simulating WebSocket communication.
 
-## Get started
+# Get started
 
-Get started in less than 55 seconds. If you have already installed [node.js](http://nodejs.org/).
+YAKjs requires [nodejs](https://nodejs.org/). 
 
-**Download**
+## Download
 
-Go to the **[latest release package 0.4.0-rc](https://github.com/cobuChris/yak-js/releases)**.
+Go to the **[latest release package 1.0.0-beta](https://github.com/cschuller/yak-js/releases)**.
 Download zip package and extract it.
 
+## Start YAKjs
 
-**Start the server**
+Run the startup script  ``` start-yakjs-server.bat ``` 
 
-Go to yakjs-server and use ``` node yakjs-server.js ``` or the startup scripts.
-This will stat the yakjs-server with default service port 8790.
+or
 
+via ``` node yakjs-server.js ```
 
-**Start the client**
+This will start YAKjs using default port 8790.
 
-Go to yakjs-ui and open the index.html (latest browser generation recommended)
-It will automatically try to connect to the yakjs-server service port ws://localhost:8790
+## YAKjs UI
 
-
-**Start an instance**
-
-On the service user interface, start pre configured 'echo' instance.
-Now your 'echo' WebSocket server instance is running and ready. 
-You can test it with any WebSocket client (e.g.: [websocket.org](http://www.websocket.org/echo.html))
-
-**Screenshot of the service user interface**
-![alt text](https://raw.github.com/cobuChris/yak-js/master/yakjs-ui/doc/screenshot-v0.3.0-02.png "screenshot")
+Open the YKAjs user interface, like (http://localhost:8790)
 
 
 [![Analytics](https://ga-beacon.appspot.com/UA-46883525-1/yak-js/README.md)](https://github.com/igrigorik/ga-beacon)
