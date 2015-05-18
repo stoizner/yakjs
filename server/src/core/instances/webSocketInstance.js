@@ -72,7 +72,7 @@ yak.WebSocketInstance = function WebSocketInstance(pluginManager, id, port) {
     this.log = log;
 
     /**
-     * @type {yak.InstanceState}
+     * @type {!yak.InstanceState}
      */
     this.state = yak.InstanceState.STOPPED;
 
@@ -95,7 +95,7 @@ yak.WebSocketInstance = function WebSocketInstance(pluginManager, id, port) {
     this.activePluginCount = 0;
 
     /**
-     * @type {Array.<yak.PluginWorker>}
+     * @type {Array<yak.PluginWorker>}
      */
     var pluginInstances = [];
 
@@ -263,16 +263,7 @@ yak.WebSocketInstance = function WebSocketInstance(pluginManager, id, port) {
      * @returns {Array.<yak.WebSocketConnection>} List of websocket connections.
      */
     this.getConnections = function getConnections() {
-
-        var connectionList = [];
-
-        for(var key in connections) {
-            if (connections.hasOwnProperty(key)) {
-                connectionList.push(connections[key]);
-            }
-        }
-
-        return connectionList;
+        return _.toArray(connections);
     };
 
     /**

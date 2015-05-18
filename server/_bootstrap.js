@@ -14,6 +14,8 @@ yak.global = {};
 
     var log = new yak.Logger('Startup');
 
+    var timerProtection = new yak.ErrorProtectionForTimerFunctions(global);
+
     /**
      * @type {yak.Store}
      */
