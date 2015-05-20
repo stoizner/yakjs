@@ -365,9 +365,7 @@ yak.WebSocketInstance = function WebSocketInstance(pluginManager, id, port) {
      * @param {yak.WebSocketConnection} connection
      */
     function pluginsOnConnectionClosed(connection) {
-
         _.each(pluginInstances, function callOnConnectionClosed(pluginInstance) {
-
             if (pluginInstance.onConnectionClosed) {
                 try {
                     self.log.info('Plugin.onConnectionClosed', { pluginName: pluginInstance.name });
@@ -375,10 +373,7 @@ yak.WebSocketInstance = function WebSocketInstance(pluginManager, id, port) {
                 } catch (ex) {
                     self.log.error('Plugin.onConnectionClosed failed.', { pluginName: pluginInstance.name, error: ex.name, message:ex.message });
                 }
-            } else {
-                self.log.warn('Plugin.onConnectionClosed(connection, instance) not found', { pluginName: pluginInstance.name });
             }
-
         });
     }
 };
