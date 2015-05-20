@@ -331,8 +331,6 @@ yak.WebSocketInstance = function WebSocketInstance(pluginManager, id, port) {
                 pluginLog.error('onMessage failed', {error: ex.message, data: data, connectionId: connection.id});
                 log.warn('onMessage failed @' + pluginInstance.name, {error: ex.message, data: data, connectionId: connection.id});
             }
-        } else {
-            pluginLog.warn('onMessage(data, connection, instance) not found.');
         }
     }
 
