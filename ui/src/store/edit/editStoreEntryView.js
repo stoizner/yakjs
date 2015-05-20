@@ -42,6 +42,7 @@ yak.ui.EditStoreEntryView = function EditStoreEntryView(parent, context, viewMod
         parent.find('[data-command=save]').click(handleSaveCommand);
         parent.find('[data-command=delete]').click(handleDeleteCommand);
         parent.find('[data-command=cancel]').click(handleCancelCommand);
+        parent.find('[data-command=prettifyJson]').click(handlePrettifyJsonCommand);
 
         CodeMirror.commands.autocomplete = yak.ui.codeEditorAutoComplete;
         CodeMirror.commands.autodocument = yak.ui.codeEditorAutoDocument;
@@ -63,6 +64,21 @@ yak.ui.EditStoreEntryView = function EditStoreEntryView(parent, context, viewMod
         $('.error-line', parent).hide();
         viewModel.activate(data);
     };
+
+    /**
+     * Get the current editor content and if it is JSON prettify it.
+     */
+    function handlePrettifyJsonCommand() {
+        var jsonText = codeEditor.getValue();
+        try {
+            var json = JSON.parse(jsonText);
+            var prettyJsonText = JSON.stringify(json, null, 2);
+
+            codeEditor.setValue(prettyJsonText);
+        } catch (ex) {
+            // Do nothing, maybe it is not a valid json.
+        }
+    }
 
     /**
      * Handle plugin item changed event.
