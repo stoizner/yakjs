@@ -303,9 +303,7 @@ yak.WebSocketInstance = function WebSocketInstance(pluginManager, id, port) {
      * @returns {Function} Message handler function.
      */
     function createMessageHandler(connection) {
-
         return function handleMessage(data, flags) {
-
             log.debug('Received websocket message ', { fromConnectionId: connection.id, data: data });
 
             for(var i = 0; i < pluginInstances.length; i++) {
