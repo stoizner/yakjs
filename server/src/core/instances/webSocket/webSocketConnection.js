@@ -43,8 +43,12 @@ yak.WebSocketConnection = function WebSocketConnection(socket) {
      * @param {string} message
      */
     function sendMessage(message) {
-        if (self.socket.readyState === self.socket.OPEN) {
-            self.socket.send(message);
+        if (self.socket && self.socket.readyState === self.socket.OPEN) {
+            try {
+                self.socket.send(message);
+            } catch (ex) {
+                log.warn('Could not send message.', {error: ex.message});
+            }
         } else {
             log.info('Could not send message, the WebSocket connection is no longer open.');
         }
