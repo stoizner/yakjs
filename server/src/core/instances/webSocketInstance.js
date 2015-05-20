@@ -342,7 +342,6 @@ yak.WebSocketInstance = function WebSocketInstance(pluginManager, id, port) {
      */
     function pluginsOnNewConnection(connection) {
         _.each(pluginInstances, function callOnNewConnection(pluginInstance) {
-
             var pluginLog = new yak.Logger(pluginInstance.name + '.plugin');
 
             if (pluginInstance.onNewConnection) {
@@ -353,10 +352,7 @@ yak.WebSocketInstance = function WebSocketInstance(pluginManager, id, port) {
                     pluginLog.error('onNewConnection failed.', {error: ex.message, connectionId: connection.id});
                     log.warn('onNewConnection failed @' + pluginInstance.name, {error: ex.message, connectionId: connection.id});
                 }
-            } else {
-                pluginLog.warn('onNewConnection(connection, instance) not found.');
             }
-
         });
     }
 
