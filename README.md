@@ -1,6 +1,7 @@
 # YAKjs
 [![GitHub version][github-version-image]][github-version-url]
 [![NPM version][npm-image]][npm-url]
+[![GitHub license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/cschuller/yak-js)
 [![Built with Grunt][grunt-image]][grunt-url]
 
 Fast prototyping and simulation of WebSocket servers with JavaScript plugins based on nodejs.
