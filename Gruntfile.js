@@ -118,7 +118,12 @@ module.exports = function grunt(grunt) {
                     {flatten:false, src: ['node_modules/log4js/**'], dest: pkgDir},
                     {flatten:false, src: ['node_modules/moment/**'], dest: pkgDir},
                     {flatten:false, src: ['node_modules/doctrine/**'], dest: pkgDir},
-                    {flatten:true, cwd: serverSrcDir + 'shell/', src: ['*.bat', '*.sh'], dest: pkgDir, expand: true}
+                    {flatten:true, cwd: serverDir + 'bin/', src: ['*.bat', '*.sh'], dest: pkgDir, expand: true}
+                ]
+            },
+            bin: {
+                files: [
+                    {flatten: true, cwd: serverDir + 'bin/', src: ['yakjs.js'], dest: pkgDir + 'bin/', expand: true}
                 ]
             },
             defaultPlugins: {
@@ -218,6 +223,7 @@ module.exports = function grunt(grunt) {
     grunt.registerTask('build-server', [
         'compile-server',
         'copy:server',
+        'copy:bin',
         'copy:defaultPlugins',
         'copy:defaultInstances',
         'copy:defaultStores',
