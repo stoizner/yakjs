@@ -2,10 +2,28 @@
   "name": "yakjs",
   "version": "1.0.0-beta.2",
   "description": "YAKjs WebSocket Servers with JavaScript Plugins based on nodejs",
-  "main": "dist/yakjs.js",
-  "repository": "https://github.com/cschuller/yak-js",
-  "author": "Christian Schuller",
+  "keywords": ["YAK", "WebSocket", "server", "prototyping", "simulation"],
+  "bugs": {
+    "url": "https://github.com/cschuller/yak-js/issues"
+  },
   "license": "MIT",
+  "author": {
+    "name": "Christian Schuller <cschuller>"
+  },
+  "contributors": [{
+      "name": "dasMulli"
+    }, {
+      "name": "vsa"
+    }
+  ],
+  "main": "dist/yakjs.js",
+  "files": [
+    "dist"
+  ],
+  "repository" : {
+    "type" : "git",
+    "url" : "https://github.com/cschuller/gamesense-client.git"
+  },
   "dependencies": {
     "body-parser": "^1.12.0",
     "doctrine": "^0.5.2",
@@ -15,6 +33,9 @@
     "npm": "^1.4.4",
     "underscore": "~1.5.2",
     "ws": "~0.4.31"
+  },
+  "engines" : {
+    "node" : ">=0.12.0"
   },
   "devDependencies": {
     "grunt": "~0.4.1",
