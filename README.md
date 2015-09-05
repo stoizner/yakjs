@@ -8,7 +8,7 @@ YAKjs requires [nodejs](https://nodejs.org/).
 
 ## Download
 
-Go to the **[latest release package 1.0.0-beta](https://github.com/cschuller/yak-js/releases)**.
+Finde the **[latest release here](https://github.com/cschuller/yak-js/releases)**.
 Download zip package and extract it.
 
 ## Start YAKjs
@@ -19,7 +19,7 @@ or
 
 via ``` node yakjs-server.js ```
 
-This will start YAKjs using default port 8790.
+This will start YAKjs using default port ```8790```.
 
 ## YAKjs UI
 
