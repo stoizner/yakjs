@@ -140,7 +140,7 @@ yak.FileUploadRequestHandler = function FileUploadRequestHandler(yakServer) {
                     restartInstancesWithPlugin(parsedPlugin.name);
                 }
             } else {
-                response = false;
+                response.success = false;
                 response.message = pluginValidator.getMessage();
             }
         } catch(ex) {
