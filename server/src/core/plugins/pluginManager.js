@@ -161,7 +161,7 @@ yak.PluginManager = function PluginManager() {
      */
     function extractPluginFunction(content) {
         var pluginFunction = null;
-        var matchedGroups = yak.global.regexGroup(content, 'function ([A-Z][A-Za-z]*)[^$]*');
+        var matchedGroups = yak.global.regexGroup(content, 'function ([A-Z][A-Za-z]*)[\\s\\S]*');
 
         if (matchedGroups) {
             pluginFunction = {
