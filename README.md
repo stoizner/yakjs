@@ -30,3 +30,6 @@ This will start YAKjs using default port ```8790```.
 ### Open the YAKjs User Interface
 
 Open the YKAjs user interface at [**http://localhost:8790**](http://localhost:8790)
+
+## Documentation
+[More documentation is available in the wiki](https://github.com/cschuller/yak-js/wiki)
