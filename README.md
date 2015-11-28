@@ -1,4 +1,5 @@
 # ![YAKjs logo](http://www.yakjs.com/yak.png)&nbsp;YAKjs
+[![GitHub version](https://img.shields.io/github/tag/cschuller/yak-js.svg)](https://github.com/cschuller/yak-js)
 [![npm](https://img.shields.io/npm/v/yakjs.svg?style=flat-square)](https://www.npmjs.com/package/yakjs)
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://raw.githubusercontent.com/cschuller/yak-js/master/LICENSE)
 [![Built with Grunt](https://img.shields.io/badge/built with-grunt-yellow.svg?style=flat-square)](http://gruntjs.com/)
