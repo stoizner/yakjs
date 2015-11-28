@@ -53,31 +53,30 @@
 
 .app-bar-text {
     position: absolute;
-    bottom: 0;
+    bottom: -5px;
     left: 80px;
     vertical-align:middle;
-    float: left;
-    font: 20px/24px 'roboto-medium';
+    font: 30px/45px 'roboto-medium';
     color: #f0f0f0;
     margin-left: 10px;
 }
 
 .app-bar-links {
     position: absolute;
-    top: 45px;
-    left: 140px;
+    left: 200px;
     bottom: 0;
-}
 
-.app-bar-links a {
-    margin-left:10px;
-    font: 11px/20px 'roboto';
-    color: #909090;
-    text-transform:uppercase;
-    text-decoration:none;
-}
+    a,
+    a:visited,
+    a:link {
+        color: white;
+        text-decoration: none;
+        opacity: 0.6;
+        margin-left:10px;
+        font: 11px/20px 'roboto';
+    }
 
-.app-bar-links a:hover {
-    color: #4787C7;
-    text-decoration:none
+    a:hover {
+        opacity: 1.0;
+    }
 }
