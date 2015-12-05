@@ -118,7 +118,7 @@
             try {
                 if (_.has(data, key)) {
                     var filename = STORES_DIR + key + STORE_FILENAME_POSTFIX;
-                    fs.writeFile(filename, data[key].value);
+                    fs.writeFileSync(filename, data[key].value);
                 }
                 saved = true;
             } catch (ex) {
@@ -140,7 +140,6 @@
                 var key = filename.replace(STORE_FILENAME_POSTFIX, '');
                 data[key] = new yak.StoreItem(key, content);
             });
-
         };
 
         /**
