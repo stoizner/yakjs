@@ -74,10 +74,14 @@ yak.FileUploadRequestHandler = function FileUploadRequestHandler(yakServer) {
 
             store.setValue(documentKey, request.content);
 
-            // Restart every instance, because currently there is no way
-            // to determine which plugin uses a store key.
-            var instances = yakServer.instanceManager.getInstances();
-            _.each(instances, function restart(instance) { restartInstance(instance.id); });
+            if (request.enableInstanceRestart) {
+                // Restart every instance, because currently there is no way
+                // to determine which plugin uses a store key.
+                var instances = yakServer.instanceManager.getInstances();
+                _.each(instances, function restart(instance) {
+                    restartInstance(instance.id);
+                });
+            }
 
             response.success = true;
         } catch(ex) {
@@ -214,7 +218,6 @@ yak.FileUploadRequestHandler = function FileUploadRequestHandler(yakServer) {
     function hasExtension(filename, extension) {
         var extensionIndex = filename.lastIndexOf(extension);
         var hasFilenameExtension = (extensionIndex > 0 && extensionIndex === (filename.length - extension.length));
-        log.debug('hasExtension', {filename:filename, extension:extension, hasFilenameExtension:hasFilenameExtension});
         return hasFilenameExtension;
     }
 };
