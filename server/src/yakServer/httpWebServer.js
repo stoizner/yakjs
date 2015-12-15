@@ -44,7 +44,7 @@ yak.HttpServer = function HttpServer(yakServer, config) {
         try {
             app.set('port', config.httpPort);
             app.use(express.static(path.join('./ui/')));
-            app.use(bodyParser.json());
+            app.use(bodyParser.json({limit: '10MB'}));
 
             app.get('/scripts/yakjs-ui-config.js', getUIConfig);
             app.get('/api/*', handleAPIRequest);
@@ -54,7 +54,7 @@ yak.HttpServer = function HttpServer(yakServer, config) {
                 log.info('YAKjs HTTP server running.', {httpPort: config.httpPort});
             });
         } catch(ex) {
-            log.warn('Could not start YAKjs HTTP server.', {httpPort: config.httpPort});
+            log.warn('Could not start YAKjs HTTP server.', {httpPort: config.httpPort, error: ex.message});
         }
     };
 
