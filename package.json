@@ -1,6 +1,6 @@
 {
   "name": "yakjs",
-  "version": "1.4.0-SNAPSHOT",
+  "version": "1.4.0",
   "description": "YAKjs WebSocket Servers with JavaScript Plugins based on nodejs",
   "keywords": ["YAK", "WebSocket", "server", "prototyping", "simulation"],
   "repository" : {
