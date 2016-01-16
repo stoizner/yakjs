@@ -1,67 +1,75 @@
 {
-  "name": "yakjs",
-  "version": "1.4.0",
-  "description": "YAKjs WebSocket Servers with JavaScript Plugins based on nodejs",
-  "keywords": ["YAK", "WebSocket", "server", "prototyping", "simulation"],
-  "repository" : {
-    "type" : "git",
-    "url" : "https://github.com/cschuller/yak-js.git"
-  },
-  "bugs": {
-    "url": "https://github.com/cschuller/yak-js/issues"
-  },
-  "license": "MIT",
-  "author": {
-    "name": "Christian Schuller <cschuller>"
-  },
-  "contributors": [{
-      "name": "dasMulli"
-    }, {
-      "name": "vsa"
+    "name": "yakjs",
+    "version": "1.5.0-SNAPSHOT",
+    "description": "YAKjs WebSocket Servers with JavaScript Plugins based on nodejs",
+    "keywords": [
+        "YAK",
+        "WebSocket",
+        "server",
+        "prototyping",
+        "simulation"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/cschuller/yak-js.git"
+    },
+    "bugs": {
+        "url": "https://github.com/cschuller/yak-js/issues"
+    },
+    "license": "MIT",
+    "author": {
+        "name": "Christian Schuller <cschuller>"
+    },
+    "contributors": [
+        {
+            "name": "dasMulli"
+        },
+        {
+            "name": "vsa"
+        }
+    ],
+    "scripts": {
+        "start": "node yakjs.js"
+    },
+    "bin": {
+        "yakjs": "./bin/yakjs.js"
+    },
+    "main": "dist/yakjs.js",
+    "files": [
+        "instances",
+        "plugins",
+        "stores",
+        "ui",
+        "bin",
+        "config.json",
+        "start-yakjs-server.bat",
+        "start-yakjs-server.sh",
+        "yakjs.js",
+        "yakjs.min.js"
+    ],
+    "dependencies": {
+        "body-parser": "^1.14.1",
+        "doctrine": "^0.5.2",
+        "express": "^4.9.0",
+        "log4js": "^0.6.24",
+        "moment": "^2.10.2",
+        "underscore": "~1.8.3",
+        "ws": "~0.4.31"
+    },
+    "engines": {
+        "node": ">=0.12.0"
+    },
+    "devDependencies": {
+        "grunt": "~0.4.5",
+        "grunt-contrib-clean": "^0.6.0",
+        "grunt-contrib-compress": "~0.5.2",
+        "grunt-contrib-concat": "~0.3.0",
+        "grunt-contrib-copy": "~0.4.1",
+        "grunt-contrib-jshint": "~0.6.3",
+        "grunt-contrib-less": "^0.11.4",
+        "grunt-contrib-nodeunit": "~0.2.0",
+        "grunt-contrib-uglify": "~0.2.2",
+        "grunt-contrib-watch": "^0.6.1",
+        "grunt-eslint": "^1.0.1"
     }
-  ],
-  "scripts": {
-    "start": "node yakjs.js"
-  },
-  "bin": {
-    "yakjs": "./bin/yakjs.js"
-  },
-  "main": "dist/yakjs.js",
-  "files": [
-    "instances",
-    "plugins",
-    "stores",
-    "ui",
-    "bin",
-    "config.json",
-    "start-yakjs-server.bat",
-    "start-yakjs-server.sh",
-    "yakjs.js",
-    "yakjs.min.js"
-  ],
-  "dependencies": {
-    "body-parser": "^1.14.1",
-    "doctrine": "^0.5.2",
-    "express": "^4.9.0",
-    "log4js": "^0.6.24",
-    "moment": "^2.10.2",
-    "underscore": "~1.8.3",
-    "ws": "~0.4.31"
-  },
-  "engines" : {
-    "node" : ">=0.12.0"
-  },
-  "devDependencies": {
-    "grunt": "~0.4.5",
-    "grunt-contrib-clean": "^0.6.0",
-    "grunt-contrib-compress": "~0.5.2",
-    "grunt-contrib-concat": "~0.3.0",
-    "grunt-contrib-copy": "~0.4.1",
-    "grunt-contrib-jshint": "~0.6.3",
-    "grunt-contrib-less": "^0.11.4",
-    "grunt-contrib-nodeunit": "~0.2.0",
-    "grunt-contrib-uglify": "~0.2.2",
-    "grunt-contrib-watch": "^0.6.1",
-    "grunt-eslint": "^1.0.1"
-  }
 }
