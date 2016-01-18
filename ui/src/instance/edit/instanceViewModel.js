@@ -20,7 +20,7 @@ yak.ui.InstanceViewModel = function InstanceViewModel(context) {
     this.onInstanceInfoChanged = yak.ui.noop;
 
     /**
-     * @type {Array.<yak.ui.SelectPluginItem>}
+     * @type {Array<yak.ui.SelectPluginItem>}
      */
     this.selectPluginItems = [];
 

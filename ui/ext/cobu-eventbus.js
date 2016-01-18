@@ -29,7 +29,7 @@ cobu.EventBus = function EventBus() {
     /**
      * Dictionary of event bus registrations.
      * @dict
-     * @type {Object.<String, Array.<cobu.Registration>>}
+     * @type {Object<String, Array<cobu.Registration>>}
      */
     var registrations = {};
 
@@ -135,7 +135,7 @@ cobu.EventBus = function EventBus() {
 
     /**
      * Gets all registrations.
-     * @returns {Array.<cobu.Registration>}
+     * @returns {Array<cobu.Registration>}
      */
     this.getRegistrations = function getRegistrations() {
 
@@ -159,7 +159,7 @@ cobu.EventBus = function EventBus() {
      */
     this.unregister = function unregister(eventCallback) {
 
-        /** @type {Array.<cobu.Registration>} */
+        /** @type {Array<cobu.Registration>} */
         var allRegistrations = self.getRegistrations();
 
         for(var i = 0, len = allRegistrations.length; i < len; i++) {
@@ -188,7 +188,7 @@ cobu.EventBus = function EventBus() {
     /**
      * Get all registrations for an eventKey.
      * @param {String} eventKey the event key (unique for an event or message key).
-     * @return {Array.<cobu.Registration>} list of registrations for given eventKey.
+     * @return {Array<cobu.Registration>} list of registrations for given eventKey.
      */
     function getRegistrationsFor(eventKey) {
 
@@ -251,13 +251,13 @@ cobu.EventBusConfig = function EventBusConfig() {
 
     /**
      * List of build in key reflectors.
-     * @type {Array.<cobu.KeyReflector>}
+     * @type {Array<cobu.KeyReflector>}
      */
     var builtInReflectors = [];
 
     /**
     * Custom key reflector.
-    * @type {Array.<cobu.KeyReflector>}
+    * @type {Array<cobu.KeyReflector>}
     */
     this.customKeyReflectors = [];
 
@@ -289,7 +289,7 @@ cobu.EventBusConfig = function EventBusConfig() {
 
     /**
      * Get all built in key reflectors.
-     * @returns {Array.<cobu.KeyReflector>}
+     * @returns {Array<cobu.KeyReflector>}
      */
     this.getBuiltInKeyReflectors = function getBuiltInKeyReflectors() {
         return builtInReflectors;
@@ -417,7 +417,7 @@ cobu.EventBusDiagnostics = function EventBusDiagnostics() {
      */
     var self = this;
 
-    /** @type {function(string, *, Array.<cobu.Registration>)} */
+    /** @type {function(string, *, Array<cobu.Registration>)} */
     var onPostedCallback = null;
 
     /** @type {function(string, cobu.Registration)} */
@@ -434,7 +434,7 @@ cobu.EventBusDiagnostics = function EventBusDiagnostics() {
 
     /**
      * Callback is called when an eventbus error occurs.
-     * @param {function(string, *, Array.<cobu.Registration>)|null} callback
+     * @param {function(string, *, Array<cobu.Registration>)|null} callback
      * @returns {cobu.EventBusDiagnostics}
      */
     this.onError = function onError(callback) {
@@ -456,7 +456,7 @@ cobu.EventBusDiagnostics = function EventBusDiagnostics() {
 
     /**
      * Callback is called on every eventBus.post.
-     * @param {function(string, *, Array.<cobu.Registration>)|null} callback
+     * @param {function(string, *, Array<cobu.Registration>)|null} callback
      * @returns {cobu.EventBusDiagnostics}
      */
     this.onPosted = function onPosted(callback) {
@@ -468,7 +468,7 @@ cobu.EventBusDiagnostics = function EventBusDiagnostics() {
     /**
      * @param {Object|string} eventKey
      * @param {*} event
-     * @param {Array.<cobu.Registration>} registrations
+     * @param {Array<cobu.Registration>} registrations
      * @protected
      */
     this.handleOnPosted = function handleOnPosted(eventKey, event, registrations) {
@@ -480,7 +480,7 @@ cobu.EventBusDiagnostics = function EventBusDiagnostics() {
 
     /**
      * Callback is called on every new registration.
-     * @param {function(string, *, Array.<cobu.Registration>)|null} callback
+     * @param {function(string, *, Array<cobu.Registration>)|null} callback
      * @returns {cobu.EventBusDiagnostics}
      */
     this.onRegistered = function onRegistered(callback) {
@@ -853,7 +853,7 @@ cobu.KeyReflectorScanner = function KeyReflectorScanner(config) {
         /** @type {cobu.KeyInfo} */
         var typeInfo = null;
 
-        /** @type {Array.<cobu.KeyReflector>} */
+        /** @type {Array<cobu.KeyReflector>} */
         var builtInReflectors = config.getBuiltInKeyReflectors();
 
         if (config.customKeyReflectors.length > 0) {
@@ -869,7 +869,7 @@ cobu.KeyReflectorScanner = function KeyReflectorScanner(config) {
 
     /**
      * Try to reflect the KeyInfo for the object from a list of reflectors.
-     * @param {Array.<cobu.KeyReflector>} reflectors
+     * @param {Array<cobu.KeyReflector>} reflectors
      * @param {Object} obj
      */
     function reflectTypeInfoWith(reflectors, obj) {

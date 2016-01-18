@@ -27,7 +27,7 @@ yak.api.GetInstancesResponse = function GetInstancesResponse(requestId) {
 
     /**
      * List of available instances as InstanceInfo.
-     * @type {Array.<yak.api.InstanceInfo>}
+     * @type {Array<yak.api.InstanceInfo>}
      */
     this.instances = [];
 };

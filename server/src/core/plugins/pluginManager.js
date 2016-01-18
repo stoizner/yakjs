@@ -29,7 +29,7 @@ yak.PluginManager = function PluginManager() {
     var doctrine = require('doctrine');
 
     /**
-     * @type {!Object.<string, yak.Plugin>}
+     * @type {!Object<string, yak.Plugin>}
      */
     var plugins = {};
 
@@ -52,7 +52,7 @@ yak.PluginManager = function PluginManager() {
 
     /**
      * Read file content and parse it.
-     * @param {!Array.<string>} filenames
+     * @param {!Array<string>} filenames
      */
     function readAndParsePluginFiles(filenames) {
         var fileContent = readPluginFiles(filenames);
@@ -116,7 +116,7 @@ yak.PluginManager = function PluginManager() {
     };
 
     /**
-     * @param {{tags: Array.<{title:string, description:string}>}} jsDoc
+     * @param {{tags: Array<{title:string, description:string}>}} jsDoc
      * @param {string} tagName
      * @returns {string} The value of a JsDoc tag.
      */
@@ -174,8 +174,8 @@ yak.PluginManager = function PluginManager() {
     }
 
     /**
-     * @param {!Array.<string>} filenames
-     * @returns {!Object.<string, string>} Map with all file content.
+     * @param {!Array<string>} filenames
+     * @returns {!Object<string, string>} Map with all file content.
      */
     function readPluginFiles(filenames) {
         var contentMap = {};
@@ -197,7 +197,7 @@ yak.PluginManager = function PluginManager() {
 
     /**
      * Search for plugin files in plugin directory.
-     * @returns {!Array.<string>} List of plugin filenames found in the PLUGINS_DIR folder.
+     * @returns {!Array<string>} List of plugin filenames found in the PLUGINS_DIR folder.
      */
     function getPluginFilenames() {
         var files =  fs.readdirSync(PLUGINS_DIR);
@@ -218,7 +218,7 @@ yak.PluginManager = function PluginManager() {
 
     /**
      * Get list of plugins.
-     * @returns {Array.<yak.Plugin>} List of plugins.
+     * @returns {Array<yak.Plugin>} List of plugins.
      */
     this.getPlugins = function getPlugins() {
         var result = [];

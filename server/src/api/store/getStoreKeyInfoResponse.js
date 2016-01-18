@@ -19,7 +19,7 @@ yak.api.GetStoreKeyInfoResponse = function GetStoreKeyInfoResponse(requestId) {
 
     /**
      * List of log information.
-     * @type {Array.<yak.api.StoreKeyInfo>}
+     * @type {Array<yak.api.StoreKeyInfo>}
      */
     this.keys = [];
 

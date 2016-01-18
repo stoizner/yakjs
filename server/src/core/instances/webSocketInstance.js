@@ -27,7 +27,7 @@ yak.WebSocketInstance = function WebSocketInstance(pluginManager, id, port) {
 
     /**
      *
-     * @type {Object.<string, yak.WebSocketConnection>}
+     * @type {Object<string, yak.WebSocketConnection>}
      */
     var connections = {};
 

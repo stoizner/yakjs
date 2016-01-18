@@ -55,7 +55,7 @@ yak.api.InstanceInfo = function InstanceInfo() {
 
     /**
     *
-    * @type {Array.<string>}
+    * @type {Array<string>}
     */
     this.plugins = [];
 };

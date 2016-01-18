@@ -32,7 +32,7 @@ yak.ui.InstanceItem = function InstanceItem(id) {
 
     /**
      * @readonly
-     * @type {Array.<string>}
+     * @type {Array<string>}
      */
     this.plugins = [];
 };

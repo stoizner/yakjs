@@ -69,7 +69,7 @@ yak.api.CreateInstanceRequest = function CreateInstanceRequest() {
 
     /**
      * Name of plugins that shall be used by this instance.
-     * @type {Array.<string>}
+     * @type {Array<string>}
      */
     this.plugins = [];
 };/**
@@ -200,7 +200,7 @@ yak.api.GetInstancesResponse = function GetInstancesResponse() {
 
     /**
     * List of available cloud instances as InstanceInfo array.
-    * @type {Array.<yak.api.InstanceInfo>}
+    * @type {Array<yak.api.InstanceInfo>}
     */
     this.instances = [];
 };/**
@@ -249,7 +249,7 @@ yak.api.UpdateInstanceRequest = function UpdateInstanceRequest() {
 
     /**
     * Name of plugins that shall be used by this instance.
-    * @type {Array.<string>}
+    * @type {Array<string>}
     */
     this.plugins = [];
 };/**
@@ -335,7 +335,7 @@ yak.api.InstanceInfo = function InstanceInfo() {
 
     /**
     *
-    * @type {Array.<string>}
+    * @type {Array<string>}
     */
     this.plugins = [];
 };/**
@@ -559,7 +559,7 @@ yak.api.GetLogInfoResponse = function GetLogInfoResponse() {
 
     /**
      * List of log information.
-     * @type {Array.<yak.api.LogInfo>}
+     * @type {Array<yak.api.LogInfo>}
      */
     this.logs = [];
 };/**
@@ -826,7 +826,7 @@ yak.api.GetPluginsResponse = function GetPluginsResponse() {
 
     /**
     * List of available cloud Plugins as InstanceInfo array.
-    * @type {Array.<yak.api.PluginInfo>}
+    * @type {Array<yak.api.PluginInfo>}
     */
     this.plugins = [];
 };/**
@@ -1015,7 +1015,7 @@ yak.api.GetStoreKeyInfoResponse = function GetStoreKeyInfoResponse() {
 
     /**
      * List of log information.
-     * @type {Array.<yak.api.StoreKeyInfo>}
+     * @type {Array<yak.api.StoreKeyInfo>}
      */
     this.keys = [];
 };/**

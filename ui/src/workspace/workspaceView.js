@@ -14,7 +14,7 @@ yak.ui.WorkspaceView = function WorkspaceView(parent, context, viewModel) {
     var self = this;
 
     /**
-     * @type {Object.<string, object>}
+     * @type {Object<string, object>}
      */
     var panels = {};
 

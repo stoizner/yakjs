@@ -12,7 +12,7 @@ yak.ui.InstanceListViewModel = function InstanceListViewModel(context) {
     var self = this;
 
     /**
-     * @type {Array.<yak.api.InstanceInfo>}
+     * @type {Array<yak.api.InstanceInfo>}
      */
     this.items = [];
 

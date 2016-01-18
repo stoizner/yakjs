@@ -25,12 +25,12 @@ yak.InstanceManager = function InstanceManager(pluginManager) {
     var fs = require('fs');
 
     /**
-     * @type {!Object.<string, yak.Instance>}
+     * @type {!Object<string, yak.Instance>}
      */
     var instances = {};
 
     /**
-     * @type {Object.<string, yak.ServerInstance>}
+     * @type {Object<string, yak.ServerInstance>}
      */
     var instanceEntities = {};
 
@@ -53,7 +53,7 @@ yak.InstanceManager = function InstanceManager(pluginManager) {
 
     /**
      * Read file content and parse it.
-     * @param {!Array.<string>} filenames
+     * @param {!Array<string>} filenames
      */
     function readAndParseInstanceFiles(filenames) {
         var fileContent = readInstanceFiles(filenames);
@@ -90,8 +90,8 @@ yak.InstanceManager = function InstanceManager(pluginManager) {
     };
 
     /**
-     * @param {!Array.<string>} filenames
-     * @returns {!Object.<string, string>} Map with all file content.
+     * @param {!Array<string>} filenames
+     * @returns {!Object<string, string>} Map with all file content.
      */
     function readInstanceFiles(filenames) {
         var contentMap = {};
@@ -113,7 +113,7 @@ yak.InstanceManager = function InstanceManager(pluginManager) {
 
     /**
      * Search for instance files in instance directory.
-     * @returns {!Array.<string>} List of instance filenames found in the INSTANCES_DIR folder.
+     * @returns {!Array<string>} List of instance filenames found in the INSTANCES_DIR folder.
      */
     function getInstanceFilenames() {
         var files =  fs.readdirSync(INSTANCES_DIR);
@@ -142,7 +142,7 @@ yak.InstanceManager = function InstanceManager(pluginManager) {
 
     /**
      * Get list of instances.
-     * @returns {Array.<yak.Instance>} List of instances.
+     * @returns {Array<yak.Instance>} List of instances.
      */
     this.getInstances = function getInstances() {
         return _.values(instances);
@@ -150,7 +150,7 @@ yak.InstanceManager = function InstanceManager(pluginManager) {
 
     /**
      * Get list of instance entities.
-     * @returns {Array.<yak.InstanceEntity>} List of instance entities.
+     * @returns {Array<yak.InstanceEntity>} List of instance entities.
      */
     this.getInstanceEntities = function getInstanceEntities() {
         return _.values(instanceEntities);

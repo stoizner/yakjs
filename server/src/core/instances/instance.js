@@ -37,7 +37,7 @@ yak.Instance = function Instance() {
 
     /**
      * Ordered list of plugins.
-     * @type {Array.<string>}
+     * @type {Array<string>}
      */
     this.plugins = [];
 };

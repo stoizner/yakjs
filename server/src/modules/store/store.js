@@ -26,7 +26,7 @@
         var fs = require('fs');
 
         /**
-         * @type {!Object.<string, yak.StoreItem>}
+         * @type {!Object<string, yak.StoreItem>}
          */
         var data = {};
 
@@ -87,7 +87,7 @@
 
         /**
          * Get the complete store
-         * @returns {Array.<{key:string, value:?, description:?string}>} All store key/value items.
+         * @returns {Array<{key:string, value:?, description:?string}>} All store key/value items.
          */
         this.getStore = function getStore() {
             var store = [];
@@ -143,8 +143,8 @@
         };
 
         /**
-         * @param {!Array.<string>} filenames
-         * @returns {!Object.<string, string>} Map with all file content.
+         * @param {!Array<string>} filenames
+         * @returns {!Object<string, string>} Map with all file content.
          */
         function readStoreFiles(filenames) {
             var storeMap = {};
@@ -166,7 +166,7 @@
 
         /**
          * Search for plugin files in plugin directory.
-         * @returns {!Array.<string>} List of plugin filenames found in the PLUGINS_DIR folder.
+         * @returns {!Array<string>} List of plugin filenames found in the PLUGINS_DIR folder.
          */
         function getStoreFilenames() {
             var files =  fs.readdirSync(STORES_DIR);

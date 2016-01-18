@@ -25,7 +25,7 @@ yak.HttpServer = function HttpServer(yakServer, config) {
     var app = express();
 
     /**
-     * @type {Object.<string, Object>}
+     * @type {Object<string, Object>}
      */
     var apiMap = {};
 

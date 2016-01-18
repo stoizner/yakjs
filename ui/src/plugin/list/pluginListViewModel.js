@@ -12,7 +12,7 @@ yak.ui.PluginListViewModel = function PluginListViewModel(context) {
     var self = this;
 
     /**
-     * @type {Array.<yak.ui.PluginItem>}
+     * @type {Array<yak.ui.PluginItem>}
      */
     this.items = [];
 
