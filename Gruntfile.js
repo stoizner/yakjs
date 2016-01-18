@@ -9,16 +9,25 @@ module.exports = function grunt(grunt) {
 
     var pkg = grunt.file.readJSON('package.json');
 
+    // Build Folder: for build related tasks
     var buildDir = './build/';
 
-    // Source and Project directories
-    var serverDir = './server/';
+    // Default Folder: containing default YAKjs setup of instances, plugins and stores
     var defaultDir = './default/';
+
+    // Server Folders: source code of the YAKjs server
+    var serverDir = './server/';
     var serverSrcDir = serverDir + 'src/';
+
+    // User Interface Folders: source code of the YAKjs user interface
     var uiDir = './ui/';
     var uiSrcDir = uiDir + 'src/';
 
-    // Distribution directories.
+    // Test Folders: containing unit test and integration tests.
+    var testDir = './test/';
+    var testServerDir = testDir + 'server/';
+
+    // Distribution Folder: intermediate and final output for the build process
     var distDir = './dist/';
     var tmpDir = distDir + 'tmp/';
     var pkgDir = './dist/yakjs/';
@@ -145,7 +154,8 @@ module.exports = function grunt(grunt) {
             coverageTest: {
                 files: [
                     {flatten:true, cwd: serverDir, src: ['_namespaces.js'], dest: coverageDir + 'server/', expand: true},
-                    {flatten:true, cwd: serverDir + 'test/', src: ['*.*'], dest: coverageDir + 'server/test/', expand: true}
+                    {flatten:true, cwd: testServerDir, src: ['**/*.js'], dest: coverageDir + 'test/server/', expand: true},
+                    {flatten:true, cwd: testDir, src: ['*.js'], dest: coverageDir + 'test/', expand: true}
                 ]
             }
         }
@@ -219,7 +229,7 @@ module.exports = function grunt(grunt) {
                 options: {
                     reporter: 'spec'
                 },
-                src: [coverageDir + 'server/test/**/*.js']
+                src: [coverageDir + 'test/server/**/*.js']
             }
         }
     });

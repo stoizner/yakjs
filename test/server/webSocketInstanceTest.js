@@ -1,8 +1,8 @@
-require('./testSandbox');
+require('../testSandbox');
 
-require('../_namespaces.js');
-require('../src/core/instances/webSocketInstance.js');
-require('../src/core/instances/instanceState.js');
+require('../../server/_namespaces.js');
+require('../../server/src/core/instances/webSocketInstance.js');
+require('../../server/src/core/instances/instanceState.js');
 
 yak.global = {};
 //yak.global.log = new yak.Log();
