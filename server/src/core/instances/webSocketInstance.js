@@ -56,7 +56,7 @@ yak.WebSocketInstance = function WebSocketInstance(pluginManager, id, port) {
     this.description = '';
 
     /**
-     * @type {Array.<string>}
+     * @type {Array<string>}
      */
     this.plugins = [];
 
@@ -103,17 +103,17 @@ yak.WebSocketInstance = function WebSocketInstance(pluginManager, id, port) {
      * Start server instance
      */
     this.start = function start() {
-        log.info('Start WebSocketServer Instance', { id: self.id });
+        log.info('Start WebSocketServer Instance', {id: self.id});
         try {
             if (self.state !== yak.InstanceState.RUNNING) {
                 instantiatePlugins();
                 startServer();
                 self.state = yak.InstanceState.RUNNING;
             } else {
-                log.info('Can not start, Instance already running.', { id: self.id });
+                log.info('Can not start, Instance already running.', {id: self.id});
             }
         } catch (ex) {
-            log.error('Could not start instance: ', { error: ex.message, ex: ex, stack: ex.stack });
+            log.error('Could not start instance: ', {error: ex.message, ex: ex, stack: ex.stack});
             self.state = yak.InstanceState.ERROR;
         }
     };
@@ -122,7 +122,7 @@ yak.WebSocketInstance = function WebSocketInstance(pluginManager, id, port) {
      * Stop server instance.
      */
     this.stop = function stop() {
-        log.info('Stop WebSocketServer Instance', { name: self.name, state: self.state });
+        log.info('Stop WebSocketServer Instance', {name: self.name, state: self.state});
         try {
             if (server && self.state === yak.InstanceState.RUNNING) {
                 self.state = yak.InstanceState.STOPPING;
@@ -132,7 +132,7 @@ yak.WebSocketInstance = function WebSocketInstance(pluginManager, id, port) {
                 self.state = yak.InstanceState.STOPPED;
             }
         } catch (ex) {
-            log.info('Could not stop instance, maybe instance is not running.', { error: ex.message, ex: ex, stack: ex.stack });
+            log.info('Could not stop instance, maybe instance is not running.', {error: ex.message, ex: ex, stack: ex.stack});
             self.state = yak.InstanceState.STOPPED;
         }
     };
@@ -141,7 +141,7 @@ yak.WebSocketInstance = function WebSocketInstance(pluginManager, id, port) {
      * Start the web socket.
      */
     function startServer() {
-        log.info('Start websocket server instance.', { port: self.port });
+        log.info('Start websocket server instance.', {port: self.port});
         server = new WebSocketServer({port: self.port});
         server.on('connection', handleConnection);
         server.on('error', handleError);
@@ -166,7 +166,7 @@ yak.WebSocketInstance = function WebSocketInstance(pluginManager, id, port) {
      * Initialize plugins.
      */
     function instantiatePlugins() {
-        log.info('Instantiate and initialize plugins.', { count: self.plugins.length });
+        log.info('Instantiate and initialize plugins.', {count: self.plugins.length});
 
         pluginInstances = [];
         self.activePluginCount = 0;
@@ -174,27 +174,35 @@ yak.WebSocketInstance = function WebSocketInstance(pluginManager, id, port) {
         for(var i = 0; i < self.plugins.length; i++) {
             var pluginName = self.plugins[i].trim();
 
-            log.info('Instantiate plugin.', { plugin: pluginName });
-            var plugin = pluginManager.createPluginInstance(pluginName);
+            log.info('Instantiate plugin.', {plugin: pluginName});
+            var pluginInstance = pluginManager.createPluginInstance(pluginName);
 
-            if (plugin !== null) {
+            if (pluginInstance !== null) {
 
                 // Extend with pluginName
-                plugin.name = pluginName;
+                pluginInstance.name = pluginName;
 
-                // A termination fail, shall not stop the loop, so
-                // that other plugins can be terminated.
+                // When one plugin instantiation fails, it shall continue with the next plugin.
                 try {
-                    initializePlugin(plugin);
-                    self.activePluginCount++;
+                    initializePlugin(pluginInstance);
+                    addPluginInstance(pluginInstance);
                 } catch (ex) {
-                    log.error('Initialization failed.', { plugin: pluginName });
-                    log.debug({ error: ex.message });
+                    log.error('Initialization failed.', {plugin: pluginName});
+                    log.debug({error: ex.message});
                 }
             } else {
-                log.error('Plugin could not be loaded.', { plugin: pluginName });
+                log.error('Plugin could not be loaded.', {plugin: pluginName});
             }
         }
+    }
+
+    /**
+     * Add plugin instance to workers.
+     * @param {yak.PluginWorker} pluginInstance
+     */
+    function addPluginInstance(pluginInstance) {
+        pluginInstances.push(pluginInstance);
+        self.activePluginCount++;
     }
 
     /**
@@ -207,10 +215,8 @@ yak.WebSocketInstance = function WebSocketInstance(pluginManager, id, port) {
 
         if (plugin.hasOwnProperty('onInitialize')) {
             try {
+                // Method onInitialize is
                 plugin.onInitialize(self);
-
-                // Add plugin instance to workers.
-                pluginInstances.push(plugin);
 
                 pluginLog.info('Plugin initialized.');
                 log.info('Plugin initialized. @' + plugin.name);
@@ -218,8 +224,6 @@ yak.WebSocketInstance = function WebSocketInstance(pluginManager, id, port) {
                 pluginLog.error('onInitialize failed', {error: ex.message});
                 log.warn('onInitialize failed @' + plugin.name, {error: ex.message});
             }
-        } else {
-            pluginLog.info('Plugin has no onInitialize function - skipped.');
         }
     }
 
@@ -227,7 +231,7 @@ yak.WebSocketInstance = function WebSocketInstance(pluginManager, id, port) {
      * Terminate plugins.
      */
     function terminatePlugins() {
-        log.info('Terminate all plugins.', { count: self.plugins.length });
+        log.info('Terminate all plugins.', {count: self.plugins.length});
 
         _.each(pluginInstances, function saveTerminatePlugin(pluginInstance) {
             // A termination fail, shall not stop the loop, so
@@ -235,7 +239,7 @@ yak.WebSocketInstance = function WebSocketInstance(pluginManager, id, port) {
             try {
                 terminatePlugin(pluginInstance);
             } catch (ex) {
-                log.error('Could not terminate plugin', { plugin: pluginInstance.name, error: ex, stack: ex.stack });
+                log.error('Could not terminate plugin', {plugin: pluginInstance.name, error: ex, stack: ex.stack});
             }
         });
 
@@ -248,22 +252,29 @@ yak.WebSocketInstance = function WebSocketInstance(pluginManager, id, port) {
     function terminatePlugin(pluginInstance) {
         var pluginLog = new yak.Logger(pluginInstance.name + '.plugin');
 
-        log.info('Terminate plugin.', { plugin: pluginInstance.name });
+        log.info('Terminate plugin.', {plugin: pluginInstance.name});
 
         if (pluginInstance.hasOwnProperty('onTerminate')) {
             pluginInstance.onTerminate(self);
             pluginLog.info('Plugin terminated.');
         } else {
-            pluginLog.info('Plugin has no onTerminate function - skipped.', { plugin: pluginInstance.name });
+            pluginLog.info('Plugin has no onTerminate function - skipped.', {plugin: pluginInstance.name});
         }
     }
 
     /**
      * Get all connections.
-     * @returns {Array.<yak.WebSocketConnection>} List of websocket connections.
+     * @returns {Array<yak.WebSocketConnection>} List of websocket connections.
      */
     this.getConnections = function getConnections() {
         return _.toArray(connections);
+    };
+
+    /**
+     * @returns {Array<yak.PluginWorker>} List of instantiated plugins.
+     */
+    this.getPluginInstances = function getPluginInstances() {
+        return pluginInstances;
     };
 
     /**
@@ -275,19 +286,19 @@ yak.WebSocketInstance = function WebSocketInstance(pluginManager, id, port) {
         var connection = new yak.WebSocketConnection();
         connection.socket = socket;
 
-        log.info('New client connected', { connectionId: connection.id });
+        log.info('New client connected', {connectionId: connection.id});
 
         connections[connection.id] = connection;
 
         socket.on('close', function handleClose() {
-            self.log.info('Connection closed ', { connectionId: connection.id });
+            self.log.info('Connection closed ', {connectionId: connection.id});
             delete connections[connection.id];
 
             pluginsOnConnectionClosed(connection);
         });
 
         socket.on('error', function handleError() {
-            self.log.info('Connection closed with error' , { connectionId: connection.id });
+            self.log.info('Connection closed with error' , {connectionId: connection.id});
             delete connections[connection.id];
 
             pluginsOnConnectionClosed(connection);
@@ -304,7 +315,7 @@ yak.WebSocketInstance = function WebSocketInstance(pluginManager, id, port) {
      */
     function createMessageHandler(connection) {
         return function handleMessage(data, flags) {
-            log.debug('Received websocket message ', { fromConnectionId: connection.id, data: data });
+            log.debug('Received websocket message ', {fromConnectionId: connection.id, data: data});
 
             for(var i = 0; i < pluginInstances.length; i++) {
                 pluginOnMessage(pluginInstances[i], data, connection);
@@ -360,10 +371,10 @@ yak.WebSocketInstance = function WebSocketInstance(pluginManager, id, port) {
         _.each(pluginInstances, function callOnConnectionClosed(pluginInstance) {
             if (pluginInstance.onConnectionClosed) {
                 try {
-                    self.log.info('Plugin.onConnectionClosed', { pluginName: pluginInstance.name });
+                    self.log.info('Plugin.onConnectionClosed', {pluginName: pluginInstance.name});
                     pluginInstance.onConnectionClosed(connection, self);
                 } catch (ex) {
-                    self.log.error('Plugin.onConnectionClosed failed.', { pluginName: pluginInstance.name, error: ex.name, message:ex.message });
+                    self.log.error('Plugin.onConnectionClosed failed.', {pluginName: pluginInstance.name, error: ex.name, message:ex.message});
                 }
             }
         });
