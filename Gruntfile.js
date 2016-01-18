@@ -13,6 +13,7 @@ module.exports = function grunt(grunt) {
 
     // Source and Project directories
     var serverDir = './server/';
+    var defaultDir = './default/';
     var serverSrcDir = serverDir + 'src/';
     var uiDir = './ui/';
     var uiSrcDir = uiDir + 'src/';
@@ -128,19 +129,11 @@ module.exports = function grunt(grunt) {
                     {flatten: true, cwd: serverDir + 'bin/', src: ['yakjs.js'], dest: pkgDir + 'bin/', expand: true}
                 ]
             },
-            defaultPlugins: {
+            defaults: {
                 files: [
-                    { flatten:true, cwd: serverDir + 'plugins/', src: ['*.js'], dest: pkgDir + 'plugins/', expand: true}
-                ]
-            },
-            defaultInstances: {
-                files: [
-                    { flatten:true, cwd: serverDir + 'instances/', src: ['*.json'], dest: pkgDir + 'instances/', expand: true}
-                ]
-            },
-            defaultStores: {
-                files: [
-                    { flatten:true, cwd: serverDir + 'stores/', src: ['*.*'], dest: pkgDir + 'stores/', expand: true}
+                    { flatten:true, cwd: defaultDir + 'plugins/', src: ['*.js'], dest: pkgDir + 'plugins/', expand: true},
+                    { flatten:true, cwd: defaultDir + 'instances/', src: ['*.json'], dest: pkgDir + 'instances/', expand: true},
+                    { flatten:true, cwd: defaultDir + 'stores/', src: ['*.*'], dest: pkgDir + 'stores/', expand: true}
                 ]
             },
             ui: {
@@ -292,9 +285,7 @@ module.exports = function grunt(grunt) {
         'compile-server',
         'copy:server',
         'copy:bin',
-        'copy:defaultPlugins',
-        'copy:defaultInstances',
-        'copy:defaultStores',
+        'copy:defaults',
         'eslint:server',
         'test']);
     grunt.registerTask('build-ui', ['compile-ui', 'clean:tmp']);
