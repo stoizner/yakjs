@@ -1,6 +1,6 @@
 {
     "name": "yakjs",
-    "version": "1.5.0-SNAPSHOT",
+    "version": "2.0.0-SNAPSHOT",
     "description": "YAKjs WebSocket Servers with JavaScript Plugins based on nodejs",
     "keywords": [
         "YAK",
@@ -18,15 +18,11 @@
     },
     "license": "MIT",
     "author": {
-        "name": "Christian Schuller <cschuller>"
+        "name": "Christian Schuller <cschuller@servusalps.com>"
     },
     "contributors": [
-        {
-            "name": "dasMulli"
-        },
-        {
-            "name": "vsa"
-        }
+        "dasMulli",
+        "vsa"
     ],
     "scripts": {
         "start": "node yakjs.js"
@@ -57,7 +53,7 @@
         "ws": "~0.4.31"
     },
     "engines": {
-        "node": ">=0.12.0"
+        "node": ">=4.0.0"
     },
     "devDependencies": {
         "blanket": "^1.2.1",
