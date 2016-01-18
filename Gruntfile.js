@@ -260,6 +260,25 @@ module.exports = function grunt(grunt) {
         }
     });
 
+    grunt.config.merge({
+        compress: {
+            zip: {
+                options: {
+                    archive: distDir + pkg.name + '-' + pkg.version + '.zip',
+                    level: 9,
+                    mode: 'zip',
+                    pretty: true
+                },
+                files: [{
+                    src: ['**/*'],
+                    expand: true,
+                    cwd: pkgDir,
+                    dest: '.'
+                }]
+            }
+        }
+    });
+
     // Load all npm tasks.
     require('load-grunt-tasks')(grunt);
 
@@ -285,8 +304,9 @@ module.exports = function grunt(grunt) {
     grunt.registerTask('coverage', ['instrument', 'copy:coverageTest', 'mochaTest:coverage', 'storeCoverage', 'makeReport']);
     grunt.registerTask('dev', ['build-server', 'build-ui', 'watch']);
     grunt.registerTask('compile', ['compile-server', 'compile-ui']);
-    grunt.registerTask('build', ['clean', 'build-server', 'build-ui']);
+    grunt.registerTask('build', ['clean', 'build-server', 'build-ui', 'coverage']);
+    grunt.registerTask('package', ['build', 'compress']);
 
     // TASK: default
-    grunt.registerTask('default', ['build']);
+    grunt.registerTask('default', ['package']);
 };
