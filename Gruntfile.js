@@ -285,7 +285,6 @@ module.exports = function grunt(grunt) {
     // Load all npm tasks.
     require('load-grunt-tasks')(grunt);
 
-
     grunt.loadTasks(buildDir + 'grunt-tasks');
 
     grunt.registerTask('compile-server', ['concat:server', 'concat:api', 'uglify']);
