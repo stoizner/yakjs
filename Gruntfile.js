@@ -22,6 +22,8 @@ module.exports = function grunt(grunt) {
     var tmpDir = distDir + 'tmp/';
     var pkgDir = './dist/yakjs/';
     var uiPkgDir = pkgDir + 'ui/';
+    var reportsDir = distDir + 'reports/';
+    var coverageDir = distDir + 'coverage/';
 
     var banner = ['/**',
             ' * ' + pkg.name,
@@ -146,6 +148,12 @@ module.exports = function grunt(grunt) {
                     {expand: true, cwd: uiSrcDir, src: ['**/*.*', '!**/*.less', '!**/*.js', '!**/*.mustache'], dest: uiPkgDir, filter: 'isFile'},
                     {expand: true, cwd: uiDir, src: ['ext/**/*'], dest: uiPkgDir}
                 ]
+            },
+            coverageTest: {
+                files: [
+                    {flatten:true, cwd: serverDir, src: ['_namespaces.js'], dest: coverageDir + 'server/', expand: true},
+                    {flatten:true, cwd: serverDir + 'test/', src: ['*.*'], dest: coverageDir + 'server/test/', expand: true}
+                ]
             }
         }
     });
@@ -205,15 +213,56 @@ module.exports = function grunt(grunt) {
         }
     });
 
-    grunt.loadNpmTasks('grunt-contrib-uglify');
-    grunt.loadNpmTasks('grunt-contrib-concat');
-    grunt.loadNpmTasks('grunt-contrib-copy');
-    grunt.loadNpmTasks('grunt-contrib-compress');
-    grunt.loadNpmTasks('grunt-contrib-clean');
-    grunt.loadNpmTasks('grunt-contrib-watch');
-    grunt.loadNpmTasks('grunt-eslint');
-    grunt.loadNpmTasks('grunt-contrib-less');
-    grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.config.merge({
+        mochaTest: {
+            dist: {
+                options: {
+                    require: [],
+                    reporter: 'spec'
+                },
+                src: ['./server/test/**/*.js']
+            },
+            coverage: {
+                options: {
+                    reporter: 'spec'
+                },
+                src: [coverageDir + 'server/test/**/*.js']
+            }
+        }
+    });
+
+    // Istanbul coverage analysis
+    grunt.config.merge({
+        instrument: {
+            files: [serverSrcDir + '**/*.js'],
+                options: {
+                basePath: coverageDir
+            }
+        }
+    });
+
+    grunt.config.merge({
+        storeCoverage: {
+            options: {
+                dir: reportsDir + 'coverage-raw/'
+            }
+        }
+    });
+
+    grunt.config.merge({
+        makeReport: {
+            src: reportsDir + 'coverage-raw/**/*.json',
+                options: {
+                type: 'lcov',
+                    dir: reportsDir + 'coverage/',
+                    print: 'text-summary' // detail, none
+            }
+        }
+    });
+
+    // Load all npm tasks.
+    require('load-grunt-tasks')(grunt);
+
 
     grunt.loadTasks(buildDir + 'grunt-tasks');
 
@@ -227,9 +276,13 @@ module.exports = function grunt(grunt) {
         'copy:defaultPlugins',
         'copy:defaultInstances',
         'copy:defaultStores',
-        'eslint:server']);
+        'eslint:server',
+        'test']);
     grunt.registerTask('build-ui', ['compile-ui', 'clean:tmp']);
 
+    grunt.registerTask('test', ['mochaTest']);
+
+    grunt.registerTask('coverage', ['instrument', 'copy:coverageTest', 'mochaTest:coverage', 'storeCoverage', 'makeReport']);
     grunt.registerTask('dev', ['build-server', 'build-ui', 'watch']);
     grunt.registerTask('compile', ['compile-server', 'compile-ui']);
     grunt.registerTask('build', ['clean', 'build-server', 'build-ui']);
