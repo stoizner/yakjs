@@ -21,7 +21,7 @@ yak.ui.NotificationViewModel = function NotificationViewModel(context) {
      * Callback function for a new notification
      * @type {Function}
      */
-    this.onNotificationTextChanged = yak.ui.noop();
+    this.onNotificationTextChanged = _.noop;
 
     /**
      * Constructor

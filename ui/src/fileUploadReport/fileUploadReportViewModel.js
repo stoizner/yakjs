@@ -18,7 +18,7 @@ yak.ui.FileUploadReportViewModel = function FileUploadReportViewModel(context) {
     this.uploadedFiles = [];
 
     /**
-     * @type {yak.ui.noop}
+     * @type {Function}
      */
     this.onUploadedFilesChanged = _.noop;
 
