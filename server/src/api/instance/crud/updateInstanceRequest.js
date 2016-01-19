@@ -25,7 +25,7 @@ yak.api.UpdateInstanceRequest = function UpdateInstanceRequest() {
     this.instanceId = null;
 
     /**
-     * @type {yak.api.Instance}
+     * @type {yak.api.InstanceConfig}
      */
     this.instance = null;
 };

@@ -43,10 +43,10 @@ yak.InstanceManager = function InstanceManager(pluginManager) {
      * Load instances from instances directory.
      */
     this.loadInstances = function loadInstances() {
-        log.info('Loading instances from instance directory', {dir:INSTANCES_DIR});
+        log.info('Loading instance configruations from instance directory', {dir:INSTANCES_DIR});
 
         var filenames = getInstanceFilenames();
-        log.info('Instance files found.', {filesFound: filenames.length, filenames: filenames});
+        log.info('Instance configuration files found.', {filesFound: filenames.length, filenames: filenames});
 
         readAndParseInstanceFiles(filenames);
     };
@@ -63,7 +63,7 @@ yak.InstanceManager = function InstanceManager(pluginManager) {
             if (instance) {
                 self.addOrUpdateInstance(instance);
             } else {
-                log.warn('Instance is not defined.', {filename: filename});
+                log.warn('Instance configuration is not defined.', {filename: filename});
             }
         });
     }
@@ -103,10 +103,10 @@ yak.InstanceManager = function InstanceManager(pluginManager) {
                 // Clean up windows line endings.
                 contentMap[filename] = fileContent.replace('\r\n', '\n');
             } catch(ex) {
-                log.warn('Could not read instance file.', {filename: filename, error: ex.message});
+                log.warn('Could not read instance configuration file.', {filename: filename, error: ex.message});
             }
         });
-        log.info('Instance files read.', {filesRead: _.toArray(contentMap).length});
+        log.info('Instance configuration files read.', {filesRead: _.toArray(contentMap).length});
 
         return contentMap;
     }
@@ -288,7 +288,7 @@ yak.InstanceManager = function InstanceManager(pluginManager) {
             instance.autoStartEnabled = true;
             self.saveInstance(instance);
         }  else {
-            throw new Error('Instance entity not found.', { instance: id });
+            throw new Error('Instance not found.', { instance: id });
         }
     };
 
@@ -306,7 +306,7 @@ yak.InstanceManager = function InstanceManager(pluginManager) {
             instance.autoStartEnabled = false;
             self.saveInstance(instance);
         }  else {
-            throw new Error('Instance entity not found.', { instance: id });
+            throw new Error('Instance not found.', { instance: id });
         }
     };
 

@@ -1,14 +1,14 @@
 /**
- * CreateInstanceRequestHandler
+ * CreateInstanceConfigRequestHandler
  * @constructor
  * @param {yak.YakServer} yakServer
  * @implements {yakServiceMessageHandler}
  */
-yak.CreateInstanceRequestHandler = function CreateInstanceRequestHandler(yakServer) {
+yak.CreateInstanceConfigRequestHandler = function CreateInstanceConfigRequestHandler(yakServer) {
     'use strict';
 
     /**
-     * @param {yak.api.CreateInstanceRequest} request
+     * @param {yak.api.CreateInstanceConfigRequest} request
      * @returns {yak.api.CreateInstanceResponse} response
      */
     this.handle = function handle(request) {

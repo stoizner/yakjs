@@ -1,9 +1,9 @@
 /**
- * CreateInstanceRequest
+ * CreateInstanceConfigRequest
  * @constructor
  * @implements {yak.api.Request}
  */
-yak.api.CreateInstanceRequest = function CreateInstanceRequest() {
+yak.api.CreateInstanceConfigRequest = function CreateInstanceConfigRequest() {
     'use strict';
 
     /**
@@ -25,7 +25,7 @@ yak.api.CreateInstanceRequest = function CreateInstanceRequest() {
     this.instanceId = null;
 
     /**
-     * @type {yak.api.Instance}
+     * @type {yak.api.InstanceConfig}
      */
     this.instance = null;
 };

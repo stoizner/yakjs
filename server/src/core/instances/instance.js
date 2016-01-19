@@ -2,7 +2,7 @@
  * Instance
  * @constructor
  */
-yak.Instance = function Instance() {
+yak.InstanceConfig = function Instance() {
     'use strict';
 
     /**

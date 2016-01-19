@@ -8,7 +8,7 @@ yak.FileUploadRequestHandler = function FileUploadRequestHandler(yakServer) {
     'use strict';
 
     /**
-     * @type {yak.CreateInstanceRequestHandler}
+     * @type {yak.CreateInstanceConfigRequestHandler}
      */
     var self = this;
 
@@ -107,7 +107,7 @@ yak.FileUploadRequestHandler = function FileUploadRequestHandler(yakServer) {
                 yakServer.instanceManager.addOrUpdateInstance(instance);
             } else {
                 response.success = false;
-                response.message = 'Instance json is not valid. ';
+                response.message = 'Instance configuration json is not valid. ';
             }
         } catch(ex) {
             log.warn(ex);

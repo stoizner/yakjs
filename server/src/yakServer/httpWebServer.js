@@ -106,7 +106,7 @@ yak.HttpServer = function HttpServer(yakServer, config) {
         apiMap['request.stopInstance'] = new yak.StopInstanceRequestHandler(yakServer);
         apiMap['request.restartInstance'] = new yak.RestartInstanceRequestHandler(yakServer);
         apiMap['request.getInstances'] = new yak.GetInstancesRequestHandler(yakServer);
-        apiMap['request.createInstance'] = new yak.CreateInstanceRequestHandler(yakServer);
+        apiMap['request.createInstance'] = new yak.CreateInstanceConfigRequestHandler(yakServer);
         apiMap['request.updateInstance'] = new yak.UpdateInstanceRequestHandler(yakServer);
         apiMap['request.removeInstance'] = new yak.DeleteInstanceRequestHandler(yakServer);
 

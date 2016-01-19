@@ -103,11 +103,11 @@ yak.ui.InstanceViewModel = function InstanceViewModel(context) {
         var request = null;
 
         if (self.instanceItem === null) {
-            request = new yak.api.CreateInstanceRequest();
-            request.instance = _.extend(new yak.api.Instance(), instanceItem);
+            request = new yak.api.CreateInstanceConfigRequest();
+            request.instance = _.extend(new yak.api.InstanceConfig(), instanceItem);
         } else {
             request = new yak.api.UpdateInstanceRequest();
-            request.instance = _.extend(new yak.api.Instance(), instanceItem);
+            request.instance = _.extend(new yak.api.InstanceConfig(), instanceItem);
             request.instanceId = self.instanceItem.id;
         }
 

@@ -110,7 +110,7 @@ yak.WebSocketInstance = function WebSocketInstance(pluginManager, id, port) {
                 startServer();
                 self.state = yak.InstanceState.RUNNING;
             } else {
-                log.info('Can not start, Instance already running.', {id: self.id});
+                log.info('Can not start, instance already running.', {id: self.id});
             }
         } catch (ex) {
             log.error('Could not start instance: ', {error: ex.message, ex: ex, stack: ex.stack});

@@ -1,8 +1,8 @@
 /**
- * Instance
+ * Instance Configuration
  * @constructor
  */
-yak.api.Instance = function Instance() {
+yak.api.InstanceConfig = function Instance() {
     'use strict';
 
     /**
