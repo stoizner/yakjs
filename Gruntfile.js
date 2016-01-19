@@ -121,28 +121,16 @@ module.exports = function grunt(grunt) {
         copy: {
             server: {
                 files: [
-                    {flatten:true, src: ['README.md', 'LICENSE', 'package.json'], dest: pkgDir},
-                    {flatten:false, src: ['node_modules/ws/**'], dest: pkgDir},
-                    {flatten:false, src: ['node_modules/underscore/**'], dest: pkgDir},
-                    {flatten:false, src: ['node_modules/npm/**'], dest: pkgDir},
-                    {flatten:false, src: ['node_modules/express/**'], dest: pkgDir},
-                    {flatten:false, src: ['node_modules/body-parser/**'], dest: pkgDir},
-                    {flatten:false, src: ['node_modules/log4js/**'], dest: pkgDir},
-                    {flatten:false, src: ['node_modules/moment/**'], dest: pkgDir},
-                    {flatten:false, src: ['node_modules/doctrine/**'], dest: pkgDir},
-                    {flatten:true, cwd: serverDir + 'bin/', src: ['*.bat', '*.sh'], dest: pkgDir, expand: true}
-                ]
-            },
-            bin: {
-                files: [
+                    {flatten: true, src: ['README.md', 'LICENSE', 'package.json'], dest: pkgDir},
+                    {flatten: true, cwd: serverDir + 'bin/', src: ['*.bat', '*.sh'], dest: pkgDir, expand: true},
                     {flatten: true, cwd: serverDir + 'bin/', src: ['yakjs.js'], dest: pkgDir + 'bin/', expand: true}
                 ]
             },
             defaults: {
                 files: [
-                    { flatten:true, cwd: defaultDir + 'plugins/', src: ['*.js'], dest: pkgDir + 'plugins/', expand: true},
-                    { flatten:true, cwd: defaultDir + 'instances/', src: ['*.json'], dest: pkgDir + 'instances/', expand: true},
-                    { flatten:true, cwd: defaultDir + 'stores/', src: ['*.*'], dest: pkgDir + 'stores/', expand: true}
+                    {flatten: true, cwd: defaultDir + 'plugins/', src: ['*.js'], dest: pkgDir + 'plugins/', expand: true},
+                    {flatten: true, cwd: defaultDir + 'instances/', src: ['*.json'], dest: pkgDir + 'instances/', expand: true},
+                    {flatten: true, cwd: defaultDir + 'stores/', src: ['*.*'], dest: pkgDir + 'stores/', expand: true}
                 ]
             },
             ui: {
@@ -153,9 +141,9 @@ module.exports = function grunt(grunt) {
             },
             coverageTest: {
                 files: [
-                    {flatten:true, cwd: serverDir, src: ['_namespaces.js'], dest: coverageDir + 'server/', expand: true},
-                    {flatten:true, cwd: testServerDir, src: ['**/*.js'], dest: coverageDir + 'test/server/', expand: true},
-                    {flatten:true, cwd: testDir, src: ['*.js'], dest: coverageDir + 'test/', expand: true}
+                    {flatten: true, cwd: serverDir, src: ['_namespaces.js'], dest: coverageDir + 'server/', expand: true},
+                    {flatten: true, cwd: testServerDir, src: ['**/*.js'], dest: coverageDir + 'test/server/', expand: true},
+                    {flatten: true, cwd: testDir, src: ['*.js'], dest: coverageDir + 'test/', expand: true}
                 ]
             }
         }
@@ -282,6 +270,17 @@ module.exports = function grunt(grunt) {
         }
     });
 
+    grunt.config.merge({
+       exec: {
+           installNodeModules: {
+               cwd: './dist/yakjs/',
+               command: 'npm install --production',
+               stdout: true,
+               stderr: true
+           }
+       }
+    });
+
     // Load all npm tasks.
     require('load-grunt-tasks')(grunt);
 
@@ -293,7 +292,6 @@ module.exports = function grunt(grunt) {
     grunt.registerTask('build-server', [
         'compile-server',
         'copy:server',
-        'copy:bin',
         'copy:defaults',
         'eslint:server',
         'test']);
@@ -305,7 +303,9 @@ module.exports = function grunt(grunt) {
     grunt.registerTask('dev', ['build-server', 'build-ui', 'watch']);
     grunt.registerTask('compile', ['compile-server', 'compile-ui']);
     grunt.registerTask('build', ['clean', 'build-server', 'build-ui', 'coverage']);
-    grunt.registerTask('package', ['build', 'compress']);
+
+    // Creates a releaseable zip package
+    grunt.registerTask('package', ['build', 'exec:installNodeModules', 'compress']);
 
     // TASK: default
     grunt.registerTask('default', ['package']);
