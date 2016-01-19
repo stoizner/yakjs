@@ -19,7 +19,7 @@ yak.ui.StoreListViewModel = function StoreListViewModel(context) {
     /**
      * @type {Function}
      */
-    var lastGetValueRequestCallback = yak.ui.noop;
+    var lastGetValueRequestCallback = _.noop;
 
     /**
      * @type {Array<yak.ui.StoreItem>}
@@ -34,7 +34,7 @@ yak.ui.StoreListViewModel = function StoreListViewModel(context) {
     /**
      * @type {Function}
      */
-    this.onItemsChanged = yak.ui.noop;
+    this.onItemsChanged = _.noop;
 
     /**
      * Constructor

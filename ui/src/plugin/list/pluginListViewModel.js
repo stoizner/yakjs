@@ -19,7 +19,7 @@ yak.ui.PluginListViewModel = function PluginListViewModel(context) {
     /**
      * @type {Function}
      */
-    this.onItemsChanged = yak.ui.noop;
+    this.onItemsChanged = _.noop;
 
     /**
      * Constructor

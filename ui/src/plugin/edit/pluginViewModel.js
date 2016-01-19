@@ -19,7 +19,7 @@ yak.ui.PluginViewModel = function PluginViewModel(context) {
     /**
      * @type {Function}
      */
-    this.onPluginItemChanged = yak.ui.noop;
+    this.onPluginItemChanged = _.noop;
 
     /**
      * Callback for received error response.

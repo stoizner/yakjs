@@ -17,7 +17,7 @@ yak.ui.InstanceViewModel = function InstanceViewModel(context) {
     /**
      * @type {Function}
      */
-    this.onInstanceInfoChanged = yak.ui.noop;
+    this.onInstanceInfoChanged = _.noop;
 
     /**
      * @type {Array<yak.ui.SelectPluginItem>}
@@ -27,7 +27,7 @@ yak.ui.InstanceViewModel = function InstanceViewModel(context) {
     /**
      * @type {Function}
      */
-    this.onSelectPluginItemsChanged = yak.ui.noop;
+    this.onSelectPluginItemsChanged = _.noop;
 
     /**
      * Callback for received error response.

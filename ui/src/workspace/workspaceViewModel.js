@@ -25,7 +25,7 @@ yak.ui.WorkspaceViewModel = function WorkspaceViewModel(context) {
      * Callback function for active panel changed event.
      * @type {Function}
      */
-    this.onActivePanelViewChanged = yak.ui.noop;
+    this.onActivePanelViewChanged = _.noop;
 
     /**
      *  Constructor
