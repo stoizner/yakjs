@@ -30,10 +30,10 @@ yak.api = yak.api || {};
         return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
     };
 }());/**
- * CreateInstanceRequest
+ * CreateInstanceConfigRequest
  * @constructor
  */
-yak.api.CreateInstanceRequest = function CreateInstanceRequest() {
+yak.api.CreateInstanceConfigRequest = function CreateInstanceConfigRequest() {
 
     'use strict';
 
