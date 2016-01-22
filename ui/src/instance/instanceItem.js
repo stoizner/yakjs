@@ -25,6 +25,17 @@ yak.ui.InstanceItem = function InstanceItem(id) {
     this.description = '';
 
     /**
+     * The running state.
+     * @type {string}
+     */
+    this.state = 'stopped';
+
+    /**
+     * @type {string}
+     */
+    this.stateTooltipText = '';
+
+    /**
      *
      * @type {number}
      */
@@ -35,4 +46,20 @@ yak.ui.InstanceItem = function InstanceItem(id) {
      * @type {Array<string>}
      */
     this.plugins = [];
+
+    /**
+     * @type {number}
+     */
+    this.pluginTotalCount = 0;
+
+    /**
+     * @type {number}
+     */
+    this.pluginActiveCount = 0;
+
+    /**
+     * @type {number}
+     */
+    this.connectionCount = 0;
+
 };

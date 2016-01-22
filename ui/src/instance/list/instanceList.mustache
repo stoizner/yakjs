@@ -3,20 +3,53 @@
         <div class="white-space-block"></div>
         <ul class="tool-bar">
             <li class="tool-bar-item">
-                <div class="button" data-command="create">
-                    <div class="center">New Instance</div>
-                </div>
+                <div class="text-button" data-command="create">New Instance</div>
             </li>
             <li class="tool-bar-item">
-                <div class="button" data-command="refresh">
-                    <div class="center">Refresh</div>
-                </div>
+                <div class="text-button" data-command="refresh">Refresh</div>
             </li>
         </ul>
     </header>
     <section class="header-panel-body">
         <div class="scroll-panel">
-            <div class="list instance-items"></div>
+            <div class="instance-items">
+                {{#instances}}
+                    <div class="card-block" data-instance="{{name}}" data-id="{{id}}" data-state="{{state}}">
+                        <div class="column-block">
+                            <div class="column-block-column">
+                                <div class="status-indicator-block">
+                                    <div class="status-indicator" title="{{stateTooltipText}}">
+                                        <div class="line-block port-text">{{port}}</div>
+                                        <div class="line-block center">{{state}}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="column-block-column-fill">
+                                <div class="line-block">
+                                    <span class="strong-text"> {{name}}</span>
+                                    {{#description}}
+                                    <span class="light-text">, {{description}}</span>
+                                    {{/description}}
+                                </div>
+                                <div class="line-block">
+                                    <span class="flat-button" data-command="start">Start</span>
+                                    <span class="flat-button" data-command="stop">Stop</span>
+                                    <span class="flat-button" data-command="edit">Edit</span>
+                                </div>
+                            </div>
+                            <div class="column-block-column" style="width: 500px">
+                                <div class="line-block"></div>
+                                <div class="line-block" style="text-align: right; padding-right: 10px">
+                                    <span class="light-text">{{pluginActiveCount}}/{{pluginTotalCount}}</span> <span class="light-text">plugins active | </span>
+                                    <span class="light-text">{{connectionCount}}</span> <span class="light-text" title="Total number of client connections">clients </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="line-block"></div>
+                {{/instances}}
+            </div>
         </div>
     </section>
 </div>

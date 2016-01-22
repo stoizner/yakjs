@@ -3,19 +3,15 @@
         <div class="white-space-block"></div>
         <ul class="tool-bar">
             <li class="tool-bar-item">
-                <div class="button" data-command="save">
-                    <div class="center">Save</div>
-                </div>
+                <div class="button" data-command="save">Save</div>
             </li>
-            <li class="tool-bar-item" data-item-command-visible="true">
-                <div class="button" data-command="delete" >
-                    <div class="center">Delete</div>
-                </div>
-            </li>
+            {{#instance}}
             <li class="tool-bar-item">
-                <div class="button" data-command="cancel">
-                    <div class="center">Cancel</div>
-                </div>
+                <div class="button" data-command="delete" >Delete</div>
+            </li>
+            {{/instance}}
+            <li class="tool-bar-item">
+                <div class="button" data-command="cancel">Cancel</div>
             </li>
         </ul>
     </header>
@@ -25,25 +21,35 @@
                 <div class="error-line-text">{{error-text-here}}</div>
             </div>
 
-            <div class="form">
-                <div class="form-line">
-                    <div class="line-label">Name</div>
-                    <div class="line-input"><input data-bind="value:name" type="text" /></div>
-                </div>
-                <div class="form-line">
-                    <div class="line-label">Port</div>
-                    <div class="line-input"><input data-bind="value:port" type="text" /></div>
-                </div>
-                <div class="form-line">
-                    <div class="line-label">Description</div>
-                    <div class="line-input"><input data-bind="value:description" type="text" /></div>
-                </div>
-                <div class="form-line">
-                    <div class="line-label">Plugins</div>
-                    <div class="line-input">
-                        <div class="plugin-list"></div>
+            <div class="card-block">
+
+                <div class="column-block">
+                    <div class="column-block-column" style="width: 50%">
+                        <div class="frame-block">
+                            <label class="input-label">Name</label>
+                            <input type="text" class="input-text" name="name" value="{{instance.name}}"/>
+                            <div class="light-text">Use a unique name for your WebSocket instance.</div>
+
+                            <label class="input-label">Port</label>
+                            <input type="text" class="input-number" min="0" max="65535" name="port" value="{{instance.port}}" />
+                            <div class="light-text">A port number between 0 and 65535. Tip: Avoid using well-known ports like: 80, 8080, 8790</div>
+
+                            <label class="input-label">Description</label>
+                            <input type="text" class="input-text" name="description" value="{{instance.description}}" />
+                            <div class="light-text">Optional: Any text that helps to understand what this instance does.</div>
+                        </div>
+                    </div>
+
+                    <div class="column-block-column" style="width: 50%">
+                        <div class="frame-block">
+                            <label class="input-label">Plugins</label>
+                            <div class="light-text">Assign plugins to this instance</div>
+
+                            <div class="plugin-list" data-list="plugin"></div>
+                        </div>
                     </div>
                 </div>
+
             </div>
         </div>
     </section>

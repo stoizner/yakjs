@@ -12,7 +12,7 @@ yak.ui.InstanceListViewModel = function InstanceListViewModel(context) {
     var self = this;
 
     /**
-     * @type {Array<yak.api.InstanceInfo>}
+     * @type {!Array<yak.ui.InstanceItem>}
      */
     this.items = [];
 
@@ -88,8 +88,34 @@ yak.ui.InstanceListViewModel = function InstanceListViewModel(context) {
     function handleGetInstancesResponse(response) {
         console.log('handleGetInstancesResponse', {response: response});
 
-        self.items = response.instances;
+        self.items = _.map(response.instances, toInstanceItem);
+        self.items = self.items.sort(yak.ui.nameCompare);
+
         self.onItemsChanged();
+    }
+
+    /**
+     * @param {!yak.api.InstanceInfo} instanceInfo
+     * @returns {!yak.ui.InstanceItem}
+     */
+    function toInstanceItem(instanceInfo) {
+        var instanceItem = new yak.ui.InstanceItem(instanceInfo.id);
+        instanceItem.name = instanceInfo.name;
+        instanceItem.port = instanceInfo.port;
+        instanceItem.state = instanceInfo.state;
+        instanceItem.description = instanceInfo.description;
+        instanceItem.plugins = instanceInfo.plugins;
+
+        if (instanceInfo.pluginActiveCount !== instanceInfo.pluginTotalCount) {
+            instanceItem.state = 'warning';
+            instanceItem.stateTooltipText = 'Running, but some plugins could not be started. Please take a look into your log files to find the error.';
+        }
+
+        instanceItem.pluginTotalCount = instanceInfo.pluginTotalCount;
+        instanceItem.pluginActiveCount = instanceInfo.pluginActiveCount;
+        instanceItem.connectionCount = instanceInfo.connectionCount;
+
+        return instanceItem;
     }
 
     constructor();

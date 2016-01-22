@@ -1,0 +1,24 @@
+.button,
+.text-button {
+    .no-select;
+    display: inline-block;
+    box-sizing:content-box;
+    position: relative;
+    height: 30px;
+    background-color: @color-blue-grey;
+    color: white;
+    cursor: pointer;
+    margin: 0 5px 0 0;
+    padding: 0 10px;
+    border: 0;
+}
+
+
+.button:active:hover,
+.button:hover,
+.text-button:active:hover,
+.text-button:hover {
+    color: @color-white;
+    opacity: 0.9;
+}
+

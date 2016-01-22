@@ -21,32 +21,19 @@ yak.ui.InstanceView = function InstanceView(parent, context, viewModel) {
     /**
      * @type {yak.ui.Template}
      */
-    var selectPluginTemplate = context.template.load('selectPluginItem');
-
-    this.name = context.ko.observable('');
-    this.port = context.ko.observable('');
-    this.description = context.ko.observable('');
+    var pluginListTemplate = context.template.load('selectedPluginsList');
 
     /**
      * Constructor
      */
     function constructor() {
         console.log('yak.ui.InstanceView.constructor', self);
-        parent.html(template.build());
 
-        viewModel.onInstanceInfoChanged = handleInstanceInfoChanged;
+        updateView();
+
+        viewModel.onInstanceInfoChanged = updateView;
         viewModel.onSelectPluginItemsChanged = updatePluginList;
         viewModel.onErrorResponse = handleErrorResponse;
-
-        context.ko.applyBindings(self, parent[0]);
-
-        $('.plugin-list', parent).click(handleSelectPluginClick);
-
-        parent.find('[data-command=save]').click(handleSaveCommand);
-        parent.find('[data-command=delete]').click(handleDeleteCommand);
-        parent.find('[data-command=cancel]').click(handleCancelCommand);
-
-        parent.find('[data-item-command-visible]').attr('data-item-command-visible', false);
     }
 
     /**
@@ -57,6 +44,34 @@ yak.ui.InstanceView = function InstanceView(parent, context, viewModel) {
         parent.find('.error-line').hide();
         viewModel.activate(data);
     };
+
+    /**
+     * Updates the view.
+     */
+    function updateView() {
+        var context = {
+            instance: viewModel.instanceItem
+        };
+
+        parent.html(template.build(context));
+
+        updatePluginList();
+
+        parent.find('[data-command=save]').click(handleSaveCommand);
+        parent.find('[data-command=delete]').click(viewModel.deleteInstance);
+        parent.find('[data-command=cancel]').click(viewModel.cancel);
+        parent.find('[data-list=plugin]').click(handleSelectPluginClick);
+    }
+
+    function updatePluginList() {
+        var context = {
+            allPlugins: viewModel.allPluginItems,
+            selectedPluginItems: viewModel.selectedPluginItems,
+            notSelectedPluginItems: viewModel.notSelectedPluginItems
+        };
+
+        parent.find('[data-list=plugin]').html(pluginListTemplate.build(context));
+    }
 
     /**
      * @param {?} event
@@ -77,65 +92,18 @@ yak.ui.InstanceView = function InstanceView(parent, context, viewModel) {
     }
 
     /**
-     * Handle Instance Info Changed event.
-     */
-    function handleInstanceInfoChanged() {
-        console.log('InstanceView.handleInstanceInfoChanged', viewModel.instanceItem);
-
-        if (viewModel.instanceItem) {
-            self.name(viewModel.instanceItem.name);
-            self.description(viewModel.instanceItem.description);
-            self.port(viewModel.instanceItem.port);
-            parent.find('[data-item-command-visible]').attr('data-item-command-visible', true);
-        } else {
-            self.name('');
-            self.description('');
-            self.port('');
-            parent.find('[data-item-command-visible]').attr('data-item-command-visible', false);
-        }
-
-        updatePluginList();
-    }
-
-    /**
-     * Update the DOM plugin list.
-     */
-    function updatePluginList() {
-        var html = '';
-
-        _.each(viewModel.selectPluginItems, function toHTML(plugin) {
-            html += selectPluginTemplate.build(plugin);
-        });
-
-        $('.plugin-list', parent).html(html);
-    }
-
-    /**
      * Handle Save Button Click
      */
     function handleSaveCommand() {
+        console.warn('save');
         parent.find('.error-line').hide();
 
-        var instanceItem = new yak.ui.InstanceItem(self.name());
-        instanceItem.name = self.name();
-        instanceItem.description = self.description();
-        instanceItem.port = self.port();
+        var instanceItem = new yak.ui.InstanceItem(parent.find('[name=name]').val());
+        instanceItem.name = parent.find('[name=name]').val();
+        instanceItem.description = parent.find('[name=description]').val();
+        instanceItem.port = parent.find('[name=port]').val();
 
         viewModel.createOrUpdate(instanceItem);
-    }
-
-    /**
-     * Handle cancel button click
-     */
-    function handleCancelCommand() {
-        viewModel.cancel();
-    }
-
-    /**
-     * Handle delete button click
-     */
-    function handleDeleteCommand() {
-        viewModel.deleteInstance();
     }
 
     constructor();
