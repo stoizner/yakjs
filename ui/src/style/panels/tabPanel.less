@@ -15,17 +15,18 @@
     right: 0;
     left: 0;
     height: @tab-panel-height;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+
+    border-bottom: solid 5px @color-grey-dark;
 }
 
 .tab-panel-tabs-indicator {
     position: absolute;
     left: 120px;
+    bottom: -5px;
     width: 0;
-    height: 2px;
+    height: 5px;
     background-color: @color-lime;
-    bottom: 0;
-    -webkit-transition: 0.3s ease-out;
+    -webkit-transition: 0.3s ease-in-out;
 }
 
 .tab-panel-tabs ul {
@@ -51,7 +52,7 @@
 }
 
 .tab-panel-tabs li.state-active {
-    color: rgba(255, 255, 255, 1);
+    color: @color-lime;
 }
 
 .tab-panel-tabs li:hover {

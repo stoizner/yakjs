@@ -11,44 +11,48 @@
         </ul>
     </header>
     <section class="header-panel-body">
-        <div class="scroll-panel">
-            <div class="instance-items">
-                {{#instances}}
-                    <div class="card-block" data-instance="{{name}}" data-id="{{id}}" data-state="{{state}}">
-                        <div class="column-block">
-                            <div class="column-block-column">
-                                <div class="status-indicator-block">
-                                    <div class="status-indicator" title="{{stateTooltipText}}">
-                                        <div class="line-block port-text">{{port}}</div>
-                                        <div class="line-block center">{{state}}</div>
+        <div class="">
+            <div class="scroll-panel">
+                <div class="instance-items">
+                    {{#instances}}
+                        <div data-instance="{{name}}" data-id="{{id}}" data-state="{{state}}">
+                            <div class="card-block column-block">
+                                <div class="column-block-column">
+                                    <div class="frame-block status-indicator-box" title="{{stateTooltipText}}"></div>
+                                </div>
+                                <div class="column-block-column">
+                                    <div class="frame-block line-block port-text">{{port}}</div>
+                                </div>
+                                <div class="column-block-column">
+                                    <div class="frame-block text-line-block  port-text">{{name}}</div>
+                                </div>
+                                <div class="column-block-column">
+                                    <div class="frame-block line-block state-text">{{state}}</div>
+                                </div>
+
+                                <div class="column-block-column-fill">
+                                    <div class="frame-block text-line-block">
+                                        <span class="light-text">{{description}}</span>
+                                    </div>
+                                </div>
+
+                                <div class="column-block-column" style="width: 500px">
+                                    <div class="frame-block line-block" style="text-align: right; padding-right: 10px">
+                                        <span class="light-text">{{pluginActiveCount}}/{{pluginTotalCount}}</span> <span class="light-text">plugins active | </span>
+                                        <span class="light-text">{{connectionCount}}</span> <span class="light-text" title="Total number of client connections">clients </span>
                                     </div>
                                 </div>
                             </div>
-                            <div class="column-block-column-fill">
-                                <div class="line-block">
-                                    <span class="strong-text"> {{name}}</span>
-                                    {{#description}}
-                                    <span class="light-text">, {{description}}</span>
-                                    {{/description}}
-                                </div>
-                                <div class="line-block">
-                                    <span class="flat-button" data-command="start">Start</span>
-                                    <span class="flat-button" data-command="stop">Stop</span>
-                                    <span class="flat-button" data-command="edit">Configure</span>
-                                </div>
-                            </div>
-                            <div class="column-block-column" style="width: 500px">
-                                <div class="line-block"></div>
-                                <div class="line-block" style="text-align: right; padding-right: 10px">
-                                    <span class="light-text">{{pluginActiveCount}}/{{pluginTotalCount}}</span> <span class="light-text">plugins active | </span>
-                                    <span class="light-text">{{connectionCount}}</span> <span class="light-text" title="Total number of client connections">clients </span>
-                                </div>
+                            <div class="line-block">
+                                <span class="flat-button" data-command="start">Start</span>
+                                <span class="flat-button" data-command="stop">Stop</span>
+                                <span class="flat-button" data-command="edit">Configure</span>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="line-block"></div>
-                {{/instances}}
+                        <div class="line-block"></div>
+                    {{/instances}}
+                </div>
             </div>
         </div>
     </section>
