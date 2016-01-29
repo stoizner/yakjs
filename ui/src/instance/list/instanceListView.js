@@ -22,13 +22,7 @@ yak.ui.InstanceListView = function InstanceListView(parent, context, viewModel) 
      * Constructor
      */
     function constructor() {
-        parent.html(template.build());
-
-        parent.find('[data-command=create]').click(viewModel.activateInstanceEditPanel);
-        parent.find('[data-command=refresh]').click(viewModel.reloadAndRefreshList);
-
         viewModel.onItemsChanged = createList;
-
         createList();
     }
 
@@ -41,6 +35,9 @@ yak.ui.InstanceListView = function InstanceListView(parent, context, viewModel) 
         parent.find('[data-command=edit]').click(handleEditClick);
         parent.find('[data-command=start]').click(handleStartClick);
         parent.find('[data-command=stop]').click(handleStopClick);
+
+        parent.find('[data-command=create]').click(function() { viewModel.activateInstanceEditPanel(); });
+        parent.find('[data-command=refresh]').click(viewModel.reloadAndRefreshList);
     }
 
     /**

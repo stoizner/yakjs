@@ -1,5 +1,6 @@
 .flat-button {
     .no-select;
+    background: transparent;
     display: inline-block;
     box-sizing:content-box;
     position: relative;
@@ -12,10 +13,14 @@
     border: 0;
     text-transform: uppercase;
     font-weight: bold;
+    outline: none;
 }
 
 .flat-button:active:hover,
 .flat-button:hover {
     background-color: @color-grey;
+}
+
+.flat-button:focus {
 }
 

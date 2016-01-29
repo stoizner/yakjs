@@ -12,7 +12,7 @@ yak.ui.InstanceListViewModel = function InstanceListViewModel(context) {
     var self = this;
 
     /**
-     * @type {!Array<yak.ui.InstanceItem>}
+     * @type {!Array<yak.ui.InstanceInfoItem>}
      */
     this.items = [];
 
@@ -78,7 +78,6 @@ yak.ui.InstanceListViewModel = function InstanceListViewModel(context) {
      * Reload and refresh list.
      */
     this.reloadAndRefreshList = function reloadAndRefreshList() {
-        // SMELL: Make the refresh not so brutal.
         context.adapter.sendRequest(new yak.api.GetInstancesRequest(), handleGetInstancesResponse);
     };
 
@@ -96,10 +95,10 @@ yak.ui.InstanceListViewModel = function InstanceListViewModel(context) {
 
     /**
      * @param {!yak.api.InstanceInfo} instanceInfo
-     * @returns {!yak.ui.InstanceItem}
+     * @returns {!yak.ui.InstanceInfoItem}
      */
     function toInstanceItem(instanceInfo) {
-        var instanceItem = new yak.ui.InstanceItem(instanceInfo.id);
+        var instanceItem = new yak.ui.InstanceInfoItem(instanceInfo.id);
         instanceItem.name = instanceInfo.name;
         instanceItem.port = instanceInfo.port;
         instanceItem.state = instanceInfo.state;

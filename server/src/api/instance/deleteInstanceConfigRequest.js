@@ -1,16 +1,14 @@
 /**
- * DeleteInstanceRequest
  * @constructor
  * @implements {yak.api.Request}
  */
-yak.api.DeleteInstanceRequest = function DeleteInstanceRequest() {
+yak.api.DeleteInstanceConfigRequest = function DeleteInstanceConfigRequest() {
     'use strict';
 
     /**
-     * Command for the service API.
      * @type {string}
      */
-    this.type = 'request.removeInstance';
+    this.type = 'request.deleteInstanceConfig';
 
     /**
      * Create unique request id.

@@ -1,17 +1,15 @@
 /**
- * CreateInstanceResponse
  * @constructor
  * @implements {yak.api.Response}
  * @param {string} requestId
  */
-yak.api.CreateInstanceResponse = function CreateInstanceResponse(requestId) {
+yak.api.DeleteInstanceConfigResponse = function DeleteInstanceConfigResponse(requestId) {
     'use strict';
 
     /**
-     * Command for the service API.
      * @type {string}
      */
-    this.type = 'response.createInstance';
+    this.type = 'response.deleteInstanceConfig';
 
     /**
      * The original request id.

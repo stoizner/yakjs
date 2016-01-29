@@ -2,7 +2,6 @@
  * StartInstanceRequestHandler
  * @constructor
  * @param {yak.YakServer} yakServer
- * @implements {yak.RequestHandler}
  */
 yak.StartInstanceRequestHandler = function StartInstanceRequestHandler(yakServer) {
     'use strict';

@@ -5,7 +5,7 @@
  */
 yak.api.SetStoreValueRequest = function SetStoreValueRequest() {
     /**
-     * Command for the service API.
+
      * @type {string}
      */
     this.type = 'request.setStoreValue';

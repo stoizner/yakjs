@@ -1,5 +1,4 @@
 /**
- * StopInstanceRequest
  * @constructor
  * @implements {yak.api.Request}
  */
@@ -7,7 +6,6 @@ yak.api.StopInstanceRequest = function StopInstanceRequest() {
     'use strict';
 
     /**
-     * Command for the service API.
      * @type {string}
      */
     this.type = 'request.stopInstance';

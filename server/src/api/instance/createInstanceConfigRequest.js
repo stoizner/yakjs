@@ -1,5 +1,4 @@
 /**
- * CreateInstanceConfigRequest
  * @constructor
  * @implements {yak.api.Request}
  */
@@ -7,10 +6,9 @@ yak.api.CreateInstanceConfigRequest = function CreateInstanceConfigRequest() {
     'use strict';
 
     /**
-     * Command for the service API.
      * @type {string}
      */
-    this.type = 'request.createInstance';
+    this.type = 'request.createInstanceConfig';
 
     /**
      * Create unique request id.

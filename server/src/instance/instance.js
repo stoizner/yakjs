@@ -1,8 +1,8 @@
 /**
- * InstanceEntity
+ * Instance
  * @interface
  */
-yak.InstanceEntity = function InstanceEntity() {
+yak.Instance = function Instance() {
     'use strict';
 
     /**
@@ -36,5 +36,5 @@ yak.InstanceEntity = function InstanceEntity() {
     /**
      * @type {yak.Logger}
      */
-    this.log = new yak.Logger('');
+    this.log = null;
 };

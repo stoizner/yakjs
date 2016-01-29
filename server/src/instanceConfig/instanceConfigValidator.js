@@ -1,9 +1,9 @@
 /**
- * Validate properties of {yak.api.Instance}.
+ * Validate properties of {yak.api.InstanceConfig}.
  * @constructor
  * @param {!yak.api.InstanceConfig} instance
  */
-yak.api.InstanceValidator = function InstanceValidator(instance) {
+yak.api.InstanceConfigValidator = function InstanceConfigValidator(instance) {
     'use strict';
 
     /**

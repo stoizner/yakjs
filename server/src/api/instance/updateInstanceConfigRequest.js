@@ -1,16 +1,14 @@
 /**
- * UpdateInstanceRequest
  * @constructor
  * @implements {yak.api.Request}
  */
-yak.api.UpdateInstanceRequest = function UpdateInstanceRequest() {
+yak.api.UpdateInstanceConfigRequest = function UpdateInstanceConfigRequest() {
     'use strict';
 
     /**
-     * Command for the service API.
      * @type {string}
      */
-    this.type = 'request.updateInstance';
+    this.type = 'request.updateInstanceConfig';
 
     /**
      * Create unique request id.

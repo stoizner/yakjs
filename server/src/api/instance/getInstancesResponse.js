@@ -1,5 +1,4 @@
 /**
- * GetInstancesResponse
  * @constructor
  * @implements {yak.api.Response}
  * @param {string} requestId
@@ -8,7 +7,6 @@ yak.api.GetInstancesResponse = function GetInstancesResponse(requestId) {
     'use strict';
 
     /**
-     * Command for the service API.
      * @type {string}
      */
     this.type = 'response.getInstances';
@@ -27,7 +25,7 @@ yak.api.GetInstancesResponse = function GetInstancesResponse(requestId) {
 
     /**
      * List of available instances as InstanceInfo.
-     * @type {Array<yak.api.InstanceInfo>}
+     * @type {!Array<yak.api.InstanceInfo>}
      */
     this.instances = [];
 };

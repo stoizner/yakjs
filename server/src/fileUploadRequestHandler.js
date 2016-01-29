@@ -77,7 +77,7 @@ yak.FileUploadRequestHandler = function FileUploadRequestHandler(yakServer) {
             if (request.enableInstanceRestart) {
                 // Restart every instance, because currently there is no way
                 // to determine which plugin uses a store key.
-                var instances = yakServer.instanceManager.getInstances();
+                var instances = yakServer.instanceManager.getConfigs();
                 _.each(instances, function restart(instance) {
                     restartInstance(instance.id);
                 });
@@ -104,7 +104,7 @@ yak.FileUploadRequestHandler = function FileUploadRequestHandler(yakServer) {
             var instance = yakServer.instanceManager.parseInstance(request.filename, request.content);
 
             if (instance) {
-                yakServer.instanceManager.addOrUpdateInstance(instance);
+                yakServer.instanceManager.createInstance(instance);
             } else {
                 response.success = false;
                 response.message = 'Instance configuration json is not valid. ';
@@ -159,7 +159,7 @@ yak.FileUploadRequestHandler = function FileUploadRequestHandler(yakServer) {
      * @param {string} pluginName
      */
     function restartInstancesWithPlugin(pluginName) {
-        var instances = yakServer.instanceManager.getInstances();
+        var instances = yakServer.instanceManager.getConfigs();
 
         /**
          * @param {yak.Instance} instance
@@ -178,7 +178,7 @@ yak.FileUploadRequestHandler = function FileUploadRequestHandler(yakServer) {
      * @param {string} instanceId
      */
     function restartInstance(instanceId) {
-        var instanceEntity = yakServer.instanceManager.getInstanceEntity(instanceId);
+        var instanceEntity = yakServer.instanceManager.getInstance(instanceId);
         instanceEntity.stop();
         instanceEntity.start();
     }

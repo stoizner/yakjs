@@ -38,7 +38,7 @@ yak.api.CreateInstanceConfigRequest = function CreateInstanceConfigRequest() {
     'use strict';
 
     /**
-     * Command for the service API.
+
      * @type {string}
      */
     this.type = 'request.createInstance';
@@ -115,7 +115,7 @@ yak.api.DeleteInstanceRequest = function DeleteInstanceRequest() {
     * Command for the service API.
     * @type {string}
     */
-    this.type = 'request.removeInstance';
+    this.type = 'request.stopAndRemoveInstance';
 
     /**
      * Create unique request id.
@@ -140,7 +140,7 @@ yak.api.DeleteInstanceResponse = function DeleteInstanceResponse() {
     * Command for the service API.
     * @type {string}
     */
-    this.type = 'response.removeInstance';
+    this.type = 'response.stopAndRemoveInstance';
 
     /**
      * The original request id.
@@ -171,7 +171,7 @@ yak.api.GetInstancesRequest = function GetInstancesRequest() {
     * Command for the service API.
     * @type {string}
     */
-    this.type = 'request.getInstances';
+    this.type = 'request.getConfigs';
 
     /**
      * Create unique request id.
@@ -190,7 +190,7 @@ yak.api.GetInstancesResponse = function GetInstancesResponse() {
     * Command for the service API.
     * @type {string}
     */
-    this.type = 'response.getInstances';
+    this.type = 'response.getConfigs';
 
     /**
      * The original request id.
@@ -347,7 +347,7 @@ yak.api.RestartInstanceRequest = function RestartInstanceRequest() {
     'use strict';
 
     /**
-     * Command for the service API.
+
      * @type {string}
      */
     this.type = 'request.restartInstance';
@@ -372,7 +372,7 @@ yak.api.RestartInstanceResponse = function RestartInstanceResponse() {
     'use strict';
 
     /**
-     * Command for the service API.
+
      * @type {string}
      */
     this.type = 'response.restartInstance';
@@ -428,7 +428,7 @@ yak.api.StartInstanceResponse = function StartInstanceResponse() {
     'use strict';
 
     /**
-     * Command for the service API.
+
      * @type {string}
      */
     this.type = 'response.startInstance';
@@ -515,7 +515,7 @@ yak.api.GetLogInfoRequest = function GetLogInfoRequest() {
     'use strict';
 
     /**
-     * Command for the service API.
+
      * @type {string}
      */
     this.type = 'request.getLogInfo';
@@ -546,7 +546,7 @@ yak.api.GetLogInfoResponse = function GetLogInfoResponse() {
     'use strict';
 
     /**
-     * Command for the service API.
+
      * @type {string}
      */
     this.type = 'response.getLogInfo';
@@ -936,7 +936,7 @@ yak.api.DeleteStoreItemRequest = function DeleteStoreItemRequest(key) {
     'use strict';
 
     /**
-     * Command for the service API.
+
      * @type {string}
      */
     this.type = 'request.deleteStoreItem';
@@ -960,7 +960,7 @@ yak.api.DeleteStoreItemResponse = function DeleteStoreItemResponse() {
     'use strict';
 
     /**
-     * Command for the service API.
+
      * @type {string}
      */
     this.type = 'response.deleteStoreItem';
@@ -984,7 +984,7 @@ yak.api.GetStoreKeyInfoRequest = function GetStoreKeyInfoRequest() {
     'use strict';
 
     /**
-     * Command for the service API.
+
      * @type {string}
      */
     this.type = 'request.getStoreKeyInfo';
@@ -1002,7 +1002,7 @@ yak.api.GetStoreKeyInfoResponse = function GetStoreKeyInfoResponse() {
     'use strict';
 
     /**
-     * Command for the service API.
+
      * @type {string}
      */
     this.type = 'response.getStoreKeyInfo';
@@ -1026,7 +1026,7 @@ yak.api.GetStoreValueRequest = function GetStoreValueRequest() {
     'use strict';
 
     /**
-     * Command for the service API.
+
      * @type {string}
      */
     this.type = 'request.getStoreValue';
@@ -1050,7 +1050,7 @@ yak.api.GetStoreValueResponse = function GetStoreValueResponse() {
     'use strict';
 
     /**
-     * Command for the service API.
+
      * @type {string}
      */
     this.type = 'response.getStoreValue';
@@ -1086,7 +1086,7 @@ yak.api.SetStoreValueRequest = function SetStoreValueRequest() {
     'use strict';
 
     /**
-     * Command for the service API.
+
      * @type {string}
      */
     this.type = 'request.setStoreValue';
@@ -1122,7 +1122,7 @@ yak.api.SetStoreValueResponse = function SetStoreValueResponse() {
     'use strict';
 
     /**
-     * Command for the service API.
+
      * @type {string}
      */
     this.type = 'response.setStoreValue';

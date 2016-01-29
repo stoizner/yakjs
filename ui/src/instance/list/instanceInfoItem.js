@@ -3,7 +3,7 @@
  * @constructor
  * @param {string} id
  */
-yak.ui.InstanceItem = function InstanceItem(id) {
+yak.ui.InstanceInfoItem = function InstanceInfoItem(id) {
     'use strict';
 
     /**

@@ -20,7 +20,7 @@ yak.YakServer = function YakServer(configManager, pluginManager, instanceManager
      * The HTTP Server
      * @type {yak.HttpServer}
      */
-    var webServer = new yak.HttpServer(self, configManager.config);
+    var httpServer = null;
 
     /**
      * @type {yak.PluginManager}
@@ -39,22 +39,13 @@ yak.YakServer = function YakServer(configManager, pluginManager, instanceManager
     }
 
     /**
-     * @param {yak.ServerInstance} serviceInstance
+     * Starts the YAK.
      */
     this.start = function start() {
-        log.info('YakServer.start');
+        log.info('Start YAKjs.');
 
-        webServer.start();
-
-        var instanceEntities = self.instanceManager.getInstanceEntities();
-
-        // Start all auto start instances.
-        _.each(instanceEntities, function startInstance(entity) {
-            if (entity && entity.autoStartEnabled) {
-                log.info('YakServer.auto start instance ', { instance: entity.name });
-                entity.start();
-            }
-        });
+        httpServer = new yak.HttpServer(self, configManager.config);
+        httpServer.start();
     };
 
     /**

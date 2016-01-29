@@ -1,10 +1,10 @@
 {
-    "id": "echo-test",
+    "id": "1",
     "port": "9010",
     "description": "Responses the received message.",
     "name": "echo test service",
     "plugins": [
-        "Echo"
+        "echo"
     ],
     "autoStartEnabled": true
 }

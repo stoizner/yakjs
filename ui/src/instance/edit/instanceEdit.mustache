@@ -16,12 +16,12 @@
         </ul>
     </header>
     <section class="header-panel-body">
-        <div class="scroll-panel">
-            <div class="form-line error-line">
-                <div class="error-line-text">{{error-text-here}}</div>
-            </div>
+        <div class="card-panel">
+            <div class="scroll-panel">
 
-            <div class="card-block">
+                <div class="frame-block" data-element="error-message">
+                    <div class="warning-text"></div>
+                </div>
 
                 <div class="column-block">
                     <div class="column-block-column" style="width: 50%">
@@ -44,7 +44,10 @@
                         <div class="frame-block">
                             <label class="input-label">Plugins</label>
                             <div class="light-text">Assign plugins to this instance</div>
-
+                            <div>
+                                <button class="flat-button" data-command="plugins-all" title="Assign all plugins.">All</button>
+                                <button class="flat-button" data-command="plugins-none" title="Remove all plugins." >None</button>
+                            </div>
                             <div class="plugin-list" data-list="plugin"></div>
                         </div>
                     </div>

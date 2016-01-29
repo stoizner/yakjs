@@ -1,5 +1,5 @@
 /**
- * The web server for the yakjs UI.
+ * The web server for the YAKjs UI.
  * @constructor
  * @param {!yak.YakServer} yakServer
  * @param {!yak.Config} config
@@ -33,7 +33,7 @@ yak.HttpServer = function HttpServer(yakServer, config) {
      * Constructor
      */
     function constructor() {
-        log.debug('ctor()');
+        log.debug('constructor');
         initializeAPIMap();
     }
 
@@ -104,11 +104,12 @@ yak.HttpServer = function HttpServer(yakServer, config) {
         // Instance
         apiMap['request.startInstance'] = new yak.StartInstanceRequestHandler(yakServer);
         apiMap['request.stopInstance'] = new yak.StopInstanceRequestHandler(yakServer);
-        apiMap['request.restartInstance'] = new yak.RestartInstanceRequestHandler(yakServer);
-        apiMap['request.getInstances'] = new yak.GetInstancesRequestHandler(yakServer);
-        apiMap['request.createInstance'] = new yak.CreateInstanceConfigRequestHandler(yakServer);
-        apiMap['request.updateInstance'] = new yak.UpdateInstanceRequestHandler(yakServer);
-        apiMap['request.removeInstance'] = new yak.DeleteInstanceRequestHandler(yakServer);
+        apiMap['request.getInstances'] = new yak.GetInstancesRequestHandler(yakServer.instanceManager);
+
+        // Instance Configs
+        apiMap['request.createInstanceConfig'] = new yak.CreateInstanceConfigRequestHandler(yakServer.instanceManager.configProvider, yakServer.instanceManager);
+        apiMap['request.updateInstanceConfig'] = new yak.UpdateInstanceConfigRequestHandler(yakServer.instanceManager.configProvider, yakServer.instanceManager);
+        apiMap['request.deleteInstanceConfig'] = new yak.DeleteInstanceConfigRequestHandler(yakServer.instanceManager.configProvider, yakServer.instanceManager);
 
         // Plugin
         apiMap['request.getPlugins'] = new yak.GetPluginsRequestHandler(yakServer);

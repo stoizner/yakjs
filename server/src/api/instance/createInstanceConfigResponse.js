@@ -1,15 +1,15 @@
 /**
- * UpdateInstanceResponse
  * @constructor
  * @implements {yak.api.Response}
  * @param {string} requestId
  */
-yak.api.UpdateInstanceResponse = function UpdateInstanceResponse(requestId) {
+yak.api.CreateInstanceConfigResponse = function CreateInstanceConfigResponse(requestId) {
+    'use strict';
+
     /**
-    * Command for the service API.
-    * @type {string}
-    */
-    this.type = 'response.updateInstance';
+     * @type {string}
+     */
+    this.type = 'response.createInstanceConfig';
 
     /**
      * The original request id.

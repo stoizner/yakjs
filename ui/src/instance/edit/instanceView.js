@@ -31,7 +31,7 @@ yak.ui.InstanceView = function InstanceView(parent, context, viewModel) {
 
         updateView();
 
-        viewModel.onInstanceInfoChanged = updateView;
+        viewModel.onInstanceConfigItemChanged = updateView;
         viewModel.onSelectPluginItemsChanged = updatePluginList;
         viewModel.onErrorResponse = handleErrorResponse;
     }
@@ -50,7 +50,7 @@ yak.ui.InstanceView = function InstanceView(parent, context, viewModel) {
      */
     function updateView() {
         var context = {
-            instance: viewModel.instanceItem
+            instance: viewModel.instanceConfigItem
         };
 
         parent.html(template.build(context));
@@ -61,6 +61,8 @@ yak.ui.InstanceView = function InstanceView(parent, context, viewModel) {
         parent.find('[data-command=delete]').click(viewModel.deleteInstance);
         parent.find('[data-command=cancel]').click(viewModel.cancel);
         parent.find('[data-list=plugin]').click(handleSelectPluginClick);
+        parent.find('[data-command=plugins-all]').click(viewModel.useAllPlugins);
+        parent.find('[data-command=plugins-none]').click(viewModel.useNoPlugins);
     }
 
     function updatePluginList() {
@@ -87,23 +89,24 @@ yak.ui.InstanceView = function InstanceView(parent, context, viewModel) {
      * @param {string} message
      */
     function handleErrorResponse(message) {
-        parent.find('.error-line').show();
-        parent.find('.error-line-text').html(message);
+        var errorMessageElement = parent.find('[data-element=error-message]');
+        errorMessageElement.show();
+        errorMessageElement.find('.warning-text').html(message);
     }
 
     /**
      * Handle Save Button Click
      */
     function handleSaveCommand() {
-        console.warn('save');
-        parent.find('.error-line').hide();
+        parent.find('[data-element=error-message]').hide();
 
-        var instanceItem = new yak.ui.InstanceItem(parent.find('[name=name]').val());
-        instanceItem.name = parent.find('[name=name]').val();
-        instanceItem.description = parent.find('[name=description]').val();
-        instanceItem.port = parent.find('[name=port]').val();
+        var item = new yak.ui.InstanceConfigItem();
+        item.id = parent.find('[name=name]').val();
+        item.name = parent.find('[name=name]').val();
+        item.description = parent.find('[name=description]').val();
+        item.port = parent.find('[name=port]').val();
 
-        viewModel.createOrUpdate(instanceItem);
+        viewModel.createOrUpdate(item);
     }
 
     constructor();

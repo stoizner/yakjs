@@ -6,7 +6,7 @@
  */
 yak.api.DeleteStoreItemRequest = function DeleteStoreItemRequest(key) {
     /**
-     * Command for the service API.
+
      * @type {string}
      */
     this.type = 'request.deleteStoreItem';

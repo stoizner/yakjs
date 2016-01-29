@@ -1,7 +1,7 @@
 /**
  * WebSocketInstance
  * @constructor
- * @implements {yak.InstanceEntity}
+ * @implements {yak.Instance}
  * @param {yak.PluginManager} pluginManager
  * @param {string} id Unique instance id.
  * @param {number} port The port number to use.
@@ -81,12 +81,6 @@ yak.WebSocketInstance = function WebSocketInstance(pluginManager, id, port) {
      * @type {?string}
      */
     this.error = null;
-
-    /**
-     * Start instance after server started.
-     * @type {boolean}
-     */
-    this.autoStartEnabled = false;
 
     /**
      * Number of active plugins.

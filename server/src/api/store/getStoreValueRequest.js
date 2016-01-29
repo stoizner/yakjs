@@ -5,7 +5,7 @@
  */
 yak.api.GetStoreValueRequest = function GetStoreValueRequest() {
     /**
-     * Command for the service API.
+
      * @type {string}
      */
     this.type = 'request.getStoreValue';

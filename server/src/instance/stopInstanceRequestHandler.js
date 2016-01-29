@@ -2,7 +2,6 @@
  * StopInstanceRequestHandler
  * @constructor
  * @param {yak.YakServer} yakServer
- * @implements {yakServiceMessageHandler}
  */
 yak.StopInstanceRequestHandler = function StopInstanceRequestHandler(yakServer) {
     'use strict';

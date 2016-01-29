@@ -1,5 +1,4 @@
 /**
- * InstanceInfo
  * @constructor
  */
 yak.api.InstanceInfo = function InstanceInfo() {

@@ -28,8 +28,8 @@ yak.global = {};
     var pluginManager = new yak.PluginManager();
     pluginManager.loadPlugins();
 
-    var instanceManager = new yak.InstanceManager(pluginManager);
-    instanceManager.loadInstances();
+    var configProvider = new yak.InstanceConfigProvider();
+    var instanceManager = new yak.InstanceManager(configProvider, pluginManager);
 
     var yakServer = new yak.YakServer(configManager, pluginManager, instanceManager);
     yakServer.start();
