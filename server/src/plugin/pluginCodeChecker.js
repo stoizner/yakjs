@@ -8,7 +8,7 @@ yak.PluginCodeChecker = function PluginCodeChecker() {
     /**
      * @type {yak.Logger}
      */
-    var log = new yak.Logger(this.constructor.nam);
+    var log = new yak.Logger(this.constructor.name);
 
     /**
      * Check plugin code.
