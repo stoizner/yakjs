@@ -35,7 +35,6 @@ yak.ui.WorkspaceView = function WorkspaceView(parent, context, viewModel) {
         parent.html(template.build());
 
         context.viewFactory.create($('.app-bar'), yak.ui.AppBarView, yak.ui.AppBarViewModel);
-        context.viewFactory.create($('.notification', parent), yak.ui.NotificationView, yak.ui.NotificationViewModel);
         context.viewFactory.create($('[data-view=fileUploadView]', parent), yak.ui.FileUploadView, yak.ui.FileUploadViewModel);
 
         panels['panel-instance'] = context.viewFactory.create($('.panel[data-panel=panel-instance]', parent), yak.ui.InstanceListView, yak.ui.InstanceListViewModel);
