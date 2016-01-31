@@ -30,7 +30,7 @@ yak.ui.PluginViewModel = function PluginViewModel(context) {
     /**
      * @type {boolean}
      */
-    this.isNewPlugin = false;
+    this.isNewStoreItem = false;
 
     /**
      * @param {string|object} data
@@ -42,7 +42,7 @@ yak.ui.PluginViewModel = function PluginViewModel(context) {
             self.pluginItem = new yak.ui.PluginItem();
             _.extend(self.pluginItem, data);
         } else {
-            self.isNewPlugin = true;
+            self.isNewStoreItem = true;
             self.pluginItem = new yak.ui.PluginItem();
             self.pluginItem.version = '0.1.0';
             self.pluginItem.code = yak.ui.EmptyPluginTemplate.toString();
@@ -62,7 +62,7 @@ yak.ui.PluginViewModel = function PluginViewModel(context) {
         var request = new yak.api.CreateOrUpdatePluginRequest();
 
         // Set the original plugin id so the the name(=id) can be updated.
-        if (!self.isNewPlugin) {
+        if (!self.isNewStoreItem) {
             request.pluginId = self.pluginItem.id;
         }
 
