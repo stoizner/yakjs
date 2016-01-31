@@ -1,9 +1,14 @@
 /* BASICS */
 
 .CodeMirror {
-   /* Set height, width, borders, and global font properties here */
-   font: 12px/20px 'Consolas' 'SourceCodeProRegular' monospace;
-   height: 100%;
+    /* Set height, width, borders, and global font properties here */
+    line-height: 20px;
+    font-family: 'Consolas', 'SourceCodeProRegular', monospace;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
 }
 .CodeMirror-scroll {
   /* Set scrolling behaviour here */
@@ -104,7 +109,7 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {color: #f22;}
 
 .CodeMirror {
   line-height: 1;
-  position: relative;
+  /*position: relative;*/
   overflow: hidden;
   background: white;
   color: black;
