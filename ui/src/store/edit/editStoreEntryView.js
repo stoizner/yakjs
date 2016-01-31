@@ -27,7 +27,7 @@ yak.ui.EditStoreEntryView = function EditStoreEntryView(parent, context, viewMod
     /**
      * Form:  Key of the store entry
      */
-    this.key = context.ko.observable('');
+    //this.key = context.ko.observable('');
 
     /**
      * Constructor
@@ -37,7 +37,8 @@ yak.ui.EditStoreEntryView = function EditStoreEntryView(parent, context, viewMod
         parent.html(template.build());
 
         viewModel.onItemChanged = handleItemChanged;
-        context.ko.applyBindings(self, parent[0]);
+        // TODO: Replace ko binding.
+        //context.ko.applyBindings(self, parent[0]);
 
         parent.find('[data-command=save]').click(handleSaveCommand);
         parent.find('[data-command=delete]').click(handleDeleteCommand);

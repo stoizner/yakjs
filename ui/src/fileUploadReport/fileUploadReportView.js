@@ -30,7 +30,8 @@ yak.ui.FileUploadReportView = function FileUploadReportView(parent, context, vie
         parent.html(template.build());
         parent.hide();
 
-        context.ko.applyBindings(self, parent[0]);
+        // TODO: Replace ko binding.
+        //context.ko.applyBindings(self, parent[0]);
         updateList();
 
         viewModel.onUploadedFilesChanged = handleUploadedFilesChanged;

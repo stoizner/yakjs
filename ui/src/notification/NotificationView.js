@@ -19,7 +19,8 @@ yak.ui.NotificationView = function NotificationView(parent, context, viewModel) 
      * Constructor
      */
     function constructor() {
-        ko.applyBindings(self, parent[0]);
+        // TODO: replace ko binding
+        // ko.applyBindings(self, parent[0]);
 
         viewModel.onNotificationTextChanged = updateNotification;
     }

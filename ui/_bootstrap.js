@@ -1,4 +1,4 @@
-/*global ko:false, cobu:false, Mustache:false */
+/*global cobu:false, Mustache:false */
 
 $(document).ready(function bootstrap() {
     'use strict';
@@ -15,7 +15,6 @@ $(document).ready(function bootstrap() {
 
     var viewContext = new yak.ui.ViewContext();
     viewContext.template = new yak.ui.TemplateLoader(Mustache);
-    viewContext.ko = ko;
 
     var viewFactory = new yak.ui.ViewFactory(viewContext, viewModelContext);
     viewContext.viewFactory = viewFactory;
