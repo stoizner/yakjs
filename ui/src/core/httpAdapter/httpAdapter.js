@@ -88,7 +88,7 @@ yak.ui.HttpAdapter = function HttpAdapter(eventBus) {
      * @returns {boolean} Whether received message is a response.
      */
     function isResponse(message) {
-        return message.type && message.type.indexOf('response') === 0;
+        return message.type && message.type.toLowerCase().indexOf('response') >= 0;
     }
 
     /**

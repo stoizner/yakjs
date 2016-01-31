@@ -1,11 +1,14 @@
 /**
- * GetStoreKeyInfoRequestHandler
  * @constructor
  * @param {yak.YakServer} yakServer
- * @implements {yak.RequestHandler}
  */
-yak.GetStoreKeyInfoRequestHandler = function GetStoreKeyInfoRequestHandler(yakServer) {
+yak.GetStoreKeysRequestHandler = function GetStoreKeysRequestHandler(yakServer) {
     'use strict';
+
+    /**
+     * @type {yak.Logger}
+     */
+    var log = new yak.Logger(this.constructor.name);
 
     /**
      * @type {yak.Store}
@@ -13,14 +16,13 @@ yak.GetStoreKeyInfoRequestHandler = function GetStoreKeyInfoRequestHandler(yakSe
     var store = yak.require('store');
 
     /**
-     * @param {yak.api.GetStoreKeyInfoRequest} request
-     * @returns {yak.api.GetStoreKeyInfoResponse} response
+     * @param {yak.api.GetStoreKeysRequest} request
+     * @returns {yak.api.GetStoreKeysResponse} response
      */
     this.handle = function handle(request) {
-        var logger = yakServer.getLogger();
-        logger.debug('GetStoreKeyInfoRequestHandler', { request: request });
+        log.info('handle', {request: request});
 
-        var response = new yak.api.GetStoreKeyInfoResponse(request.id);
+        var response = new yak.api.GetStoreKeysResponse(request.id);
         response.keys = [];
 
         var storeData = store.getStore();

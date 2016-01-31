@@ -1,14 +1,12 @@
 /**
- * SetStoreValueRequest
  * @constructor
  * @implements {yak.api.Request}
  */
-yak.api.SetStoreValueRequest = function SetStoreValueRequest() {
+yak.api.SetStoreItemRequest = function SetStoreItemRequest() {
     /**
-
      * @type {string}
      */
-    this.type = 'request.setStoreValue';
+    this.type = 'yak.api.SetStoreItemRequest';
 
     /**
      * Create unique request id.
@@ -23,8 +21,8 @@ yak.api.SetStoreValueRequest = function SetStoreValueRequest() {
     this.key = null;
 
     /**
-     * The store value.
-     * @type {?string}
+     * The store item.
+     * @type {yak.api.StoreItem}
      */
-    this.value = null;
+    this.item = null;
 };

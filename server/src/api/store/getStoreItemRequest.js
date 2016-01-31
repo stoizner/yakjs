@@ -1,14 +1,12 @@
 /**
- * GetStoreValueRequest
  * @constructor
  * @implements {yak.api.Request}
  */
-yak.api.GetStoreValueRequest = function GetStoreValueRequest() {
+yak.api.GetStoreItemRequest = function GetStoreItemRequest() {
     /**
-
      * @type {string}
      */
-    this.type = 'request.getStoreValue';
+    this.type = 'yak.api.GetStoreItemRequest';
 
     /**
      * Create unique request id.

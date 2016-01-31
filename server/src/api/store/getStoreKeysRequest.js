@@ -1,14 +1,12 @@
 /**
- * GetStoreKeyInfoRequest
  * @constructor
  * @implements {yak.api.Request}
  */
-yak.api.GetStoreKeyInfoRequest = function GetStoreKeyInfoRequest() {
+yak.api.GetStoreKeysRequest = function GetStoreKeysRequest() {
     /**
-
      * @type {string}
      */
-    this.type = 'request.getStoreKeyInfo';
+    this.type = 'yak.api.GetStoreKeysRequest';
 
     /**
      * Create unique request id.

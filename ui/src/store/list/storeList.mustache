@@ -3,7 +3,7 @@
         <div class="tool-bar-block">
             <div class="tool-bar-block-line">
                 <div class="center-panel">
-                    <button class="text-button" data-command="create">New Entry</button>
+                    <button class="text-button" data-command="create">Create Item</button>
                     <button class="text-button" data-command="refresh">Refresh</button>
                 </div>
             </div>
@@ -15,8 +15,10 @@
             <div class="center-panel">
                 <div class="content-panel">
                     <div class="scroll-panel">
-                        <div data-list="groups"></div>
-                        <div class="list" data-list="items"></div>
+                        <div data-element="tree">
+                            <div data-list="groups"></div>
+                            <div class="list" data-list="items"></div>
+                        </div>
                     </div>
                 </div>
             </div>

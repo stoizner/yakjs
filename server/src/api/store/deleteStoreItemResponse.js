@@ -1,15 +1,13 @@
 /**
- * DeleteStoreItemResponse
  * @constructor
  * @implements {yak.api.Response}
  * @param {string} requestId
  */
 yak.api.DeleteStoreItemResponse = function DeleteStoreItemResponse(requestId) {
     /**
-
      * @type {string}
      */
-    this.type = 'response.deleteStoreItem';
+    this.type = 'yak.api.DeleteStoreItemResponse';
 
     /**
      * The original request id.

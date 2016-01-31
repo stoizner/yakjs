@@ -1,15 +1,13 @@
 /**
- * GetStoreValueResponse
  * @constructor
  * @implements {yak.api.Response}
  * @param {string} requestId
  */
-yak.api.GetStoreValueResponse = function GetStoreValueResponse(requestId) {
+yak.api.GetStoreItemResponse = function GetStoreItemResponse(requestId) {
     /**
-
      * @type {string}
      */
-    this.type = 'response.getStoreValue';
+    this.type = 'yak.api.GetStoreItemResponse';
 
     /**
      * The original request id.
@@ -18,16 +16,10 @@ yak.api.GetStoreValueResponse = function GetStoreValueResponse(requestId) {
     this.requestId = requestId;
 
     /**
-     * The store key.
-     * @type {?string}
+     * The store item.
+     * @type {yak.api.StoreItem}
      */
-    this.key = null;
-
-    /**
-     * The store value.
-     * @type {?string}
-     */
-    this.value = null;
+    this.item = null;
 
     /**
      * @type {boolean}

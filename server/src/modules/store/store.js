@@ -33,18 +33,10 @@
         /**
          * Set a store value.
          * @param {string} key The document key.
-         * @param {?} value The document
+         * @param {string} value The document
          */
         this.setValue = function setValue(key, value) {
-            var item = data[key];
-
-            if (!item) {
-                item = new yak.StoreItem(key, value);
-            } else {
-                item.value = value;
-            }
-
-            data[key] = item;
+            data[key] = new yak.StoreItem(key, value);
             self.saveStoreItem(key);
         };
 
@@ -63,7 +55,7 @@
          * @returns {{key:string, value:?, description:string}} A store item.
          */
         this.getStoreItem = function getStoreItem(key) {
-            return data[key];
+            return Object.freeze(data[key]);
         };
 
         /**
@@ -71,7 +63,7 @@
          * @param {string} key
          * @returns {boolean} Whether it was successful.
          */
-        this.deleteKey = function deleteKey(key) {
+        this.deleteStoreItem = function deleteStoreItem(key) {
             var success = false;
 
             try {
@@ -90,10 +82,11 @@
          * @returns {Array<{key:string, value:?, description:?string}>} All store key/value items.
          */
         this.getStore = function getStore() {
-            var store = [];
-            _.each(data, function toStoreItem(item, key) {
-                store.push({ key: key, value:item.value, description:item.description });
+            var store = _.map(data, function toStoreItem(item, key) {
+                return Object.freeze({key: key, value:item.value, description:item.description});
             });
+
+            Object.freeze(store);
 
             return store;
         };

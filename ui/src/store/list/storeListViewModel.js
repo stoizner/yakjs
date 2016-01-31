@@ -22,14 +22,14 @@ yak.ui.StoreListViewModel = function StoreListViewModel(context) {
     var lastGetValueRequestCallback = _.noop;
 
     /**
-     * @type {Array<yak.ui.StoreItem>}
+     * @type {!Array<yak.ui.StoreItem>}
      */
     this.items = [];
 
     /**
      * @type {!yak.ui.StoreGroupItem}
      */
-    this.rootGroup = new yak.ui.StoreGroupItem();
+    this.rootGroup = new yak.ui.StoreGroupItem('root');
 
     /**
      * @type {Function}
@@ -48,23 +48,20 @@ yak.ui.StoreListViewModel = function StoreListViewModel(context) {
      */
     this.activate = function activate() {
         console.log('yak.ui.StoreListViewModel.active');
-        context.adapter.sendRequest(new yak.api.GetStoreKeyInfoRequest(), handleGetStoreKeyInfoResponse);
+        context.adapter.sendRequest(new yak.api.GetStoreKeysRequest(), handleGetStoreKeyInfoResponse);
     };
 
     /**
      * Reload and refresh list.
      */
     this.reloadAndRefreshList = function reloadAndRefreshList() {
-        // SMELL: Make the refresh not so brutal.
-        context.adapter.sendRequest(new yak.api.GetStoreKeyInfoRequest(), handleGetStoreKeyInfoResponse);
+        context.adapter.sendRequest(new yak.api.GetStoreKeysRequest(), handleGetStoreKeyInfoResponse);
     };
 
     /**
-     * @param {yak.api.GetStoreKeyInfoResponse} response
+     * @param {yak.api.GetStoreKeysResponse} response
      */
     function handleGetStoreKeyInfoResponse(response) {
-        console.log('handleGetStoreKeyInfoResponse');
-
         /**
          * @param {!yak.api.StoreKeyInfo} keyInfo
          * @returns {yak.ui.StoreItem} The store list item.
@@ -133,10 +130,10 @@ yak.ui.StoreListViewModel = function StoreListViewModel(context) {
 
     /**
      * Show and activate the store entry edit panel for given key.
-     * @param {yak.api.StoreKeyInfo} [keyInfo]
+     * @param {yak.api.StoreKeyInfo} [storeKeyInfo]
      */
-    this.activateStoreEditPanel = function activateStoreEditPanel(keyInfo) {
-        context.eventBus.post(new yak.ui.ActivatePanelCommand('panel-storeEntry-edit', keyInfo));
+    this.activateStoreEditPanel = function activateStoreEditPanel(storeKeyInfo) {
+        context.eventBus.post(new yak.ui.ActivatePanelCommand('panel-storeEntry-edit', storeKeyInfo));
     };
 
     /**

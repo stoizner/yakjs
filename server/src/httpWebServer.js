@@ -117,10 +117,10 @@ yak.HttpServer = function HttpServer(yakServer, config) {
         apiMap['request.deletePlugin'] = new yak.DeletePluginRequestHandler(yakServer);
 
         // Store
-        apiMap['request.getStoreKeyInfo'] = new yak.GetStoreKeyInfoRequestHandler(yakServer);
-        apiMap['request.getStoreValue'] = new yak.GetStoreValueRequestHandler(yakServer);
-        apiMap['request.setStoreValue'] = new yak.SetStoreValueRequestHandler(yakServer);
-        apiMap['request.deleteStoreItem'] = new yak.DeleteStoreItemRequestHandler(yakServer);
+        apiMap['yak.api.GetStoreKeysRequest'] = new yak.GetStoreKeysRequestHandler(yakServer);
+        apiMap['yak.api.GetStoreItemRequest'] = new yak.GetStoreItemRequestHandler(yakServer);
+        apiMap['yak.api.SetStoreItemRequest'] = new yak.SetStoreItemRequestHandler(yakServer);
+        apiMap['yak.api.DeleteStoreItemRequest'] = new yak.DeleteStoreItemRequestHandler(yakServer);
 
         // File Upload
         apiMap['request.uploadFileRequest'] = new yak.FileUploadRequestHandler(yakServer);

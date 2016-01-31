@@ -42,12 +42,14 @@ yak.ui.StoreListView = function StoreListView(parent, context, viewModel) {
         console.log('yak.ui.StoreListView.constructor');
         parent.html(template.build());
 
-        parent.find('[data-command=create]').click(_.partial(viewModel.activateStoreEditPanel, null));
+        parent.find('[data-command=create]').click(function() { viewModel.activateStoreEditPanel(); });
         parent.find('[data-command=refresh]').click(viewModel.reloadAndRefreshList);
 
         viewModel.onItemsChanged = handleItemsChanged;
 
-        createList();
+        parent.find('[data-element=tree]').click(handleListClick);
+
+        updateList();
     }
 
     /**
@@ -76,7 +78,7 @@ yak.ui.StoreListView = function StoreListView(parent, context, viewModel) {
         itemContainer.html(html);
     }
 
-    function createList() {
+    function updateList() {
         var rootItemListContainer = parent.find('[data-list=items]');
         var rootItemList = createItemList(viewModel.rootGroup.items);
         rootItemListContainer.html(rootItemList);
@@ -85,7 +87,7 @@ yak.ui.StoreListView = function StoreListView(parent, context, viewModel) {
         var rootGroupsList = createGroupList(viewModel.rootGroup.groups);
         rootGroupsListContainer.html(rootGroupsList);
 
-        parent.find('[data-list=items]').click(handleListClick);
+
 
         expandFeature = new yak.ui.ExpandFeature(parent);
     }
@@ -142,7 +144,7 @@ yak.ui.StoreListView = function StoreListView(parent, context, viewModel) {
      * Handle items changed event from view model.
      */
     function handleItemsChanged() {
-        createList();
+        updateList();
     }
 
     /**

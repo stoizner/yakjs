@@ -1,12 +1,10 @@
 /**
- * SetStoreValueResponse
  * @constructor
  * @implements {yak.api.Response}
  * @param {string} requestId
  */
-yak.api.SetStoreValueResponse = function SetStoreValueResponse(requestId) {
+yak.api.SetStoreItemResponse = function SetStoreItemResponse(requestId) {
     /**
-
      * @type {string}
      */
     this.type = 'response.setStoreValue';

@@ -4,13 +4,13 @@
  * @constructor
  * @param {jQuery} parent
  * @param {yak.ui.ViewContext} context
- * @param {yak.ui.EditStoreEntryViewModel} viewModel
+ * @param {yak.ui.EditStoreItemViewModel} viewModel
  */
-yak.ui.EditStoreEntryView = function EditStoreEntryView(parent, context, viewModel) {
+yak.ui.EditStoreItemView = function EditStoreItemView(parent, context, viewModel) {
     'use strict';
 
     /**
-     * @type {yak.ui.PluginView}
+     * @type {yak.ui.EditStoreItemView}
      */
     var self = this;
 
@@ -22,39 +22,37 @@ yak.ui.EditStoreEntryView = function EditStoreEntryView(parent, context, viewMod
     /**
      * @type {yak.ui.Template}
      */
-    var template = context.template.load('editStoreEntry');
-
-    /**
-     * Form:  Key of the store entry
-     */
-    //this.key = context.ko.observable('');
+    var template = context.template.load('editStoreItem');
 
     /**
      * Constructor
      */
     function constructor() {
-        console.log('yak.ui.EditStoreEntryView.constructor', self);
-        parent.html(template.build());
+        initializeView();
 
         viewModel.onItemChanged = handleItemChanged;
-        // TODO: Replace ko binding.
-        //context.ko.applyBindings(self, parent[0]);
+    }
+
+    function initializeView() {
+        parent.html(template.build(viewModel));
 
         parent.find('[data-command=save]').click(handleSaveCommand);
         parent.find('[data-command=delete]').click(handleDeleteCommand);
         parent.find('[data-command=cancel]').click(handleCancelCommand);
-        parent.find('[data-command=prettifyJson]').click(handlePrettifyJsonCommand);
+        parent.find('[data-command=prettify-json]').click(handlePrettifyJsonCommand);
 
-        CodeMirror.commands.autocomplete = yak.ui.codeEditorAutoComplete;
-        CodeMirror.commands.autodocument = yak.ui.codeEditorAutoDocument;
+        parent.find('[data-command=maximize-editor]').click(maximizeCodeEditor);
+        parent.find('[data-command=minimize-editor]').click(minimizeCodeEditor);
 
         codeEditor = new CodeMirror($('#storeValueEditor')[0], {
             value:  '',
             mode:  'json',
             lineNumbers: false,
             indentUnit: 4,
-            extraKeys: { 'Ctrl-Space': 'autocomplete', 'Ctrl-D': 'autodocument' }
+            extraKeys: {}
         });
+
+        minimizeCodeEditor();
     }
 
     /**
@@ -62,7 +60,6 @@ yak.ui.EditStoreEntryView = function EditStoreEntryView(parent, context, viewMod
      * @param {string|object} [data]
      */
     this.activate = function activate(data) {
-        $('.error-line', parent).hide();
         viewModel.activate(data);
     };
 
@@ -85,21 +82,17 @@ yak.ui.EditStoreEntryView = function EditStoreEntryView(parent, context, viewMod
      * Handle plugin item changed event.
      */
     function handleItemChanged() {
-        if (viewModel.item) {
-            self.key(viewModel.item.key);
-            if (viewModel.item.value) {
-                codeEditor.setValue(viewModel.item.value);
-            } else {
-                codeEditor.setValue('');
-            }
-        } else {
-            self.key('');
+        initializeView();
+
+        if (viewModel.isNewStoreItem) {
             codeEditor.setValue('');
+        } else {
+            codeEditor.setValue(viewModel.storeItem.value);
         }
     }
 
     function handleSaveCommand() {
-        var item = new yak.ui.StoreItem(self.key());
+        var item = new yak.ui.StoreItem(parent.find('[name=key]').val());
         item.value = codeEditor.getValue();
 
         viewModel.createOrUpdate(item);
@@ -111,6 +104,26 @@ yak.ui.EditStoreEntryView = function EditStoreEntryView(parent, context, viewMod
 
     function handleDeleteCommand() {
         viewModel.deleteStore();
+    }
+
+    /**
+     * Maximizes the code editor and hides the config section.
+     */
+    function maximizeCodeEditor() {
+        parent.find('[data-command=maximize-editor]').hide();
+        parent.find('[data-command=minimize-editor]').show();
+
+        parent.find('[data-section=config]').hide();
+    }
+
+    /**
+     * Minimizes the code editor to available space.
+     */
+    function minimizeCodeEditor() {
+        parent.find('[data-command=maximize-editor]').show();
+        parent.find('[data-command=minimize-editor]').hide();
+
+        parent.find('[data-section=config]').show();
     }
 
     constructor();

@@ -1,15 +1,13 @@
 /**
- * GetStoreKeyInfoResponse
  * @constructor
  * @implements {yak.api.Response}
  * @param {string} requestId
  */
-yak.api.GetStoreKeyInfoResponse = function GetStoreKeyInfoResponse(requestId) {
+yak.api.GetStoreKeysResponse = function GetStoreKeysResponse(requestId) {
     /**
-
      * @type {string}
      */
-    this.type = 'response.getStoreKeyInfo';
+    this.type = 'yak.api.GetStoreKeysResponse';
 
     /**
      * The original request id.
