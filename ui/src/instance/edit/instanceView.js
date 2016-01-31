@@ -41,7 +41,6 @@ yak.ui.InstanceView = function InstanceView(parent, context, viewModel) {
      * @param {?} [data]
      */
     this.activate = function activate(data) {
-        parent.find('.error-line').hide();
         viewModel.activate(data);
     };
 

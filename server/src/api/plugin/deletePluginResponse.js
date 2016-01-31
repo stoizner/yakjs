@@ -1,15 +1,14 @@
 /**
- * CreatePluginResponse
  * @constructor
  * @implements {yak.api.Response}
  * @param {string} requestId
  */
-yak.api.CreatePluginResponse = function CreatePluginResponse(requestId) {
+yak.api.DeletePluginResponse = function DeletePluginResponse(requestId) {
     /**
     * Command for the service API.
     * @type {string}
     */
-    this.type = 'response.createPlugin';
+    this.type = 'response.deletePlugin';
 
     /**
      * The original request id.

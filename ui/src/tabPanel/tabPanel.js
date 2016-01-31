@@ -12,17 +12,12 @@ yak.ui.TabPanel = function TabPanel(element) {
     var self = this;
 
     /**
-     * @type {string}
-     */
-    var activePanel = '';
-
-    /**
      * @type {jQuery}
      */
     var activeTabIndicator = null;
 
     /**
-     * @type {!Object<{id: string, tab: string>}
+     * @type {!Object<{id: string, tab: string}>}
      */
     var panels = {};
 
@@ -35,11 +30,11 @@ yak.ui.TabPanel = function TabPanel(element) {
      * Setup tab widget. {HTMLElement}
      */
     function constructor() {
-        element.find('.tab-panel-tabs').click(handleTabPanelClick);
+        element.find('.tab-panel-tabs').click(handleTabClick);
 
         activeTabIndicator = element.find('.tab-panel-tabs-indicator ');
 
-        var panelElements = element.find('.tab-panel-panels [data-panel]');
+        var panelElements = element.find('[data-panel]');
         panelElements.hide();
 
         _.each(panelElements, function toPanel(htmlElement) {
@@ -54,10 +49,9 @@ yak.ui.TabPanel = function TabPanel(element) {
     /**
      * @param {jQuery.Event} event
      */
-    function handleTabPanelClick(event) {
-        console.log('handleTabPanelClick');
+    function handleTabClick(event) {
         var target = $(event.target).closest('li');
-        var panelId = target.attr('data-panel');
+        var panelId = target.attr('data-tab');
 
         self.switchTo(panelId);
     }
@@ -69,10 +63,10 @@ yak.ui.TabPanel = function TabPanel(element) {
         var panel = panels[panelId];
 
         if (panel) {
-            var tab = element.find('.tab-panel-tabs li[data-panel=' + panel.tab + ']');
+            var tab = element.find('[data-tab=' + panel.tab + ']');
 
             if (tab) {
-                element.find('.tab-panel-tabs li').removeClass('state-active');
+                element.find('[data-tab]').removeClass('state-active');
                 tab.addClass('state-active');
 
                 showPanel(panelId);
@@ -103,7 +97,7 @@ yak.ui.TabPanel = function TabPanel(element) {
         hidePanels();
 
         if (panelId) {
-           element.find('.tab-panel-panels [data-panel=' + panelId + ']').show();
+           element.find('[data-panel=' + panelId + ']').show();
         }
     }
 
@@ -111,7 +105,7 @@ yak.ui.TabPanel = function TabPanel(element) {
      * Hide all panels.
      */
     function hidePanels() {
-        element.find('.tab-panel-panels .panel').hide();
+        element.find('[data-panel]').hide();
     }
 
     constructor();

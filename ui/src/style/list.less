@@ -8,23 +8,9 @@
 
 .list-item {
     display: block;
-    height: 30px;
-    border-bottom:1px solid #F0F0F0;
-    font: 12px/30px 'roboto';
-    color: #303030;
+    height: @line-height;
     overflow: hidden;
-    background: #ffffff;
-}
-
-.list-item {
-    display: block;
-    height: 30px;
-    border-bottom:1px solid #F0F0F0;
-    font: 12px/30px 'roboto';
-    color: #303030;
-    overflow: hidden;
-    cursor:context-menu;
-    background: #ffffff;
+    border-bottom: 1px solid #F0F0F0;
 }
 
 .list-item[data-selected] {
@@ -38,7 +24,8 @@
 
 .list-item-cell {
     padding-right: 10px;
-    height: 30px;
+    height: @line-height;
+    line-height: @line-height;
     overflow: hidden;
     float: left;
 }
@@ -56,12 +43,6 @@
 
 .list-item-icon {
     float: left;
-    width: 30px;
-    height: 30px;
-}
-
-.list-item-icon-right {
-    float: right;
-    width: 30px;
-    height: 30px;
+    width: @line-height;
+    height: @line-height;
 }

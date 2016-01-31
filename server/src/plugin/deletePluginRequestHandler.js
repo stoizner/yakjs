@@ -1,8 +1,6 @@
 /**
- * DeletePluginRequestHandler
  * @constructor
  * @param {yak.YakServer} yakServer
- * @implements {yak.RequestHandler}
  */
 yak.DeletePluginRequestHandler = function DeletePluginRequestHandler(yakServer) {
     'use strict';
@@ -12,17 +10,14 @@ yak.DeletePluginRequestHandler = function DeletePluginRequestHandler(yakServer) 
      * @returns {!yak.api.DeletePluginResponse} response
      */
     this.handle = function handle(request) {
-        var pluginId = request.pluginName.replace('.plugin', '');
-        var plugin = yakServer.pluginManager.getPlugin(pluginId);
-        var response;
+        var plugin = yakServer.pluginManager.getPlugin(request.pluginId);
+        var response = new yak.api.DeletePluginResponse(request.id);
 
         if (plugin) {
-            yakServer.pluginManager.removePlugin(pluginId);
-            response = new yak.api.DeletePluginResponse(request.id);
+            yakServer.pluginManager.removePlugin(request.pluginId);
         } else {
-            response = new yak.api.DeletePluginResponse(request.id);
             response.success = false;
-            response.message = 'Can not find plugin: ' + request.pluginName;
+            response.message = 'Can not find plugin: ' + request.pluginId;
         }
 
         return response;

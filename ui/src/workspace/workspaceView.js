@@ -46,7 +46,7 @@ yak.ui.WorkspaceView = function WorkspaceView(parent, context, viewModel) {
         panels['panel-store'] = context.viewFactory.create($('.panel[data-panel=panel-store]', parent), yak.ui.StoreListView, yak.ui.StoreListViewModel);
         panels['panel-storeEntry-edit'] = context.viewFactory.create($('.panel[data-panel=panel-storeEntry-edit]', parent), yak.ui.EditStoreEntryView, yak.ui.EditStoreEntryViewModel);
 
-        tabPanel = new yak.ui.TabPanel(parent.find('.main-navigation'));
+        tabPanel = new yak.ui.TabPanel(parent);
         tabPanel.onTabChanged = handleTabChanged;
 
         viewModel.onActivePanelViewChanged = switchToPanel;

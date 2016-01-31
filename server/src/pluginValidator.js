@@ -26,7 +26,7 @@ yak.api.PluginValidator = function PluginValidator(pluginManager) {
     this.isCreatePluginRequestValid = function isCreatePluginRequestValid(request) {
         allValuesValid = true;
 
-        validateName(request.name);
+        validateId(request.name);
         validatePluginIdNotInUse(request.name);
         validateCode(request.code);
 
@@ -35,15 +35,15 @@ yak.api.PluginValidator = function PluginValidator(pluginManager) {
 
     /**
      * Has instance valid values.
-     * @param {yak.api.UpdatePluginRequest} request
+     * @param {yak.api.PluginConfig} pluginConfig
      * @returns {boolean} Whether the instance has valid values.
      */
-    this.isUpdatePluginRequestValid = function isUpdatePluginRequestValid(request) {
+    this.isUpdatePluginValid = function isUpdatePluginRequestValid(pluginConfig) {
         allValuesValid = true;
 
-        validateName(request.name);
-        validatePluginIdExists(request.name);
-        validateCode(request.code);
+        validateId(pluginConfig.id);
+        validatePluginIdExists(pluginConfig.id);
+        validateCode(pluginConfig.code);
 
         return allValuesValid;
     };
@@ -56,7 +56,7 @@ yak.api.PluginValidator = function PluginValidator(pluginManager) {
     this.isPluginValid = function isPluginValid(plugin) {
         allValuesValid = true;
 
-        validateName(plugin.name);
+        validateId(plugin.name);
         validateCode(plugin.code);
 
         return allValuesValid;
@@ -92,19 +92,19 @@ yak.api.PluginValidator = function PluginValidator(pluginManager) {
 
         if (!plugin) {
             allValuesValid = false;
-            errorMessage = 'The plugin with given id/name found.';
+            errorMessage = pluginId + ' does not exist.';
         }
     }
 
     /**
      * Validate name.
-     * @param {string} name
+     * @param {string} pluginId
      */
-    function validateName(name) {
+    function validateId(pluginId) {
         var regex = /^[A-z0-9-_ ]+$/;
-        var isValid = !!regex.exec(name);
+        var isValid = !!regex.exec(pluginId);
 
-        allValuesValid = allValuesValid & isValid;
+        allValuesValid = allValuesValid && isValid;
 
         if (!isValid) {
             errorMessage = 'Please correct name. Only use this characters: [A-z0-9_- ]';
@@ -123,7 +123,7 @@ yak.api.PluginValidator = function PluginValidator(pluginManager) {
 
         var result = pluginCodeChecker.checkCode(code);
 
-        allValuesValid = allValuesValid & result.isValid;
+        allValuesValid = allValuesValid && result.isValid;
 
         if (!result.isValid) {
             errorMessage = 'Plugin code is not valid.' + result.errors.join(' \n');

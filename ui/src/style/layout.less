@@ -4,148 +4,18 @@
 
 @line-height: 4 * @grid-size;
 
-@tool-bar-height: 48px;
-@app-bar-height: 64px;
-
 body {
-    background: #efefe7;
-    font: 13px / 30px 'roboto';
+    background: @color-grey;
+    font: 14px / 30px 'roboto';
     color: @color-grey-dark;
 }
 
 div, input, li {
-   -webkit-box-sizing:border-box;
-   box-sizing:border-box;
+   -webkit-box-sizing: border-box;
+   box-sizing: border-box;
 }
 
 ::selection {
     background: @color-blue-grey;
     color: white;
 }
-
-.banner {
-    position: absolute;
-    top: 0;
-    right: 0;
-    left: 0;
-    height:40px;
-    background:#505050;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
-    display: none;
-}
-
-.banner-wrap {
-    width: 980px;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.form {
-    margin: 0;
-    background: #ffffff;
-    padding: 10px 10px;
-}
-
-.form-line {
-    margin-top: 10px;
-    margin-bottom: 10px;
-}
-
-.error-line {
-    display: none;
-}
-
-
-.line-input {
-    display:inline-block;
-    min-height:30px;
-    color: #303030;
-    width: 800px;
-}
-
-.line-input input {
-   height:30px;
-   width:380px;
-}
-
-.line-left {
-   display:inline-block;
-   width:200px;
-   min-height: 30px;
-   vertical-align:top;
-}
-
-.line-left .line-label {
-   display:block;
-   vertical-align:top;
-}
-
-.line-editor {
-   display:inline-block;
-   width:770px;
-}
-
-.codeEditor {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-}
-
-.codeEditor-store {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-}
-
-.codeEditor-status {
-    height: 50px;
-}
-
-.codeEditor-status .status-item {
-    display: inline-block;
-    height: 30px;
-    margin: 10px 10px 10px 0;
-    background: #ffffff;
-    vertical-align: top;
-}
-
-.status-item .status-line {
-    padding: 0 10px;
-    font: 12px/30px 'roboto';
-    color: #A0A0A0;
-    min-width: 60px;
-    text-align: center;
-}
-
-.status-item .status-help {
-     padding: 0 10px;
-     font: 12px/30px 'roboto';
-     color: #A0A0A0;
- }
-
-.status-item .status-syntax {
-    margin: 10px;
-    width: 10px;
-    height: 10px;
-    background: #87C747;
-}
-
-.status-item .status-syntax.state-syntax-error {
-    background: #C74787;
-}
-
-.notification {
-    height:40px;
-    font: 14px/40px 'roboto';
-    padding-left: 10px;
-    padding-right:10px;
-    overflow:hidden;
-    background: #C74787;
-    color: #ffffff;
-    margin: 10px 0 10px 0;
-}
-

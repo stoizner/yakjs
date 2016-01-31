@@ -1,18 +1,17 @@
-<div class="header-panel mod-tall">
+<div class="header-panel">
     <header class="header-panel-header">
-        <div class="white-space-block"></div>
-        <ul class="tool-bar">
-            <li class="tool-bar-item">
-                <div class="text-button" data-command="create">Create Instance</div>
-            </li>
-            <li class="tool-bar-item">
-                <div class="text-button" data-command="refresh">Refresh</div>
-            </li>
-        </ul>
+        <div class="tool-bar-block">
+            <div class="tool-bar-block-line">
+                <div class="center-panel">
+                     <button class="text-button" data-command="create">Create Instance</button>
+                     <button class="text-button" data-command="refresh">Refresh</button>
+                </div>
+            </div>
+        </div>
     </header>
     <section class="header-panel-body">
-        <div class="">
-            <div class="scroll-panel">
+        <div class="scroll-panel">
+            <div class="center-block">
                 <div class="instance-items">
                     {{#instances}}
                         <div data-instance="{{name}}" data-id="{{id}}" data-state="{{state}}">

@@ -1,5 +1,4 @@
 /**
- * GetPluginsResponse
  * @constructor
  * @implements {yak.api.Response}
  * @param {string} requestId
@@ -24,8 +23,8 @@ yak.api.GetPluginsResponse = function GetPluginsResponse(requestId) {
     this.success = true;
 
     /**
-     * List of available cloud Plugins as InstanceInfo array.
-     * @type {Array<yak.api.PluginInfo>}
+     * List of all plugin configurations.
+     * @type {!Array<!yak.api.PluginConfig>}
      */
     this.plugins = [];
 };

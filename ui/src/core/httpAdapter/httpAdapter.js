@@ -29,7 +29,7 @@ yak.ui.HttpAdapter = function HttpAdapter(eventBus) {
      * @param {Function} responseCallback Callback function for handling response message.
      */
     this.sendRequest = function sendRequest(request, responseCallback) {
-        console.log('Sending request', {request: request});
+        console.log('Request sending.', {request: request});
 
         if (!request.id) {
             throw new Error('Can not send a request without an request id.');
@@ -72,6 +72,7 @@ yak.ui.HttpAdapter = function HttpAdapter(eventBus) {
                 var callback = requestResponseCallbackMap[msg.requestId];
                 delete requestResponseCallbackMap[msg.requestId];
 
+                console.log('Response received.', {response: msg});
                 if (callback) {
                     callback(msg);
                 }

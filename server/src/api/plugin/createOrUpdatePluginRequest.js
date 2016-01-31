@@ -17,26 +17,14 @@ yak.api.CreateOrUpdatePluginRequest = function CreateOrUpdatePluginRequest() {
     this.id = yak.api.guid();
 
     /**
-    * Unique name of Plugin.
-    * @type {string}
-    */
-    this.name = null;
-
-    /**
-    * Some description.
-    * @type {string}
-    */
-    this.description = null;
-
-    /**
-     * The semantic version number of the plugin (optional)
+     * The plugin id. Set to null when creating a new plugin.
      * @type {?string}
      */
-    this.version = null;
+    this.pluginId = null;
 
     /**
-    * Plugin Code.
-    * @type {string}
-    */
-    this.code = null;
+     * The plugin configuration.
+     * @type {!yak.api.PluginConfig}
+     */
+    this.plugin = null;
 };

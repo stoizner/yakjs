@@ -2,7 +2,6 @@
  * GetPluginsRequestHandler
  * @constructor
  * @param {yak.YakServer} yakServer
- * @implements {yak.RequestHandler}
  */
 yak.GetPluginsRequestHandler = function GetPluginsRequestHandler(yakServer) {
     'use strict';
@@ -16,17 +15,15 @@ yak.GetPluginsRequestHandler = function GetPluginsRequestHandler(yakServer) {
 
         var response = new yak.api.GetPluginsResponse(request.id);
 
-        _.each(plugins, function toPluginInfo(plugin) {
-            var pluginInfo = new yak.api.PluginInfo();
+        response.plugins = _.map(plugins, function toPluginConfig(plugin) {
+            var pluginConfig = new yak.api.PluginConfig();
 
-            pluginInfo.id = plugin.id;
-            pluginInfo.name = plugin.id;
+            pluginConfig.id = plugin.id;
+            pluginConfig.description = plugin.description;
+            pluginConfig.code = plugin.code;
+            pluginConfig.version = plugin.version;
 
-            pluginInfo.description = plugin.description;
-            pluginInfo.code = plugin.code;
-            pluginInfo.version = plugin.version;
-
-            response.plugins.push(pluginInfo);
+            return pluginConfig;
         });
 
         return response;

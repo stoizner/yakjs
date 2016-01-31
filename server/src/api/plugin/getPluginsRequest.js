@@ -1,24 +1,17 @@
 /**
- * RemovePluginRequest
  * @constructor
  * @implements {yak.api.Request}
  */
-yak.api.DeletePluginRequest = function DeletePluginRequest() {
+yak.api.GetPluginsRequest = function GetPluginsRequest() {
     /**
     * Command for the service API.
     * @type {string}
     */
-    this.type = 'request.deletePlugin';
+    this.type = 'request.getPlugins';
 
     /**
      * Create unique request id.
      * @type {string}
      */
     this.id = yak.api.guid();
-
-    /**
-    * Name of the Plugin.
-    * @type {string}
-    */
-    this.pluginName = null;
 };

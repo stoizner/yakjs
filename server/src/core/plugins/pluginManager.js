@@ -303,25 +303,24 @@ yak.PluginManager = function PluginManager() {
 
     /**
      * Creates a plugin instance.
-     * @param {string} name
+     * @param {string} pluginId
      * @returns {*} A working plugin instance.
      */
-    this.createPluginInstance = function createPluginInstance(name) {
-        var pluginLog = new yak.Logger(name + '.plugin');
+    this.createPluginInstance = function createPluginInstance(pluginId) {
+        var pluginLog = new yak.Logger(pluginId + '.plugin');
         pluginLog.info('Create new plugin instance');
 
         var pluginInstance = null;
+        var plugin = plugins[pluginId];
 
-        if (plugins.hasOwnProperty(name)) {
-            var plugin = plugins[name];
-
+        if (plugin) {
             try {
                 if (typeof plugin.PluginConstructor === 'function') {
                     var requireContext = _.partial(pluginRequire, {log: pluginLog});
                     pluginInstance = new plugin.PluginConstructor(requireContext);
-                    pluginInstance.name = name;
+                    pluginInstance.pluginId = pluginId;
                 } else {
-                    pluginLog.error('No constructor function available, can not create plugin instance.');
+                    pluginLog.error('No constructor function available, can not create plugin instance.', {pluginId: pluginId});
                 }
             } catch(ex) {
                 pluginInstance = null;
@@ -330,7 +329,7 @@ yak.PluginManager = function PluginManager() {
         }
 
         if (!pluginInstance) {
-            log.warn('Could not create a new plugin instance. @' + name);
+            log.warn('Could not create a new plugin instance.', {pluginId: pluginId});
         }
 
         return pluginInstance;
@@ -395,7 +394,7 @@ yak.PluginManager = function PluginManager() {
 
             var tags = [];
 
-            tags.push({title: 'name', description: plugin.name});
+            tags.push({title: 'name', description: plugin.id});
             tags.push({title: 'description', description: plugin.description});
             tags.push({title: 'version', description: plugin.version});
             tags.push({title: 'type', description: plugin.type});
@@ -426,7 +425,7 @@ yak.PluginManager = function PluginManager() {
             fs.writeFileSync(fullFilename, pluginString, {encoding: 'utf8'});
 
         } catch(ex) {
-            log.error('Could not save plugin to file system.', {pluginName: plugin.name, error: ex.message});
+            log.error('Could not save plugin to file system.', {pluginName: plugin.id, error: ex.message});
         }
     };
 };

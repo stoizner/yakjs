@@ -1,17 +1,11 @@
 /**
- * PluginInfo
  * @constructor
  */
-yak.api.PluginInfo = function PluginInfo() {
+yak.api.PluginConfig = function PluginConfig() {
     /**
      * @type {?string}
      */
     this.id = null;
-
-    /**
-     * @type {?string}
-     */
-    this.name = null;
 
     /**
      *
