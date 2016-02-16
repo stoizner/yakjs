@@ -71,7 +71,7 @@ yak.ui.InstanceListViewModel = function InstanceListViewModel(context) {
      * @param {yak.api.InstanceInfo} [item]
      */
     this.activateInstanceEditPanel = function activateInstanceEditPanel(item) {
-        context.eventBus.post(new yak.ui.ActivatePanelCommand('panel-instance-edit', item));
+        context.eventBus.post(new yak.ui.ShowViewCommand(yak.ui.InstanceView, item));
     };
 
     /**

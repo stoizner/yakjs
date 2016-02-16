@@ -77,7 +77,7 @@ yak.ui.PluginViewModel = function PluginViewModel(context) {
      * Cancel instance edit.
      */
     this.cancel = function cancel() {
-        context.eventBus.post(new yak.ui.ActivatePanelCommand('panel-plugin'));
+        context.eventBus.post(new yak.ui.ShowViewCommand(yak.ui.PluginListView));
     };
 
     /**
@@ -92,7 +92,7 @@ yak.ui.PluginViewModel = function PluginViewModel(context) {
     };
 
     function showPluginPanel() {
-        context.eventBus.post(new yak.ui.ActivatePanelCommand('panel-plugin'));
+        context.eventBus.post(new yak.ui.ShowViewCommand(yak.ui.PluginListView));
     }
 
     /**

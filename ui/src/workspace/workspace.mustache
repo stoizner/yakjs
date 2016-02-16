@@ -4,29 +4,29 @@
         <div class="tool-bar-block">
             <div class="dark-background-panel">
                 <div class="center-panel">
-                    <div class="tab-panel-tabs">
+                    <nav class="navigation panel">
                         <ul>
-                            <li data-tab="panel-instance" class="state-active">Instances</li>
-                            <li data-tab="panel-plugin">Plugins</li>
-                            <li data-tab="panel-store">Store</li>
+                            <li data-ref="InstanceListView" class="state-active">Instances</li>
+                            <li data-ref="PluginListView">Plugins</li>
+                            <li data-ref="StoreListView">Store</li>
                         </ul>
-                        <div class="tab-panel-tabs-indicator"></div>
-                    </div>
+                        <div class="navigation-indicator"></div>
+                    </nav>
                 </div>
             </div>
         </div>
     </header>
 
     <div class="header-panel-body">
-        <div class="panel">
-            <div class="panel" data-panel="panel-instance" data-tab="panel-instance"></div>
-            <div class="panel" data-panel="panel-instance-edit" data-tab="panel-instance"></div>
+        <div class="panel" data-container="page">
+            <!--<div class="panel" data-panel="panel-instance" data-tab="panel-instance"></div>-->
+            <!--<div class="panel" data-panel="panel-instance-edit" data-tab="panel-instance"></div>-->
 
-            <div class="panel" data-panel="panel-plugin" data-tab="panel-plugin"></div>
-            <div class="panel" data-panel="panel-plugin-edit" data-tab="panel-plugin"></div>
+            <!--<div class="panel" data-panel="panel-plugin" data-tab="panel-plugin"></div>-->
+            <!--<div class="panel" data-panel="panel-plugin-edit" data-tab="panel-plugin"></div>-->
 
-            <div class="panel" data-panel="panel-store" data-tab="panel-store"></div>
-            <div class="panel" data-panel="panel-storeEntry-edit" data-tab="panel-store"></div>
+            <!--<div class="panel" data-panel="panel-store" data-tab="panel-store"></div>-->
+            <!--<div class="panel" data-panel="panel-storeEntry-edit" data-tab="panel-store"></div>-->
         </div>
 
         <div class="workspace-file-upload-box" data-view="fileUploadView"></div>

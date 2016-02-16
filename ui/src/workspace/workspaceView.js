@@ -14,19 +14,20 @@ yak.ui.WorkspaceView = function WorkspaceView(parent, context, viewModel) {
     var self = this;
 
     /**
-     * @type {Object<string, object>}
-     */
-    var panels = {};
-
-    /**
      * @type {yak.ui.Template}
      */
     var template = context.template.load('workspace');
 
     /**
-     * @type {yak.ui.TabPanel}
+     * @type {yak.ui.Navigation}
      */
-    var tabPanel = null;
+    var navigation = null;
+
+    /**
+     * The current active view.
+     * @type {{activate: function(), dispose: function()}}
+     */
+    var activeView = null;
 
     /**
      *  Constructor
@@ -37,39 +38,43 @@ yak.ui.WorkspaceView = function WorkspaceView(parent, context, viewModel) {
         context.viewFactory.create($('.app-bar'), yak.ui.AppBarView, yak.ui.AppBarViewModel);
         context.viewFactory.create($('[data-view=fileUploadView]', parent), yak.ui.FileUploadView, yak.ui.FileUploadViewModel);
 
-        panels['panel-instance'] = context.viewFactory.create($('.panel[data-panel=panel-instance]', parent), yak.ui.InstanceListView, yak.ui.InstanceListViewModel);
-        panels['panel-instance-edit'] = context.viewFactory.create($('.panel[data-panel=panel-instance-edit]', parent), yak.ui.InstanceView, yak.ui.InstanceViewModel);
+        navigation = new yak.ui.Navigation(parent.find('.navigation'));
+        navigation.onNavigationChanged = handleNavigationChanged;
+        viewModel.onActiveViewChanged = createAndShowView;
 
-        panels['panel-plugin'] = context.viewFactory.create($('.panel[data-panel=panel-plugin]', parent), yak.ui.PluginListView, yak.ui.PluginListViewModel);
-        panels['panel-plugin-edit'] = context.viewFactory.create($('.panel[data-panel=panel-plugin-edit]', parent), yak.ui.PluginView, yak.ui.PluginViewModel);
-        panels['panel-store'] = context.viewFactory.create($('.panel[data-panel=panel-store]', parent), yak.ui.StoreListView, yak.ui.StoreListViewModel);
-        panels['panel-storeEntry-edit'] = context.viewFactory.create($('.panel[data-panel=panel-storeEntry-edit]', parent), yak.ui.EditStoreItemView, yak.ui.EditStoreItemViewModel);
+        createAndShowView();
+    }
 
-        tabPanel = new yak.ui.TabPanel(parent);
-        tabPanel.onTabChanged = handleTabChanged;
-
-        viewModel.onActivePanelViewChanged = switchToPanel;
-        switchToPanel();
+    /**
+     * @param {string} viewReference
+     */
+    function handleNavigationChanged(viewReference) {
+        viewModel.showView(viewReference);
     }
 
     /**
      * Switch to active panel.
      */
-    function switchToPanel() {
-        tabPanel.switchTo(viewModel.activePanel);
-    }
+    function createAndShowView() {
+        console.log('Create and show view', {view: viewModel.activeView});
+        navigation.moveIndicatorTo(viewModel.activeView);
 
-    /**
-     * Activate view when panel is changed.
-     * @param {string} panelId
-     */
-    function handleTabChanged(panelId) {
-        if (panels.hasOwnProperty(viewModel.activePanel)) {
-            panels[panelId].activate(viewModel.activePanelData);
-            viewModel.activePanel = panelId;
+        var pageContainer = parent.find('[data-container=page]');
+
+        if (yak.ui[viewModel.activeView]) {
+            if (activeView && activeView.dispose) {
+                activeView.dispose();
+            }
+
+            var View = yak.ui[viewModel.activeView];
+            var ViewModel = yak.ui[viewModel.activeView + 'Model'];
+
+            activeView = context.viewFactory.create(pageContainer, View, ViewModel);
+            activeView.activate(viewModel.activeViewData);
         } else {
-            console.log('No view found.', { activePanel: viewModel.activePanel });
+            console.error('No view found.', {activeView: viewModel.activeView });
         }
+
     }
 
     constructor();

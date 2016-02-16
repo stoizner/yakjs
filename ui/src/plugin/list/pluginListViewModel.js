@@ -57,7 +57,7 @@ yak.ui.PluginListViewModel = function PluginListViewModel(context) {
             item = _.findWhere(self.items, {id: id});
         }
 
-        context.eventBus.post(new yak.ui.ActivatePanelCommand('panel-plugin-edit', item));
+        context.eventBus.post(new yak.ui.ShowViewCommand(yak.ui.PluginView, item));
     };
 
     /**

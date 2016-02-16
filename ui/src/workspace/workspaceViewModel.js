@@ -13,47 +13,47 @@ yak.ui.WorkspaceViewModel = function WorkspaceViewModel(context) {
      * The current active panel.
      * @type {?string}
      */
-    this.activePanel = null;
+    this.activeView = null;
 
     /**
-     * Data for the active panel.
-     * @type {*}
+     * @type {?}
      */
-    this.activePanelData = null;
+    this.activeViewData = null;
 
     /**
      * Callback function for active panel changed event.
      * @type {Function}
      */
-    this.onActivePanelViewChanged = _.noop;
+    this.onActiveViewChanged = _.noop;
 
     /**
      *  Constructor
      */
     function constructor() {
-        context.eventBus.on(yak.ui.ActivatePanelCommand).register(handleActivatePanel);
-        self.activePanel = 'panel-instance';
-        self.onActivePanelViewChanged();
+        context.eventBus.on(yak.ui.ShowViewCommand).register(handleShowViewCommand);
+
+        self.activeView = yak.ui.InstanceListView.prototype.constructor.name;
+        self.onActiveViewChanged();
     }
 
     /**
-     * @param {yak.ui.ActivatePanelCommand} command
+     * @param {!yak.ui.ShowViewCommand} command
      */
-    function handleActivatePanel(command) {
-        console.log('handleActivatePanel', command);
-        self.activePanel = command.panelName;
-        self.activePanelData = command.data;
-        self.onActivePanelViewChanged();
+    function handleShowViewCommand(command) {
+        console.log('Change active view', {command: command});
+        self.activeView = command.ViewConstructor.prototype.constructor.name;
+        self.activeViewData = command.data;
+        self.onActiveViewChanged();
     }
 
     /**
      * @param {string} name The name of the panel.
      * @param {*} [data]
      */
-    this.activatePanel = function activatePanel(name, data) {
-        self.activePanel = name;
-        self.activePanelData = data || null;
-        self.onActivePanelViewChanged();
+    this.showView = function showView(name, data) {
+        self.activeView = name;
+        self.activeViewData = data || null;
+        self.onActiveViewChanged();
     };
 
     constructor();

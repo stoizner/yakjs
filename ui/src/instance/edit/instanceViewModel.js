@@ -191,7 +191,7 @@ yak.ui.InstanceViewModel = function InstanceViewModel(context) {
      * Show the panel instance list.
      */
     function showPanelInstanceList() {
-        context.eventBus.post(new yak.ui.ActivatePanelCommand('panel-instance'));
+        context.eventBus.post(new yak.ui.ShowViewCommand(yak.ui.InstanceListView));
     }
 
     /**
@@ -213,7 +213,7 @@ yak.ui.InstanceViewModel = function InstanceViewModel(context) {
         console.log('InstanceViewModel.handleInstanceResponse', {response: response});
 
         if (response.success) {
-            context.eventBus.post(new yak.ui.ActivatePanelCommand('panel-instance'));
+            context.eventBus.post(new yak.ui.ShowViewCommand(yak.ui.InstanceListView));
         } else {
             self.onErrorResponse(response.message);
         }

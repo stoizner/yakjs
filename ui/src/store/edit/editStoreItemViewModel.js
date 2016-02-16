@@ -83,7 +83,7 @@ yak.ui.EditStoreItemViewModel = function EditStoreItemViewModel(context) {
     };
 
     function showStorePanel() {
-        context.eventBus.post(new yak.ui.ActivatePanelCommand('panel-store'));
+        context.eventBus.post(new yak.ui.ShowViewCommand(yak.ui.StoreListView));
     }
 
     /**

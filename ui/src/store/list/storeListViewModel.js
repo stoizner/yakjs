@@ -133,7 +133,7 @@ yak.ui.StoreListViewModel = function StoreListViewModel(context) {
      * @param {yak.api.StoreKeyInfo} [storeKeyInfo]
      */
     this.activateStoreEditPanel = function activateStoreEditPanel(storeKeyInfo) {
-        context.eventBus.post(new yak.ui.ActivatePanelCommand('panel-storeEntry-edit', storeKeyInfo));
+        context.eventBus.post(new yak.ui.ShowViewCommand(yak.ui.EditStoreItemView, storeKeyInfo));
     };
 
     /**

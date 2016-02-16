@@ -1,25 +1,8 @@
-[data-panel] {
-    display: none;
-}
-
-.tab-panel {
+.navigation {
     .no-select;
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
 }
 
-.tab-panel-tabs {
-    position: absolute;
-    top: 0;
-    right: 0;
-    left: 0;
-    bottom: 0;
-}
-
-.tab-panel-tabs-indicator {
+.navigation-indicator {
     position: absolute;
     left: 120px;
     bottom: 0;
@@ -29,7 +12,7 @@
     -webkit-transition: 0.3s ease-in-out;
 }
 
-.tab-panel-tabs ul {
+.navigation ul {
     margin: 0;
     padding: 0;
     position: absolute;
@@ -39,7 +22,7 @@
     left: 0;
 }
 
-.tab-panel-tabs [data-tab] {
+.navigation [data-ref] {
     float: left;
     display: inline-block;
     text-align: center;
@@ -51,10 +34,10 @@
     padding: 0 12px;
 }
 
-.tab-panel-tabs li.state-active {
+.navigation li.state-active {
     color: @color-lime;
 }
 
-.tab-panel-tabs li:hover {
+.navigation li:hover {
     color: @color-lime;
 }
