@@ -36,13 +36,27 @@ yak.ui.WorkspaceView = function WorkspaceView(parent, context, viewModel) {
         parent.html(template.build());
 
         context.viewFactory.create($('.app-bar'), yak.ui.AppBarView, yak.ui.AppBarViewModel);
-        context.viewFactory.create($('[data-view=fileUploadView]', parent), yak.ui.FileUploadView, yak.ui.FileUploadViewModel);
 
         navigation = new yak.ui.Navigation(parent.find('.navigation'));
         navigation.onNavigationChanged = handleNavigationChanged;
         viewModel.onActiveViewChanged = createAndShowView;
 
+        parent.bind('dragover', handleFileDragOver);
+
         createAndShowView();
+    }
+
+    /**
+     * @param {jQuery.Event} event
+     */
+    function handleFileDragOver(event) {
+        if (viewModel.activeView !== 'FileUploadView') {
+            event.stopPropagation();
+            event.preventDefault();
+            event.originalEvent.dataTransfer.dropEffect = 'copy';
+
+            viewModel.showView('FileUploadView');
+        }
     }
 
     /**
@@ -70,7 +84,10 @@ yak.ui.WorkspaceView = function WorkspaceView(parent, context, viewModel) {
             var ViewModel = yak.ui[viewModel.activeView + 'Model'];
 
             activeView = context.viewFactory.create(pageContainer, View, ViewModel);
-            activeView.activate(viewModel.activeViewData);
+
+            if (activeView.activate) {
+                activeView.activate(viewModel.activeViewData);
+            }
         } else {
             console.error('No view found.', {activeView: viewModel.activeView });
         }

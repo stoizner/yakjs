@@ -1,0 +1,35 @@
+.drop-block {
+    .clickable;
+    .no-select;
+    position: relative;
+    height: @line-height * 2;
+    background-color: @color-teal-300;
+    margin: @line-height;
+    border-bottom: solid @grid-size @color-teal-500;
+}
+
+.drop-block-text {
+    color: white;
+    line-height: @line-height * 2;
+    padding-left: @line-height * 3;
+    height: @line-height * 2;
+}
+
+.drop-block-icon {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+
+    width: @line-height * 2;
+
+    .icon-file-upload;
+}
+
+.drop-block:hover {
+    opacity: 0.8;
+}
+
+.drop-block[data-drag=over] {
+    opacity: 0.8;
+}

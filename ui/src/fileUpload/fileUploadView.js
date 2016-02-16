@@ -18,6 +18,9 @@ yak.ui.FileUploadView = function FileUploadView(parent, context, viewModel) {
      */
     var template = context.template.load('fileUpload');
 
+    /**
+     * @type {jQuery}
+     */
     var fileDropZone = null;
 
     /**
@@ -26,53 +29,73 @@ yak.ui.FileUploadView = function FileUploadView(parent, context, viewModel) {
     function constructor() {
         parent.html(template.build({ version: yak.ui.version}));
 
-        fileDropZone = $('.drop-panel');
+        fileDropZone = parent.find('.drop-block');
 
-        fileDropZone.bind('drop', handleJsFileDrop);
-        fileDropZone.bind('dragover', handleJsFileDragOver);
-        fileDropZone.bind('dragleave', handleJsFileDragLeave);
+        fileDropZone.bind('drop', handleFileDrop);
+        fileDropZone.bind('dragover', handleFileDragOver);
+        fileDropZone.bind('dragleave', handleFileDragLeave);
+
+        parent.find('[data-command=choose]').click(handleChooseCommand);
+        parent.find('[name=fileInput]').change(handleFileInputChange);
+    }
+
+    function handleFileInputChange(event) {
+        var files = parent.find('[name=fileInput]').get(0).files;
+        readFiles(files);
+    }
+
+    function handleChooseCommand() {
+        parent.find('[name=fileInput]').click();
     }
 
     /**
      * @param {jQuery.Event} event
      */
-    function handleJsFileDragOver(event) {
+    function handleFileDragOver(event) {
         event.stopPropagation();
         event.preventDefault();
         event.originalEvent.dataTransfer.dropEffect = 'copy';
 
-        fileDropZone.addClass('mod-drag-over');
+        fileDropZone.attr('data-drag', 'over');
     }
 
     /**
      * @param {jQuery.Event} event
      */
-    function handleJsFileDragLeave(event) {
-        fileDropZone.removeClass('mod-drag-over');
+    function handleFileDragLeave(event) {
+        fileDropZone.attr('data-drag', 'leave');
     }
 
     /**
      * @param {jQuery.Event} event
      */
-    function handleJsFileDrop(event) {
+    function handleFileDrop(event) {
         console.log('handleJsFileDrop', event);
-        fileDropZone.removeClass('mod-drag-over');
+        fileDropZone.attr('data-drag', 'drop');
 
         event.stopPropagation();
         event.preventDefault();
 
         var files = event.originalEvent.target.files || event.originalEvent.dataTransfer.files;
-        console.log(files);
 
+        readFiles(files);
+    }
+
+    /**
+     * Read all files
+     * @param {Array<File>} files
+     */
+    function readFiles(files) {
+        console.log(files);
         viewModel.clearFileUploadInfo();
-        _.each(files, handleDroppedFile);
+        _.each(files, readFile);
     }
 
     /**
      * Handle every dropped file.
      * @param {File} file
      */
-    function handleDroppedFile(file) {
+    function readFile(file) {
         console.log('file uploaded', file);
         var reader = new FileReader();
 
