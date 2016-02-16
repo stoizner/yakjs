@@ -3,11 +3,11 @@
         <div class="tool-bar-block">
             <div class="tool-bar-block-line">
                 <div class="center-panel">
-                    <button class="button" data-command="save">Save</button>
+                    <div class="button" data-command="save">Save</div>
                     {{#instance}}
-                    <button class="button" data-command="delete" >Delete</button>
+                    <div class="button" data-command="delete" >Delete</div>
                     {{/instance}}
-                    <button class="button" data-command="cancel">Cancel</button>
+                    <div class="button" data-command="cancel">Cancel</div>
                 </div>
             </div>
         </div>
@@ -43,8 +43,8 @@
                                     <label class="input-label">Plugins</label>
                                     <div class="light-text">Assign plugins to this instance</div>
                                     <div>
-                                        <button class="flat-button" data-command="plugins-all" title="Assign all plugins.">All</button>
-                                        <button class="flat-button" data-command="plugins-none" title="Remove all plugins." >None</button>
+                                        <div class="flat-button" data-command="plugins-all" title="Assign all plugins.">All</div>
+                                        <div class="flat-button" data-command="plugins-none" title="Remove all plugins." >None</div>
                                     </div>
                                     <div class="plugin-list" data-list="plugin"></div>
                                 </div>
