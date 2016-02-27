@@ -2,7 +2,6 @@
  * FileUploadRequestHandler
  * @constructor
  * @param {yak.YakServer} yakServer
- * @implements {yakServiceMessageHandler}
  */
 yak.FileUploadRequestHandler = function FileUploadRequestHandler(yakServer) {
     'use strict';
@@ -12,7 +11,7 @@ yak.FileUploadRequestHandler = function FileUploadRequestHandler(yakServer) {
      */
     var self = this;
 
-    var INTERNAL_ERROR_MESSAGE = 'Internal YAKjs error. To help us, please report that problem.';
+    var INTERNAL_ERROR_MESSAGE = 'Unknown internal YAKjs error.';
 
     var PLUGIN_EXTENSION = '.plugin.js';
     var PLUGIN_EXTENSION_OLD = '.js';
@@ -67,21 +66,13 @@ yak.FileUploadRequestHandler = function FileUploadRequestHandler(yakServer) {
      */
     function addOrUpdateStore(request) {
         var response = new yak.api.UploadFileResponse(request.id);
+        response.fileType = 'store';
 
         try {
             var documentKey = request.filename.replace(STORE_EXTENSION, '');
             documentKey = documentKey.replace(STORE_EXTENSION_OLD, '');
 
             store.setValue(documentKey, request.content);
-
-            if (request.enableInstanceRestart) {
-                // Restart every instance, because currently there is no way
-                // to determine which plugin uses a store key.
-                var instances = yakServer.instanceManager.getConfigs();
-                _.each(instances, function restart(instance) {
-                    restartInstance(instance.id);
-                });
-            }
 
             response.success = true;
         } catch(ex) {
@@ -99,6 +90,7 @@ yak.FileUploadRequestHandler = function FileUploadRequestHandler(yakServer) {
      */
     function addOrUpdateInstance(request) {
         var response = new yak.api.UploadFileResponse(request.id);
+        response.fileType = 'instance';
 
         try {
             var instance = yakServer.instanceManager.parseInstance(request.filename, request.content);
@@ -124,6 +116,7 @@ yak.FileUploadRequestHandler = function FileUploadRequestHandler(yakServer) {
      */
     function addOrUpdatePlugin(request) {
         var response = new yak.api.UploadFileResponse(request.id);
+        response.fileType = 'plugin';
 
         try {
             var pluginManager = yakServer.pluginManager;
@@ -139,10 +132,6 @@ yak.FileUploadRequestHandler = function FileUploadRequestHandler(yakServer) {
 
                 pluginManager.addOrUpdatePlugin(parsedPlugin);
                 pluginManager.savePlugin(parsedPlugin);
-
-                if (request.enableInstanceRestart) {
-                    restartInstancesWithPlugin(parsedPlugin.name);
-                }
             } else {
                 response.success = false;
                 response.message = pluginValidator.getMessage();
@@ -153,34 +142,6 @@ yak.FileUploadRequestHandler = function FileUploadRequestHandler(yakServer) {
             response.message = INTERNAL_ERROR_MESSAGE;
         }
         return response;
-    }
-
-    /**
-     * @param {string} pluginName
-     */
-    function restartInstancesWithPlugin(pluginName) {
-        var instances = yakServer.instanceManager.getConfigs();
-
-        /**
-         * @param {yak.Instance} instance
-         */
-        function restartWhenUsingPlugin(instance) {
-            if (_.contains(instance.plugins, pluginName)) {
-                restartInstance(instance.id);
-            }
-        }
-
-        _.each(instances, restartWhenUsingPlugin);
-    }
-
-    /**
-     * Restart instance
-     * @param {string} instanceId
-     */
-    function restartInstance(instanceId) {
-        var instanceEntity = yakServer.instanceManager.getInstance(instanceId);
-        instanceEntity.stop();
-        instanceEntity.start();
     }
 
     /**

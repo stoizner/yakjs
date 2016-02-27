@@ -7,47 +7,88 @@ yak.ui.FileUploadViewModel = function FileUploadViewModel(context) {
     'use strict';
 
     /**
-     * @type {yak.ui.AppBarViewModel}
+     * @type {yak.ui.FileUploadViewModel}
      */
     var self = this;
 
-    var fileUpload = {};
+    /**
+     * @type {Object<string, {}>}
+     */
+    var fileUploadItems = {};
 
     /**
-     * Upload a file to yakjs.
-     * @param {string} filename
-     * @param {string} content
+     * @type {function(Array<{}>)}
      */
-    this.uploadFile = function uploadFile(filename, content) {
-        console.log('uploadFile', {filename: filename, content: content});
+    this.onFileUploadItemsChanged = _.noop;
+
+    /**
+     * @type {function(Array<{}>)}
+     */
+    this.onFileUploadCompleted = _.noop;
+
+    /**
+     * Upload files to the YAKjs server.
+     * @param {!Array<File>} files
+     */
+    this.uploadFiles = function uploadFiles(files) {
+        fileUploadItems = {};
+
+        _.each(files, readFile);
+
+        self.onFileUploadItemsChanged(_.toArray(fileUploadItems));
+    };
+
+    /**
+     * Handle every dropped file.
+     * @param {File} file
+     */
+    function readFile(file) {
+        console.log('Reading file', {file: file});
+
+        var reader = new FileReader();
+        var filename = file.name;
+
+        // Closure to capture the file information.
+        reader.onload = _.partial(uploadFile, file);
+
+        fileUploadItems[filename] = createFileUploadItem(file.name);
+
+        // Read in the file as a data URL.
+        reader.readAsText(file);
+    }
+
+    /**
+     * Handles the load event from the FileReader and uploads the file.
+     * @param {File} file
+     * @param {?} event
+     */
+    function uploadFile(file, event) {
+        var filename = file.name;
+        var content = event.target.result;
+
+        console.log('uploadFile', {filename: filename});
+
         var uploadFileRequest = new yak.api.UploadFileRequest();
         uploadFileRequest.filename = filename;
         uploadFileRequest.content = content;
-        uploadFileRequest.enableInstanceRestart = true;
+        uploadFileRequest.enableInstanceRestart = false;
 
         context.adapter.sendRequest(uploadFileRequest, _.partial(handleUploadFileResponse, filename));
-    };
-
-    /**
-     * Clear all file upload info.
-     */
-    this.clearFileUploadInfo = function clearFileUploadInfo() {
-        fileUpload = {};
-    };
+    }
 
     /**
      * Creates a file upload info with a file name.
      * @param {string} filename
      */
-    this.createFileUploadInfo = function createFileUploadInfo(filename) {
-        fileUpload[filename] = {
+    function createFileUploadItem(filename) {
+        return {
             filename: filename,
             pending: true,
             type: 'unknown',
             success: false,
-            errorMessage: 'Upload in progress...'
+            status: ''
         };
-    };
+    }
 
     /**
      * @param {string} filename
@@ -56,16 +97,15 @@ yak.ui.FileUploadViewModel = function FileUploadViewModel(context) {
     function handleUploadFileResponse(filename, response) {
         console.log('handleUploadFileResponse', {response: response});
 
-        fileUpload[filename].success = response.success;
-        fileUpload[filename].errorMessage = response.message;
-        fileUpload[filename].pending = false;
+        fileUploadItems[filename].success = response.success;
+        fileUploadItems[filename].errorMessage = response.message;
+        fileUploadItems[filename].fileType = response.fileType;
+        fileUploadItems[filename].pending = false;
 
-        if (_.every(fileUpload, function notPending(item) { return !item.pending; })) {
-            var fileUploadedEvent = new yak.ui.FilesUploadedEvent();
-            fileUploadedEvent.uploadedFiles = _.toArray(fileUpload);
-            context.eventBus.post(fileUploadedEvent);
-
-            fileUpload = {};
+        if (_.every(fileUploadItems, function notPending(item) { return !item.pending; })) {
+            self.onFileUploadCompleted(_.toArray(fileUploadItems));
         }
+
+        self.onFileUploadItemsChanged(_.toArray(fileUploadItems));
     }
 };

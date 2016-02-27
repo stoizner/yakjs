@@ -1,0 +1,18 @@
+{{^allSuccess}}
+    <div class="frame-block">
+        <div class="line-block warning-text">At least one file upload was not successful.</div>
+    </div>
+{{/allSuccess}}
+
+<ul class="list">
+    {{#items}}
+    <li class="list-item" data-id="{{id}}">
+        <div class="list-item-icon {{#success}}icon-check{{/success}} {{^success}}icon-alert{{/success}}"></div>
+        <div class="list-item-icon icon-{{fileType}}"></div>
+        <div class="list-item-cell">{{filename}}</div>
+        {{#errorMessage}}
+        <div class="list-item-cell">{{errorMessage}}</div>
+        {{/errorMessage}}
+    </li>
+{{/items}}
+</ul>

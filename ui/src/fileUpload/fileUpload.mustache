@@ -4,28 +4,44 @@
             <div class="tool-bar-block-line">
                 <div class="center-panel">
                     <div class="text-button" data-command="choose">Choose file...</div>
+                    <input style="display:none;" type="file" name="fileInput" />
                 </div>
             </div>
         </div>
     </header>
 
-    <section class="header-panel-body">
+    <div class="header-panel-body">
         <div class="panel">
             <div class="center-panel">
                 <div class="content-panel">
 
-                        <div class="drop-block" title="Drop files here for upload *.instance.json, *.plugin.js, *.store.txt">
-                            <div class="drop-block-icon"></div>
-                            <div class="drop-block-text">Drop files here for upload *.instance.json, *.plugin.js, *.store.txt</div>
+                    <div class="header-panel">
+                        <header class="header-panel-header">
+                            <section data-section="drop" class="frame-block">
+                                <div class="drop-block" title="Drop files here for upload *.instance.json, *.plugin.js, *.store.txt">
+                                    <div class="drop-block-icon"></div>
+                                    <div class="drop-block-text">Drop files here for upload *.instance.json, *.plugin.js, *.store.txt</div>
+                                </div>
+                            </section>
+
+                            <section data-section="progress" class="frame-block">
+                                <div class="progress-block">
+                                    <div class="progress-block-progress" style="width: 0"></div>
+                                    <div class="progress-block-text">0%</div>
+                                </div>
+                            </section>
+                        </header>
+                        <div class="header-panel-body">
+                            <div class="scroll-panel">
+                                <div data-container="report"></div>
+                            </div>
                         </div>
+                    </div>
 
-
-                        <input style="display:none;" type="file" name="fileInput" />
-
-                </div>
+                 </div>
             </div>
         </div>
-    </section>
+    </div>
 </div>
 
 

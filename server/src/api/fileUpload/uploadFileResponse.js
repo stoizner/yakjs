@@ -29,4 +29,10 @@ yak.api.UploadFileResponse = function UploadFileResponse(requestId) {
      * @type {string}
      */
     this.message = '';
+
+    /**
+     * The file type.
+     * @type {string}
+     */
+    this.fileType = '';
 };
