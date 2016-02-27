@@ -20,7 +20,6 @@ $(document).ready(function bootstrap() {
     viewContext.viewFactory = viewFactory;
 
     viewFactory.create($('.workspace'), yak.ui.WorkspaceView, yak.ui.WorkspaceViewModel);
-    //viewFactory.create($('[data-view=fileUploadReportView]'), yak.ui.FileUploadReportView, yak.ui.FileUploadReportViewModel);
 });
 
 /**
