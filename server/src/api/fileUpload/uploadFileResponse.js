@@ -35,4 +35,11 @@ yak.api.UploadFileResponse = function UploadFileResponse(requestId) {
      * @type {string}
      */
     this.fileType = '';
+
+    /**
+     * A list of possible affected instances by the file upload request.
+     * Data is only available for plugins.
+     * @type {!Array<string>}
+     */
+    this.affectedInstanceIds = [];
 };

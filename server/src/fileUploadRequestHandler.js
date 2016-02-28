@@ -1,7 +1,7 @@
 /**
  * FileUploadRequestHandler
  * @constructor
- * @param {yak.YakServer} yakServer
+ * @param {!yak.YakServer} yakServer
  */
 yak.FileUploadRequestHandler = function FileUploadRequestHandler(yakServer) {
     'use strict';
@@ -132,6 +132,14 @@ yak.FileUploadRequestHandler = function FileUploadRequestHandler(yakServer) {
 
                 pluginManager.addOrUpdatePlugin(parsedPlugin);
                 pluginManager.savePlugin(parsedPlugin);
+
+                response.affectedInstanceIds = yakServer
+                    .instanceManager
+                    .configProvider
+                    .getInstanceConfigsByPlugin(parsedPlugin.id)
+                    .map(function toId(instanceConfig) {
+                        return instanceConfig.id;
+                    });
             } else {
                 response.success = false;
                 response.message = pluginValidator.getMessage();
@@ -143,6 +151,8 @@ yak.FileUploadRequestHandler = function FileUploadRequestHandler(yakServer) {
         }
         return response;
     }
+
+
 
     /**
      * Whether this file is a plugin.

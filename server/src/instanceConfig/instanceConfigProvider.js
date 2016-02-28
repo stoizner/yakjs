@@ -53,10 +53,20 @@ yak.InstanceConfigProvider = function InstanceConfigProvider() {
 
     /**
      * Get list of instances.
-     * @returns {Array<yak.Instance>} List of instances.
+     * @returns {Array<yak.InstanceConfig>} List of instance configurations.
      */
     this.getConfigs = function getConfigs() {
         return _.values(instanceConfigs);
+    };
+
+    /**
+     * @param {string} pluginId
+     * @returns {Array<yak.InstanceConfig>} List of instance configurations.
+     */
+    this.getInstanceConfigsByPlugin = function getInstanceByPlugin(pluginId) {
+        return Object
+            .keys(instanceConfigs)
+            .filter(function isPluginUsedBy(instanceConfig) { return instanceConfig.plugins.indexOf(pluginId) >= 0; });
     };
 
     /**

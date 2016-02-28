@@ -43,10 +43,10 @@ yak.InstanceManager = function InstanceManager(configProvider, pluginManager) {
     };
 
     /**
-     * @returns {yak.Instance} The instance.
+     * @returns {Array<yak.Instance>} The instance.
      */
     this.getInstances = function getInstances() {
-        return _.values(instances);
+        return Object.keys(instances).map(key => instances[key]);
     };
 
     /**
