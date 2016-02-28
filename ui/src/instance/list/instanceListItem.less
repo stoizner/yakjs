@@ -1,10 +1,3 @@
-
-.port-text {
-    .center;
-    font-family: 'roboto-bold', sans-serif;
-    text-align: center;
-}
-
 .state-text {
     width: 50px;
 }
@@ -15,15 +8,15 @@
 }
 
 [data-state=running] .status-indicator-box {
-    .okay-status;
+    .icon-instance-lime;
 }
 
 [data-state=warning] .status-indicator-box {
-    .not-okay-status;
+    .icon-instance-mulberry;
 }
 
 [data-state=stopped] .status-indicator-box {
-    background: @color-grey-dark;
+    .icon-instance;
 }
 
 [data-state=running] [data-command=start] {

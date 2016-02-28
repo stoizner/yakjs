@@ -96,7 +96,7 @@ yak.ui.InstanceViewModel = function InstanceViewModel(context) {
 
         _.each(response.plugins, function toItem(pluginsInfo) {
             var item = new yak.ui.SelectPluginItem();
-            item.name = pluginsInfo.name;
+            item.name = pluginsInfo.id;
             item.description = pluginsInfo.description;
 
             if (self.instanceConfigItem && _.contains(self.instanceConfigItem.plugins, item.name)) {
