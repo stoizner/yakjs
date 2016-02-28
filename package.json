@@ -53,7 +53,7 @@
         "ws": "~1.0.1"
     },
     "engines": {
-        "node": ">=4.0.0"
+        "node": ">=5.0.0"
     },
     "devDependencies": {
         "blanket": "^1.2.1",
