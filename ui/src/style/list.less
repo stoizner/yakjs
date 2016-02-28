@@ -6,14 +6,16 @@
     padding: 0;
 }
 
-.list-item {
-    display: block;
-    height: @line-height;
-    overflow: hidden;
+.list[data-selectable] .list-item:hover {
+    background-color: @color-lime-300;
+    cursor: pointer;
 }
 
-.list-item:hover {
-    background-color: @color-lime-300;
+.list-item {
+    display: block;
+    min-height: @line-height;
+    overflow: hidden;
+    border-bottom: 1px @color-grey solid;
 }
 
 .list-item[data-selected] {
@@ -31,6 +33,14 @@
     line-height: @line-height;
     overflow: hidden;
     float: left;
+}
+
+.list-item-cell-right {
+    padding-left: 10px;
+    height: @line-height;
+    line-height: @line-height;
+    overflow: hidden;
+    float: right;
 }
 
 .list-item-cell-max {
