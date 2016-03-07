@@ -1,9 +1,8 @@
-# ![YAKjs logo](http://www.yakjs.com/yak.png)&nbsp;YAKjs
+# ![YAKjs logo](http://www.yakjs.com/asset/yakjs-logo-64.svg)&nbsp;YAKjs
 [![GitHub version](https://img.shields.io/github/tag/cschuller/yak-js.svg?style=flat-square)](https://github.com/cschuller/yak-js)
 [![npm](https://img.shields.io/npm/v/yakjs.svg?style=flat-square)](https://www.npmjs.com/package/yakjs)
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://raw.githubusercontent.com/cschuller/yak-js/master/LICENSE)
 [![Built with Grunt](https://img.shields.io/badge/built with-grunt-yellow.svg?style=flat-square)](http://gruntjs.com/)
-![webbeacon](http://www.webbeacon.eu:8505/img.svg?id=y84du5)
 
 Fast prototyping and simulation of WebSocket servers with JavaScript plugins based on nodejs.
 
