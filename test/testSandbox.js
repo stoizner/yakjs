@@ -11,5 +11,15 @@ global.chai.use(global.sinonChai);
 global.yak = {};
 global._ = require('underscore');
 
-// Replace the global logger with a quit one.
+// Setup namespaces
+yak.exports = yak.exports || {};
+yak.api = yak.api || {};
+
+// Load server source files
+require('require-all')({
+    dirname:  __dirname + '/../server/src',
+    recursive: true
+});
+
+// Replace the global logger with a silent logger.
 yak.Logger = require('./loggerStub').LoggerStub;
