@@ -1,12 +1,5 @@
 require('../testSandbox');
 
-require('../../server/_namespaces.js');
-require('../../server/src/instance/webSocketInstance.js');
-require('../../server/src/instance/instanceState.js');
-
-yak.global = {};
-//yak.global.log = new yak.Log();
-
 describe('WebSocketInstance', function() {
     'use strict';
 
