@@ -142,8 +142,8 @@ module.exports = function grunt(grunt) {
             coverageTest: {
                 files: [
                     {flatten: true, cwd: serverDir, src: ['_namespaces.js'], dest: coverageDir + 'server/', expand: true},
-                    {flatten: true, cwd: testServerDir, src: ['**/*.js'], dest: coverageDir + 'test/server/', expand: true},
-                    {flatten: true, cwd: testDir, src: ['*.js'], dest: coverageDir + 'test/', expand: true}
+                    {flatten: false, cwd: testServerDir, src: ['**/*.js'], dest: coverageDir + 'test/server/', expand: true},
+                    {flatten: false, cwd: testDir, src: ['*.js'], dest: coverageDir + 'test/', expand: true}
                 ]
             }
         }
@@ -286,7 +286,7 @@ module.exports = function grunt(grunt) {
 
     grunt.loadTasks(buildDir + 'grunt-tasks');
 
-    grunt.registerTask('compile-server', ['concat:server', 'concat:api', 'uglify']);
+    grunt.registerTask('compile-server', ['concat:server', 'concat:api']);
     grunt.registerTask('compile-ui', ['concat:api', 'concat:ui', 'concat:less', 'copy:ui', 'less', 'mustache']);
 
     grunt.registerTask('build-server', [
