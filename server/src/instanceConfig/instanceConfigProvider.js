@@ -73,7 +73,7 @@ yak.InstanceConfigProvider = function InstanceConfigProvider() {
      * @param {yak.InstanceConfig} config
      */
     this.addOrUpdate = function addOrUpdate(config) {
-        log.info('Add or update instance configuration.', {config: config});
+        log.debug('Add or update instance configuration.', {instanceId: config.id});
 
         instanceConfigs[config.id] = config;
 
