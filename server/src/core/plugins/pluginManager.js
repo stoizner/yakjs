@@ -48,7 +48,7 @@ yak.PluginManager = function PluginManager(pluginCodeProvider, pluginCodeParser)
         _.each(pluginCode, function parse(content, filename) {
             try {
                 var plugin = parser.parse(filename, content);
-                self.updatePlugin(plugin);
+                self.addOrUpdatePlugin(plugin);
             } catch(ex) {
                 log.warn('Can not load plugin.', {filename: filename, error: ex.message});
             }

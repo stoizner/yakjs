@@ -7,11 +7,6 @@ yak.CreateOrUpdatePluginRequestHandler = function CreateOrUpdatePluginRequestHan
     'use strict';
 
     /**
-     * @type {yak.PluginCodeChecker}
-     */
-    var pluginCodeChecker = new yak.PluginCodeChecker();
-
-    /**
      * @param {yak.api.CreateOrUpdatePluginRequest} request
      * @returns {!yak.api.CreateOrUpdatePluginResponse} response
      */
@@ -33,6 +28,7 @@ yak.CreateOrUpdatePluginRequestHandler = function CreateOrUpdatePluginRequestHan
      */
     function updatePlugin(request) {
         var pluginManager = yakServer.pluginManager;
+        var pluginParser = new yak.PluginParser();
         var response = new yak.api.CreateOrUpdatePluginResponse(request.id);
         var pluginValidator = new yak.api.PluginValidator(pluginManager);
 
@@ -43,8 +39,8 @@ yak.CreateOrUpdatePluginRequestHandler = function CreateOrUpdatePluginRequestHan
         }
 
         if (pluginValidator.isUpdatePluginValid(request.plugin)) {
-            if (pluginManager.hasJsDoc(request.plugin.code)) {
-                var parsedPlugin = pluginManager.parsePluginContent(request.plugin.name, request.plugin.code);
+            if (pluginParser.hasJsDoc(request.plugin.code)) {
+                var parsedPlugin = pluginParser.parse(request.plugin.name, request.plugin.code);
                 plugin = _.extend(plugin, parsedPlugin);
             }
 
@@ -52,7 +48,7 @@ yak.CreateOrUpdatePluginRequestHandler = function CreateOrUpdatePluginRequestHan
             plugin.code = request.plugin.code;
             plugin.version = request.plugin.version;
 
-            pluginManager.updatePlugin(plugin);
+            pluginManager.addOrUpdatePlugin(plugin);
             pluginManager.savePlugin(plugin);
         } else {
             response.success = false;
@@ -69,12 +65,13 @@ yak.CreateOrUpdatePluginRequestHandler = function CreateOrUpdatePluginRequestHan
     function createPlugin(request) {
         var response = new yak.api.CreateOrUpdatePluginResponse(request.id);
         var pluginValidator = new yak.api.PluginValidator(yakServer.pluginManager);
+        var pluginParser = new yak.PluginParser();
 
         if (pluginValidator.isCreatePluginRequestValid(request.plugin)) {
             var newPlugin = null;
 
-            if (yakServer.pluginManager.hasJsDoc(request.plugin.code)) {
-                newPlugin = yakServer.pluginManager.parsePluginContent(request.plugin.name, request.plugin.code);
+            if (pluginParser.hasJsDoc(request.plugin.code)) {
+                newPlugin = pluginParser.parse(request.plugin.name, request.plugin.code);
             } else {
                 newPlugin = new yak.Plugin();
                 newPlugin.id = request.plugin.name;
