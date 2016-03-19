@@ -84,7 +84,7 @@ yak.PluginManager = function PluginManager(pluginCodeProvider, pluginCodeParser)
     /**
      * @param {yak.Plugin} plugin
      */
-    this.updatePlugin = function addOrUpdatePlugin(plugin) {
+    this.addOrUpdatePlugin = function addOrUpdatePlugin(plugin) {
         log.info('Update plugin instance', { pluginId: plugin.id });
 
         if (!plugins[plugin.id]) {
@@ -120,26 +120,6 @@ yak.PluginManager = function PluginManager(pluginCodeProvider, pluginCodeParser)
 
         self.savePlugin(existingPlugin);
     };
-
-    ///**
-    // * @param {yak.Plugin} plugin
-    // */
-    //this.addPlugin = function addPlugin(plugin) {
-    //    log.info('Add plugin', {pluginId: plugin.id});
-    //    plugin.PluginConstructor = createPluginConstructor(plugin.code);
-    //    plugins[plugin.id] = plugin;
-    //};
-    //
-    ///**
-    // * @param {yak.Plugin} plugin
-    // */
-    //this.updatePlugin = function updatePlugin(plugin) {
-    //    log.info('Update plugin instance', { pluginId: plugin.id });
-    //    var existingPlugin = plugins[plugin.id];
-    //
-    //     _.extend(existingPlugin, plugin);
-    //    existingPlugin.PluginConstructor = createPluginConstructor(existingPlugin.code);
-    //};
 
     /**
      * @param {string} id The id of the plugin.

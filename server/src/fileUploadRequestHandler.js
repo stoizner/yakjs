@@ -119,12 +119,13 @@ yak.FileUploadRequestHandler = function FileUploadRequestHandler(yakServer) {
         response.fileType = 'plugin';
 
         try {
+            var pluginParser = new yak.PluginParser();
             var pluginManager = yakServer.pluginManager;
 
             var pluginName = request.filename.replace(PLUGIN_EXTENSION, '');
             pluginName = pluginName.replace(PLUGIN_EXTENSION_OLD, '');
 
-            var parsedPlugin = pluginManager.parsePluginContent(pluginName, request.content);
+            var parsedPlugin = pluginParser.parse(pluginName, request.content);
 
             if (pluginValidator.isPluginValid(parsedPlugin)) {
                 parsedPlugin.version = parsedPlugin.version || '0.1.0';

@@ -66,7 +66,9 @@ yak.InstanceConfigProvider = function InstanceConfigProvider() {
     this.getInstanceConfigsByPlugin = function getInstanceByPlugin(pluginId) {
         return Object
             .keys(instanceConfigs)
-            .filter(function isPluginUsedBy(instanceConfig) { return instanceConfig.plugins.indexOf(pluginId) >= 0; });
+            .filter(function isPluginUsedBy(instanceConfig) {
+                return instanceConfig.plugins && instanceConfig.plugins.indexOf(pluginId) >= 0;
+            });
     };
 
     /**
