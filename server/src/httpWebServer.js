@@ -33,7 +33,6 @@ yak.HttpServer = function HttpServer(yakServer, config) {
      * Constructor
      */
     function constructor() {
-        log.debug('constructor');
         initializeAPIMap();
     }
 
