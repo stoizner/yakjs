@@ -136,9 +136,10 @@ yak.PluginManager = function PluginManager(pluginCodeProvider, pluginCodeParser)
     /**
      * Creates a plugin instance.
      * @param {string} pluginId
+     * @param {!yak.PluginContext} pluginContext
      * @returns {*} A working plugin instance.
      */
-    this.createPluginInstance = function createPluginInstance(pluginId) {
+    this.createPluginInstance = function createPluginInstance(pluginId, pluginContext) {
         var pluginLog = new yak.Logger('plugin.' + pluginId);
         pluginLog.info('Create new instance');
 
@@ -150,7 +151,9 @@ yak.PluginManager = function PluginManager(pluginCodeProvider, pluginCodeParser)
                 if (typeof plugin.PluginConstructor === 'function') {
                     var requireContext = _.partial(pluginRequire, {log: pluginLog});
 
-                    pluginInstance = new plugin.PluginConstructor(requireContext);
+                    pluginContext.require = requireContext;
+
+                    pluginInstance = new plugin.PluginConstructor(requireContext, pluginContext);
                     pluginInstance.pluginId = pluginId;
                 } else {
                     pluginLog.error('No constructor function available, can not create plugin instance.', {pluginId: pluginId});

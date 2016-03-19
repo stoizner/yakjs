@@ -8,31 +8,27 @@
  * @constructor
  * @implements {yak.PluginWorker}
  * @param {yak.require} require
+ * @param {yak.PluginContext} context
  */
-function BroadcastPlugin(require) {
+function BroadcastPlugin(require, context) {
     'use strict';
 
     var log = require('log');
 
-    /**
-     * @param {yak.WebSocketInstance} instance
-     */
-    this.onInitialize = function onInitialize(instance) {};
+    this.onInitialize = function onInitialize() {};
 
     /**
      * @param {yak.WebSocketConnection} connection
-     * @param {yak.WebSocketInstance} instance
      */
-    this.onNewConnection = function onNewConnection(connection, instance) {};
+    this.onNewConnection = function onNewConnection(connection) {};
 
     /**
      * @param {yak.WebSocketMessage} message
      * @param {yak.WebSocketConnection} connection
-     * @param {yak.WebSocketInstance} instance
      */
-    this.onMessage = function onMessage(message, connection, instance) {
+    this.onMessage = function onMessage(message, connection) {
         // Get all connections to this instance.
-        var connections = instance.getConnections();
+        var connections = context.instance.getConnections();
 
         for(var i = 0; i < connections.length; i++) {
             var conn = connections[i];
@@ -47,13 +43,9 @@ function BroadcastPlugin(require) {
     /**
      * Connection closed event. Note that the connection is no longer part of instance.getConnections().
      * @param {yak.WebSocketConnection} connection
-     * @param {yak.WebSocketInstance} instance
      */
-    this.onConnectionClosed = function onConnectionClosed(connection, instance) {};
+    this.onConnectionClosed = function onConnectionClosed(connection) {};
 
-    /**
-     * @param {yak.WebSocketInstance} instance
-     */
     this.onTerminate = function onTerminate(instance) {};
-};
+}
 

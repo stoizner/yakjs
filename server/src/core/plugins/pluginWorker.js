@@ -1,14 +1,8 @@
 /**
- * PluginWorker
  * @interface
  * @param {string} name The name of the plugin.
  */
 yak.PluginWorker = function PluginWorker(name) {
-    /**
-     * @type {yak.PluginWorker}
-     */
-    var self = this;
-
     /**
      * Plugin name
      * @type {string}
@@ -16,32 +10,31 @@ yak.PluginWorker = function PluginWorker(name) {
     this.name = name;
 
     /**
-     * @param {yak.WebSocketInstance} instance
+     * Called when the instance is started.
      */
-    this.onInitialize = function onInitialize(instance) {};
+    this.onInitialize = function onInitialize() {};
 
     /**
+     * Called on new client connected to instance.
      * @param {yak.WebSocketConnection} connection
-     * @param {yak.WebSocketInstance} instance
      */
-    this.onNewConnection = function onNewConnection(connection, instance) {};
+    this.onNewConnection = function onNewConnection(connection) {};
 
     /**
+     * Called for every received websocket message.
      * @param {yak.WebSocketMessage} message
      * @param {yak.WebSocketConnection} connection
-     * @param {yak.WebSocketInstance} instance
      */
-    this.onMessage = function onMessage(message, connection, instance) {};
+    this.onMessage = function onMessage(message, connection) {};
 
     /**
      * Connection closed event. Note that the connection is no longer part of instance.getConnections().
      * @param {yak.WebSocketConnection} connection
-     * @param {yak.WebSocketInstance} instance
      */
-    this.onConnectionClosed = function onConnectionClosed(connection, instance) {};
+    this.onConnectionClosed = function onConnectionClosed(connection) {};
 
     /**
-     * @param {yak.WebSocketInstance} instance
+     * Called when the instance is stopped.
      */
-    this.onTerminate = function onTerminate(instance) {};
+    this.onTerminate = function onTerminate() {};
 };

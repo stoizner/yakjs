@@ -162,41 +162,35 @@ yak.WebSocketInstance = function WebSocketInstance(pluginManager, id, port) {
     function instantiatePlugins() {
         log.info('Instantiate and initialize plugins.', {count: self.plugins.length});
 
-        pluginInstances = [];
         self.activePluginCount = 0;
+        pluginInstances = [];
 
-        for(var i = 0; i < self.plugins.length; i++) {
-            var pluginName = self.plugins[i].trim();
+        self.plugins.forEach(function instantiatePlugin(pluginId) {
+            log.info('Instantiate plugin.', {plugin: pluginId});
 
-            log.info('Instantiate plugin.', {plugin: pluginName});
-            var pluginInstance = pluginManager.createPluginInstance(pluginName);
+            var pluginContext = new yak.PluginContext();
+            pluginContext.instance = self;
+            var pluginInstance = pluginManager.createPluginInstance(pluginId, pluginContext);
 
             if (pluginInstance !== null) {
-
                 // Extend with pluginName
-                pluginInstance.name = pluginName;
+                pluginInstance.name = pluginId;
 
                 // When one plugin instantiation fails, it shall continue with the next plugin.
                 try {
                     initializePlugin(pluginInstance);
-                    addPluginInstance(pluginInstance);
+                    pluginInstances.push(pluginInstance);
+                    self.activePluginCount++;
                 } catch (ex) {
-                    log.error('Initialization failed.', {plugin: pluginName});
+                    log.error('Initialization failed.', {plugin: pluginId});
                     log.debug({error: ex.message});
                 }
             } else {
-                log.error('Plugin could not be loaded.', {plugin: pluginName});
+                log.error('Plugin could not be loaded.', {plugin: pluginId});
             }
-        }
-    }
 
-    /**
-     * Add plugin instance to workers.
-     * @param {yak.PluginWorker} pluginInstance
-     */
-    function addPluginInstance(pluginInstance) {
-        pluginInstances.push(pluginInstance);
-        self.activePluginCount++;
+            return pluginInstance;
+        });
     }
 
     /**
@@ -329,7 +323,7 @@ yak.WebSocketInstance = function WebSocketInstance(pluginManager, id, port) {
         if (pluginInstance.onMessage) {
             try {
                 pluginLog.info('onMessage', {pluginName: pluginInstance.name});
-                pluginInstance.onMessage(new yak.WebSocketMessage(data), connection, self);
+                pluginInstance.onMessage(new yak.WebSocketMessage(data), connection);
             } catch (ex) {
                 pluginLog.error('onMessage failed', {error: ex.message, data: data, connectionId: connection.id});
                 log.warn('onMessage failed @' + pluginInstance.name, {error: ex.message, data: data, connectionId: connection.id});
@@ -348,7 +342,7 @@ yak.WebSocketInstance = function WebSocketInstance(pluginManager, id, port) {
             if (pluginInstance.onNewConnection) {
                 try {
                     pluginLog.info('onNewConnection', {connectionId: connection.id});
-                    pluginInstance.onNewConnection(connection, self);
+                    pluginInstance.onNewConnection(connection);
                 } catch (ex) {
                     pluginLog.error('onNewConnection failed.', {error: ex.message, connectionId: connection.id});
                     log.warn('onNewConnection failed @' + pluginInstance.name, {error: ex.message, connectionId: connection.id});
@@ -366,7 +360,7 @@ yak.WebSocketInstance = function WebSocketInstance(pluginManager, id, port) {
             if (pluginInstance.onConnectionClosed) {
                 try {
                     self.log.info('Plugin.onConnectionClosed', {pluginName: pluginInstance.name});
-                    pluginInstance.onConnectionClosed(connection, self);
+                    pluginInstance.onConnectionClosed(connection);
                 } catch (ex) {
                     self.log.error('Plugin.onConnectionClosed failed.', {pluginName: pluginInstance.name, error: ex.name, message:ex.message});
                 }
