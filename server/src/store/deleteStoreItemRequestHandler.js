@@ -11,11 +11,6 @@ yak.DeleteStoreItemRequestHandler = function DeleteStoreItemRequestHandler(yakSe
     var log = new yak.Logger(this.constructor.name);
 
     /**
-     * @type {yak.Store}
-     */
-    var store = yak.require('store');
-
-    /**
      * @param {yak.api.SetStoreValueRequest} request
      * @returns {yak.api.DeleteStoreItemResponse} response
      */
@@ -23,7 +18,7 @@ yak.DeleteStoreItemRequestHandler = function DeleteStoreItemRequestHandler(yakSe
         log.info('handle', {request: request});
 
         var response = new yak.api.DeleteStoreItemResponse(request.id);
-        response.success = store.deleteStoreItem(request.key);
+        response.success = yakServer.storeProvider.deleteValue(request.key);
 
         return response;
     };

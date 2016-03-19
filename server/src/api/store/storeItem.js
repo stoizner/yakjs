@@ -1,7 +1,7 @@
 /**
  * @constructor
  */
-yak.api.StoreItem = function StoreItem() {
+yak.api.StoreKeyValueItem = function StoreItem() {
     /**
      * The store key.
      * @type {string}

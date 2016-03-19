@@ -16,14 +16,15 @@ yak.global = {};
 
     var timerProtection = new yak.ErrorProtectionForTimerFunctions(global);
 
-    /**
-     * @type {yak.Store}
-     */
-    var store = yak.require('store');
+    // Initialize modules.
+    var storeProvider = new yak.StoreProvider();
+    storeProvider.load();
+    yak.exports.store = new yak.Store(storeProvider);
+    yak.exports.jsonStore = new yak.JsonStore(storeProvider);
+    yak.exports.guid = yak.guid;
 
     var configManager = new yak.ConfigManager();
     configManager.load();
-    store.load();
 
     var pluginManager = new yak.PluginManager();
     pluginManager.loadPlugins();
@@ -31,7 +32,7 @@ yak.global = {};
     var configProvider = new yak.InstanceConfigProvider();
     var instanceManager = new yak.InstanceManager(configProvider, pluginManager);
 
-    var yakServer = new yak.YakServer(configManager, pluginManager, instanceManager);
+    var yakServer = new yak.YakServer(configManager, pluginManager, instanceManager, storeProvider);
     yakServer.start();
 
     log.info('........................................');

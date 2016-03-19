@@ -2,7 +2,7 @@
  * @constructor
  * @param {string} [key]
  */
-yak.ui.StoreItem = function StoreItem(key) {
+yak.ui.StoreKeyValueItem = function StoreItem(key) {
     'use strict';
 
     /**

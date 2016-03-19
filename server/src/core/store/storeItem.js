@@ -1,10 +1,9 @@
 /**
- * StoreItem
  * @constructor
  * @param {string} key The unique store item key.
  * @param {string} value The store value.
  */
-yak.StoreItem = function StoreItem(key, value) {
+yak.StoreKeyValueItem = function StoreKeyValueItem(key, value) {
     /**
      * The unique item key.
      * @type {string}

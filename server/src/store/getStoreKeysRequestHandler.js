@@ -11,11 +11,6 @@ yak.GetStoreKeysRequestHandler = function GetStoreKeysRequestHandler(yakServer) 
     var log = new yak.Logger(this.constructor.name);
 
     /**
-     * @type {yak.Store}
-     */
-    var store = yak.require('store');
-
-    /**
      * @param {yak.api.GetStoreKeysRequest} request
      * @returns {yak.api.GetStoreKeysResponse} response
      */
@@ -25,7 +20,9 @@ yak.GetStoreKeysRequestHandler = function GetStoreKeysRequestHandler(yakServer) 
         var response = new yak.api.GetStoreKeysResponse(request.id);
         response.keys = [];
 
-        var storeData = store.getStore();
+        var storeData = yakServer.storeProvider.getStore();
+
+        log.warn(storeData);
 
         response.keys = _.map(storeData, function toKeyInfo(item) {
             var keyInfo = new yak.api.StoreKeyInfo();

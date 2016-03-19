@@ -67,7 +67,7 @@ yak.ui.StoreListViewModel = function StoreListViewModel(context) {
          * @returns {yak.ui.StoreItem} The store list item.
          */
         function toStoreItem(keyInfo) {
-            return new yak.ui.StoreItem(keyInfo.key);
+            return new yak.ui.StoreKeyValueItem(keyInfo.key);
         }
 
         self.items = _.map(response.keys, toStoreItem);
@@ -154,7 +154,7 @@ yak.ui.StoreListViewModel = function StoreListViewModel(context) {
      * Create or update a store item.
      * @param {yak.ui.StoreItem} storeItem
      */
-    this.createOrUpdate = function createOrUpdate(storeItem) {
+    this.updateValue = function createOrUpdate(storeItem) {
         console.log('StoreListViewModel.createOrUpdate', { storeItem: storeItem });
 
         self.item = storeItem;

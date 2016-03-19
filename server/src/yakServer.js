@@ -1,11 +1,11 @@
 /**
- * YakServer
  * @constructor
- * @param {yak.ConfigManager} configManager
- * @param {yak.PluginManager} pluginManager
- * @param {yak.InstanceManager} instanceManager
+ * @param {!yak.ConfigManager} configManager
+ * @param {!yak.PluginManager} pluginManager
+ * @param {!yak.InstanceManager} instanceManager
+ * @param {!yak.StoreProvider} storeProvider
  */
-yak.YakServer = function YakServer(configManager, pluginManager, instanceManager) {
+yak.YakServer = function YakServer(configManager, pluginManager, instanceManager, storeProvider) {
     /**
      * @type {yak.YakServer}
      */
@@ -23,20 +23,19 @@ yak.YakServer = function YakServer(configManager, pluginManager, instanceManager
     var httpServer = null;
 
     /**
-     * @type {yak.PluginManager}
+     * @type {!yak.PluginManager}
      */
     this.pluginManager = pluginManager;
 
     /**
-     * @type {yak.InstanceManager}
+     * @type {!yak.InstanceManager}
      */
     this.instanceManager = instanceManager;
 
     /**
-     * Constructor
+     * @type {!yak.StoreProvider}
      */
-    function constructor() {
-    }
+    this.storeProvider = storeProvider;
 
     /**
      * Starts the YAK.
@@ -55,6 +54,4 @@ yak.YakServer = function YakServer(configManager, pluginManager, instanceManager
     this.getLogger = function getLogger() {
         return log;
     };
-
-    constructor();
 };

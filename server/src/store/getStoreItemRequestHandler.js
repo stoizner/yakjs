@@ -11,11 +11,6 @@ yak.GetStoreItemRequestHandler = function GetStoreItemRequestHandler(yakServer) 
     var log = new yak.Logger(this.constructor.name);
 
     /**
-     * @type {yak.Store}
-     */
-    var store = yak.require('store');
-
-    /**
      * @param {yak.api.GetStoreItemRequest} request
      * @returns {yak.api.GetStoreItemResponse} response
      */
@@ -25,9 +20,11 @@ yak.GetStoreItemRequestHandler = function GetStoreItemRequestHandler(yakServer) 
         var response = new yak.api.GetStoreItemResponse(request.id);
 
         if (request.key) {
-            var storeItem = store.getStoreItem(request.key);
+            var value = yakServer.storeProvider.getValue(request.key);
 
-            response.item = Object.assign(new yak.api.StoreItem(), storeItem);
+            response.item = new yak.api.StoreKeyValueItem();
+            response.item.key = request.key;
+            response.item.value = value;
         } else {
             response.success = false;
             response.message = 'A store key must not be empty or null';

@@ -6,7 +6,7 @@ yak.ui.StoreGroupItem = function StoreGroupItem(name) {
     'use strict';
 
     /**
-     * @type {yak.ui.StoreItem}
+     * @type {yak.ui.StoreKeyValueItem}
      */
     var self = this;
 

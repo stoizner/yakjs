@@ -1,9 +1,9 @@
 /**
- * YAK key-value store
+ * YAK key-object(json) store
  * @constructor
  * @param {!yak.StoreProvider} [storeProvider]
  */
-yak.Store = function Store(storeProvider) {
+yak.JsonStore = function JsonStore(storeProvider) {
     /**
      * @type {!yak.StoreProvider}
      */
@@ -12,20 +12,38 @@ yak.Store = function Store(storeProvider) {
     /**
      * Sets a store value.
      * @param {string} key The unique key.
-     * @param {string} value The string value.
-     * @returns {boolean} If setting the value was successful or not.
+     * @param {object} value The object value.
+     * @throws {yak.JsonStoreError}
      */
     this.setValue = function setValue(key, value) {
-        return provider.updateValue(key, value);
+        try {
+            var serialized = JSON.stringify(value, null, 4);
+            provider.updateValue(key, serialized);
+        } catch(ex) {
+            throw new yak.JsonStoreError('Set value to json store failed.', ex);
+        }
     };
 
     /**
      * Gets a store value.
      * @param {string} key The document key.
-     * @returns {*} The stored value.
+     * @throws {yak.JsonStoreError}
+     * @returns {Object} The stored value or a new empty object.
      */
     this.getValue = function getValue(key) {
-        return provider.getValue(key);
+        var obj = {};
+
+        try {
+            var serialized = provider.getValue(key);
+
+            if (serialized) {
+                obj = JSON.parse(serialized);
+            }
+        } catch(ex) {
+            throw new yak.JsonStoreError('Get value from json store failed.', ex);
+        }
+
+        return obj;
     };
 
     /**

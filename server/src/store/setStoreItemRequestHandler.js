@@ -11,11 +11,6 @@ yak.SetStoreItemRequestHandler = function SetStoreItemRequestHandler(yakServer) 
     var log = new yak.Logger(this.constructor.name);
 
     /**
-     * @type {yak.Store}
-     */
-    var store = yak.require('store');
-
-    /**
      * @param {yak.api.SetStoreItemRequest} request
      * @returns {yak.api.SetStoreItemResponse} response
      */
@@ -26,11 +21,11 @@ yak.SetStoreItemRequestHandler = function SetStoreItemRequestHandler(yakServer) 
         response.requestId = request.id;
 
         if (request.item.key) {
-            store.setValue(request.item.key, request.item.value);
+            yakServer.storeProvider.updateValue(request.item.key, request.item.value);
 
             // Key was changed, so delete old store item.
             if (request.key && request.key != request.item.key) {
-                store.deleteStoreItem(request.key);
+                yakServer.storeProvider.deleteValue(request.key);
             }
         } else {
             response.success = false;

@@ -92,10 +92,10 @@ yak.ui.EditStoreItemView = function EditStoreItemView(parent, context, viewModel
     }
 
     function handleSaveCommand() {
-        var item = new yak.ui.StoreItem(parent.find('[name=key]').val());
+        var item = new yak.ui.StoreKeyValueItem(parent.find('[name=key]').val());
         item.value = codeEditor.getValue();
 
-        viewModel.createOrUpdate(item);
+        viewModel.updateValue(item);
     }
 
     function handleCancelCommand() {
