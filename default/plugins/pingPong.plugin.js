@@ -1,8 +1,7 @@
 /**
- * @name PingPong
+ * @name pingPong
  * @description For every received 'ping' string, this plugin will send an 'pong' string.
  * @version 1.0.0
- * @type WebSocketServerPlugin
  * @constructor
  * @implements {yak.PluginWorker}
  */

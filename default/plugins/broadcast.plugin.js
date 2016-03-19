@@ -1,11 +1,10 @@
 /**
- * @name BroadcastPlugin
+ * @name broadcast
  * @description Every received message will be sent to all connected clients.
  * @example
  *      Client A, B and C are connected to a WebSocket server instance with this plugin.
  *      When A sends a message then it will be sent to B and C, but not back to A.
  * @version 1.1.0
- * @type WebSocketServerPlugin
  * @constructor
  * @implements {yak.PluginWorker}
  * @param {yak.require} require
