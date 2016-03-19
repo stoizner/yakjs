@@ -1,11 +1,12 @@
 /* global: global */
 
 // Setup of test libs
-global.chai = require('chai');
-global.sinon = require('sinon');
-global.sinonChai = require('sinon-chai');
-global.expect = global.chai.expect;
-global.chai.use(global.sinonChai);
+var chai = require('chai');
+var sinon = require('sinon');
+var sinonChai= require('sinon-chai');
+var expect = chai.expect;
+
+chai.use(sinonChai);
 
 // Setting global dependencies
 global.yak = {};
@@ -23,3 +24,9 @@ require('require-all')({
 
 // Replace the global logger with a silent logger.
 yak.Logger = require('./loggerStub').LoggerStub;
+
+// Export stuff for writing tests.
+module.exports = {
+    expect: expect,
+    sinon: sinon
+};

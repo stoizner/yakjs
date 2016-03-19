@@ -1,4 +1,6 @@
-require('../../testSandbox');
+var sandbox = require('../../testSandbox');
+var sinon = sandbox.sinon;
+var expect = sandbox.expect;
 
 describe('PluginParser', function() {
     'use strict';
