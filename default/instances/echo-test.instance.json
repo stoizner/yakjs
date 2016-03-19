@@ -4,6 +4,7 @@
     "description": "Responses the received message.",
     "name": "echo test service",
     "plugins": [
+        "analytics",
         "echo"
     ],
     "autoStartEnabled": true

@@ -4,6 +4,7 @@
     "description": "Received messages will be sent to other clients.",
     "name": "chat service",
     "plugins": [
+        "analytics",
         "broadcast"
     ],
     "autoStartEnabled": true
