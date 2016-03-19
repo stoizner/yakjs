@@ -63,7 +63,7 @@ yak.PluginParser = function PluginParser() {
 
         var info = _.extend({}, plugin);
         delete info.code;
-        log.debug('Plugin loaded.', {plugin: info});
+        log.debug('Plugin parsed.', {pluginId: plugin.id});
 
         return plugin;
     };

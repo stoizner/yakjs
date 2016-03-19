@@ -1,8 +1,8 @@
 /**
  * PluginManager
  * @constructor
- * @param {!yak.PluginCodeProvider} pluginCodeProvider
- * @param {!yak.PluginParser} pluginCodeParser
+ * @param {!yak.PluginCodeProvider} [pluginCodeProvider]
+ * @param {!yak.PluginParser} [pluginCodeParser]
  */
 yak.PluginManager = function PluginManager(pluginCodeProvider, pluginCodeParser) {
     /**
@@ -35,7 +35,9 @@ yak.PluginManager = function PluginManager(pluginCodeProvider, pluginCodeParser)
      */
     this.loadPlugins = function loadPlugins() {
         var pluginCode = provider.getPluginCode();
-        plugins = parsePluginCode(pluginCode);
+        parsePluginCode(pluginCode);
+
+        log.warn('Plugins loaded.', {plugins: Object.keys(plugins)});
     };
 
     /**
@@ -46,7 +48,7 @@ yak.PluginManager = function PluginManager(pluginCodeProvider, pluginCodeParser)
         _.each(pluginCode, function parse(content, filename) {
             try {
                 var plugin = parser.parse(filename, content);
-                self.addOrUpdatePlugin(plugin);
+                self.updatePlugin(plugin);
             } catch(ex) {
                 log.warn('Can not load plugin.', {filename: filename, error: ex.message});
             }
@@ -82,12 +84,17 @@ yak.PluginManager = function PluginManager(pluginCodeProvider, pluginCodeParser)
     /**
      * @param {yak.Plugin} plugin
      */
-    this.addOrUpdatePlugin = function addOrUpdatePlugin(plugin) {
-        if (_.has(plugins, plugin.id)) {
-            self.updatePlugin(plugin);
-        } else {
-            self.addPlugin(plugin);
+    this.updatePlugin = function addOrUpdatePlugin(plugin) {
+        log.info('Update plugin instance', { pluginId: plugin.id });
+
+        if (!plugins[plugin.id]) {
+            plugins[plugin.id] = plugin;
         }
+
+        var existingPlugin = plugins[plugin.id];
+
+        existingPlugin = _.extend(existingPlugin, plugin);
+        existingPlugin.PluginConstructor = createPluginConstructor(existingPlugin.code);
     };
 
     /**
@@ -114,25 +121,25 @@ yak.PluginManager = function PluginManager(pluginCodeProvider, pluginCodeParser)
         self.savePlugin(existingPlugin);
     };
 
-    /**
-     * @param {yak.Plugin} plugin
-     */
-    this.addPlugin = function addPlugin(plugin) {
-        log.info('Add plugin', { pluginId: plugin.id });
-        plugin.PluginConstructor = createPluginConstructor(plugin.code);
-        plugins[plugin.id] = plugin;
-    };
-
-    /**
-     * @param {yak.Plugin} plugin
-     */
-    this.updatePlugin = function updatePlugin(plugin) {
-        log.info('Update plugin instance', { pluginId: plugin.id });
-        var existingPlugin = plugins[plugin.id];
-
-         _.extend(existingPlugin, plugin);
-        existingPlugin.PluginConstructor = createPluginConstructor(existingPlugin.code);
-    };
+    ///**
+    // * @param {yak.Plugin} plugin
+    // */
+    //this.addPlugin = function addPlugin(plugin) {
+    //    log.info('Add plugin', {pluginId: plugin.id});
+    //    plugin.PluginConstructor = createPluginConstructor(plugin.code);
+    //    plugins[plugin.id] = plugin;
+    //};
+    //
+    ///**
+    // * @param {yak.Plugin} plugin
+    // */
+    //this.updatePlugin = function updatePlugin(plugin) {
+    //    log.info('Update plugin instance', { pluginId: plugin.id });
+    //    var existingPlugin = plugins[plugin.id];
+    //
+    //     _.extend(existingPlugin, plugin);
+    //    existingPlugin.PluginConstructor = createPluginConstructor(existingPlugin.code);
+    //};
 
     /**
      * @param {string} id The id of the plugin.
@@ -152,8 +159,8 @@ yak.PluginManager = function PluginManager(pluginCodeProvider, pluginCodeParser)
      * @returns {*} A working plugin instance.
      */
     this.createPluginInstance = function createPluginInstance(pluginId) {
-        var pluginLog = new yak.Logger(pluginId + '.plugin');
-        pluginLog.info('Create new plugin instance');
+        var pluginLog = new yak.Logger('plugin.' + pluginId);
+        pluginLog.info('Create new instance');
 
         var pluginInstance = null;
         var plugin = plugins[pluginId];
@@ -162,6 +169,7 @@ yak.PluginManager = function PluginManager(pluginCodeProvider, pluginCodeParser)
             try {
                 if (typeof plugin.PluginConstructor === 'function') {
                     var requireContext = _.partial(pluginRequire, {log: pluginLog});
+
                     pluginInstance = new plugin.PluginConstructor(requireContext);
                     pluginInstance.pluginId = pluginId;
                 } else {

@@ -57,7 +57,7 @@ yak.ui.PluginViewModel = function PluginViewModel(context) {
      * Create or update a plugin
      * @param {yak.ui.PluginItem} pluginItem
      */
-    this.createOrUpdate = function createOrUpdate(pluginItem) {
+    this.updateValue = function createOrUpdate(pluginItem) {
         console.log('PluginViewModel.createOrUpdate', {pluginItem: pluginItem});
         var request = new yak.api.CreateOrUpdatePluginRequest();
 

@@ -177,7 +177,7 @@ yak.ui.PluginView = function PluginView(parent, context, viewModel) {
         pluginItem.code = codeEditor.getValue();
         pluginItem.version = parent.find('[name=version]').val();
 
-        viewModel.createOrUpdate(pluginItem);
+        viewModel.updateValue(pluginItem);
     }
 
     /**
