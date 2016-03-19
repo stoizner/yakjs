@@ -1,4 +1,4 @@
-# ![YAKjs logo](http://www.yakjs.com/yak.png)&nbsp;YAKjs
+# ![YAKjs logo](http://www.yakjs.com/asset/yakjs-logo-64.svg)&nbsp;YAKjs
 [![GitHub version](https://img.shields.io/github/tag/cschuller/yak-js.svg?style=flat-square)](https://github.com/cschuller/yak-js)
 [![npm](https://img.shields.io/npm/v/yakjs.svg?style=flat-square)](https://www.npmjs.com/package/yakjs)
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://raw.githubusercontent.com/cschuller/yak-js/master/LICENSE)
@@ -10,14 +10,14 @@ This tool is for developing, rapid prototyping, testing, integrating and simulat
 
 ## Getting started
 
-YAKjs requires [nodejs](https://nodejs.org/). 
+YAKjs requires [nodejs](https://nodejs.org/).
 
 ### Download
 
 Finde the **[latest release here](https://github.com/cschuller/yak-js/releases)**.
 Download zip package and extract it.
 
-or use the npm package with 
+or use the npm package with
 
 ```
 npm install yakjs
@@ -25,7 +25,7 @@ npm install yakjs
 
 ### Start YAKjs server
 
-Run the startup script  ``` start-yakjs-server.bat ``` 
+Run the startup script  ``` start-yakjs-server.bat ```
 
 or
 
