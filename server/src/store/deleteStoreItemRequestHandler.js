@@ -15,8 +15,6 @@ yak.DeleteStoreItemRequestHandler = function DeleteStoreItemRequestHandler(yakSe
      * @returns {yak.api.DeleteStoreItemResponse} response
      */
     this.handle = function handle(request) {
-        log.info('handle', {request: request});
-
         var response = new yak.api.DeleteStoreItemResponse(request.id);
         response.success = yakServer.storeProvider.deleteValue(request.key);
 

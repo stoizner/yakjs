@@ -15,8 +15,6 @@ yak.GetStoreItemRequestHandler = function GetStoreItemRequestHandler(yakServer) 
      * @returns {yak.api.GetStoreItemResponse} response
      */
     this.handle = function handle(request) {
-        log.info('handle', {request: request});
-
         var response = new yak.api.GetStoreItemResponse(request.id);
 
         if (request.key) {

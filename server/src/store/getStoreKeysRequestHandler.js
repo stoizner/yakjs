@@ -15,14 +15,10 @@ yak.GetStoreKeysRequestHandler = function GetStoreKeysRequestHandler(yakServer) 
      * @returns {yak.api.GetStoreKeysResponse} response
      */
     this.handle = function handle(request) {
-        log.info('handle', {request: request});
-
         var response = new yak.api.GetStoreKeysResponse(request.id);
         response.keys = [];
 
         var storeData = yakServer.storeProvider.getStore();
-
-        log.warn(storeData);
 
         response.keys = _.map(storeData, function toKeyInfo(item) {
             var keyInfo = new yak.api.StoreKeyInfo();
