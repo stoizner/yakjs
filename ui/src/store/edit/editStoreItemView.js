@@ -38,6 +38,7 @@ yak.ui.EditStoreItemView = function EditStoreItemView(parent, context, viewModel
 
         parent.find('[data-command=save]').click(handleSaveCommand);
         parent.find('[data-command=delete]').click(handleDeleteCommand);
+        parent.find('[data-command=refresh]').click(function() { viewModel.refresh(); });
         parent.find('[data-command=cancel]').click(handleCancelCommand);
         parent.find('[data-command=prettify-json]').click(handlePrettifyJsonCommand);
 

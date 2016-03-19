@@ -11,7 +11,7 @@ yak.ui.EditStoreItemViewModel = function EditStoreItemViewModel(context) {
     var self = this;
 
     /**
-     * @type {yak.ui.StoreItem}
+     * @type {yak.ui.StoreKeyValueItem}
      */
     this.storeItem = null;
 
@@ -37,10 +37,7 @@ yak.ui.EditStoreItemViewModel = function EditStoreItemViewModel(context) {
      */
     this.activate = function activate(key) {
         if (key) {
-            var request = new yak.api.GetStoreItemRequest();
-            request.key = key;
-
-            context.adapter.sendRequest(request, handleGetStoreItemResponse);
+            requestStoreItem(key);
         } else {
             self.isNewStoreItem = true;
             self.storeItem = new yak.ui.StoreKeyValueItem();
@@ -49,8 +46,28 @@ yak.ui.EditStoreItemViewModel = function EditStoreItemViewModel(context) {
     };
 
     /**
+     * Refresh the store item.
+     */
+    this.refresh = function refresh() {
+        requestStoreItem(self.storeItem.key);
+    };
+
+    /**
+     * Request store item.
+     * @param {string} key
+     */
+    function requestStoreItem(key) {
+        if (key) {
+            var request = new yak.api.GetStoreItemRequest();
+            request.key = key;
+
+            context.adapter.sendRequest(request, handleGetStoreItemResponse);
+        }
+    }
+
+    /**
      * Create or update a store item.
-     * @param {yak.ui.StoreItem} storeItem
+     * @param {yak.ui.StoreKeyValueItem} storeItem
      */
     this.updateValue = function createOrUpdate(storeItem) {
         var request = new yak.api.SetStoreItemRequest();
