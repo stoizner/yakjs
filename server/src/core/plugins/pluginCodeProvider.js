@@ -1,5 +1,4 @@
 /**
- * PluginManager
  * @constructor
  */
 yak.PluginCodeProvider = function PluginCodeProvider() {
