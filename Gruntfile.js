@@ -211,7 +211,7 @@ module.exports = function grunt(grunt) {
                     require: [],
                     reporter: 'spec'
                 },
-                src: ['./server/test/**/*.js']
+                src: ['./test/server/**/*.js']
             },
             coverage: {
                 options: {
