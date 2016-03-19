@@ -1,8 +1,7 @@
 /**
- * @name EchoPlugin
+ * @name echo
  * @description Every received message will be send back.
  * @version 1.0.0
- * @type WebSocketServerPlugin
  * @constructor
  * @implements {yak.PluginWorker}
  * @param {yak.require} require
