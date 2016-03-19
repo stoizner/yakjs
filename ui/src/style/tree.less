@@ -1,0 +1,60 @@
+.tree {
+    display: block;
+    width: 100%;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.tree-item[data-selectable]:hover {
+    background-color: @color-lime-300;
+    cursor: pointer;
+}
+
+.tree-item {
+    display: block;
+    min-height: @line-height;
+    overflow: hidden;
+}
+
+.tree-item[data-selected] {
+    background: @color-mulberry-light;
+}
+
+
+.tree-item.state-context-open {
+    background:#F5F5F5;
+}
+
+.tree-item-cell {
+    padding-right: 10px;
+    height: @line-height;
+    line-height: @line-height;
+    overflow: hidden;
+    float: left;
+}
+
+.tree-item-cell-right {
+    padding-left: 10px;
+    height: @line-height;
+    line-height: @line-height;
+    overflow: hidden;
+    float: right;
+}
+
+.tree-item-cell-max {
+    float: left;
+    padding-right: 10px;
+}
+
+.tree-item-cell-full {
+    float: left;
+    height: 30px;
+    overflow: hidden;
+}
+
+.tree-item-icon {
+    float: left;
+    width: @line-height;
+    height: @line-height;
+}

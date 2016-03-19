@@ -27,9 +27,9 @@ yak.ui.StoreListViewModel = function StoreListViewModel(context) {
     this.items = [];
 
     /**
-     * @type {!yak.ui.StoreGroupItem}
+     * @type {!yak.ui.StoreNodeItem}
      */
-    this.rootGroup = new yak.ui.StoreGroupItem('root');
+    this.rootNode = new yak.ui.StoreNodeItem(null, 'root');
 
     /**
      * @type {Function}
@@ -72,60 +72,63 @@ yak.ui.StoreListViewModel = function StoreListViewModel(context) {
 
         self.items = _.map(response.keys, toStoreItem);
 
-        initializeGroupsBasedOnNamespacedKeys();
+        createItemTree();
+        console.warn(self.rootNode);
 
         self.onItemsChanged();
     }
 
     /**
-     * Initialize group structure based on namespaced keys.
+     * Initialize the item tree.
      */
-    function initializeGroupsBasedOnNamespacedKeys() {
-        self.rootGroup = new yak.ui.StoreGroupItem('');
+    function createItemTree() {
+        self.rootNode = new yak.ui.StoreNodeItem();
+
+        var groupNodes = {};
 
         /**
-         * @param {!yak.ui.StoreItem} item
+         * @param {!yak.ui.StoreKeyValueItem} item
          */
-        function addToGroup(item) {
-            var group = self.rootGroup;
-            if (item.namespace) {
-                group = findOrCreateGroup(self.rootGroup.groups, item.namespace);
-            }
+        function createNodeForItem(item) {
+            var node = new yak.ui.StoreNodeItem(self.rootNode, yak.ui.StoreNodeItemType.ITEM, item.name);
+            node.key = item.key;
 
-            group.items.push(item);
+            if (item.namespace) {
+                addNodeToGroupNode(node, item.namespace, groupNodes);
+            } else {
+                self.rootNode.nodes.push(node);
+            }
         }
 
-        _.each(self.items, addToGroup);
+        _.each(self.items, createNodeForItem);
     }
 
     /**
-     * @param {!Object<string, !yak.ui.StoreGroupItem>} groups
-     * @param {string} namespacedGroupName Namespaced group name (e.g.: com.yakjs.group)
-     * @returns {!yak.ui.StoreGroupItem} The group for the group name.
+     * @param {yak.ui.StoreNodeItem} node
+     * @param {string} namespace
+     * @param {Object<string, string>} groupNodes
      */
-    function findOrCreateGroup(groups, namespacedGroupName) {
-        var namespaceIndex = namespacedGroupName.indexOf('.');
-        var groupName = namespacedGroupName;
-        var subGroupName = '';
-        var group;
+    function addNodeToGroupNode(node, namespace, groupNodes) {
+        var groupNames = namespace.split('.');
 
-        if (namespaceIndex >= 0) {
-            groupName = namespacedGroupName.substring(0, namespaceIndex);
-            subGroupName = namespacedGroupName.substring(namespaceIndex + 1);
-        }
+        var parentGroupNode = self.rootNode;
+        var fullGroupName = '';
 
-        if (!groups[groupName]) {
-            group = new yak.ui.StoreGroupItem(groupName);
-            groups[groupName] = group;
-        } else {
-            group = groups[groupName];
-        }
+        groupNames.forEach(function(groupName) {
+            fullGroupName = fullGroupName + '.' + groupName;
 
-        if (subGroupName) {
-            group = findOrCreateGroup(group.groups, subGroupName);
-        }
+            var groupNode = groupNodes[fullGroupName];
 
-        return group;
+            if (!groupNode) {
+                groupNode = new yak.ui.StoreNodeItem(parentGroupNode, yak.ui.StoreNodeItemType.GROUP, groupName);
+                groupNodes[fullGroupName] = groupNode;
+                parentGroupNode.nodes.push(groupNode);
+            }
+
+            parentGroupNode = groupNode;
+        });
+
+        parentGroupNode.nodes.push(node);
     }
 
     /**

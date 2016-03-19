@@ -5,6 +5,11 @@
                 <div class="center-panel">
                     <div class="text-button" data-command="create">Create Item</div>
                     <div class="text-button" data-command="refresh">Refresh</div>
+
+                    <div class="tool-box">
+                        <div class="icon-button icon-chevron-down-white" data-command="expand-all" title="Expand all nodes."></div>
+                        <div class="icon-button icon-chevron-right-white" data-command="collapse-all" title="Collapse all nodes."></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -15,10 +20,7 @@
             <div class="center-panel">
                 <div class="content-panel">
                     <div class="scroll-panel">
-                        <div data-element="tree">
-                            <div data-list="groups"></div>
-                            <ul class="list " data-list="items" data-selectable></ul>
-                        </div>
+                        <div class="tree" data-element="tree"></div>
                     </div>
                 </div>
             </div>
