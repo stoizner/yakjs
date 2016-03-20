@@ -50,7 +50,7 @@
         "body-parser": "^1.14.1",
         "doctrine": "^1.1.0",
         "express": "^4.9.0",
-        "log4js": "^0.6.24",
+        "log4js": "^0.6.33",
         "moment": "^2.10.2",
         "underscore": "~1.8.3",
         "ws": "~1.0.1"
