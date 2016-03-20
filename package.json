@@ -1,20 +1,22 @@
 {
     "name": "yakjs",
     "version": "2.0.0-SNAPSHOT",
-    "description": "YAKjs WebSocket Servers with JavaScript Plugins based on nodejs",
+    "description": "YAKjs - a local server to stub complex WebSocket backends.",
     "keywords": [
         "YAK",
         "WebSocket",
         "server",
         "prototyping",
-        "simulation"
+        "simulation",
+        "stub",
+        "testing"
     ],
     "repository": {
         "type": "git",
-        "url": "https://github.com/cschuller/yak-js.git"
+        "url": "https://github.com/cschuller/yakjs.git"
     },
     "bugs": {
-        "url": "https://github.com/cschuller/yak-js/issues"
+        "url": "https://github.com/cschuller/yakjs/issues"
     },
     "license": "MIT",
     "author": {
