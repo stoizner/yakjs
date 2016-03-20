@@ -1,9 +1,9 @@
 /**
  * Logger
  * @constructor
- * @param {string} [logCategory]
+ * @param {string} [level] The log4js log level.
  */
-yak.Log = function Log() {
+yak.Log = function Log(level) {
     'use strict';
 
     var log4js = require('log4js');
@@ -11,6 +11,8 @@ yak.Log = function Log() {
     var fs = require('fs');
 
     var appenders = {};
+
+    var logLevel = level || 'INFO';
 
     /**
      * Maximal file size in bytes.
@@ -43,6 +45,7 @@ yak.Log = function Log() {
      */
     this.getLogger = function getLogger(name) {
         var logger = log4js.getLogger(name);
+        logger.setLevel(logLevel);
 
         if (name.indexOf('.plugin') > 0) {
             if (!appenders[name]) {
