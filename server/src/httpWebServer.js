@@ -39,6 +39,16 @@ yak.HttpServer = function HttpServer(yakServer, config) {
      */
     function constructor() {
         initializeAPIMap();
+
+        process.on('uncaughtException', function handleUncaughtException(error) {
+            log.error('uncaughtException', error);
+
+            if (error.errno === 'EADDRINUSE') {
+                displayErrorMessage('Port (' + error.port + ') is already in use by another server or service.');
+            } else {
+                displayErrorMessage('Unexpected error ' + error.errno);
+            }
+        });
     }
 
     /**
@@ -54,43 +64,38 @@ yak.HttpServer = function HttpServer(yakServer, config) {
             app.get('/api/*', handleAPIRequest);
             app.post('/api/*', handleAPIRequest);
 
-            process.on('uncaughtException', function handleUncaughtException(error) {
-                log.error('uncaughtException', error);
-
-                if (error.errno === 'EADDRINUSE') {
-                    displayErrorMessage('Port (' + error.port + ') is already in use by another server or service.');
-                } else {
-                    displayErrorMessage('Unexpected error ' + error.errno);
-                }
-            });
-
-            http.createServer(app).listen(app.get('port'), function listen(){
-                console.info('.........................................................................');
-                console.info('YAKjs server initialized and running on http port ' + config.httpPort);
-                console.info('.........................................................................');
-                console.info('');
-                console.info('See ./log/yakjs.log for errors and warnings.');
-                console.info('Use --debug to display all log messages in the console.');
-                console.info('');
-                console.info('Press CTRL + C to stop YAKjs.');
-            });
+            http.createServer(app).listen(app.get('port'), displayWelcomeMessage);
         } catch(ex) {
             displayErrorMessage(ex.message);
         }
     };
 
     /**
+     * Displays the welcome message to the console.
+     */
+    function displayWelcomeMessage() {
+        console.info('.........................................................................');
+        console.info('YAKjs server initialized and running on http port ' + config.httpPort);
+        console.info('.........................................................................');
+        console.info('');
+        console.info('See ./log/yakjs.log for errors and warnings.');
+        console.info('Use --debug to display all log messages in the console.');
+        console.info('');
+        console.info('Press CTRL + C to stop YAKjs.');
+    }
+
+    /**
      * Displays the error message block to the console.
      * @param {string} message
      */
     function displayErrorMessage(message) {
-        console.info('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
-        console.warn('Could not start YAKjs server on http port' + config.httpPort);
-        console.info('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
-        console.info('');
-        console.info('Error: ' + message);
-        console.info('');
-        console.info('See ./log/yakjs.log for more technical details.');
+        console.error('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
+        console.error('Could not start YAKjs server on http port' + config.httpPort);
+        console.error('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
+        console.error('');
+        console.error('Error: ' + message);
+        console.error('');
+        console.error('See ./log/yakjs.log for more technical details.');
     }
 
     /**
