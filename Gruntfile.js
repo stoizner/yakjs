@@ -277,6 +277,13 @@ module.exports = function grunt(grunt) {
                command: 'npm install --production',
                stdout: true,
                stderr: true
+           },
+
+           npmPack: {
+               cwd: './dist/yakjs/',
+               command: 'npm pack',
+               stdout: true,
+               stderr: true
            }
        }
     });
@@ -305,8 +312,8 @@ module.exports = function grunt(grunt) {
     grunt.registerTask('build', ['clean', 'build-server', 'build-ui', 'coverage']);
 
     // Creates a releaseable zip package
-    grunt.registerTask('package', ['build', 'exec:installNodeModules', 'compress']);
+    grunt.registerTask('package', ['build', 'exec:installNodeModules', 'compress', 'exec:npmPack']);
 
     // TASK: default
-    grunt.registerTask('default', ['package']);
+    grunt.registerTask('default', ['build']);
 };
