@@ -76,7 +76,7 @@ yak.InstanceManager = function InstanceManager(configProvider, pluginManager) {
      * @returns {*} The instance entity.
      */
     function setupInstance(instanceConfig) {
-        log.info('Create instance.', {id: instanceConfig.id});
+        log.debug('Create instance.', {id: instanceConfig.id});
 
         /**
          * @type {yak.WebSocketInstance}
@@ -103,7 +103,7 @@ yak.InstanceManager = function InstanceManager(configProvider, pluginManager) {
      * @throws {Error} Instance entity not found.
      */
     this.start = function start(id) {
-        log.info('Start instance', {instance: id});
+        log.debug('Create instance', {instance: id});
 
         var instance = instances[id];
 

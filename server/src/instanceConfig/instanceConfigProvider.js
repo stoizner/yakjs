@@ -103,11 +103,11 @@ yak.InstanceConfigProvider = function InstanceConfigProvider() {
      * Load instance configs from instances directory.
      */
     function loadConfigurations() {
-        log.info('Loading instance configurations from instance directory', {dir:INSTANCES_DIR});
+        log.debug('Loading instance configurations from instance directory', {dir:INSTANCES_DIR});
 
         var filenames = getInstanceConfigs();
 
-        log.info('Instance configuration files found.', {filesCount: filenames.length, filenames: filenames});
+        log.info('Instance configuration files found.', {instances: filenames});
 
         readAndParseInstanceConfigFiles(filenames);
     }

@@ -63,7 +63,7 @@ yak.WebSocketInstance = function WebSocketInstance(pluginManager, id, port) {
     /**
      * @type {yak.Logger}
      */
-    var log = new yak.Logger(id);
+    var log = new yak.Logger(id + '.instance');
 
     /**
      * Expose logger.
@@ -160,13 +160,13 @@ yak.WebSocketInstance = function WebSocketInstance(pluginManager, id, port) {
      * Initialize plugins.
      */
     function instantiatePlugins() {
-        log.info('Instantiate and initialize plugins.', {count: self.plugins.length});
+        log.debug('Instantiate and initialize plugins.', {count: self.plugins.length});
 
         self.activePluginCount = 0;
         pluginInstances = [];
 
         self.plugins.forEach(function instantiatePlugin(pluginId) {
-            log.info('Instantiate plugin.', {plugin: pluginId});
+            log.debug('Instantiate plugin.', {plugin: pluginId});
 
             var pluginContext = new yak.PluginContext();
             pluginContext.instance = self;
@@ -182,8 +182,7 @@ yak.WebSocketInstance = function WebSocketInstance(pluginManager, id, port) {
                     pluginInstances.push(pluginInstance);
                     self.activePluginCount++;
                 } catch (ex) {
-                    log.error('Initialization failed.', {plugin: pluginId});
-                    log.debug({error: ex.message});
+                    log.warn('Plugin start/initialize failed.', {plugin: pluginId, error: ex.message});
                 }
             } else {
                 log.error('Plugin could not be loaded.', {plugin: pluginId});
@@ -197,20 +196,19 @@ yak.WebSocketInstance = function WebSocketInstance(pluginManager, id, port) {
      * @param {yak.PluginWorker} plugin
      */
     function initializePlugin(plugin) {
-        log.info('Initialize plugin. @' + plugin.name);
+        log.debug('Initialize plugin.', {plugin: plugin.name});
 
         var pluginLog = new yak.Logger(plugin.name + '.plugin');
 
         if (plugin.hasOwnProperty('onInitialize')) {
             try {
-                // Method onInitialize is
                 plugin.onInitialize(self);
 
                 pluginLog.info('Plugin initialized.');
-                log.info('Plugin initialized. @' + plugin.name);
+                log.debug('Plugin initialized.', {plugin: plugin.name});
             } catch (ex) {
-                pluginLog.error('onInitialize failed', {error: ex.message});
-                log.warn('onInitialize failed @' + plugin.name, {error: ex.message});
+                pluginLog.error('Plugin initialized failed.', {error: ex.message});
+                log.warn('Plugin initialized failed.', {plugin: plugin.name, error: ex.message});
             }
         }
     }
@@ -219,7 +217,7 @@ yak.WebSocketInstance = function WebSocketInstance(pluginManager, id, port) {
      * Terminate plugins.
      */
     function terminatePlugins() {
-        log.info('Terminate all plugins.', {count: self.plugins.length});
+        log.debug('Terminate all plugins.', {count: self.plugins.length});
 
         _.each(pluginInstances, function saveTerminatePlugin(pluginInstance) {
             // A termination fail, shall not stop the loop, so

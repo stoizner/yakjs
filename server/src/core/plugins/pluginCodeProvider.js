@@ -62,7 +62,7 @@ yak.PluginCodeProvider = function PluginCodeProvider() {
             return filename.lastIndexOf(PLUGIN_FILENAME_POSTFIX) === (filename.length - PLUGIN_FILENAME_POSTFIX.length);
         });
 
-        log.info('Plugin files found.', {filesFound: filenames.length, pluginFilenames: filenames});
+        log.debug('Plugin files found.', {filesFound: filenames.length, pluginFilenames: filenames});
 
         return filenames;
     }
@@ -74,7 +74,7 @@ yak.PluginCodeProvider = function PluginCodeProvider() {
     function loadPluginFiles(filenames) {
         var contentMap = {};
 
-        log.info('Loading plugins from plugin directory', {dir:PLUGINS_DIR});
+        log.debug('Loading plugins from plugin directory', {dir:PLUGINS_DIR});
 
         _.each(filenames, function readFile(filename) {
             try {
@@ -87,7 +87,7 @@ yak.PluginCodeProvider = function PluginCodeProvider() {
             }
         });
 
-        log.info('Plugin files read.', {filesRead: _.toArray(contentMap).length});
+        log.debug('Plugin files read.', {filesRead: _.toArray(contentMap).length});
 
         return contentMap;
     }

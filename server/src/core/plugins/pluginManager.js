@@ -37,7 +37,7 @@ yak.PluginManager = function PluginManager(pluginCodeProvider, pluginCodeParser)
         var pluginCode = provider.getPluginCode();
         parsePluginCode(pluginCode);
 
-        log.warn('Plugins loaded.', {plugins: Object.keys(plugins)});
+        log.info('Plugins loaded.', {plugins: Object.keys(plugins)});
     };
 
     /**
@@ -76,8 +76,6 @@ yak.PluginManager = function PluginManager(pluginCodeProvider, pluginCodeParser)
             }
         }
 
-        log.info('Available plugins', { count: result.length });
-
         return result;
     };
 
@@ -85,7 +83,7 @@ yak.PluginManager = function PluginManager(pluginCodeProvider, pluginCodeParser)
      * @param {yak.Plugin} plugin
      */
     this.addOrUpdatePlugin = function addOrUpdatePlugin(plugin) {
-        log.info('Update plugin instance', { pluginId: plugin.id });
+        log.debug('Update plugin instance', { pluginId: plugin.id });
 
         if (!plugins[plugin.id]) {
             plugins[plugin.id] = plugin;
@@ -140,8 +138,7 @@ yak.PluginManager = function PluginManager(pluginCodeProvider, pluginCodeParser)
      * @returns {*} A working plugin instance.
      */
     this.createPluginInstance = function createPluginInstance(pluginId, pluginContext) {
-        var pluginLog = new yak.Logger('plugin.' + pluginId);
-        pluginLog.info('Create new instance');
+        var pluginLog = new yak.Logger(pluginId + '.plugin');
 
         var pluginInstance = null;
         var plugin = plugins[pluginId];
@@ -156,16 +153,14 @@ yak.PluginManager = function PluginManager(pluginCodeProvider, pluginCodeParser)
                     pluginInstance = new plugin.PluginConstructor(requireContext, pluginContext);
                     pluginInstance.pluginId = pluginId;
                 } else {
-                    pluginLog.error('No constructor function available, can not create plugin instance.', {pluginId: pluginId});
+                    pluginLog.error('No constructor function available, can not create plugin instance.');
                 }
             } catch(ex) {
                 pluginInstance = null;
-                pluginLog.error('Can not create plugin instance.', {error: ex.message });
+                pluginLog.error('Can not create plugin instance. Unexpected error.', {error: ex.message });
             }
-        }
-
-        if (!pluginInstance) {
-            log.warn('Could not create a new plugin instance.', {pluginId: pluginId});
+        } else {
+            log.error('Can not create plugin instance. Unknown plugin.', {pluginId: pluginId});
         }
 
         return pluginInstance;
