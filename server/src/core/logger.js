@@ -26,7 +26,7 @@ yak.Logger = function Logger(logCategory) {
      * Constructor
      */
     function constructor() {
-        logger = yak.global.log.getLogger(category);
+        logger = yak.log.getLogger(category);
     }
 
     /**

@@ -1,11 +1,7 @@
 /**
  * @constructor
- * @param {!yak.ConfigManager} configManager
- * @param {!yak.PluginManager} pluginManager
- * @param {!yak.InstanceManager} instanceManager
- * @param {!yak.StoreProvider} storeProvider
  */
-yak.YakServer = function YakServer(configManager, pluginManager, instanceManager, storeProvider) {
+yak.YakServer = function YakServer() {
     /**
      * @type {yak.YakServer}
      */
@@ -25,27 +21,68 @@ yak.YakServer = function YakServer(configManager, pluginManager, instanceManager
     /**
      * @type {!yak.PluginManager}
      */
-    this.pluginManager = pluginManager;
+    this.pluginManager = null;
 
     /**
      * @type {!yak.InstanceManager}
      */
-    this.instanceManager = instanceManager;
+    this.instanceManager = null;
 
     /**
      * @type {!yak.StoreProvider}
      */
-    this.storeProvider = storeProvider;
+    this.storeProvider = null;
 
     /**
-     * Starts the YAK.
+     * @type {!yak.ConfigManager} configManager
+     */
+    this.configManager = null;
+
+    /**
+     * Initializes the yakjs server.
+     */
+    function constructor() {
+        initialize();
+        setupErrorProtection()
+    }
+
+    /**
+     * Starts the YAKjs server.
      */
     this.start = function start() {
-        log.info('Start YAKjs.');
-
-        httpServer = new yak.HttpServer(self, configManager.config);
+        httpServer = new yak.HttpServer(self, self.configManager.config);
         httpServer.start();
     };
+
+    /**
+     * Initialize and set up the YAKjs server.
+     */
+    function initialize() {
+        self.configManager = new yak.ConfigManager();
+        self.configManager.load();
+
+        self.pluginManager = new yak.PluginManager();
+        self.pluginManager.loadPlugins();
+
+        self.storeProvider = new yak.StoreProvider();
+        self.storeProvider.load();
+
+        // Exports internal features as modules that can be used by plugins.
+        yak.exports.jsonStore = new yak.JsonStore(self.storeProvider);
+        yak.exports.store = new yak.Store(self.storeProvider);
+        yak.exports.guid = yak.guid;
+
+        var configProvider = new yak.InstanceConfigProvider();
+        self.instanceManager = new yak.InstanceManager(configProvider, self.pluginManager);
+    }
+
+    /**
+     * Set ups a protection layer to keep YAKjs stable even when
+     * plugins are throwing errors.
+     */
+    function setupErrorProtection() {
+        var timerProtection = new yak.ErrorProtectionForTimerFunctions(global);
+    }
 
     /**
      * Get the used logger.
@@ -54,4 +91,6 @@ yak.YakServer = function YakServer(configManager, pluginManager, instanceManager
     this.getLogger = function getLogger() {
         return log;
     };
+
+    constructor();
 };

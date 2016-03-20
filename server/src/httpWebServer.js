@@ -50,10 +50,14 @@ yak.HttpServer = function HttpServer(yakServer, config) {
             app.post('/api/*', handleAPIRequest);
 
             http.createServer(app).listen(app.get('port'), function listen(){
-                log.info('YAKjs HTTP server running.', {httpPort: config.httpPort});
+                log.info('.........................................................................');
+                log.info('YAKjs server initialized and running on http port ' + config.httpPort);
+                log.info('.........................................................................');
             });
         } catch(ex) {
+            log.info('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
             log.warn('Could not start YAKjs HTTP server.', {httpPort: config.httpPort, error: ex.message});
+            log.info('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
         }
     };
 
@@ -63,7 +67,9 @@ yak.HttpServer = function HttpServer(yakServer, config) {
      * @param {ExpressResponse} response The HTTP response object.
      */
     function handleAPIRequest(request, response) {
-        log.info('api > ' + request.body.type + '  ' + request.body.id);
+        var identfiers = JSON.stringify(findIdentifiers(request.body));
+        var requestLogMessage = ['api', '>', request.body.type, ':', identfiers].join(' ');
+        log.info(requestLogMessage);
 
         var requestType =  request.body.type;
         var apiResponse = '';
@@ -81,6 +87,32 @@ yak.HttpServer = function HttpServer(yakServer, config) {
         }
 
         response.send(apiResponse);
+    }
+
+    /**
+     * Find properties that may be used to identify the object like 'Id', 'Key'
+     * or a combination of it 'pluginId', 'instanceId'
+     * @param {Object} obj
+     * @returns {Object} An object with only the found identifier values.
+     */
+    function findIdentifiers(obj) {
+        var identifierKeys = Object.keys(obj).filter(function isUsedToIdentifySomething(key) {
+            var lowerKey = key.toLowerCase();
+            return (
+                lowerKey.indexOf('key') === 0 ||
+                key.indexOf('Key') >= 0 ||
+                lowerKey.indexOf('id') === 0 ||
+                key.indexOf('Id') >= 0
+            );
+        });
+
+        var identifiers = {};
+
+        identifierKeys.forEach(function mapId(idKey) {
+            identifiers[idKey] = obj[idKey];
+        });
+
+        return identifiers;
     }
 
     /**
