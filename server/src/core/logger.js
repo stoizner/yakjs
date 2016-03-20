@@ -7,9 +7,10 @@ yak.Logger = function Logger(logCategory) {
     'use strict';
 
     /**
-     * @type {yak.Logger}
+     * The default log level. (Using log4js log levels)
+     * @type {string}
      */
-    var self = this;
+    var logLevel = 'INFO';
 
     /**
      * @type {string}
@@ -26,7 +27,34 @@ yak.Logger = function Logger(logCategory) {
      * Constructor
      */
     function constructor() {
+        // Ensure and sets up the global logging.
+        if (!yak.log) {
+            var debugFlag = findFlag('--debug');
+
+            if (debugFlag) {
+                logLevel = 'DEBUG';
+            }
+
+            yak.log = new yak.Log(logLevel);
+        }
+
         logger = yak.log.getLogger(category);
+    }
+
+    /**
+     * @param {string} flagId
+     * @returns {?string} The command line argv flag.
+     */
+    function findFlag(flagId) {
+        var flag = null;
+
+        if (process && process.argv) {
+            flag = process.argv.find(function startsWith(arg) {
+                return (arg.indexOf(flagId) === 0);
+            });
+        }
+
+        return flag;
     }
 
     /**
