@@ -4,7 +4,7 @@
  * will not crash.
  *
  * This is not a good implementation. This is a quick-fix. Replace it with "domains" from nodejs when there are
- * more stable. (see https://nodejs.org/api/domain.html) or switch to io.js
+ * more stable. (see https://nodejs.org/api/domain.html)
  *
  * @constructor
  * @param {?} global
