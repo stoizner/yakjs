@@ -123,7 +123,7 @@ module.exports = function grunt(grunt) {
                 files: [
                     {flatten: true, src: ['README.md', 'LICENSE', 'package.json'], dest: pkgDir},
                     {flatten: true, cwd: serverDir + 'bin/', src: ['*.bat', '*.sh'], dest: pkgDir, expand: true},
-                    {flatten: true, cwd: serverDir + 'bin/', src: ['yakjs.js'], dest: pkgDir + 'bin/', expand: true}
+                    {flatten: true, cwd: serverDir + 'bin/', src: ['*.js'], dest: pkgDir + 'bin/', expand: true}
                 ]
             },
             defaults: {
