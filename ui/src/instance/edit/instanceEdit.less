@@ -13,18 +13,27 @@
 }
 
 .select-plugin-item {
-    //flex: 1 1 auto;
-    //min-width: 50%;
+    .no-select;
+    overflow: hidden;
+    text-overflow: ellipsis;
     position: relative;
     display: block;
     margin: 0;
     height: 3 * @grid-size;
     cursor: pointer;
+    width: 100%;
 }
 
 .select-plugin-item-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
     padding-left: 2 * @grid-size;
+    padding-right: 2 * @grid-size;
     line-height: 3 * @grid-size;
+    margin: 0;
+    height: 3 * @grid-size;
 }
 
 .select-plugin-item-selector {

@@ -1,17 +1,17 @@
 <div class="column-block">
-    <div class="column-block-column-fill">
+    <div class="column-block-column" style="width: 50%">
         {{#selectedPluginItems}}
             <div class="select-plugin-item {{^isActive}}placeholder-item{{/isActive}}" data-plugin-name="{{name}}">
-                <span class="select-plugin-item-selector state-active"></span>
-                <span class="select-plugin-item-text" title="{{description}}">{{name}}</span>
+                <div class="select-plugin-item-selector state-active"></div>
+                <p class="select-plugin-item-text" title="{{description}}">{{name}}</p>
             </div>
         {{/selectedPluginItems}}
     </div>
-    <div class="column-block-column-fill">
+    <div class="column-block-column" style="width: 50%">
         {{#notSelectedPluginItems}}
             <div class="select-plugin-item" data-plugin-name="{{name}}">
-                <span class="select-plugin-item-selector"></span>
-                <span class="select-plugin-item-text" title="{{description}}">{{name}}</span>
+                <div class="select-plugin-item-selector"></div>
+                <p class="select-plugin-item-text" title="{{description}}">{{name}}</p>
             </div>
         {{/notSelectedPluginItems}}
     </div>

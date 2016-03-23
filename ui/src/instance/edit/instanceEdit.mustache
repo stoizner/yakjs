@@ -32,14 +32,6 @@
                                     <input type="text" class="input-number" min="0" max="65535" name="port" value="{{instance.port}}" />
                                     <div class="light-text">A port number between 0 and 65535. Avoid using well-known ports like: 80, 8080, 8790</div>
 
-                                    <label class="input-label">Description</label>
-                                    <input type="text" class="input-text" name="description" value="{{instance.description}}" />
-                                    <div class="light-text">Optional: Any text that helps to understand what this instance does.</div>
-                                </div>
-                            </div>
-
-                            <div class="column-block-column" style="width: 50%">
-                                <div class="frame-block">
                                     <label class="input-label">Plugins</label>
                                     <div class="light-text">Assign plugins to this instance</div>
                                     <div>
@@ -47,6 +39,14 @@
                                         <div class="flat-button" data-command="plugins-none" title="Remove all plugins." >None</div>
                                     </div>
                                     <div class="plugin-list" data-list="plugin"></div>
+                                </div>
+                            </div>
+
+                            <div class="column-block-column" style="width: 50%">
+                                <div class="frame-block">
+                                    <label class="input-label">Description</label>
+                                    <input type="text" class="input-text" name="description" value="{{instance.description}}" />
+                                    <div class="light-text">Optional: Any text that helps to understand what this instance does.</div>
                                 </div>
                             </div>
                         </div>
