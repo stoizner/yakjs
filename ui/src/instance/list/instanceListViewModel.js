@@ -108,6 +108,8 @@ yak.ui.InstanceListViewModel = function InstanceListViewModel(context) {
         if (instanceInfo.state === 'running' && instanceInfo.pluginActiveCount !== instanceInfo.pluginTotalCount) {
             instanceItem.state = 'warning';
             instanceItem.stateTooltipText = 'Running, but some plugins could not be started. Please take a look into your log files to find the error.';
+            instanceItem.hasPluginsNotStarted = ((instanceInfo.pluginTotalCount - instanceInfo.pluginActiveCount) > 0);
+            instanceItem.inactivePluginsList = (instanceInfo.inactivePlugins || []).join(', ');
         }
 
         instanceItem.pluginTotalCount = instanceInfo.pluginTotalCount;

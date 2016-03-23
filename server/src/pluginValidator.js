@@ -26,8 +26,8 @@ yak.api.PluginValidator = function PluginValidator(pluginManager) {
     this.isCreatePluginRequestValid = function isCreatePluginRequestValid(request) {
         allValuesValid = true;
 
-        validateId(request.name);
-        validatePluginIdNotInUse(request.name);
+        validateId(request.id);
+        validatePluginIdNotInUse(request.id);
         validateCode(request.code);
 
         return allValuesValid;
@@ -56,7 +56,7 @@ yak.api.PluginValidator = function PluginValidator(pluginManager) {
     this.isPluginValid = function isPluginValid(plugin) {
         allValuesValid = true;
 
-        validateId(plugin.name);
+        validateId(plugin.id);
         validateCode(plugin.code);
 
         return allValuesValid;

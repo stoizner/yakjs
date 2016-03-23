@@ -71,17 +71,17 @@ yak.CreateOrUpdatePluginRequestHandler = function CreateOrUpdatePluginRequestHan
             var newPlugin = null;
 
             if (pluginParser.hasJsDoc(request.plugin.code)) {
-                newPlugin = pluginParser.parse(request.plugin.name, request.plugin.code);
+                newPlugin = pluginParser.parse(request.plugin.id, request.plugin.code);
             } else {
                 newPlugin = new yak.Plugin();
-                newPlugin.id = request.plugin.name;
-                newPlugin.name = request.plugin.name;
+                newPlugin.id = request.plugin.id;
+                newPlugin.name = request.plugin.id;
                 newPlugin.version = request.plugin.version;
                 newPlugin.description = request.plugin.description;
                 newPlugin.code = request.plugin.code;
             }
 
-            yakServer.pluginManager.addPlugin(newPlugin);
+            yakServer.pluginManager.addOrUpdatePlugin(newPlugin);
             yakServer.pluginManager.savePlugin(newPlugin);
         } else {
             response.success = false;

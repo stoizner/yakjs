@@ -120,6 +120,7 @@ yak.WebSocketInstance = function WebSocketInstance(pluginManager, id, port) {
         try {
             if (server && self.state === yak.InstanceState.RUNNING) {
                 self.state = yak.InstanceState.STOPPING;
+                self.activePluginCount = 0;
                 terminatePlugins();
                 server.close();
                 server = null;
@@ -209,6 +210,7 @@ yak.WebSocketInstance = function WebSocketInstance(pluginManager, id, port) {
             } catch (ex) {
                 pluginLog.error('Plugin initialized failed.', {error: ex.message});
                 log.warn('Plugin initialized failed.', {plugin: plugin.name, error: ex.message});
+                throw ex;
             }
         }
     }

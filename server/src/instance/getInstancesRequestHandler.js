@@ -1,10 +1,15 @@
 /**
  * GetInstancesRequestHandler
  * @constructor
- * @param {yak.InstanceManager} instanceManager
+ * @param {yak.YakServer} yakServer
  */
-yak.GetInstancesRequestHandler = function GetInstancesRequestHandler(instanceManager) {
+yak.GetInstancesRequestHandler = function GetInstancesRequestHandler(yakServer) {
     'use strict';
+
+    /**
+     * @type {!yak.InstanceManager}
+     */
+    var instanceManager = yakServer.instanceManager;
 
     /**
      * @param {yak.api.GetInstancesRequest} request
@@ -39,7 +44,13 @@ yak.GetInstancesRequestHandler = function GetInstancesRequestHandler(instanceMan
         instanceInfo.port = instance.port;
         instanceInfo.state = instance.state;
         instanceInfo.plugins = instance.plugins;
+        instanceInfo.activePlugins = instance.getPluginInstances().map(function(item) {
+            return item.name;
+        });
         instanceInfo.description = instance.description;
+
+        var instanceConfig = instanceManager.configProvider.getConfig(instance.id);
+        instanceInfo.inactivePlugins = _.difference(instanceConfig.plugins, instanceInfo.activePlugins);
 
         return instanceInfo;
     }

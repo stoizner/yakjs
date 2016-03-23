@@ -53,8 +53,17 @@ yak.api.InstanceInfo = function InstanceInfo() {
     this.port = null;
 
     /**
-    *
-    * @type {Array<string>}
-    */
+     * @type {Array<string>}
+     */
     this.plugins = [];
+
+    /**
+     * @type {Array<string>}
+     */
+    this.activePlugins = [];
+
+    /**
+     * @type {Array<string>}
+     */
+    this.inactivePlugins = [];
 };

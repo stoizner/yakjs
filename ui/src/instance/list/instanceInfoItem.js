@@ -36,7 +36,6 @@ yak.ui.InstanceInfoItem = function InstanceInfoItem(id) {
     this.stateTooltipText = '';
 
     /**
-     *
      * @type {number}
      */
     this.port = '';
@@ -62,4 +61,8 @@ yak.ui.InstanceInfoItem = function InstanceInfoItem(id) {
      */
     this.connectionCount = 0;
 
+    /**
+     * @type {boolean}
+     */
+    this.hasPluginsNotStarted = false;
 };
