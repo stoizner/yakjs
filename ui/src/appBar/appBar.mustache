@@ -5,9 +5,15 @@
         </div>
         <div class="app-bar-text">YAK <span style="opacity: 0.5;">js</span></div>
         <div class="app-bar-links">
-            <a href="https://github.com/cschuller/yak-js" target="_blank">Code on HitHub</a>
+            <a href="https://github.com/cschuller/yak-js" target="_blank">GitHub</a>
             <a href="https://github.com/cschuller/yak-js/releases" target="_blank">v{{version}}</a>
-            <a href="https://github.com/cschuller/yak-js/wiki" target="_blank">Documentation</a>
+            <a href="http://www.yakjs.com" target="_blank">www.yakjs.com</a>
         </div>
+
+        {{^versionCheck.isLatestReleaseInUse}}
+            <div class="app-bar-bubble">
+                <a class="app-bar-bubble-text" href="{{versionCheck.latestRelease.html_url}}" target="_blank">A new version {{versionCheck.latestReleaseVersion}} is available.</a>
+            </div>
+        {{/versionCheck.isLatestReleaseInUse}}
     </div>
 </div>

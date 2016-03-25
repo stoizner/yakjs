@@ -68,10 +68,37 @@
         text-decoration: none;
         opacity: 0.6;
         margin-left:10px;
-        font: 11px/20px 'roboto';
+        font: 14px/20px 'roboto';
     }
 
     a:hover {
         opacity: 1.0;
     }
+}
+
+.app-bar-bubble {
+    position: absolute;
+    right: 10px;
+    top: 20px;
+}
+
+.app-bar-bubble-text {
+    .no-select;
+    display: block;
+    margin: 5px 0 10px 50px;
+    line-height: 20px;
+    padding: 5px 10px;
+    border-radius: 20px;
+    border: solid 2px white;
+    min-width: 80px;
+    color: white;
+    font-size: 15px;
+    font-family: "Roboto", sans-serif;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.app-bar-bubble-text:hover {
+    background-color: white;
+    color: @color-blue-grey-300;
 }

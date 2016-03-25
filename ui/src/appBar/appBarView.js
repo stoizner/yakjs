@@ -17,7 +17,16 @@ yak.ui.AppBarView = function AppBarView(parent, context, viewModel) {
      * Constructor
      */
     function constructor() {
-        parent.html(template.build({ version: yak.ui.version}));
+        viewModel.onVersionCheckResultChanged = updateAppBar;
+        updateAppBar();
+    }
+
+    function updateAppBar() {
+        console.warn(viewModel.versionCheckResult);
+        parent.html(template.build({
+            version: yak.ui.appInfo.version,
+            versionCheck: viewModel.versionCheckResult
+        }));
     }
 
     constructor();

@@ -43,7 +43,12 @@ module.exports = function grunt(grunt) {
             ' * @license ' + pkg.license,
         ' */\n\n'].join('\n');
 
-    var uiFooter = 'yak.ui.version = \'' + pkg.version + '\';\n';
+    var appInfo = {
+        version: pkg.version,
+        created: (new Date()).toISOString()
+    };
+
+    var uiFooter = 'yak.ui.appInfo = ' + JSON.stringify(appInfo, null, 4) + ';';
 
     grunt.initConfig({
         pkg: pkg,

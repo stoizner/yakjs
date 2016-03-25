@@ -6,12 +6,7 @@ $(document).ready(function bootstrap() {
     var eventBus = new cobu.EventBus();
     eventBus.diagnostics().onError(handleEventBusError);
 
-    //var webSocketAdapter = new yak.ui.WebSocketAdapter(eventBus);
-    var httpAdapter = new yak.ui.HttpAdapter(eventBus);
-
-    var viewModelContext = new yak.ui.ViewModelContext();
-    viewModelContext.adapter = httpAdapter;
-    viewModelContext.eventBus = eventBus;
+    var viewModelContext = new yak.ui.ViewModelContext(eventBus);
 
     var viewContext = new yak.ui.ViewContext();
     viewContext.template = new yak.ui.TemplateLoader(Mustache);
