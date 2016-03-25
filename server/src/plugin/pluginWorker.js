@@ -28,6 +28,13 @@ yak.PluginWorker = function PluginWorker(name) {
     this.onMessage = function onMessage(message, connection) {};
 
     /**
+     * Called for every received json websocket message.
+     * @param {yak.WebSocketMessage} message
+     * @param {yak.WebSocketConnection} connection
+     */
+    this.onJsonMessage = function onJsonMessage(message, connection) {};
+
+    /**
      * Connection closed event. Note that the connection is no longer part of instance.getConnections().
      * @param {yak.WebSocketConnection} connection
      */

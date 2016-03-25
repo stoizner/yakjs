@@ -1,5 +1,4 @@
 /**
- * PluginManager
  * @constructor
  * @param {!yak.PluginCodeProvider} [pluginCodeProvider]
  * @param {!yak.PluginParser} [pluginCodeParser]
