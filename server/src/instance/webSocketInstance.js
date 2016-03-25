@@ -1,5 +1,4 @@
 /**
- * WebSocketInstance
  * @constructor
  * @implements {yak.Instance}
  * @param {yak.PluginManager} pluginManager
@@ -26,7 +25,6 @@ yak.WebSocketInstance = function WebSocketInstance(pluginManager, id, port) {
     var server = null;
 
     /**
-     *
      * @type {Object<string, yak.WebSocketConnection>}
      */
     var connections = {};
@@ -179,7 +177,7 @@ yak.WebSocketInstance = function WebSocketInstance(pluginManager, id, port) {
 
                 // When one plugin instantiation fails, it shall continue with the next plugin.
                 try {
-                    initializePlugin(pluginInstance);
+                    callPluginOnInitialize(pluginInstance);
                     pluginInstances.push(pluginInstance);
                     self.activePluginCount++;
                 } catch (ex) {
@@ -196,7 +194,7 @@ yak.WebSocketInstance = function WebSocketInstance(pluginManager, id, port) {
     /**
      * @param {yak.PluginWorker} plugin
      */
-    function initializePlugin(plugin) {
+    function callPluginOnInitialize(plugin) {
         log.debug('Initialize plugin.', {plugin: plugin.name});
 
         var pluginLog = new yak.Logger(plugin.name + '.plugin');
@@ -270,7 +268,6 @@ yak.WebSocketInstance = function WebSocketInstance(pluginManager, id, port) {
      * @param {?} socket
      */
     function handleConnection(socket) {
-
         var connection = new yak.WebSocketConnection();
         connection.socket = socket;
 
@@ -282,19 +279,19 @@ yak.WebSocketInstance = function WebSocketInstance(pluginManager, id, port) {
             self.log.info('Connection closed ', {connectionId: connection.id});
             delete connections[connection.id];
 
-            pluginsOnConnectionClosed(connection);
+            callPlluginsOnConnectionClosed(connection);
         });
 
         socket.on('error', function handleError() {
             self.log.info('Connection closed with error' , {connectionId: connection.id});
             delete connections[connection.id];
 
-            pluginsOnConnectionClosed(connection);
+            callPlluginsOnConnectionClosed(connection);
         });
 
         socket.on('message', createMessageHandler(connection));
 
-        pluginsOnNewConnection(connection);
+        callPluginsOnNewConnection(connection);
     }
 
     /**
@@ -305,28 +302,59 @@ yak.WebSocketInstance = function WebSocketInstance(pluginManager, id, port) {
         return function handleMessage(data, flags) {
             log.debug('Received websocket message ', {fromConnectionId: connection.id, data: data});
 
+            var jsonData;
+
+            try {
+                jsonData = JSON.parse(data);
+            } catch(ex) {
+                jsonData = null;
+            }
+
             for(var i = 0; i < pluginInstances.length; i++) {
-                pluginOnMessage(pluginInstances[i], data, connection);
+                var plugin = pluginInstances[i];
+                callPluginOnMessage(plugin, data, connection);
+
+                if (jsonData) {
+                    callPluginOnJsonMessage(plugin, jsonData, connection);
+                }
             }
         };
     }
 
     /**
-     *
+     * @param {yak.PluginWorker} pluginInstance
+     * @param {object} data
+     * @param {yak.WebSocketConnection} connection
+     */
+    function callPluginOnJsonMessage(pluginInstance, data, connection) {
+        var pluginLog = getPluginLogger(pluginInstance.name);
+        var callback = pluginInstance.onJsonMessage;
+
+        if (callback) {
+            try {
+                callback(new yak.WebSocketMessage(data), connection);
+            } catch (ex) {
+                pluginLog.error('Call onJsonMessage failed', {error: ex.message, data: data, connectionId: connection.id});
+                log.warn('Call onJsonMessage failed', {plugin: pluginInstance.name, error: ex.message, data: data, connectionId: connection.id});
+            }
+        }
+    }
+
+    /**
      * @param {yak.PluginWorker} pluginInstance
      * @param {string} data
      * @param {yak.WebSocketConnection} connection
      */
-    function pluginOnMessage(pluginInstance, data, connection) {
-        var pluginLog = new yak.Logger(pluginInstance.name + '.plugin');
+    function callPluginOnMessage(pluginInstance, data, connection) {
+        var pluginLog = getPluginLogger(pluginInstance.name);
+        var callback = pluginInstance.onJsonMessage;
 
-        if (pluginInstance.onMessage) {
+        if (callback) {
             try {
-                pluginLog.info('onMessage', {pluginName: pluginInstance.name});
-                pluginInstance.onMessage(new yak.WebSocketMessage(data), connection);
+                callback(new yak.WebSocketMessage(data), connection);
             } catch (ex) {
-                pluginLog.error('onMessage failed', {error: ex.message, data: data, connectionId: connection.id});
-                log.warn('onMessage failed @' + pluginInstance.name, {error: ex.message, data: data, connectionId: connection.id});
+                pluginLog.error('Call onMessage failed', {error: ex.message, data: data, connectionId: connection.id});
+                log.warn('Call onMessage failed', {plugin: pluginInstance.name, error: ex.message, data: data, connectionId: connection.id});
             }
         }
     }
@@ -335,9 +363,9 @@ yak.WebSocketInstance = function WebSocketInstance(pluginManager, id, port) {
      * Notify all plugins that a new connection has been established
      * @param {yak.WebSocketConnection} connection
      */
-    function pluginsOnNewConnection(connection) {
+    function callPluginsOnNewConnection(connection) {
         _.each(pluginInstances, function callOnNewConnection(pluginInstance) {
-            var pluginLog = new yak.Logger(pluginInstance.name + '.plugin');
+            var pluginLog = getPluginLogger(pluginInstance.name);
 
             if (pluginInstance.onNewConnection) {
                 try {
@@ -355,7 +383,7 @@ yak.WebSocketInstance = function WebSocketInstance(pluginManager, id, port) {
      * Notify all plugins that a connection has been closed
      * @param {yak.WebSocketConnection} connection
      */
-    function pluginsOnConnectionClosed(connection) {
+    function callPlluginsOnConnectionClosed(connection) {
         _.each(pluginInstances, function callOnConnectionClosed(pluginInstance) {
             if (pluginInstance.onConnectionClosed) {
                 try {
@@ -366,5 +394,14 @@ yak.WebSocketInstance = function WebSocketInstance(pluginManager, id, port) {
                 }
             }
         });
+    }
+
+    /**
+     * Gets the plugin logger.
+     * @param {string} pluginId
+     * @returns {!yak.Logger} The plugin logger.
+     */
+    function getPluginLogger(pluginId) {
+        return new yak.Logger(pluginId + '.plugin');
     }
 };

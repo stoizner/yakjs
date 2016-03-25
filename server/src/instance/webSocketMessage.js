@@ -1,11 +1,11 @@
 /**
  * WebSocketMessage
  * @constructor
- * @param {string} data
+ * @param {Object|string|null} data
  */
 yak.WebSocketMessage = function WebSocketMessage(data) {
     /**
-     * @type {string|null}
+     * @type {Object|string|null}
      */
     this.data = data || null;
 };
