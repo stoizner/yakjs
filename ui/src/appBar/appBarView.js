@@ -22,7 +22,6 @@ yak.ui.AppBarView = function AppBarView(parent, context, viewModel) {
     }
 
     function updateAppBar() {
-        console.warn(viewModel.versionCheckResult);
         parent.html(template.build({
             version: yak.ui.appInfo.version,
             versionCheck: viewModel.versionCheckResult
