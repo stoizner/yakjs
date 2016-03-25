@@ -119,7 +119,7 @@ yak.WebSocketInstance = function WebSocketInstance(pluginManager, id, port) {
             if (server && self.state === yak.InstanceState.RUNNING) {
                 self.state = yak.InstanceState.STOPPING;
                 self.activePluginCount = 0;
-                terminatePlugins();
+                stopAllPlugins();
                 server.close();
                 server = null;
                 self.state = yak.InstanceState.STOPPED;
@@ -177,7 +177,7 @@ yak.WebSocketInstance = function WebSocketInstance(pluginManager, id, port) {
 
                 // When one plugin instantiation fails, it shall continue with the next plugin.
                 try {
-                    callPluginOnInitialize(pluginInstance);
+                    callPluginOnStart(pluginInstance);
                     pluginInstances.push(pluginInstance);
                     self.activePluginCount++;
                 } catch (ex) {
@@ -194,38 +194,39 @@ yak.WebSocketInstance = function WebSocketInstance(pluginManager, id, port) {
     /**
      * @param {yak.PluginWorker} plugin
      */
-    function callPluginOnInitialize(plugin) {
+    function callPluginOnStart(plugin) {
         log.debug('Initialize plugin.', {plugin: plugin.name});
 
-        var pluginLog = new yak.Logger(plugin.name + '.plugin');
+        var pluginLog = getPluginLogger(plugin.name);
+        var callback = plugin.onStart || plugin.onInitialize;
 
-        if (plugin.hasOwnProperty('onInitialize')) {
+        if (callback) {
             try {
-                plugin.onInitialize(self);
+                callback();
 
-                pluginLog.info('Plugin initialized.');
-                log.debug('Plugin initialized.', {plugin: plugin.name});
+                pluginLog.info('Plugin started.', {instance: self.name});
+                log.debug('Plugin started.', {plugin: plugin.name});
             } catch (ex) {
-                pluginLog.error('Plugin initialized failed.', {error: ex.message});
-                log.warn('Plugin initialized failed.', {plugin: plugin.name, error: ex.message});
+                pluginLog.error('Plugin start failed.', {instance: self.name, error: ex.message});
+                log.warn('Plugin start failed.', {plugin: plugin.name, error: ex.message});
                 throw ex;
             }
         }
     }
 
     /**
-     * Terminate plugins.
+     * Stop all plugins.
      */
-    function terminatePlugins() {
-        log.debug('Terminate all plugins.', {count: self.plugins.length});
+    function stopAllPlugins() {
+        log.debug('Stop all plugins.', {count: self.plugins.length});
 
         _.each(pluginInstances, function saveTerminatePlugin(pluginInstance) {
             // A termination fail, shall not stop the loop, so
             // that other plugins can be terminated.
             try {
-                terminatePlugin(pluginInstance);
+                callPluginOnStop(pluginInstance);
             } catch (ex) {
-                log.error('Could not terminate plugin', {plugin: pluginInstance.name, error: ex, stack: ex.stack});
+                log.error('Could not stop plugin', {plugin: pluginInstance.name, error: ex, stack: ex.stack});
             }
         });
 
@@ -233,18 +234,24 @@ yak.WebSocketInstance = function WebSocketInstance(pluginManager, id, port) {
     }
 
     /**
-     * @param {yak.PluginWorker} pluginInstance
+     * @param {yak.PluginWorker} plugin
      */
-    function terminatePlugin(pluginInstance) {
-        var pluginLog = new yak.Logger(pluginInstance.name + '.plugin');
+    function callPluginOnStop(plugin) {
+        log.info('Stop plugin.', {plugin: plugin.name});
+        var pluginLog = getPluginLogger(plugin.name);
 
-        log.info('Terminate plugin.', {plugin: pluginInstance.name});
+        var callback = plugin.onStop || plugin.onTerminate;
 
-        if (pluginInstance.hasOwnProperty('onTerminate')) {
-            pluginInstance.onTerminate(self);
-            pluginLog.info('Plugin terminated.');
-        } else {
-            pluginLog.info('Plugin has no onTerminate function - skipped.', {plugin: pluginInstance.name});
+        if (callback) {
+            try {
+                callback();
+                pluginLog.info('Plugin stopped.', {instance: self.name});
+                log.debug('Plugin stopped.', {plugin: plugin.name});
+            } catch (ex) {
+                pluginLog.error('Plugin stop failed.', {instance: self.name, error: ex.message});
+                log.warn('Plugin stop failed.', {plugin: plugin.name, error: ex.message});
+                throw ex;
+            }
         }
     }
 

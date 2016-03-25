@@ -54,6 +54,22 @@ describe('WebSocketInstance', function() {
             expect(plugin.onInitialize).calledWith();
         });
 
+        it('call onStart on plugin', function() {
+            // Given
+            sut.plugins = ['myPlugin'];
+            var plugin = {
+                name: 'myPlugin',
+                onStart: sinon.spy()
+            };
+            pluginManagerStub.createPluginInstance = sinon.stub().returns(plugin);
+
+            // When
+            sut.start();
+
+            // Then
+            expect(plugin.onStart).calledWith();
+        });
+
         it('do not call onInitialize when plugin does not have a onInitialize method', function() {
             // Given
             sut.plugins = ['myPlugin'];
@@ -108,6 +124,21 @@ describe('WebSocketInstance', function() {
 
             // Then
             expect(plugin.onTerminate).calledWith();
+        });
+
+        it('shall call onStop on plugin', function() {
+            // Given
+            sut.plugins = ['myPlugin'];
+            var plugin = {name: 'myPlugin', onStop: sinon.spy()};
+            pluginManagerStub.createPluginInstance = sinon.stub().returns(plugin);
+            sut.start();
+            sut.state = yak.InstanceState.RUNNING;
+
+            // When
+            sut.stop();
+
+            // Then
+            expect(plugin.onStop).calledWith();
         });
     });
 });

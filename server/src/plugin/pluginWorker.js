@@ -11,8 +11,14 @@ yak.PluginWorker = function PluginWorker(name) {
 
     /**
      * Called when the instance is started.
+     * @deprecated Since 2.x - Please use onStart
      */
     this.onInitialize = function onInitialize() {};
+
+    /**
+     * Called when the instance is started.
+     */
+    this.onStart = function onStart() {};
 
     /**
      * Called on new client connected to instance.
@@ -42,6 +48,12 @@ yak.PluginWorker = function PluginWorker(name) {
 
     /**
      * Called when the instance is stopped.
+     * @deprecated
      */
     this.onTerminate = function onTerminate() {};
+
+    /**
+     * Called when the instance is stopped.
+     */
+    this.onStop = function onTerminate() {};
 };
