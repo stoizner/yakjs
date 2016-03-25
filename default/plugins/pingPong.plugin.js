@@ -8,7 +8,7 @@
 function PingPongPlugin() {
     'use strict';
 
-    this.onInitialize = function onInitialize() {};
+    this.onStart = function onStart() {};
 
     /**
      * @param {yak.WebSocketConnection} connection
@@ -31,5 +31,5 @@ function PingPongPlugin() {
      */
     this.onConnectionClosed = function onConnectionClosed(connection) {};
 
-    this.onTerminate = function onTerminate() {};
+    this.onStop = function onStop() {};
 }

@@ -15,7 +15,7 @@ function BroadcastPlugin(require, context) {
 
     var log = require('log');
 
-    this.onInitialize = function onInitialize() {};
+    this.onStart = function onStart() {};
 
     /**
      * @param {yak.WebSocketConnection} connection
@@ -46,6 +46,6 @@ function BroadcastPlugin(require, context) {
      */
     this.onConnectionClosed = function onConnectionClosed(connection) {};
 
-    this.onTerminate = function onTerminate(instance) {};
+    this.onStop = function onStop(instance) {};
 }
 

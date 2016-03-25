@@ -11,7 +11,7 @@ function DnsLookupPlugin(require) {
 
     var dns = require('dns');
 
-    this.onInitialize = function onInitialize() {};
+    this.onStart = function onStart() {};
 
     /**
      * @param {yak.WebSocketConnection} connection
@@ -36,5 +36,5 @@ function DnsLookupPlugin(require) {
      */
     this.onConnectionClosed = function onConnectionClosed(connection) {};
 
-    this.onTerminate = function onTerminate() {};
+    this.onStop = function onStop() {};
 }

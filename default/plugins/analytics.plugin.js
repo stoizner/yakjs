@@ -18,7 +18,7 @@ function AnalyticsPlugin(require, context) {
      */
     var jsonStore = require('jsonStore');
 
-    this.onInitialize = function onInitialize() {};
+    this.onStart = function onStart() {};
 
     /**
      * @param {yak.WebSocketConnection} connection
@@ -50,5 +50,5 @@ function AnalyticsPlugin(require, context) {
      */
     this.onConnectionClosed = function onConnectionClosed(connection) {};
 
-    this.onTerminate = function onTerminate() {};
+    this.onStop = function onStop() {};
 }
