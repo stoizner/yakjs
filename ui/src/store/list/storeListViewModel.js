@@ -73,7 +73,6 @@ yak.ui.StoreListViewModel = function StoreListViewModel(context) {
         self.items = _.map(response.keys, toStoreItem);
 
         createItemTree();
-        console.warn(self.rootNode);
 
         self.onItemsChanged();
     }
