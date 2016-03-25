@@ -44,7 +44,7 @@ yak.GetInstancesRequestHandler = function GetInstancesRequestHandler(yakServer) 
         instanceInfo.port = instance.port;
         instanceInfo.state = instance.state;
         instanceInfo.plugins = instance.plugins;
-        instanceInfo.activePlugins = instance.getPluginInstances().map(function(item) {
+        instanceInfo.activePlugins = instance.getPluginInstances().map(function pickName(item) {
             return item.name;
         });
         instanceInfo.description = instance.description;
