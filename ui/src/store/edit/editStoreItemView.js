@@ -36,7 +36,7 @@ yak.ui.EditStoreItemView = function EditStoreItemView(parent, context, viewModel
     function initializeView() {
         parent.html(template.build(viewModel));
 
-        parent.find('[data-command=save]').click(handleSaveCommand);
+        parent.find('[data-command=save]').click(save);
         parent.find('[data-command=delete]').click(handleDeleteCommand);
         parent.find('[data-command=refresh]').click(function() { viewModel.refresh(); });
         parent.find('[data-command=cancel]').click(handleCancelCommand);
@@ -67,11 +67,13 @@ yak.ui.EditStoreItemView = function EditStoreItemView(parent, context, viewModel
     /**
      * Get the current editor content and if it is JSON prettify it.
      */
-    function handlePrettifyJsonCommand() {
+    function handlePrettifyJsonCommand(event) {
         var jsonText = codeEditor.getValue();
         try {
             var json = JSON.parse(jsonText);
-            var prettyJsonText = JSON.stringify(json, null, 2);
+
+            var space = event.ctrlKey ? 2 : 4;
+            var prettyJsonText = JSON.stringify(json, null, space);
 
             codeEditor.setValue(prettyJsonText);
         } catch (ex) {
@@ -92,7 +94,8 @@ yak.ui.EditStoreItemView = function EditStoreItemView(parent, context, viewModel
         }
     }
 
-    function handleSaveCommand() {
+    function save() {
+        console.warn('SAVE');
         var item = new yak.ui.StoreKeyValueItem(parent.find('[name=key]').val());
         item.value = codeEditor.getValue();
 
