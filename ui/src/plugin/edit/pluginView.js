@@ -43,13 +43,14 @@ yak.ui.PluginView = function PluginView(parent, context, viewModel) {
     function initializeCodeEditor() {
         CodeMirror.commands.autocomplete = yak.ui.codeEditorAutoComplete;
         CodeMirror.commands.autodocument = yak.ui.codeEditorAutoDocument;
+        CodeMirror.commands.quicksave = save;
 
         codeEditor = new CodeMirror(parent.find('[data-element=codeEditor]')[0], {
             value:  '',
             mode:  'javascript',
             lineNumbers: false,
             indentUnit: 4,
-            extraKeys: { 'Ctrl-Space': 'autocomplete', 'Ctrl-D': 'autodocument' }
+            extraKeys: { 'Ctrl-Space': 'autocomplete', 'Ctrl-D': 'autodocument', 'Ctrl-S': 'quicksave' }
         });
 
         codeEditor.on('change', handleCodeEditorChange);
@@ -64,7 +65,7 @@ yak.ui.PluginView = function PluginView(parent, context, viewModel) {
     function initializeView() {
         parent.html(template.build(viewModel));
 
-        parent.find('[data-command=save]').click(handleSaveCommand);
+        parent.find('[data-command=save]').click(save);
         parent.find('[data-command=delete]').click(handleDeleteCommand);
         parent.find('[data-command=cancel]').click(handleCancelCommand);
 
@@ -170,7 +171,7 @@ yak.ui.PluginView = function PluginView(parent, context, viewModel) {
     /**
      * Handle Save Button Click
      */
-    function handleSaveCommand() {
+    function save() {
         var pluginItem = new yak.ui.PluginItem();
         pluginItem.id = parent.find('[name=id]').val();
         pluginItem.description = parent.find('[name=description]').val();
