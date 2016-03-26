@@ -17,6 +17,8 @@ yak.HttpServer = function HttpServer(yakServer, config) {
      */
     var log = new yak.Logger(self.constructor.name);
 
+    var dns = require('dns');
+
     /**
      * @type {yak.Logger}
      */
@@ -59,6 +61,8 @@ yak.HttpServer = function HttpServer(yakServer, config) {
             app.set('port', config.httpPort);
             app.use(express.static(path.join('./ui/')));
             app.use(bodyParser.json({limit: '10MB'}));
+
+            app.get('*', acceptRequestsOnlyFromLocalhost);
 
             app.get('/scripts/yakjs-ui-config.js', getUIConfig);
 
@@ -226,6 +230,21 @@ yak.HttpServer = function HttpServer(yakServer, config) {
 
         // File Upload
         apiMap['request.uploadFileRequest'] = new yak.FileUploadRequestHandler(yakServer);
+    }
+
+    function acceptRequestsOnlyFromLocalhost(request, response, next) {
+        var host = request.headers.host.replace(':' + yakServer.configManager.config.httpPort, '');
+
+        dns.lookup(host, 4, function resolved(error, ipHost) {
+            console.warn(ipHost);
+            if (ipHost === '127.0.0.1') {
+                next();
+            } else {
+                var errorMessage = 'Forbidden - Access YAKjs only via localhost (127.0.0.1) or localhost.yakjs.com (127.0.0.1)';
+                log.warn(errorMessage, {host: host});
+                response.status(403).send(errorMessage);
+            }
+        });
     }
 
     constructor();
