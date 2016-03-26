@@ -61,6 +61,10 @@ yak.HttpServer = function HttpServer(yakServer, config) {
             app.use(bodyParser.json({limit: '10MB'}));
 
             app.get('/scripts/yakjs-ui-config.js', getUIConfig);
+
+            app.get('/data/store/*', handleGetStoreValueRequest);
+            app.post('/data/store/*', handlePostStoreValueRequest);
+
             app.get('/api/*', handleAPIRequest);
             app.post('/api/*', handleAPIRequest);
 
@@ -124,6 +128,36 @@ yak.HttpServer = function HttpServer(yakServer, config) {
         }
 
         response.send(apiResponse);
+    }
+
+    /**
+     * @route /data/store/
+     * @param {ExpressRequest} request
+     * @param {ExpressResponse} response
+     */
+    function handleGetStoreValueRequest(request, response) {
+        var storeKey = request.url.replace('/data/store/', '');
+        var requestLogMessage = ['data/store', '>', 'get', storeKey].join(' ');
+        log.info(requestLogMessage);
+
+        if (yakServer.storeProvider.hasValue(storeKey)) {
+            var data = yakServer.storeProvider.getValue(storeKey);
+            response.status(200).send(data);
+            log.info(['get', storeKey, '<', 'ok'].join(' '));
+        } else {
+            response.sendStatus(404);
+            log.info(['get', storeKey, '<', 'nok'].join(' '));
+        }
+    }
+
+    function handlePostStoreValueRequest(request, response) {
+        var storeKey = request.url.replace('/data/store/', '');
+        var requestLogMessage = ['data/store', '>', 'post', storeKey].join(' ');
+        log.info(requestLogMessage);
+
+        yakServer.storeProvider.updateValue(storeKey, request.body);
+        response.status(200).send();
+        log.info(['get', storeKey, '<', 'ok'].join(' '));
     }
 
     /**
