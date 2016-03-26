@@ -8,7 +8,7 @@ yak.ui.PluginItem = function PluginItem() {
     /**
      * @type {?string}
      */
-    this.name = null;
+    this.id = null;
 
     /**
      * @type {?string}

@@ -1,0 +1,49 @@
+.plugin-list {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.placeholder-item {
+    opacity: 0.5;
+}
+
+.placeholder-item.select-plugin-item-selector {
+    border: solid 2px @color-grey-dark;
+    background: @color-grey-dark;
+}
+
+.select-plugin-item {
+    .no-select;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    position: relative;
+    display: block;
+    margin: 0;
+    height: 3 * @grid-size;
+    cursor: pointer;
+    width: 100%;
+}
+
+.select-plugin-item-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+    padding-left: 2 * @grid-size;
+    padding-right: 2 * @grid-size;
+    line-height: 3 * @grid-size;
+    margin: 0;
+    height: 3 * @grid-size;
+}
+
+.select-plugin-item-selector {
+    position: absolute;
+    top: @grid-size;
+    border: solid 2px @color-blue-grey;
+    height: 1 * @grid-size;
+    width: 1 * @grid-size;
+}
+
+.select-plugin-item-selector.state-active {
+    background: @color-blue-grey;
+}

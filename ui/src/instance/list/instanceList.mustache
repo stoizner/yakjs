@@ -1,22 +1,62 @@
-<div class="header-panel mod-tall">
+<div class="header-panel">
     <header class="header-panel-header">
-        <div class="white-space-block"></div>
-        <ul class="tool-bar">
-            <li class="tool-bar-item">
-                <div class="button" data-command="create">
-                    <div class="center">New Instance</div>
+        <div class="tool-bar-block">
+            <div class="tool-bar-block-line">
+                <div class="center-panel">
+                     <div class="text-button" data-command="create">Create Instance</div>
+                     <div class="text-button" data-command="refresh">Refresh</div>
                 </div>
-            </li>
-            <li class="tool-bar-item">
-                <div class="button" data-command="refresh">
-                    <div class="center">Refresh</div>
-                </div>
-            </li>
-        </ul>
+            </div>
+        </div>
     </header>
     <section class="header-panel-body">
-        <div class="scroll-panel">
-            <div class="list instance-items"></div>
+        <div class="panel">
+            <div class="center-panel">
+                <div class="content-panel">
+                    <div class="scroll-panel">
+                        <ul class="list instance-items">
+                            {{#instances}}
+                                <li class="list-item" data-instance="{{name}}" data-id="{{id}}" data-state="{{state}}">
+                                    <div class="line-block">
+                                        <div class="list-item-cell status-indicator-box" title="{{stateTooltipText}}"></div>
+                                        <div style="width: 50px" class="list-item-cell text-line-block">{{port}}</div>
+                                        <div style="width: 450px" class="list-item-cell text-line-block">
+                                            <span class="strong-text">{{name}}</span>
+                                            {{#description}}
+                                                <span class="light-text">, {{description}}</span>
+                                            {{/description}}
+                                        </div>
+
+                                        <div class="list-item-cell-right text-line-block" style="width: 340px; text-align: right; padding-right: 10px">
+                                            <span class="light-text">{{state}} | </span>
+                                            <span class="light-text" data-elemet="pluginStatus">{{pluginActiveCount}}/{{pluginTotalCount}}</span> <span class="light-text">plugins active | </span>
+                                            <span class="light-text">{{connectionCount}}</span> <span class="light-text" title="Total number of client connections">clients </span>
+                                        </div>
+                                    </div>
+
+                                    <div class="line-block">
+                                        <div style="width: 90px" class="list-item-cell"></div>
+                                        <div class="list-item-cell">
+                                            <span class="flat-button" data-command="start">Start</span>
+                                            <span class="flat-button" data-command="stop">Stop</span>
+                                            <span class="flat-button" data-command="edit">Configure</span>
+                                        </div>
+
+                                        {{#hasPluginsNotStarted}}
+                                        <div class="list-item-cell-right text-line-block" style="width: 340px; text-align: right; padding-right: 10px">
+                                            <span class="light-text">Inactive plugins: {{inactivePluginsList}}</span>
+                                        </div>
+                                        {{/hasPluginsNotStarted}}
+                                    </div>
+
+                                    <div class="line-block">
+                                    </div>
+                                </li>
+                            {{/instances}}
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 </div>

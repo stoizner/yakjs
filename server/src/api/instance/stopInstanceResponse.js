@@ -1,5 +1,4 @@
 /**
- * StopInstanceResponse
  * @constructor
  * @implements {yak.api.Response}
  * @param {string} requestId
@@ -8,7 +7,6 @@ yak.api.StopInstanceResponse = function StopInstanceResponse(requestId) {
     'use strict';
 
     /**
-     * Command for the service API.
      * @type {string}
      */
     this.type = 'response.stopInstance';

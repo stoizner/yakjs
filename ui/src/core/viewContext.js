@@ -14,9 +14,4 @@ yak.ui.ViewContext = function ViewContext() {
      * @type {yak.ui.TemplateLoader}
      */
     this.template = null;
-
-    /**
-     * @type {{observable:function, applyBindings:function}}
-     */
-    this.ko = null;
 };

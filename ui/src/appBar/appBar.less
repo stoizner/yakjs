@@ -1,18 +1,13 @@
 .app-bar {
-    position: absolute;
-    top: 0;
-    right: 0;
-    left: 0;
-    bottom: 0;
-    background:#505050;
+    position: relative;
+    height: 65px;
     overflow: hidden;
-    z-index: 50;
 }
 
 .app-bar-logo {
     position: absolute;
     bottom: 0;
-    height: 56px;
+    height: 65px;
     left: 0;
     display:block;
     width: 80px;
@@ -53,7 +48,7 @@
 
 .app-bar-text {
     position: absolute;
-    bottom: -5px;
+    bottom: 0;
     left: 80px;
     vertical-align:middle;
     font: 30px/45px 'roboto-medium';
@@ -73,10 +68,37 @@
         text-decoration: none;
         opacity: 0.6;
         margin-left:10px;
-        font: 11px/20px 'roboto';
+        font: 14px/20px 'roboto';
     }
 
     a:hover {
         opacity: 1.0;
     }
+}
+
+.app-bar-bubble {
+    position: absolute;
+    right: 10px;
+    top: 20px;
+}
+
+.app-bar-bubble-text {
+    .no-select;
+    display: block;
+    margin: 5px 0 10px 50px;
+    line-height: 20px;
+    padding: 5px 10px;
+    border-radius: 20px;
+    border: solid 2px white;
+    min-width: 80px;
+    color: white;
+    font-size: 15px;
+    font-family: "Roboto", sans-serif;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.app-bar-bubble-text:hover {
+    background-color: white;
+    color: @color-blue-grey-300;
 }

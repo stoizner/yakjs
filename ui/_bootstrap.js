@@ -1,4 +1,4 @@
-/*global ko:false, cobu:false, Mustache:false */
+/*global cobu:false, Mustache:false */
 
 $(document).ready(function bootstrap() {
     'use strict';
@@ -6,22 +6,15 @@ $(document).ready(function bootstrap() {
     var eventBus = new cobu.EventBus();
     eventBus.diagnostics().onError(handleEventBusError);
 
-    //var webSocketAdapter = new yak.ui.WebSocketAdapter(eventBus);
-    var httpAdapter = new yak.ui.HttpAdapter(eventBus);
-
-    var viewModelContext = new yak.ui.ViewModelContext();
-    viewModelContext.adapter = httpAdapter;
-    viewModelContext.eventBus = eventBus;
+    var viewModelContext = new yak.ui.ViewModelContext(eventBus);
 
     var viewContext = new yak.ui.ViewContext();
     viewContext.template = new yak.ui.TemplateLoader(Mustache);
-    viewContext.ko = ko;
 
     var viewFactory = new yak.ui.ViewFactory(viewContext, viewModelContext);
     viewContext.viewFactory = viewFactory;
 
     viewFactory.create($('.workspace'), yak.ui.WorkspaceView, yak.ui.WorkspaceViewModel);
-    viewFactory.create($('[data-view=fileUploadReportView]'), yak.ui.FileUploadReportView, yak.ui.FileUploadReportViewModel);
 });
 
 /**

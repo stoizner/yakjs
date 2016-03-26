@@ -49,11 +49,11 @@ yak.ui.PluginListView = function PluginListView(parent, context, viewModel) {
      * @param {jQuery.Event} event
      */
     function handleListClick(event) {
-        var listItem = $(event.target).closest('.list-item');
-        var pluginName = listItem.attr('data-plugin');
+        var listItem = $(event.target).closest('[data-id]');
+        var pluginId = listItem.attr('data-id');
 
-        if (pluginName) {
-            viewModel.activatePluginEditPanel(pluginName);
+        if (pluginId) {
+            viewModel.activatePluginEditPanel(pluginId);
         }
     }
 

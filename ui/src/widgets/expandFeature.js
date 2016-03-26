@@ -20,6 +20,20 @@ yak.ui.ExpandFeature = function ExpandFeature(parent) {
     }
 
     /**
+     * Expands all elements.
+     */
+    this.expandAll = function expandAll() {
+        parent.find('[' + ATTR_IS_EXPANDED + ']').attr(ATTR_IS_EXPANDED, true);
+    };
+
+    /**
+     * Expands all elements.
+     */
+    this.collapseAll = function collapseAll() {
+        parent.find('[' + ATTR_IS_EXPANDED + ']').attr(ATTR_IS_EXPANDED, false);
+    };
+
+    /**
      * @param {jQuery.Event} event
      */
     function handleExpandHeaderClick(event) {

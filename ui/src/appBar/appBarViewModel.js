@@ -12,27 +12,23 @@ yak.ui.AppBarViewModel = function AppBarViewModel(context) {
     var self = this;
 
     /**
-     * Callback when a notification is active.
-     * @type {yak.ui.noop}
+     * @type {{lastCheckedAt: string, latestReleaseVersion: string, currentReleaseVersion: string, isLatestReleaseInUse: boolean, latestRelease: *}}
      */
-    this.onNotificationActiveChanged = _.noop;
+    this.versionCheckResult = null;
 
     /**
-     * Constructor
+     * @type {Function}
+     */
+    this.onVersionCheckResultChanged = _.noop;
+
+    /**
+     * Initializes the app view.
      */
     function constructor() {
-        context.eventBus.on(yak.ui.UpdateNotificationCommand).register(handleUpdateNotificationCommand);
-    }
-
-    /**
-     * @param {yak.ui.UpdateNotificationCommand} command
-     */
-    function handleUpdateNotificationCommand(command) {
-        if (command.text) {
-            self.onNotificationActiveChanged(true);
-        } else {
-            self.onNotificationActiveChanged(false);
-        }
+        context.versionChecker.checkLatestRelease().then(function(versionCheckResult) {
+            self.versionCheckResult = versionCheckResult;
+            self.onVersionCheckResultChanged(versionCheckResult);
+        });
     }
 
     constructor();

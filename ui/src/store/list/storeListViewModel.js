@@ -19,22 +19,22 @@ yak.ui.StoreListViewModel = function StoreListViewModel(context) {
     /**
      * @type {Function}
      */
-    var lastGetValueRequestCallback = yak.ui.noop;
+    var lastGetValueRequestCallback = _.noop;
 
     /**
-     * @type {Array<yak.ui.StoreItem>}
+     * @type {!Array<yak.ui.StoreItem>}
      */
     this.items = [];
 
     /**
-     * @type {!yak.ui.StoreGroupItem}
+     * @type {!yak.ui.StoreNodeItem}
      */
-    this.rootGroup = new yak.ui.StoreGroupItem();
+    this.rootNode = new yak.ui.StoreNodeItem(null, 'root');
 
     /**
      * @type {Function}
      */
-    this.onItemsChanged = yak.ui.noop;
+    this.onItemsChanged = _.noop;
 
     /**
      * Constructor
@@ -48,95 +48,94 @@ yak.ui.StoreListViewModel = function StoreListViewModel(context) {
      */
     this.activate = function activate() {
         console.log('yak.ui.StoreListViewModel.active');
-        context.adapter.sendRequest(new yak.api.GetStoreKeyInfoRequest(), handleGetStoreKeyInfoResponse);
+        context.adapter.sendRequest(new yak.api.GetStoreKeysRequest(), handleGetStoreKeyInfoResponse);
     };
 
     /**
      * Reload and refresh list.
      */
     this.reloadAndRefreshList = function reloadAndRefreshList() {
-        // SMELL: Make the refresh not so brutal.
-        context.adapter.sendRequest(new yak.api.GetStoreKeyInfoRequest(), handleGetStoreKeyInfoResponse);
+        context.adapter.sendRequest(new yak.api.GetStoreKeysRequest(), handleGetStoreKeyInfoResponse);
     };
 
     /**
-     * @param {yak.api.GetStoreKeyInfoResponse} response
+     * @param {yak.api.GetStoreKeysResponse} response
      */
     function handleGetStoreKeyInfoResponse(response) {
-        console.log('handleGetStoreKeyInfoResponse');
-
         /**
          * @param {!yak.api.StoreKeyInfo} keyInfo
          * @returns {yak.ui.StoreItem} The store list item.
          */
         function toStoreItem(keyInfo) {
-            return new yak.ui.StoreItem(keyInfo.key);
+            return new yak.ui.StoreKeyValueItem(keyInfo.key);
         }
 
         self.items = _.map(response.keys, toStoreItem);
 
-        initializeGroupsBasedOnNamespacedKeys();
+        createItemTree();
 
         self.onItemsChanged();
     }
 
     /**
-     * Initialize group structure based on namespaced keys.
+     * Initialize the item tree.
      */
-    function initializeGroupsBasedOnNamespacedKeys() {
-        self.rootGroup = new yak.ui.StoreGroupItem('');
+    function createItemTree() {
+        self.rootNode = new yak.ui.StoreNodeItem();
+
+        var groupNodes = {};
 
         /**
-         * @param {!yak.ui.StoreItem} item
+         * @param {!yak.ui.StoreKeyValueItem} item
          */
-        function addToGroup(item) {
-            var group = self.rootGroup;
-            if (item.namespace) {
-                group = findOrCreateGroup(self.rootGroup.groups, item.namespace);
-            }
+        function createNodeForItem(item) {
+            var node = new yak.ui.StoreNodeItem(self.rootNode, yak.ui.StoreNodeItemType.ITEM, item.name);
+            node.key = item.key;
 
-            group.items.push(item);
+            if (item.namespace) {
+                addNodeToGroupNode(node, item.namespace, groupNodes);
+            } else {
+                self.rootNode.nodes.push(node);
+            }
         }
 
-        _.each(self.items, addToGroup);
+        _.each(self.items, createNodeForItem);
     }
 
     /**
-     * @param {!Object<string, !yak.ui.StoreGroupItem>} groups
-     * @param {string} namespacedGroupName Namespaced group name (e.g.: com.yakjs.group)
-     * @returns {!yak.ui.StoreGroupItem} The group for the group name.
+     * @param {yak.ui.StoreNodeItem} node
+     * @param {string} namespace
+     * @param {Object<string, string>} groupNodes
      */
-    function findOrCreateGroup(groups, namespacedGroupName) {
-        var namespaceIndex = namespacedGroupName.indexOf('.');
-        var groupName = namespacedGroupName;
-        var subGroupName = '';
-        var group;
+    function addNodeToGroupNode(node, namespace, groupNodes) {
+        var groupNames = namespace.split('.');
 
-        if (namespaceIndex >= 0) {
-            groupName = namespacedGroupName.substring(0, namespaceIndex);
-            subGroupName = namespacedGroupName.substring(namespaceIndex + 1);
-        }
+        var parentGroupNode = self.rootNode;
+        var fullGroupName = '';
 
-        if (!groups[groupName]) {
-            group = new yak.ui.StoreGroupItem(groupName);
-            groups[groupName] = group;
-        } else {
-            group = groups[groupName];
-        }
+        groupNames.forEach(function(groupName) {
+            fullGroupName = fullGroupName + '.' + groupName;
 
-        if (subGroupName) {
-            group = findOrCreateGroup(group.groups, subGroupName);
-        }
+            var groupNode = groupNodes[fullGroupName];
 
-        return group;
+            if (!groupNode) {
+                groupNode = new yak.ui.StoreNodeItem(parentGroupNode, yak.ui.StoreNodeItemType.GROUP, groupName);
+                groupNodes[fullGroupName] = groupNode;
+                parentGroupNode.nodes.push(groupNode);
+            }
+
+            parentGroupNode = groupNode;
+        });
+
+        parentGroupNode.nodes.push(node);
     }
 
     /**
      * Show and activate the store entry edit panel for given key.
-     * @param {yak.api.StoreKeyInfo} [keyInfo]
+     * @param {yak.api.StoreKeyInfo} [storeKeyInfo]
      */
-    this.activateStoreEditPanel = function activateStoreEditPanel(keyInfo) {
-        context.eventBus.post(new yak.ui.ActivatePanelCommand('panel-storeEntry-edit', keyInfo));
+    this.activateStoreEditPanel = function activateStoreEditPanel(storeKeyInfo) {
+        context.eventBus.post(new yak.ui.ShowViewCommand(yak.ui.EditStoreItemView, storeKeyInfo));
     };
 
     /**
@@ -157,7 +156,7 @@ yak.ui.StoreListViewModel = function StoreListViewModel(context) {
      * Create or update a store item.
      * @param {yak.ui.StoreItem} storeItem
      */
-    this.createOrUpdate = function createOrUpdate(storeItem) {
+    this.updateValue = function createOrUpdate(storeItem) {
         console.log('StoreListViewModel.createOrUpdate', { storeItem: storeItem });
 
         self.item = storeItem;

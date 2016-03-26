@@ -20,12 +20,12 @@ yak.ui.StoreListView = function StoreListView(parent, context, viewModel) {
     /**
      * @type {yak.ui.Template}
      */
-    var itemTemplate = context.template.load('storeListItem');
+    var nodeItemTemplate = context.template.load('storeNodeItem');
 
     /**
      * @type {yak.ui.Template}
      */
-    var groupTemplate = context.template.load('storeGroupItem');
+    var nodeGroupTemplate = context.template.load('storeNodeGroup');
 
     /**
      *
@@ -42,19 +42,24 @@ yak.ui.StoreListView = function StoreListView(parent, context, viewModel) {
         console.log('yak.ui.StoreListView.constructor');
         parent.html(template.build());
 
-        parent.find('[data-command=create]').click(_.partial(viewModel.activateStoreEditPanel, null));
+        parent.find('[data-command=create]').click(function() { viewModel.activateStoreEditPanel(); });
         parent.find('[data-command=refresh]').click(viewModel.reloadAndRefreshList);
+
+        parent.find('[data-command=expand-all]').click(function() { expandFeature.expandAll(); });
+        parent.find('[data-command=collapse-all]').click(function() { expandFeature.collapseAll(); });
 
         viewModel.onItemsChanged = handleItemsChanged;
 
-        createList();
+        parent.find('[data-element=tree]').click(handleTreeClick);
+
+        updateTree();
     }
 
     /**
      * @param {jQuery.Event} event
      */
-    function handleListClick(event) {
-        var listItem = $(event.target).closest('.list-item');
+    function handleTreeClick(event) {
+        var listItem = $(event.target).closest('.tree-item[data-key]');
         var storeKey = listItem.attr('data-key');
 
         if (storeKey) {
@@ -62,87 +67,72 @@ yak.ui.StoreListView = function StoreListView(parent, context, viewModel) {
         }
     }
 
-    /**
-     * Create the instance list.
-     */
-    function createList2() {
-        var html = '';
-        var itemContainer = $('.store-items', parent);
+    function updateTree() {
+        var rootNodeHtml = viewModel.rootNode.nodes.map(function(node) {
+            return renderNode(node, 0);
+        }).join('\n');
+        var treeElement = parent.find('[data-element="tree"]');
+        treeElement.html(rootNodeHtml);
 
-        _.each(viewModel.items, function createListItem(item) {
-            html += itemTemplate.build(item);
-        });
-
-        itemContainer.html(html);
-    }
-
-    function createList() {
-        var rootItemListContainer = parent.find('[data-list=items]');
-        var rootItemList = createItemList(viewModel.rootGroup.items);
-        rootItemListContainer.html(rootItemList);
-
-        var rootGroupsListContainer = parent.find('[data-list=groups]');
-        var rootGroupsList = createGroupList(viewModel.rootGroup.groups);
-        rootGroupsListContainer.html(rootGroupsList);
-
-        parent.find('[data-list=items]').click(handleListClick);
-
-        expandFeature = new yak.ui.ExpandFeature(parent);
+        expandFeature = new yak.ui.ExpandFeature(treeElement);
     }
 
     /**
-     * @param {!Object<string, !yak.ui.StoreGroupItem>} groupsMap
-     * @return {string} The group list HTML.
+     * @param {!yak.ui.StoreNodeItem} node
+     * @param {number} level
+     * @return {string}
      */
-    function createGroupList(groupsMap) {
-        var html = '';
-
-        var groups = _.toArray(groupsMap);
-
-        if (groups) {
-            groups = _.sortBy(groups, 'name');
-
-            _.each(groups, function appendGroupBlock(group) {
-                html += createGroupBlock(group);
-            });
-        }
-
-        return html;
-    }
-
-    /**
-     * @param {!yak.ui.StoreGroupItem} group
-     * @returns {string} The group item HTML
-     */
-    function createGroupBlock(group) {
-        var groupItem = {
-            name: group.name,
-            groups: createGroupList(group.groups),
-            items: createItemList(group.items)
+    function renderNode(node, level) {
+        var renderer = {
+            item: renderNodeItem,
+            group: renderNodeGroup
         };
 
-        return groupTemplate.build(groupItem);
+        return renderer[node.type](node, level);
     }
 
     /**
-     * @param {!Array<!yak.ui.StoreItem>} items
-     * @returns {string} The item list as HTML.
+     * @param {!yak.ui.StoreNodeItem} node
+     * @param {number} level
      */
-    function createItemList(items) {
-        var html = '';
+    function renderNodeItem(node, level) {
+        var itemContext = {
+            name: node.name,
+            key: node.key,
+            level: level,
+            intend: level * 20
+        };
 
-        _.each(items, function createListItem(item) {
-            html += itemTemplate.build(item);
-        });
+        return nodeItemTemplate.build(itemContext);
+    }
 
-        return html;
+    /**
+     * @param {!yak.ui.StoreNodeItem} node
+     * @param {number} level
+     * @returns {string}
+     */
+    function renderNodeGroup(node, level) {
+
+        var groupNodeHtml = node.nodes.map(function(node) {
+            var nextIntendLevel = level + 1;
+            return renderNode(node, nextIntendLevel);
+        }).join('\n');
+
+        var groupContext = {
+            name: node.name,
+            nodes: groupNodeHtml,
+            level: level,
+            intend: level * 20
+        };
+
+        return nodeGroupTemplate.build(groupContext);
     }
 
     /**
      * Handle items changed event from view model.
      */
     function handleItemsChanged() {
-        createList();
+        updateTree();
     }
 
     /**

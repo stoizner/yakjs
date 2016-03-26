@@ -1,0 +1,43 @@
+.navigation {
+    .no-select;
+}
+
+.navigation-indicator {
+    position: absolute;
+    left: 120px;
+    bottom: 0;
+    width: 0;
+    height: 5px;
+    background-color: @color-lime;
+    -webkit-transition: 0.3s ease-in-out;
+}
+
+.navigation ul {
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    top: 0;
+    right: 80px;
+    bottom: 0;
+    left: 0;
+}
+
+.navigation [data-ref] {
+    float: left;
+    display: inline-block;
+    text-align: center;
+    text-transform: uppercase;
+    font: 14px / 24px 'roboto-medium';
+    color: rgba(255, 255, 255, 0.60);
+    margin: 16px 0 0 0;
+    cursor: pointer;
+    padding: 0 12px;
+}
+
+.navigation li.state-active {
+    color: @color-lime;
+}
+
+.navigation li:hover {
+    color: @color-lime;
+}

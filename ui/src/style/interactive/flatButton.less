@@ -1,0 +1,33 @@
+.flat-button {
+    .no-select;
+    background: transparent;
+    display: inline-block;
+    box-sizing:content-box;
+    position: relative;
+    height: 30px;
+    font: 12px / 30px 'roboto-bold';
+    color: @color-blue-grey;
+    cursor: pointer;
+    margin: 0 5px 0 0;
+    padding: 0 5px;
+    border: 0;
+    text-transform: uppercase;
+    font-weight: bold;
+    outline: none;
+}
+
+.flat-button:active:hover,
+.flat-button:hover {
+    background-color: @color-grey;
+}
+
+.flat-button:focus {
+}
+
+.flat-button-disabled,
+.flat-button-disabled:hover {
+    opacity: 0.3;
+    cursor: pointer;
+    background: transparent;
+}
+

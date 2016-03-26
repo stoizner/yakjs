@@ -1,0 +1,52 @@
+<div class="header-panel">
+    <header class="header-panel-header">
+        <div class="tool-bar-block">
+            <div class="tool-bar-block-line">
+                <div class="center-panel">
+                    <div class="button" data-command="save">Save</div>
+                    {{#storeItem}}
+                        <div class="button" data-command="delete" >Delete</div>
+                    {{/storeItem}}
+                    <div class="button" data-command="refresh">Refresh</div>
+                    <div class="button" data-command="cancel">Cancel</div>
+
+                    <div class="tool-box">
+                        <div class="icon-button icon-healing" data-command="prettify-json" title="Click to auto-format JSON data with 4 spaces. Use CTRL+LMB for 2 spaces."></div>
+                        <div class="icon-button icon-minimize" data-command="minimize-editor" title="Minimize the code editor."></div>
+                        <div class="icon-button icon-maximize" data-command="maximize-editor" title="Maximize the code editor."></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="header-panel-body">
+        <div class="panel">
+            <div class="center-panel">
+                <div class="content-panel">
+                    <div class="header-panel">
+                        <header class="header-panel-header" data-section="config">
+                            <div class="frame-block" data-element="error-message">
+                                <div class="warning-text"></div>
+                            </div>
+
+                            <div class="frame-block">
+                                <label class="input-label">Key</label>
+                                <input type="text" class="input-text" name="key" value="{{storeItem.key}}"/>
+                                <div class="light-text">The store item key. Use dot to group/namespace items, e.g. com.mycompany.projectX.config.json</div>
+                            </div>
+
+                            <div class="divider-block"></div>
+                        </header>
+
+                        <div class="header-panel-body" data-section="editor">
+                            <div class="panel">
+                                <div id="storeValueEditor" class="code-editor-panel"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

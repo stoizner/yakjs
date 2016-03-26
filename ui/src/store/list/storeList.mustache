@@ -1,19 +1,29 @@
-<div class="header-panel mod-tall">
+<div class="header-panel">
     <header class="header-panel-header">
-        <div class="white-space-block"></div>
-        <ul class="tool-bar">
-            <li class="tool-bar-item"><div class="button" data-command="create">New Entry</div></li>
-            <li class="tool-bar-item"><div class="button" data-command="refresh">Refresh</div></li>
-        </ul>
-    </header>
-    <section class="header-panel-body">
-        <div class="footer-panel">
-            <section class="footer-panel-body">
-                <div class="scroll-panel content-panel">
-                    <div data-list="groups"></div>
-                    <div class="list" data-list="items"></div>
+        <div class="tool-bar-block">
+            <div class="tool-bar-block-line">
+                <div class="center-panel">
+                    <div class="text-button" data-command="create">Create Item</div>
+                    <div class="text-button" data-command="refresh">Refresh</div>
+
+                    <div class="tool-box">
+                        <div class="icon-button icon-chevron-down-white" data-command="expand-all" title="Expand all nodes."></div>
+                        <div class="icon-button icon-chevron-right-white" data-command="collapse-all" title="Collapse all nodes."></div>
+                    </div>
                 </div>
-            </section>
+            </div>
         </div>
-    </section>
+    </header>
+
+    <div class="header-panel-body">
+        <div class="panel">
+            <div class="center-panel">
+                <div class="content-panel">
+                    <div class="scroll-panel">
+                        <div class="tree" data-element="tree"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

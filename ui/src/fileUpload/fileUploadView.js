@@ -18,7 +18,25 @@ yak.ui.FileUploadView = function FileUploadView(parent, context, viewModel) {
      */
     var template = context.template.load('fileUpload');
 
+    /**
+     * @type {yak.ui.Template}
+     */
+    var uploadReportTemplate = context.template.load('fileUploadReport');
+
+    /**
+     * @type {jQuery}
+     */
     var fileDropZone = null;
+
+    /**
+     * @type {jQuery}
+     */
+    var progressBar;
+
+    /**
+     * @type {jQuery}
+     */
+    var progressSection;
 
     /**
      * Constructor
@@ -26,75 +44,112 @@ yak.ui.FileUploadView = function FileUploadView(parent, context, viewModel) {
     function constructor() {
         parent.html(template.build({ version: yak.ui.version}));
 
-        fileDropZone = $('.drop-panel');
+        fileDropZone = parent.find('.drop-block');
+        progressBar = parent.find('.progress-block');
+        progressSection = parent.find('[data-section=progress]');
+        progressSection.hide();
 
-        fileDropZone.bind('drop', handleJsFileDrop);
-        fileDropZone.bind('dragover', handleJsFileDragOver);
-        fileDropZone.bind('dragleave', handleJsFileDragLeave);
+        fileDropZone.bind('drop', handleFileDrop);
+        fileDropZone.bind('dragover', handleFileDragOver);
+        fileDropZone.bind('dragleave', handleFileDragLeave);
+
+        parent.find('[data-command=choose]').click(handleChooseCommand);
+        parent.find('[name=fileInput]').change(handleFileInputChange);
+
+        viewModel.onFileUploadItemsChanged = updateUploadProgress;
+        viewModel.onFileUploadCompleted = handleFileUploadCompleted;
+    }
+
+    /**
+     * @param {Array<{}>} fileUploadItems
+     */
+    function updateUploadProgress(fileUploadItems) {
+        var max = fileUploadItems.length;
+        var uploaded = _.where(fileUploadItems, {pending: false}).length;
+
+        var percent = Math.ceil(uploaded / max * 100);
+
+        progressBar.find('.progress-block-text').text(percent + '%');
+        progressBar.find('.progress-block-progress').attr('style', 'width: ' + percent + '%;');
+    }
+
+    /**
+     * @param {Array<{}>} fileUploadItems
+     */
+    function handleFileUploadCompleted(fileUploadItems) {
+        if (allUploadsSuccessfully(fileUploadItems)) {
+            progressBar.attr('data-status', 'ok');
+        } else {
+            progressBar.attr('data-status', 'error');
+        }
+
+        var reportContainer = parent.find('[data-container]');
+
+        var context = {
+            items: fileUploadItems,
+            allSuccess: _.every(fileUploadItems, function wasSuccessful(item) { return item.success; })
+        };
+
+        reportContainer.html(uploadReportTemplate.build(context));
+    }
+
+    /**
+     *  @param {Array<{}>} fileUploadItems
+     */
+    function allUploadsSuccessfully(fileUploadItems) {
+        return _.every(fileUploadItems, function(uploadItem) {
+            return uploadItem.success;
+        })
+    }
+
+    function handleFileInputChange(event) {
+        var files = parent.find('[name=fileInput]').get(0).files;
+        uploadFiles(files);
+    }
+
+    function handleChooseCommand() {
+        parent.find('[name=fileInput]').click();
     }
 
     /**
      * @param {jQuery.Event} event
      */
-    function handleJsFileDragOver(event) {
+    function handleFileDragOver(event) {
         event.stopPropagation();
         event.preventDefault();
         event.originalEvent.dataTransfer.dropEffect = 'copy';
 
-        fileDropZone.addClass('mod-drag-over');
+        fileDropZone.attr('data-drag', 'over');
     }
 
     /**
      * @param {jQuery.Event} event
      */
-    function handleJsFileDragLeave(event) {
-        fileDropZone.removeClass('mod-drag-over');
+    function handleFileDragLeave(event) {
+        fileDropZone.attr('data-drag', 'leave');
     }
 
     /**
      * @param {jQuery.Event} event
      */
-    function handleJsFileDrop(event) {
+    function handleFileDrop(event) {
         console.log('handleJsFileDrop', event);
-        fileDropZone.removeClass('mod-drag-over');
+        fileDropZone.attr('data-drag', 'drop');
 
         event.stopPropagation();
         event.preventDefault();
 
         var files = event.originalEvent.target.files || event.originalEvent.dataTransfer.files;
-        console.log(files);
-
-        viewModel.clearFileUploadInfo();
-        _.each(files, handleDroppedFile);
+        uploadFiles(files);
     }
 
     /**
-     * Handle every dropped file.
-     * @param {File} file
+     * @param {Array<File>} files
      */
-    function handleDroppedFile(file) {
-        console.log('file uploaded', file);
-        var reader = new FileReader();
-
-        // Closure to capture the file information.
-        reader.onload = _.partial(handleFileLoaded, file);
-
-        viewModel.createFileUploadInfo(file.name);
-
-        // Read in the file as a data URL.
-        reader.readAsText(file);
-    }
-
-    /**
-     * Handle the load event from the FileReader.
-     * @param {File} file
-     * @param {?} event
-     */
-    function handleFileLoaded(file, event) {
-        var fileName = file.name;
-        var content = event.target.result;
-
-        viewModel.uploadFile(fileName, content);
+    function uploadFiles(files) {
+        progressSection.show();
+        progressBar.attr('data-status', '');
+        viewModel.uploadFiles(files);
     }
 
     constructor();

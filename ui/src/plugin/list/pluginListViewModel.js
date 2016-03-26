@@ -7,19 +7,19 @@ yak.ui.PluginListViewModel = function PluginListViewModel(context) {
     'use strict';
 
     /**
-     * @type {yak.ui.InstanceListViewModel}
+     * @type {yak.ui.PluginListViewModel}
      */
     var self = this;
 
     /**
-     * @type {Array.<yak.ui.PluginItem>}
+     * @type {!Array<!yak.ui.PluginItem>}
      */
     this.items = [];
 
     /**
      * @type {Function}
      */
-    this.onItemsChanged = yak.ui.noop;
+    this.onItemsChanged = _.noop;
 
     /**
      * Constructor
@@ -48,23 +48,22 @@ yak.ui.PluginListViewModel = function PluginListViewModel(context) {
 
     /**
      * Show and activate the plugin edit panel.
-     * @param {string} [name]
+     * @param {string} [id]
      */
-    this.activatePluginEditPanel = function activatePluginEditPanel(name) {
+    this.activatePluginEditPanel = function activatePluginEditPanel(id) {
         var item = null;
 
-        if (name) {
-            item = _.findWhere(self.items, {name: name});
+        if (id) {
+            item = _.findWhere(self.items, {id: id});
         }
 
-        context.eventBus.post(new yak.ui.ActivatePanelCommand('panel-plugin-edit', item));
+        context.eventBus.post(new yak.ui.ShowViewCommand(yak.ui.PluginView, item));
     };
 
     /**
      * Reload and refresh list.
      */
     this.reloadAndRefreshList = function reloadAndRefreshList() {
-        // SMELL: Make the refresh not so brutal.
         context.adapter.sendRequest(new yak.api.GetPluginsRequest(), handleGetPluginsResponse);
     };
 
@@ -88,11 +87,10 @@ yak.ui.PluginListViewModel = function PluginListViewModel(context) {
     function handleGetPluginsResponse(response) {
         console.log('handleGetPluginsResponse', response);
 
-        self.items = [];
-        _.each(response.plugins, function toItem(plugin) {
+        self.items = _.map(response.plugins, function toItem(plugin) {
             var item = new yak.ui.PluginItem();
             _.extend(item, plugin);
-            self.items.push(item);
+            return item;
         });
         self.onItemsChanged();
     }

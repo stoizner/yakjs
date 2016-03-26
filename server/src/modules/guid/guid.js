@@ -1,4 +1,9 @@
-(function createGuidModule() {
+/**
+ * http://stackoverflow.com/questions/105034/how-to-create-a-guid-uuid-in-javascript
+ * @returns {string} A GUID.
+ */
+yak.guid = function guid() {
+
     /**
      * S4
      * @returns {string} An 4 alpha-numeric character string block.
@@ -9,15 +14,8 @@
             .substring(1);
     }
 
-    /**
-     * http://stackoverflow.com/questions/105034/how-to-create-a-guid-uuid-in-javascript
-     * @returns {string} A GUID.
-     */
-    function guid() {
-        return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
-    }
+    return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
+};
 
-    yak.exports.guid = guid;
-    yak.guid = guid;
-    yak.api.guid = guid;
-}());
+yak.api.guid = yak.guid;
+

@@ -1,5 +1,4 @@
 /**
- * StartInstanceResponse
  * @constructor
  * @implements {yak.api.Response}
  * @param {string} requestId
@@ -8,7 +7,6 @@ yak.api.StartInstanceResponse = function StartInstanceResponse(requestId) {
     'use strict';
 
     /**
-     * Command for the service API.
      * @type {string}
      */
     this.type = 'response.startInstance';

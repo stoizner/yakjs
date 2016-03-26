@@ -1,44 +1,32 @@
-<div class="header-panel mod-tall">
+<div class="header-panel">
     <header class="header-panel-header">
         <div class="app-bar"></div>
-    </header>
-    <section class="header-panel-body">
-        <div class="main-navigation tab-panel">
-            <div class="tab-panel-tabs">
-                <div class="dark-background-panel">
-                    <div class="center-panel">
-                        <ul>
-                            <li data-panel="panel-instance" class="state-active">Instances</li>
-                            <li data-panel="panel-plugin">Plugins</li>
-                            <li data-panel="panel-store">Store</li>
-                        </ul>
-                        <div class="tab-panel-tabs-indicator"></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="tab-panel-panels">
+        <div class="tool-bar-block">
+            <div class="dark-background-panel">
                 <div class="center-panel">
-                    <div class="dynamic-panel">
-                        <div class="dynamic-panel-top">
-                            <div class="notification" data-bind="visible: isNotificationVisible"></div>
-                        </div>
-                        <div class="dynamic-panel-center">
-                            <div class="dynamic-panel-center-content">
-                                <div class="panel" data-panel="panel-instance" data-tab="panel-instance"></div>
-                                <div class="panel" data-panel="panel-instance-edit" data-tab="panel-instance"></div>
-
-                                <div class="panel" data-panel="panel-plugin" data-tab="panel-plugin"></div>
-                                <div class="panel" data-panel="panel-plugin-edit" data-tab="panel-plugin"></div>
-
-                                <div class="panel" data-panel="panel-store" data-tab="panel-store"></div>
-                                <div class="panel" data-panel="panel-storeEntry-edit" data-tab="panel-store"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="workspace-file-upload-box" data-view="fileUploadView"></div>
+                    <nav class="navigation panel">
+                        <ul>
+                            <li data-ref="InstanceListView" class="state-active">Instances</li>
+                            <li data-ref="PluginListView">Plugins</li>
+                            <li data-ref="StoreListView">Store</li>
+                            <li data-ref="FileUploadView">Upload</li>
+                        </ul>
+                        <div class="navigation-indicator"></div>
+                    </nav>
                 </div>
             </div>
         </div>
-    </section>
+    </header>
+
+    <div class="header-panel-body">
+        <div class="panel" data-container="page"></div>
+    </div>
+
+    <footer class="header-panel-footer">
+        <div class="tool-bar-block">
+            <div class="tool-bar-block-line">
+
+            </div>
+        </div>
+    </footer>
 </div>

@@ -3,20 +3,27 @@
     <head>
         <title>YAKjs</title>
         <link rel="stylesheet" href="style/yakjs-style.css" type="text/css">
-        <link rel="stylesheet" href="ext/codemirror/codemirror-yak.css">
+        <link rel="stylesheet" href="ext/codemirror/codemirror.css">
         <link rel="stylesheet" href="ext/codemirror/addon/show-hint-yak.css">
+        <link rel="icon" href="favicon.ico" type="image/x-icon"/>
+        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/>
 
         <script src="ext/codemirror/codemirror.js"></script>
-        <script src="ext/codemirror/javascript.js"></script>
+        <script src="ext/codemirror/mode/javascript.js"></script>
+        <script src="ext/codemirror/mode/gfm.js"></script>
+        <script src="ext/codemirror/mode/markdown.js"></script>
+        <script src="ext/codemirror/mode/htmlmixed.js"></script>
+        <script src="ext/codemirror/mode/overlay.js"></script>
+        <script src="ext/codemirror/mode/css.js"></script>
         <script src="ext/codemirror/addon/show-hint.js"></script>
         <script src="ext/codemirror/addon/javascript-hint.js"></script>
 
         <script src="ext/jquery.js"></script>
         <script src="ext/underscore.js"></script>
         <script src="ext/mustache.js"></script>
+        <script src="ext/mousetrap.min.js"></script>
         <script src="ext/cobu-eventbus.js"></script>
         <script src="ext/yakjs-api.js"></script>
-        <script src="ext/knockout.js"></script>
 
         <script src="scripts/yakjs-api.js"></script>
         <script src="scripts/yakjs-ui-config.js"></script>
@@ -25,16 +32,6 @@
 
     <body>
         <div class="workspace panel"></div>
-        <div class="dialog-panel" data-view="fileUploadReportView"></div>
-
-        <!--<div class="appBar-panel mod-tall">-->
-            <!--<div class="appBar-panel-appBar">-->
-                <!--<div class="appBar"></div>-->
-            <!--</div>-->
-            <!--<div class="appBar-panel-body">-->
-
-            <!--</div>-->
-        <!--</div>-->
 
         {{mustache-templates-all}}
 
