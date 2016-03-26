@@ -49,10 +49,14 @@ yak.ui.EditStoreItemView = function EditStoreItemView(parent, context, viewModel
 
         codeEditor = new CodeMirror($('#storeValueEditor')[0], {
             value:  '',
-            mode:  'json',
+            mode:  {name: "javascript", json: true},
             lineNumbers: false,
             indentUnit: 4,
             extraKeys: { 'Ctrl-S': 'quicksave' }
+        });
+
+        codeEditor.on('change', function(instance) {
+            determineCodeMirrorType(instance);
         });
 
         minimizeCodeEditor();
@@ -65,6 +69,52 @@ yak.ui.EditStoreItemView = function EditStoreItemView(parent, context, viewModel
     this.activate = function activate(data) {
         viewModel.activate(data);
     };
+
+    function determineCodeMirrorType(instance) {
+        var switchModes = [checkAndSwitchToJSON, checkAndSwitchToMarkdown];
+
+        var switched = switchModes.some(function(switchModeFunction) {
+            return switchModeFunction(instance);
+        });
+
+        if (!switched) {
+            instance.setOption('mode', 'text');
+        }
+    }
+
+    /**
+     * @param {CodeMirror} instance
+     * @returns {boolean}
+     */
+    function checkAndSwitchToJSON(instance) {
+        var switched = false;
+
+        try {
+            JSON.parse(instance.getValue());
+            var mode = {name: "javascript", json: true};
+            instance.setOption('mode', mode);
+            console.log('Switched code editor to', {mode: mode});
+            switched = true;
+        } catch(ex) {
+            switched = false;
+        }
+
+        return switched;
+    }
+
+    function checkAndSwitchToMarkdown(instance) {
+        var switched = false;
+
+        var code = instance.getValue();
+        var mode = 'gfm';
+
+        if (code.indexOf('#') >= 0) {
+            instance.setOption('mode', mode);
+            switched = true;
+        }
+
+        return switched;
+    }
 
     /**
      * Get the current editor content and if it is JSON prettify it.
