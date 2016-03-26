@@ -45,12 +45,14 @@ yak.ui.EditStoreItemView = function EditStoreItemView(parent, context, viewModel
         parent.find('[data-command=maximize-editor]').click(maximizeCodeEditor);
         parent.find('[data-command=minimize-editor]').click(minimizeCodeEditor);
 
+        CodeMirror.commands.quicksave = save;
+
         codeEditor = new CodeMirror($('#storeValueEditor')[0], {
             value:  '',
             mode:  'json',
             lineNumbers: false,
             indentUnit: 4,
-            extraKeys: {}
+            extraKeys: { 'Ctrl-S': 'quicksave' }
         });
 
         minimizeCodeEditor();
