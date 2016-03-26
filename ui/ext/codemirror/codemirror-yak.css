@@ -2,7 +2,7 @@
 
 .CodeMirror {
     /* Set height, width, borders, and global font properties here */
-    line-height: 20px;
+    line-height: 30px;
     font-family: 'Consolas', 'SourceCodeProRegular', monospace;
     position: absolute;
     top: 0;
