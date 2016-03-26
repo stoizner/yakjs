@@ -1,4 +1,4 @@
-#YAKjs Store
+# YAKjs Store
 
 The YAKjs has a simple key/value store integrated. To get access to within a plugin use the require parameter.
 
