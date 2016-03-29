@@ -236,7 +236,6 @@ yak.HttpServer = function HttpServer(yakServer, config) {
         var host = request.headers.host.replace(':' + yakServer.configManager.config.httpPort, '');
 
         dns.lookup(host, 4, function resolved(error, ipHost) {
-            console.warn(ipHost);
             if (ipHost === '127.0.0.1') {
                 next();
             } else {
