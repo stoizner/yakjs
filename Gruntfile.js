@@ -77,7 +77,7 @@ module.exports = function grunt(grunt) {
             },
             server: {
                 options: {
-                    banner: banner,
+                    banner: banner
                 },
                 src: [
                         serverDir + '_namespaces.js',
@@ -211,18 +211,25 @@ module.exports = function grunt(grunt) {
 
     grunt.config.merge({
         mochaTest: {
-            dist: {
+            server: {
                 options: {
                     require: [],
                     reporter: 'spec'
                 },
-                src: ['./test/server/**/*.js']
+                src: ['./test/server/**/*Test.js']
             },
             coverage: {
                 options: {
                     reporter: 'spec'
                 },
-                src: [coverageDir + 'test/server/**/*.js']
+                src: [coverageDir + 'test/server/**/*Test.js']
+            },
+            integration: {
+                options: {
+                    require: [],
+                    reporter: 'spec'
+                },
+                src: ['./test/integration/**/*Test.js']
             }
         }
     });
@@ -306,17 +313,18 @@ module.exports = function grunt(grunt) {
         'copy:server',
         'copy:defaults',
         'eslint:server',
-        'test']);
+        'mochaTest:server']);
     grunt.registerTask('build-ui', ['compile-ui', 'clean:tmp']);
 
-    grunt.registerTask('test', ['mochaTest']);
-
     grunt.registerTask('coverage', ['instrument', 'copy:coverageTest', 'mochaTest:coverage', 'storeCoverage', 'makeReport']);
+
+    // Single runnable tasks
+    grunt.registerTask('testAll', ['mochaTest:dist', 'mochaTest:integration']);
     grunt.registerTask('dev', ['build-server', 'build-ui', 'watch']);
     grunt.registerTask('compile', ['compile-server', 'compile-ui']);
     grunt.registerTask('build', ['clean', 'build-server', 'build-ui', 'coverage']);
 
-    // Creates a releaseable zip package
+    // Creates a releasable zip package
     grunt.registerTask('package', ['build', 'exec:installNodeModules', 'compress', 'exec:npmPack']);
 
     // TASK: default

@@ -354,7 +354,7 @@ yak.WebSocketInstance = function WebSocketInstance(pluginManager, id, port) {
      */
     function callPluginOnMessage(pluginInstance, data, connection) {
         var pluginLog = getPluginLogger(pluginInstance.name);
-        var callback = pluginInstance.onJsonMessage;
+        var callback = pluginInstance.onMessage;
 
         if (callback) {
             try {
