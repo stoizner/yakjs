@@ -148,8 +148,6 @@ yak.FileUploadRequestHandler = function FileUploadRequestHandler(yakServer) {
         return response;
     }
 
-
-
     /**
      * Whether this file is a plugin.
      * @param {string} filename
