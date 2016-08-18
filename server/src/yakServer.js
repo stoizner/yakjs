@@ -34,6 +34,11 @@ yak.YakServer = function YakServer() {
     this.storeProvider = null;
 
     /**
+     * @type {!yak.ModuleProvider}
+     */
+    this.moduleProvider = null;
+
+    /**
      * @type {!yak.ConfigManager} configManager
      */
     this.configManager = null;
@@ -67,10 +72,12 @@ yak.YakServer = function YakServer() {
         self.storeProvider = new yak.StoreProvider();
         self.storeProvider.load();
 
+        self.moduleProvider = new yak.ModuleProvider();
+
         // Exports internal features as modules that can be used by plugins.
-        yak.exports.jsonStore = new yak.JsonStore(self.storeProvider);
-        yak.exports.store = new yak.Store(self.storeProvider);
-        yak.exports.guid = yak.guid;
+        yak.modules.jsonStore = new yak.JsonStore(self.storeProvider);
+        yak.modules.store = new yak.Store(self.storeProvider);
+        yak.modules.guid = yak.guid;
 
         var configProvider = new yak.InstanceConfigProvider();
         self.instanceManager = new yak.InstanceManager(configProvider, self.pluginManager);

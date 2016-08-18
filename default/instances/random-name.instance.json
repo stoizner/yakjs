@@ -1,0 +1,9 @@
+{
+    "port": "9040",
+    "description": "Responses with a random generated name",
+    "name": "random name service",
+    "plugins": [
+        "randomName"
+    ],
+    "autoStartEnabled": true
+}

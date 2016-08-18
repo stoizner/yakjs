@@ -13,7 +13,7 @@ global.yak = {};
 global._ = require('underscore');
 
 // Setup namespaces
-yak.exports = yak.exports || {};
+yak.modules = yak.modules || {};
 yak.api = yak.api || {};
 
 // Load server source files

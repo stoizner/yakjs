@@ -228,6 +228,11 @@ yak.HttpServer = function HttpServer(yakServer, config) {
         apiMap['yak.api.SetStoreItemRequest'] = new yak.SetStoreItemRequestHandler(yakServer);
         apiMap['yak.api.DeleteStoreItemRequest'] = new yak.DeleteStoreItemRequestHandler(yakServer);
 
+        // Modules
+        apiMap['request.getModuleNames'] = new yak.GetModuleNamesRequestHandler(yakServer);
+        apiMap['request.deleteModule'] = new yak.DeleteModuleRequestHandler(yakServer);
+        apiMap['request.clearModuleCacheRequest'] = new yak.ClearModuleCacheRequestHandler(yakServer);
+
         // File Upload
         apiMap['request.uploadFileRequest'] = new yak.FileUploadRequestHandler(yakServer);
     }
