@@ -1,5 +1,4 @@
 {
-    "id": "0",
     "port": "9020",
     "description": "Received messages will be sent to other clients.",
     "name": "chat service",

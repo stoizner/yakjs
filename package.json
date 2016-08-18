@@ -37,6 +37,7 @@
     "files": [
         "instances",
         "plugins",
+        "modules",
         "stores",
         "ui",
         "bin",

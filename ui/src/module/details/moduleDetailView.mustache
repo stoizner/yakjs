@@ -1,0 +1,37 @@
+<div class="header-panel">
+    <header class="header-panel-header">
+        <div class="tool-bar-block">
+            <div class="tool-bar-block-line">
+                <div class="center-panel">
+                    {{#moduleName}}
+                        <div class="button" data-command="delete" >Delete</div>
+                    {{/moduleName}}
+                    <div class="button" data-command="cancel">Cancel</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="header-panel-body">
+        <div class="panel">
+            <div class="center-panel">
+                <div class="content-panel">
+                    <div class="header-panel">
+                        <header class="header-panel-header" data-section="config">
+                            <div class="frame-block" data-element="error-message">
+                                <div class="warning-text"></div>
+                            </div>
+
+                            <div class="frame-block">
+                                <label class="input-label">Module name</label>
+                                <div class="input-text">{{moduleName}}</div>
+                                <div class="light-text">Add new modules via UPLOAD.</div>
+                            </div>
+
+                        </header>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

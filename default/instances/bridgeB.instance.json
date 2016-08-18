@@ -1,0 +1,9 @@
+{
+    "port": "9031",
+    "description": "Received messages will be sent to other bridge instances.",
+    "name": "bridgeB",
+    "plugins": [
+        "bridge"
+    ],
+    "autoStartEnabled": true
+}

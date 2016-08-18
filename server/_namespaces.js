@@ -13,7 +13,7 @@ var yak = yak || {};
  * can be consumed by plugins.
  * @namespace exports
  */
-yak.exports = yak.exports || {};
+yak.modules = yak.modules || {};
 
 /**
  * YAKjs server api.
