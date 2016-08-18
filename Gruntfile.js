@@ -135,7 +135,8 @@ module.exports = function grunt(grunt) {
                 files: [
                     {flatten: true, cwd: defaultDir + 'plugins/', src: ['*.js'], dest: pkgDir + 'plugins/', expand: true},
                     {flatten: true, cwd: defaultDir + 'instances/', src: ['*.json'], dest: pkgDir + 'instances/', expand: true},
-                    {flatten: true, cwd: defaultDir + 'stores/', src: ['*.*'], dest: pkgDir + 'stores/', expand: true}
+                    {flatten: true, cwd: defaultDir + 'stores/', src: ['*.*'], dest: pkgDir + 'stores/', expand: true},
+                    {flatten: true, cwd: defaultDir + 'modules/', src: ['*.*'], dest: pkgDir + 'modules/', expand: true}
                 ]
             },
             ui: {

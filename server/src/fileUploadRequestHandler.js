@@ -7,14 +7,14 @@ yak.FileUploadRequestHandler = function FileUploadRequestHandler(yakServer) {
     'use strict';
 
     /**
-     * @type {yak.CreateInstanceConfigRequestHandler}
+     * @type {!yak.FileUploadRequestHandler}
      */
     var self = this;
 
     var INTERNAL_ERROR_MESSAGE = 'Unknown internal YAKjs error.';
 
     var PLUGIN_EXTENSION = '.plugin.js';
-    var PLUGIN_EXTENSION_OLD = '.js';
+    var MODULE_EXTENSION = '.js';
     var INSTANCE_EXTENSION = '.instance.json';
     var STORE_EXTENSION = '.store.txt';
     var STORE_EXTENSION_OLD = '.txt';
@@ -35,7 +35,7 @@ yak.FileUploadRequestHandler = function FileUploadRequestHandler(yakServer) {
     var pluginValidator = new yak.api.PluginValidator();
 
     /**
-     * @param {yak.api.UploadFileRequest} request
+     * @param {!yak.api.UploadFileRequest} request
      * @returns {!yak.api.UploadFileResponse} response
      */
     this.handle = function handle(request) {
@@ -50,7 +50,10 @@ yak.FileUploadRequestHandler = function FileUploadRequestHandler(yakServer) {
         } else if (isStore(request.filename)) {
             log.info('Handle store upload.', {filename:request.filename});
             response = addOrUpdateStore(request);
-        } else {
+        } else if (isModule(request.filename)) {
+            log.info('Handle store upload.', {filename:request.filename});
+            response = addOrUpdateModule(request);
+        }else {
             log.info('Handle unknown file. ', {filename:request.filename});
             response = new yak.api.UploadFileResponse(request.id);
             response.success = false;
@@ -61,7 +64,7 @@ yak.FileUploadRequestHandler = function FileUploadRequestHandler(yakServer) {
     };
 
     /**
-     * @param {yak.api.UploadFileRequest} request
+     * @param {!yak.api.UploadFileRequest} request
      * @returns {!yak.api.UploadFileResponse} response
      */
     function addOrUpdateStore(request) {
@@ -73,6 +76,28 @@ yak.FileUploadRequestHandler = function FileUploadRequestHandler(yakServer) {
             documentKey = documentKey.replace(STORE_EXTENSION_OLD, '');
 
             store.setValue(documentKey, request.content);
+
+            response.success = true;
+        } catch(ex) {
+            log.warn(ex);
+            response.success = false;
+            response.message = INTERNAL_ERROR_MESSAGE;
+        }
+
+        return response;
+    }
+
+    /**
+     * @param {!yak.api.UploadFileRequest} request
+     * @returns {!yak.api.UploadFileResponse} response
+     */
+    function addOrUpdateModule(request) {
+        var response = new yak.api.UploadFileResponse(request.id);
+        response.fileType = 'module';
+
+        try {
+            yakServer.moduleProvider.createOrUpdate(request.filename, request.content);
+            yakServer.moduleProvider.clearModuleCache();
 
             response.success = true;
         } catch(ex) {
@@ -118,7 +143,6 @@ yak.FileUploadRequestHandler = function FileUploadRequestHandler(yakServer) {
             var pluginManager = yakServer.pluginManager;
 
             var pluginName = request.filename.replace(PLUGIN_EXTENSION, '');
-            pluginName = pluginName.replace(PLUGIN_EXTENSION_OLD, '');
 
             var parsedPlugin = pluginParser.parse(pluginName, request.content);
 
@@ -148,15 +172,22 @@ yak.FileUploadRequestHandler = function FileUploadRequestHandler(yakServer) {
         return response;
     }
 
-
-
     /**
      * Whether this file is a plugin.
      * @param {string} filename
      * @returns {boolean} Whether this file is a plugin.
      */
     function isPlugin(filename) {
-        return (hasExtension(filename, PLUGIN_EXTENSION) || hasExtension(filename, PLUGIN_EXTENSION_OLD));
+        return (hasExtension(filename, PLUGIN_EXTENSION));
+    }
+
+    /**
+     * Whether this file is a plugin.
+     * @param {string} filename
+     * @returns {boolean} Whether this file is a plugin.
+     */
+    function isModule(filename) {
+        return (hasExtension(filename, MODULE_EXTENSION));
     }
 
     /**
