@@ -1,0 +1,4 @@
+# Enforce LF line endings for cli js file so windows build output can also be run on *nix systems
+# This overwrite the core.autocrlf settings for that file so git checkout doesn't produce a CRLF version on windows
+server/bin/yakjs-cli.js text eol=lf
+*.sh text eol=lf
