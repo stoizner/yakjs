@@ -26,6 +26,17 @@ yak.GetPluginsRequestHandler = function GetPluginsRequestHandler(yakServer) {
             return pluginConfig;
         });
 
+        response.plugins = response.plugins.sort(byId);
+
         return response;
     };
+
+    /**
+     * @param {!yak.api.PluginConfig} pluginConfigA
+     * @param {!yak.api.PluginConfig} pluginConfigB
+     * @returns {number} sortIndex
+     */
+    function byId(pluginConfigA, pluginConfigB) {
+        return pluginConfigA.id.toLowerCase().localeCompare(pluginConfigB.id.toLowerCase());
+    }
 };
