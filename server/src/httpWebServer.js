@@ -208,9 +208,10 @@ yak.HttpServer = function HttpServer(yakServer, config) {
      */
     function initializeAPIMap() {
         // Instance
+        apiMap['request.getInstances'] = new yak.GetInstancesRequestHandler(yakServer);
+        apiMap['request.restartAllRunningInstances'] = new yak.RestartAllRunningInstancesRequestHandler(yakServer);
         apiMap['request.startInstance'] = new yak.StartInstanceRequestHandler(yakServer);
         apiMap['request.stopInstance'] = new yak.StopInstanceRequestHandler(yakServer);
-        apiMap['request.getInstances'] = new yak.GetInstancesRequestHandler(yakServer);
 
         // Instance Configs
         apiMap['request.createInstanceConfig'] = new yak.CreateInstanceConfigRequestHandler(yakServer.instanceManager.configProvider, yakServer.instanceManager);

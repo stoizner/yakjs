@@ -37,6 +37,7 @@ yak.ui.InstanceListView = function InstanceListView(parent, context, viewModel) 
         parent.find('[data-command=stop]').click(handleStopClick);
 
         parent.find('[data-command=create]').click(function() { viewModel.activateInstanceEditPanel(); });
+        parent.find('[data-command=restart]').click(function() { viewModel.restartAllInstances(); });
         parent.find('[data-command=refresh]').click(viewModel.reloadAndRefreshList);
     }
 
