@@ -48,13 +48,13 @@
         "yakjs.min.js"
     ],
     "dependencies": {
-        "body-parser": "^1.14.1",
-        "doctrine": "^1.1.0",
-        "express": "^4.9.0",
-        "log4js": "^0.6.33",
-        "moment": "^2.10.2",
+        "body-parser": "^1.15.2",
+        "doctrine": "^1.5.0",
+        "express": "^4.14.0",
+        "log4js": "^0.6.38",
+        "moment": "^2.15.1",
         "underscore": "~1.8.3",
-        "ws": "~1.0.1"
+        "ws": "~1.1.1"
     },
     "engines": {
         "node": ">=5.0.0"
@@ -62,24 +62,24 @@
     "devDependencies": {
         "blanket": "^1.2.1",
         "chai": "^3.4.1",
-        "eslint": "^2.4.0",
-        "grunt": "~0.4.5",
-        "grunt-contrib-clean": "^0.7.0",
-        "grunt-contrib-compress": "~0.14.0",
-        "grunt-contrib-concat": "~0.5.1",
-        "grunt-contrib-copy": "~0.8.2",
-        "grunt-contrib-less": "^1.1.0",
-        "grunt-contrib-nodeunit": "~0.2.0",
-        "grunt-contrib-uglify": "~0.11.0",
-        "grunt-contrib-watch": "^0.6.1",
-        "grunt-eslint": "^17.3.2",
-        "grunt-exec": "^0.4.6",
-        "grunt-istanbul": "~0.6.1",
-        "grunt-mocha-test": "^0.12.7",
-        "load-grunt-tasks": "~3.4.0",
-        "mocha": "2.3.4",
+        "eslint": "^3.7.1",
+        "grunt": "~1.0.1",
+        "grunt-contrib-clean": "^1.0.0",
+        "grunt-contrib-compress": "~1.3.0",
+        "grunt-contrib-concat": "~1.0.0",
+        "grunt-contrib-copy": "~1.0.0",
+        "grunt-contrib-less": "^1.4.0",
+        "grunt-contrib-nodeunit": "~1.0.0",
+        "grunt-contrib-uglify": "~2.0.0",
+        "grunt-contrib-watch": "^1.0.0",
+        "grunt-eslint": "^19.0.0",
+        "grunt-exec": "^1.0.1",
+        "grunt-istanbul": "~0.7.1",
+        "grunt-mocha-test": "^0.13.2",
+        "load-grunt-tasks": "~3.5.2",
+        "mocha": "3.1.2",
         "require-all": "^2.0.0",
-        "sinon": "~1.17.2",
+        "sinon": "~1.17.6",
         "sinon-chai": "~2.8.0"
     }
 }
