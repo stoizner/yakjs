@@ -47,6 +47,14 @@ yak.ui.InstanceListViewModel = function InstanceListViewModel(context) {
     };
 
     /**
+     * Send request to restart all running instances.
+     */
+    this.restartAllInstances = function restartAllInstances() {
+        var request = new yak.api.RestartAllRunningInstancesRequest();
+        context.adapter.sendRequest(request, self.reloadAndRefreshList);
+    };
+
+    /**
      * Stop instance.
      * @param {string} id
      */

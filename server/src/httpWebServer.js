@@ -62,8 +62,6 @@ yak.HttpServer = function HttpServer(yakServer, config) {
             app.use(express.static(path.join('./ui/')));
             app.use(bodyParser.json({limit: '10MB'}));
 
-            app.get('*', acceptRequestsOnlyFromLocalhost);
-
             app.get('/scripts/yakjs-ui-config.js', getUIConfig);
 
             app.get('/data/store/*', handleGetStoreValueRequest);
@@ -72,7 +70,9 @@ yak.HttpServer = function HttpServer(yakServer, config) {
             app.get('/api/*', handleAPIRequest);
             app.post('/api/*', handleAPIRequest);
 
-            http.createServer(app).listen(app.get('port'), displayWelcomeMessage);
+            // YAKjs does not implement any authentication, so listen only to localhost (IPv4) and [::1] (IPv6)
+            http.createServer(app).listen(app.get('port'), 'localhost', displayWelcomeMessage);
+            http.createServer(app).listen(app.get('port'), '[::1]');
         } catch(ex) {
             displayErrorMessage(ex.message);
         }
@@ -208,9 +208,10 @@ yak.HttpServer = function HttpServer(yakServer, config) {
      */
     function initializeAPIMap() {
         // Instance
+        apiMap['request.getInstances'] = new yak.GetInstancesRequestHandler(yakServer);
+        apiMap['request.restartAllRunningInstances'] = new yak.RestartAllRunningInstancesRequestHandler(yakServer);
         apiMap['request.startInstance'] = new yak.StartInstanceRequestHandler(yakServer);
         apiMap['request.stopInstance'] = new yak.StopInstanceRequestHandler(yakServer);
-        apiMap['request.getInstances'] = new yak.GetInstancesRequestHandler(yakServer);
 
         // Instance Configs
         apiMap['request.createInstanceConfig'] = new yak.CreateInstanceConfigRequestHandler(yakServer.instanceManager.configProvider, yakServer.instanceManager);
@@ -235,20 +236,6 @@ yak.HttpServer = function HttpServer(yakServer, config) {
 
         // File Upload
         apiMap['request.uploadFileRequest'] = new yak.FileUploadRequestHandler(yakServer);
-    }
-
-    function acceptRequestsOnlyFromLocalhost(request, response, next) {
-        var host = request.headers.host.replace(':' + yakServer.configManager.config.httpPort, '');
-
-        dns.lookup(host, 4, function resolved(error, ipHost) {
-            if (ipHost === '127.0.0.1') {
-                next();
-            } else {
-                var errorMessage = 'Forbidden - Access YAKjs only via localhost (127.0.0.1) or localhost.yakjs.com (127.0.0.1)';
-                log.warn(errorMessage, {host: host});
-                response.status(403).send(errorMessage);
-            }
-        });
     }
 
     constructor();
