@@ -8,22 +8,17 @@ yak.ui.StoreListView = function StoreListView(parent, context, viewModel) {
     'use strict';
 
     /**
-     * @type {yak.ui.StoreListView}
-     */
-    var self = this;
-
-    /**
-     * @type {yak.ui.Template}
+     * @type {!yak.ui.Template}
      */
     var template = context.template.load('storeList');
 
     /**
-     * @type {yak.ui.Template}
+     * @type {!yak.ui.Template}
      */
     var nodeItemTemplate = context.template.load('storeNodeItem');
 
     /**
-     * @type {yak.ui.Template}
+     * @type {!yak.ui.Template}
      */
     var nodeGroupTemplate = context.template.load('storeNodeGroup');
 
@@ -33,7 +28,7 @@ yak.ui.StoreListView = function StoreListView(parent, context, viewModel) {
      */
     var expandFeature = null;
 
-    this.activate = function activate() { viewModel.activate(); };
+    this.activate = viewModel.activate();
 
     /**
      * Constructor
@@ -75,6 +70,7 @@ yak.ui.StoreListView = function StoreListView(parent, context, viewModel) {
         treeElement.html(rootNodeHtml);
 
         expandFeature = new yak.ui.ExpandFeature(treeElement);
+        expandFeature.collapseAll();
     }
 
     /**

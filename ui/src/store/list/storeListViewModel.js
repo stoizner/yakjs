@@ -1,13 +1,13 @@
 /**
  * StoreListViewModel
  * @constructor
- * @param {yak.ui.ViewModelContext} context
+ * @param {!yak.ui.ViewModelContext} context
  */
 yak.ui.StoreListViewModel = function StoreListViewModel(context) {
     'use strict';
 
     /**
-     * @type {yak.ui.StoreListViewModel}
+     * @type {!yak.ui.StoreListViewModel}
      */
     var self = this;
 
@@ -22,7 +22,7 @@ yak.ui.StoreListViewModel = function StoreListViewModel(context) {
     var lastGetValueRequestCallback = _.noop;
 
     /**
-     * @type {!Array<yak.ui.StoreItem>}
+     * @type {!Array<yak.ui.StoreNodeItem>}
      */
     this.items = [];
 
@@ -59,7 +59,7 @@ yak.ui.StoreListViewModel = function StoreListViewModel(context) {
     };
 
     /**
-     * @param {yak.api.GetStoreKeysResponse} response
+     * @param {!yak.api.GetStoreKeysResponse} response
      */
     function handleGetStoreKeyInfoResponse(response) {
         /**
@@ -70,11 +70,23 @@ yak.ui.StoreListViewModel = function StoreListViewModel(context) {
             return new yak.ui.StoreKeyValueItem(keyInfo.key);
         }
 
-        self.items = _.map(response.keys, toStoreItem);
+        if (response.keys) {
+            self.items = response.keys.sort(byKey).map(toStoreItem);
 
-        createItemTree();
+            createItemTree();
 
-        self.onItemsChanged();
+            self.onItemsChanged();
+        }
+    }
+
+    /**
+     * Sort object by key property.
+     * @param {!yak.api.StoreKeyInfo} itemA
+     * @param {!yak.api.StoreKeyInfo} itemB
+     * @returns {number}
+     */
+    function byKey(itemA, itemB) {
+        return itemA.key.localeCompare(itemB.key);
     }
 
     /**
