@@ -1,7 +1,7 @@
 {
     "name": "yakjs",
-    "version": "2.2.1-SNAPSHOT",
-    "description": "YAKjs - a local server to stub complex WebSocket backends.",
+    "version": "3.0.0-SNAPSHOT",
+    "description": "YAKjs - a local server to stub WebSocket backends.",
     "keywords": [
         "YAK",
         "WebSocket",
@@ -41,6 +41,7 @@
         "stores",
         "ui",
         "bin",
+        "core",
         "config.json",
         "start-yakjs-server.bat",
         "start-yakjs-server.sh",
@@ -52,12 +53,13 @@
         "doctrine": "^1.5.0",
         "express": "^4.14.0",
         "log4js": "^0.6.38",
+        "minimist": "^1.2.0",
         "moment": "^2.15.1",
-        "underscore": "~1.8.3",
+        "underscore": "^1.8.3",
         "ws": "~1.1.1"
     },
     "engines": {
-        "node": ">=5.0.0"
+        "node": ">=6.9.0"
     },
     "devDependencies": {
         "blanket": "^1.2.1",
@@ -78,6 +80,7 @@
         "grunt-mocha-test": "^0.13.2",
         "load-grunt-tasks": "~3.5.2",
         "mocha": "3.1.2",
+        "request": "^2.81.0",
         "require-all": "^2.0.0",
         "sinon": "~1.17.6",
         "sinon-chai": "~2.8.0"

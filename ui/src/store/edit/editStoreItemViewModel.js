@@ -6,7 +6,7 @@ yak.ui.EditStoreItemViewModel = function EditStoreItemViewModel(context) {
     'use strict';
 
     /**
-     * @type {yak.ui.EditStoreItemViewModel}
+     * @type {!yak.ui.EditStoreItemViewModel}
      */
     var self = this;
 
@@ -26,13 +26,6 @@ yak.ui.EditStoreItemViewModel = function EditStoreItemViewModel(context) {
     this.isNewStoreItem = false;
 
     /**
-     * Constructor
-     */
-    function constructor() {
-    }
-
-    /**
-     * Activate view
      * @param {string} key
      */
     this.activate = function activate(key) {
@@ -45,23 +38,16 @@ yak.ui.EditStoreItemViewModel = function EditStoreItemViewModel(context) {
         }
     };
 
-    /**
-     * Refresh the store item.
-     */
     this.refresh = function refresh() {
         requestStoreItem(self.storeItem.key);
     };
 
     /**
-     * Request store item.
      * @param {string} key
      */
     function requestStoreItem(key) {
         if (key) {
-            var request = new yak.api.GetStoreItemRequest();
-            request.key = key;
-
-            context.adapter.sendRequest(request, handleGetStoreItemResponse);
+            context.adapter.get('/storeitems/' + key).then(handleGetStoreItemResponse);
         }
     }
 
@@ -72,30 +58,25 @@ yak.ui.EditStoreItemViewModel = function EditStoreItemViewModel(context) {
     this.updateValue = function createOrUpdate(storeItem) {
         var request = new yak.api.SetStoreItemRequest();
 
-        request.item = new yak.api.StoreKeyValueItem();
-        request.item.key = storeItem.key;
-        request.item.value = storeItem.value;
+        request.storeItem = new yak.api.StoreKeyValueItem();
+        request.storeItem.key = storeItem.key;
+        request.storeItem.value = storeItem.value;
 
-        if (!self.isNewStoreItem) {
+        if (self.isNewStoreItem){
+            context.adapter.post('/storeitems/', request).then(showStorePanel);
+        } else {
             request.key = self.storeItem.key;
+            context.adapter.put('/storeitems/' + self.storeItem.key, request).then(showStorePanel);
         }
-
-        context.adapter.sendRequest(request, handleSetStoreItemResponse);
     };
 
-    /**
-     * Cancel instance edit.
-     */
     this.cancel = function cancel() {
         showStorePanel();
     };
 
-    /**
-     * Deletes a store item.
-     */
     this.deleteStore = function deleteStore() {
         if (self.storeItem.key) {
-            context.adapter.sendRequest(new yak.api.DeleteStoreItemRequest(self.storeItem.key), showStorePanel);
+            context.adapter.deleteResource('/storeitems/' + self.storeItem.key).then(showStorePanel);
         }
     };
 
@@ -107,20 +88,9 @@ yak.ui.EditStoreItemViewModel = function EditStoreItemViewModel(context) {
      * @param {yak.api.GetStoreItemResponse} response
      */
     function handleGetStoreItemResponse(response) {
-        self.storeItem = new yak.ui.StoreKeyValueItem(response.item.key);
-        self.storeItem.value = response.item.value;
+        self.storeItem = new yak.ui.StoreKeyValueItem(response.storeItem.key);
+        self.storeItem.value = response.storeItem.value;
 
         self.onItemChanged();
     }
-
-    /**
-     * @param {yak.api.GetStoreItemResponse} response
-     */
-    function handleSetStoreItemResponse(response) {
-        if (response.success) {
-            showStorePanel();
-        }
-    }
-
-    constructor();
 };

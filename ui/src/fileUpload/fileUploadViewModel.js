@@ -68,12 +68,13 @@ yak.ui.FileUploadViewModel = function FileUploadViewModel(context) {
 
         console.log('uploadFile', {filename: filename});
 
-        var uploadFileRequest = new yak.api.UploadFileRequest();
-        uploadFileRequest.filename = filename;
-        uploadFileRequest.content = content;
-        uploadFileRequest.enableInstanceRestart = false;
+        var fileContainer = new yak.api.UploadFileRequest();
+        fileContainer.filename = filename;
+        fileContainer.content = content;
 
-        context.adapter.sendRequest(uploadFileRequest, _.partial(handleUploadFileResponse, filename));
+        context.adapter.post('/upload/file', {fileContainer: fileContainer})
+            .then(_.partial(handleUploadFileResponse, filename, true))
+            .catch(_.partial(handleUploadFileResponse, filename, false));
     }
 
     /**
@@ -94,10 +95,10 @@ yak.ui.FileUploadViewModel = function FileUploadViewModel(context) {
      * @param {string} filename
      * @param {yak.api.UploadFileResponse} response
      */
-    function handleUploadFileResponse(filename, response) {
+    function handleUploadFileResponse(filename, success, response) {
         console.log('handleUploadFileResponse', {response: response});
 
-        fileUploadItems[filename].success = response.success;
+        fileUploadItems[filename].success = success;
         fileUploadItems[filename].errorMessage = response.message;
         fileUploadItems[filename].fileType = response.fileType;
         fileUploadItems[filename].pending = false;
