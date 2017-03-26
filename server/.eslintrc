@@ -7,9 +7,6 @@
         "ecmaVersion": 6
     },
     "globals": {
-        "yak": true,
-        "_": true,
-        "$": true
     },
     "rules": {
         "eqeqeq": 0,
@@ -17,15 +14,6 @@
         "no-unused-vars": 0,
         "no-trailing-spaces": 0,
         "no-extra-strict": 0,
-
-        "valid-jsdoc": [2, {
-            "requireReturn": false,
-            "requireParamDescription": false,
-            "prefer": {
-                "return": "returns"
-            }
-        }],
-
         "quotes": [2, "single"],
         "strict": 0,
         "func-names": 2,
