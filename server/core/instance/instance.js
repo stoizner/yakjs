@@ -1,0 +1,43 @@
+'use strict';
+
+/**
+ * @interface
+ */
+function Instance() {
+    'use strict';
+
+    /**
+     * The unique instance ID.
+     * @type {string}
+     */
+    this.id = '';
+
+    /**
+     * The instance name.
+     * @type {null}
+     */
+    this.name = null;
+
+    /**
+     * Start instance.
+     */
+    this.start = function start() {};
+
+    /**
+     * Stop instance.
+     */
+    this.stop = function stop() {};
+
+    /**
+     * Description
+     * @type {string}
+     */
+    this.description = '';
+
+    /**
+     * @type {Logger}
+     */
+    this.log = null;
+}
+
+module.exports = Instance;

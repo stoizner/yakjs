@@ -33,7 +33,7 @@ yak.ui.ModuleListViewModel = function ModuleListViewModel(context) {
      */
     this.activate = function activate() {
         console.log('yak.ui.ModuleListViewModel.active');
-        context.adapter.sendRequest(new yak.api.GetModuleNamesRequest(), handleGetModulesResponse);
+        context.adapter.get('/modules/names').then(handleGetModulesResponse);
     };
 
     /**
@@ -61,11 +61,11 @@ yak.ui.ModuleListViewModel = function ModuleListViewModel(context) {
     };
 
     this.reloadAndRefreshList = function reloadAndRefreshList() {
-        context.adapter.sendRequest(new yak.api.GetModuleNamesRequest(), handleGetModulesResponse);
+        context.adapter.get('/modules/names').then(handleGetModulesResponse);
     };
 
     this.clearModuleCache = function clearModuleCache() {
-        context.adapter.sendRequest(new yak.api.ClearModuleCacheRequest(), _.noop);
+        context.adapter.post('/modules/cache/clear');
     };
 
     /**
