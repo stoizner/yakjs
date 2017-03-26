@@ -1,33 +1,30 @@
 /* global CodeMirror:false */
 
 /**
- * PluginListView
  * @constructor
- * @param {jQuery} parent
- * @param {yak.ui.ViewContext} context
- * @param {yak.ui.PluginViewModel} viewModel
+ * @struct
+ * @param {!jQuery} parent
+ * @param {!yak.ui.ViewContext} context
+ * @param {!yak.ui.PluginViewModel} viewModel
  */
 yak.ui.PluginView = function PluginView(parent, context, viewModel) {
     'use strict';
 
     /**
-     * @type {yak.ui.PluginView}
+     * @type {!yak.ui.PluginView}
      */
     var self = this;
 
     /**
-    * @type {null|CodeMirror}
+    * @type {CodeMirror}
     */
     var codeEditor = null;
 
     /**
-     * @type {yak.ui.Template}
+     * @type {!yak.ui.Template}
      */
     var template = context.template.load('pluginEdit');
 
-    /**
-     * Constructor
-     */
     function constructor() {
         console.log('yak.ui.InstanceView.constructor', self);
 
@@ -37,9 +34,6 @@ yak.ui.PluginView = function PluginView(parent, context, viewModel) {
         viewModel.onErrorResponse = handleErrorResponse;
     }
 
-    /**
-     * Initializes the code editor.
-     */
     function initializeCodeEditor() {
         CodeMirror.commands.autocomplete = yak.ui.codeEditorAutoComplete;
         CodeMirror.commands.autodocument = yak.ui.codeEditorAutoDocument;
@@ -59,9 +53,6 @@ yak.ui.PluginView = function PluginView(parent, context, viewModel) {
         minimizeCodeEditor();
     }
 
-    /**
-     * Updates the view
-     */
     function initializeView() {
         parent.html(template.build(viewModel));
 
@@ -160,11 +151,7 @@ yak.ui.PluginView = function PluginView(parent, context, viewModel) {
         viewModel.activate(data);
     };
 
-    /**
-     * Handle plugin item changed event.
-     */
     function handlePluginItemChanged() {
-        console.log('InstanceView.handleInstanceInfoChanged', viewModel.instanceItem);
         initializeView();
     }
 
@@ -177,7 +164,7 @@ yak.ui.PluginView = function PluginView(parent, context, viewModel) {
         pluginItem.description = parent.find('[name=description]').val();
         pluginItem.code = codeEditor.getValue();
 
-        viewModel.updateValue(pluginItem);
+        viewModel.createOrUpdate(pluginItem);
     }
 
     /**

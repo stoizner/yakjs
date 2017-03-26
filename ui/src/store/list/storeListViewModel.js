@@ -43,19 +43,13 @@ yak.ui.StoreListViewModel = function StoreListViewModel(context) {
         console.log('yak.ui.StoreListViewModel.constructor');
     }
 
-    /**
-     * Activate View
-     */
     this.activate = function activate() {
         console.log('yak.ui.StoreListViewModel.active');
-        context.adapter.sendRequest(new yak.api.GetStoreKeysRequest(), handleGetStoreKeyInfoResponse);
+        context.adapter.get('/storeitems/keys').then(handleGetStoreKeyInfoResponse);
     };
 
-    /**
-     * Reload and refresh list.
-     */
     this.reloadAndRefreshList = function reloadAndRefreshList() {
-        context.adapter.sendRequest(new yak.api.GetStoreKeysRequest(), handleGetStoreKeyInfoResponse);
+        context.adapter.get('/storeitems/keys').then(handleGetStoreKeyInfoResponse);
     };
 
     /**
@@ -63,15 +57,15 @@ yak.ui.StoreListViewModel = function StoreListViewModel(context) {
      */
     function handleGetStoreKeyInfoResponse(response) {
         /**
-         * @param {!yak.api.StoreKeyInfo} keyInfo
-         * @returns {yak.ui.StoreItem} The store list item.
+         * @param {string} key
+         * @returns {!yak.ui.StoreItem}
          */
-        function toStoreItem(keyInfo) {
-            return new yak.ui.StoreKeyValueItem(keyInfo.key);
+        function toStoreItem(key) {
+            return new yak.ui.StoreKeyValueItem(key);
         }
 
         if (response.keys) {
-            self.items = response.keys.sort(byKey).map(toStoreItem);
+            self.items = response.keys.sort().map(toStoreItem);
 
             createItemTree();
 
@@ -81,12 +75,12 @@ yak.ui.StoreListViewModel = function StoreListViewModel(context) {
 
     /**
      * Sort object by key property.
-     * @param {!yak.api.StoreKeyInfo} itemA
-     * @param {!yak.api.StoreKeyInfo} itemB
+     * @param {!yak.api.StoreKeyInfo} left
+     * @param {!yak.api.StoreKeyInfo} right
      * @returns {number}
      */
-    function byKey(itemA, itemB) {
-        return itemA.key.localeCompare(itemB.key);
+    function byKey(left, right) {
+        return left.key.localeCompare(right.key);
     }
 
     /**

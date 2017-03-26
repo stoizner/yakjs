@@ -33,7 +33,7 @@ yak.ui.InstanceListViewModel = function InstanceListViewModel(context) {
      */
     this.activate = function activate() {
         console.log('yak.ui.InstanceListViewModel.active');
-        context.adapter.sendRequest(new yak.api.GetInstancesRequest(), handleGetInstancesResponse);
+        context.adapter.get('/instances').then(handleGetInstancesResponse);
     };
 
     /**
@@ -41,17 +41,14 @@ yak.ui.InstanceListViewModel = function InstanceListViewModel(context) {
      * @param {string} id
      */
     this.startInstance = function startInstance(id) {
-        var request = new yak.api.StartInstanceRequest();
-        request.instanceId = id;
-        context.adapter.sendRequest(request, self.reloadAndRefreshList);
+        context.adapter.post('/instances/' + id + '/start').then(self.reloadAndRefreshList);
     };
 
     /**
      * Send request to restart all running instances.
      */
     this.restartAllInstances = function restartAllInstances() {
-        var request = new yak.api.RestartAllRunningInstancesRequest();
-        context.adapter.sendRequest(request, self.reloadAndRefreshList);
+        context.adapter.post('/instances/running/restart').then(self.reloadAndRefreshList);
     };
 
     /**
@@ -59,19 +56,7 @@ yak.ui.InstanceListViewModel = function InstanceListViewModel(context) {
      * @param {string} id
      */
     this.stopInstance = function stopInstance(id) {
-        var request = new yak.api.StopInstanceRequest();
-        request.instanceId = id;
-        context.adapter.sendRequest(request, self.reloadAndRefreshList);
-    };
-
-    /**
-     * Restart instance.
-     * @param {string} id
-     */
-    this.restartInstance = function restartInstance(id) {
-        var request = new yak.api.RestartInstanceRequest();
-        request.instanceId = id;
-        context.adapter.sendRequest(request, self.reloadAndRefreshList);
+        context.adapter.post('/instances/' + id + '/stop').then(self.reloadAndRefreshList);
     };
 
     /**
@@ -86,7 +71,7 @@ yak.ui.InstanceListViewModel = function InstanceListViewModel(context) {
      * Reload and refresh list.
      */
     this.reloadAndRefreshList = function reloadAndRefreshList() {
-        context.adapter.sendRequest(new yak.api.GetInstancesRequest(), handleGetInstancesResponse);
+        context.adapter.get('/instances').then(handleGetInstancesResponse);
     };
 
     /**
