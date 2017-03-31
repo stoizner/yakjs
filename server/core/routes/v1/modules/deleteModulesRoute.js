@@ -1,12 +1,13 @@
 'use strict';
 
 const state = require('../../../yakServerState');
+const HttpStatus = require('http-status-codes');
 
 /**
  * @param request
  * @param response
  */
-function deleteModulesRoute(request, response)  {
+function deleteModulesRoute(request, response) {
     /**
      * @type {string}
      */
@@ -16,7 +17,7 @@ function deleteModulesRoute(request, response)  {
         state.moduleProvider.deleteModule(moduleName);
         response.send();
     } else {
-        response.status(400).send({
+        response.status(HttpStatus.BAD_REQUEST).send({
             message: 'Module does not exist.'
         });
     }

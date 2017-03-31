@@ -1,3 +1,5 @@
+'use strict';
+
 const log4js = require('log4js');
 const fs = require('fs');
 const argv = require('minimist')(process.argv.slice(2));
@@ -9,8 +11,6 @@ const argv = require('minimist')(process.argv.slice(2));
  * @param {string} level The log4js log level.
  */
 function LogAdapter(level) {
-    'use strict';
-
     let appenders = {};
 
     /**

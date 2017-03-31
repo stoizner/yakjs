@@ -4,6 +4,7 @@ const Logger = require('../infrastructure/logger');
 const fs = require('fs');
 const path = require('path');
 const _ = require('underscore');
+const magic = require('../util/magicNumbers');
 
 /**
  * Provides the instance configurations.
@@ -105,7 +106,7 @@ function InstanceConfigProvider() {
      * Load instance configs from instances directory.
      */
     function loadConfigurations() {
-        log.debug('Loading instance configurations from instance directory', {dir:INSTANCES_DIR});
+        log.debug('Loading instance configurations from instance directory', {dir: INSTANCES_DIR});
 
         let filenames = getInstanceConfigs();
 
@@ -151,7 +152,7 @@ function InstanceConfigProvider() {
 
             // Clean up windows line endings.
             fileContent = fileContent.replace('\r\n', '\n');
-        } catch(ex) {
+        } catch (ex) {
             log.warn('Could not read instance configuration file.', {basename: filename, error: ex.message});
         }
 
@@ -171,8 +172,8 @@ function InstanceConfigProvider() {
 
         try {
             instanceConfig = JSON.parse(content);
-            instanceConfig.id = path.basename( path.basename(filename, '.json'), INSTANCE_CONFIG_MARKER);
-        } catch(ex) {
+            instanceConfig.id = path.basename(path.basename(filename, '.json'), INSTANCE_CONFIG_MARKER);
+        } catch (ex) {
             log.warn('Can not load instance. Maybe the instance file is not a valid json.', {filename: filename, error: ex.message});
         }
 
@@ -187,8 +188,8 @@ function InstanceConfigProvider() {
         let filename = toFilename(config.id);
 
         try {
-            fs.writeFileSync(filename, JSON.stringify(config, null, 4), {encoding: 'utf8'});
-        } catch(ex) {
+            fs.writeFileSync(filename, JSON.stringify(config, null, magic.JSON_SPACE), {encoding: 'utf8'});
+        } catch (ex) {
             log.error('Could not save instance to file system.', {instance: config.id, filename: filename, error: ex.message});
         }
     }

@@ -59,7 +59,7 @@ function PluginManager(pluginCodeProvider, pluginCodeParser) {
             try {
                 let plugin = parser.parse(filename, content);
                 self.addOrUpdatePlugin(plugin);
-            } catch(ex) {
+            } catch (ex) {
                 log.warn('Can not load plugin.', {filename: filename, error: ex.message});
             }
         });
@@ -80,7 +80,7 @@ function PluginManager(pluginCodeProvider, pluginCodeParser) {
     this.getPlugins = function getPlugins() {
         let result = [];
 
-        for(let key in plugins) {
+        for (let key in plugins) {
             if (plugins.hasOwnProperty(key)) {
                 result.push(plugins[key]);
             }
@@ -93,7 +93,7 @@ function PluginManager(pluginCodeProvider, pluginCodeParser) {
      * @param {!Plugin} plugin
      */
     this.addOrUpdatePlugin = function addOrUpdatePlugin(plugin) {
-        log.debug('Update plugin instance', { pluginId: plugin.id });
+        log.debug('Update plugin instance', {pluginId: plugin.id});
 
         if (!plugins[plugin.id]) {
             plugins[plugin.id] = plugin;
@@ -133,7 +133,7 @@ function PluginManager(pluginCodeProvider, pluginCodeParser) {
      * @param {string} id The id of the plugin.
      */
     this.removePlugin = function removePlugin(id) {
-        log.info('Remove plugin instance', { pluginId: id });
+        log.info('Remove plugin instance', {pluginId: id});
         if (plugins.hasOwnProperty(id)) {
             delete plugins[id];
         }
@@ -165,9 +165,9 @@ function PluginManager(pluginCodeProvider, pluginCodeParser) {
                 } else {
                     pluginLog.error('No constructor function available, can not create plugin instance.');
                 }
-            } catch(ex) {
+            } catch (ex) {
                 pluginInstance = null;
-                pluginLog.error('Can not create plugin instance. Unexpected error.', {error: ex.message });
+                pluginLog.error('Can not create plugin instance. Unexpected error.', {error: ex.message});
             }
         } else {
             log.error('Can not create plugin instance. Unknown plugin.', {pluginId: pluginId});
@@ -235,11 +235,11 @@ function PluginManager(pluginCodeProvider, pluginCodeParser) {
         try {
             // Function is a form of eval, but we are using it here for executing custom plugin code.
 
-            /*eslint-disable no-new-func */
+            /* eslint-disable no-new-func */
             worker = new Function('return ' + code)();
-            /*eslint-enable no-new-func */
+            /* eslint-enable no-new-func */
         } catch (ex) {
-            log.error('No valid plugin code.', { name: ex.name, message:ex.message, line: ex.line});
+            log.error('No valid plugin code.', {name: ex.name, message: ex.message, line: ex.line});
         }
 
         return worker;
@@ -274,7 +274,9 @@ function PluginManager(pluginCodeProvider, pluginCodeParser) {
                 tags = tags.concat(plugin.jsDoc.tags);
             }
 
-            tags = _.uniq(tags, function useOnlyUniqueTitles(tag) { return tag.title; });
+            tags = _.uniq(tags, function useOnlyUniqueTitles(tag) {
+                return tag.title;
+            });
 
             pluginString += '/**';
 
@@ -293,8 +295,7 @@ function PluginManager(pluginCodeProvider, pluginCodeParser) {
             pluginString += '\n\n';
 
             provider.savePlugin(plugin.id, pluginString);
-
-        } catch(ex) {
+        } catch (ex) {
             log.error('Could not save plugin.', {pluginName: plugin.id, error: ex.message});
         }
     };

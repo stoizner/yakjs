@@ -3,6 +3,7 @@
 const fs = require('fs');
 const Logger = require('../infrastructure/logger');
 const Config = require('./config');
+const magic = require('../util/magicNumbers');
 
 /**
  * @constructor
@@ -40,7 +41,7 @@ function ConfigProvider() {
         try {
             loadConfig();
         } catch (ex) {
-            log.error('Failed to load configuration, using default configuration.', { error: ex.message });
+            log.error('Failed to load configuration, using default configuration.', {error: ex.message});
         }
 
         return self.config;
@@ -58,7 +59,7 @@ function ConfigProvider() {
                 self.config = Object.assign(new Config(), parsedConfig);
 
                 log.info('YAKjs configuration loaded', {filename: BASE_CONFIG_FILENAME});
-            } catch(ex) {
+            } catch (ex) {
                 // Ignore error
                 log.info('YAKjs configuration could not be loaded. Using default config.', {filename: BASE_CONFIG_FILENAME, error: ex.message});
                 self.config = new Config();
@@ -67,7 +68,7 @@ function ConfigProvider() {
             log.info('YAKjs configuration does not exist. Create and use default config.', {filename: BASE_CONFIG_FILENAME});
             self.config = new Config();
 
-            fs.writeFile(BASE_CONFIG_FILENAME, JSON.stringify(self.config, null, 4));
+            fs.writeFile(BASE_CONFIG_FILENAME, JSON.stringify(self.config, null, magic.JSON_SPACE));
         }
     }
 }

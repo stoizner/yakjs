@@ -3,6 +3,7 @@
 const _ = require('underscore');
 
 /* global require:true */
+/* eslint-disable global-require */
 
 /**
  * YAKjs server own require implementations. It first looks
@@ -44,7 +45,7 @@ function loadCustomModule(moduleName) {
     try {
         let fullModuleName = '../../modules/' + moduleName;
         module = require(fullModuleName);
-    } catch(ex) {
+    } catch (ex) {
         // Just ignore any exceptions and continue.
     }
 
@@ -71,7 +72,7 @@ function findInternalModule(moduleName) {
     try {
         let fullModuleName = '../modules/shared/' + moduleName;
         module = require(fullModuleName);
-    } catch(ex) {
+    } catch (ex) {
         // Just ignore any exceptions and continue.
     }
 

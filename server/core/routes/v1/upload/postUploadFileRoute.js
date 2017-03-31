@@ -4,6 +4,7 @@ const state = require('../../../yakServerState');
 const fileExtension = require('../../../infrastructure/fileExtension');
 const hasExtension = require('../../../util/hasExtension');
 const storeProvider = require('../../../store/storeProvider');
+const HttpStatus = require('http-status-codes');
 
 const uploadHandlers = {};
 uploadHandlers[fileExtension.INSTANCE_EXTENSION] = state.instanceManager.upload;
@@ -23,7 +24,7 @@ fileTypes[fileExtension.STORE_EXTENSION_OLD] = 'store';
  * @param request
  * @param response
  */
-function postUploadFileRoute(request, response)  {
+function postUploadFileRoute(request, response) {
     /**
      * @type {!FileContainer}
      */
@@ -43,17 +44,17 @@ function postUploadFileRoute(request, response)  {
             upload(container)
                 .then(() => response.send(responseData))
                 .catch(error => {
-                    response.status(400).send(Object.assign(responseData, {
+                    response.status(HttpStatus.BAD_REQUEST).send(Object.assign(responseData, {
                         message: error
                     }));
                 });
         } else {
-            response.status(400).send(Object.assign(responseData, {
+            response.status(HttpStatus.BAD_REQUEST).send(Object.assign(responseData, {
                 message: 'Can not upload file container. Extension is not supported.'
             }));
         }
     } else {
-        response.status(400).send({
+        response.status(HttpStatus.BAD_REQUEST).send({
             message: 'Expected fileContainer with filename property.'
         });
     }

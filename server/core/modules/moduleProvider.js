@@ -85,7 +85,7 @@ function ModuleProvider() {
 
         let moduleNames = self.getAllModuleNames();
 
-        moduleNames.forEach((moduleName) => {
+        moduleNames.forEach(moduleName => {
             let fullModuleName = process.cwd() + MODULES_DIRECTORY + moduleName;
             delete require.cache[require.resolve(fullModuleName)];
         });

@@ -1,11 +1,11 @@
 'use strict';
 
+/* eslint-disable no-empty-function */
+
 /**
  * @interface
  */
 function Instance() {
-    'use strict';
-
     /**
      * The unique instance ID.
      * @type {string}

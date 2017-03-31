@@ -4,7 +4,6 @@ const fs = require('fs');
 const Logger = require('../infrastructure/logger');
 const StoreKeyValueItem = require('./storeKeyValueItem');
 const fileExtension = require('../infrastructure/fileExtension');
-const createGuid = require('../modules/shared/guid');
 
 /**
  * @constructor
@@ -36,8 +35,6 @@ function StoreProvider() {
      */
     let storeCache = {};
 
-    const providerId = createGuid();
-
     /**
      * Loads all store data files into the store cache.
      */
@@ -60,9 +57,7 @@ function StoreProvider() {
      * @returns {!Array<!StoreKeyValueItem>} The store as list of key value items.
      */
     this.getStoreItems = function getStoreItems() {
-        return Object.keys(storeCache).map((key) => {
-            return new StoreKeyValueItem(key, storeCache[key].value);
-        });
+        return Object.keys(storeCache).map(key => new StoreKeyValueItem(key, storeCache[key].value));
     };
 
     /**
@@ -98,7 +93,7 @@ function StoreProvider() {
             storeCache[key] = new StoreKeyValueItem(key, value);
             success = true;
         } catch (ex) {
-            log.warn('Could not save data store file.', {key: keyValueItem.key});
+            log.warn('Could not save data store file.', {key: key});
         }
 
         return success;
@@ -146,19 +141,21 @@ function StoreProvider() {
      */
     function readStoreDataFiles(filenames) {
         return filenames.map(function readFile(filename) {
+            let content = null;
+
             try {
-                let content = fs.readFileSync(STORES_DIR + filename, {encoding: 'utf8'});
+                content = fs.readFileSync(STORES_DIR + filename, {encoding: 'utf8'});
 
                 // Clean up windows line endings.
                 content = content.replace('\r\n', '\n');
-
-                return {
-                    filename: filename,
-                    content: content
-                };
-            } catch(ex) {
-               log.error('Could not read store data file. ', {filename: filename, error: ex.message});
+            } catch (ex) {
+                log.error('Could not read store data file. ', {filename: filename, error: ex.message});
             }
+
+            return {
+                filename: filename,
+                content: content
+            };
         });
     }
 
@@ -167,7 +164,7 @@ function StoreProvider() {
      * @returns {!Array<string>} List of store data filenames found in the STORES_DIR folder.
      */
     function getStoreDataFilenames() {
-        let files =  fs.readdirSync(STORES_DIR);
+        let files = fs.readdirSync(STORES_DIR);
 
         return files.filter(function useFilesWithStorePostfix(filename) {
             return filename.lastIndexOf(STORE_FILENAME_POSTFIX) === (filename.length - STORE_FILENAME_POSTFIX.length);

@@ -7,14 +7,14 @@
 function PluginCodeChecker() {
     /**
      * Check plugin code.
-     * @param {string} code
+     * @param {string} pluginCode
      * @returns {{isValid:boolean, errors:[]}} list of errors
      */
-    this.checkCode = function checkCode(code) {
-        let result = { isValid:true, errors:[] };
-        let lines = code.split('\n');
+    this.checkCode = function checkCode(pluginCode) {
+        let result = {isValid: true, errors: []};
+        let lines = pluginCode.split('\n');
 
-        code = code.trim();
+        let code = pluginCode.trim();
 
         if (lines.length <= 0) {
             result.errors.push('No code found.');
@@ -27,9 +27,9 @@ function PluginCodeChecker() {
         try {
             // Function is a form of eval, but we are using it here for executing custom plugin code.
 
-            /*eslint-disable no-new-func */
+            /* eslint-disable no-new-func, no-unused-vars */
             let constructor = new Function('return ' + code)();
-            /*eslint-enable no-new-func */
+            /* eslint-enable no-new-func */
         } catch (ex) {
             let errorMessage = [ex.name, ex.message].join(' ');
             result.errors.push(errorMessage);

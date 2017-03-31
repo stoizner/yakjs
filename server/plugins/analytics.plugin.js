@@ -1,3 +1,7 @@
+'use strict';
+
+/* eslint-disable no-empty-function, no-unused-vars */
+
 /**
  * @name analytics
  * @description Count received messages using the store
@@ -36,10 +40,10 @@ function AnalyticsPlugin(require, context) {
         if (!analyticsData[instanceName]) {
             analyticsData[instanceName] = {
                 messageCount: 0
-            }
+            };
         }
 
-        analyticsData[instanceName].messageCount = analyticsData[instanceName].messageCount + 1;
+        analyticsData[instanceName].messageCount += 1;
 
         jsonStore.setValue(DATA_KEY, analyticsData);
     };
@@ -52,5 +56,4 @@ function AnalyticsPlugin(require, context) {
 
     this.onStop = function onStop() {};
 }
-
 

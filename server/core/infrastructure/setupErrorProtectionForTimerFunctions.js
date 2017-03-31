@@ -9,11 +9,9 @@ const Logger = require('../infrastructure/logger');
  *
  * This is not a good implementation. This is a quick-fix. Replace it with "domains" from nodejs when there are
  * more stable. (see https://nodejs.org/api/domain.html)
- *
- * @constructor
  * @param {?} global
  */
-function ErrorProtectionForTimerFunctions(global) {
+function setupErrorProtectionForTimerFunctions(global) {
     /**
      * @type {!Logger}
      */
@@ -78,4 +76,4 @@ function ErrorProtectionForTimerFunctions(global) {
     constructor();
 }
 
-module.exports = ErrorProtectionForTimerFunctions;
+module.exports = setupErrorProtectionForTimerFunctions;

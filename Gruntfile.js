@@ -17,7 +17,6 @@ module.exports = function grunt(grunt) {
 
     // Server Folders: source code of the YAKjs server
     let serverDir = './server/';
-    let serverSrcDir = serverDir + 'src/';
 
     // User Interface Folders: source code of the YAKjs user interface
     let uiDir = './ui/';
@@ -133,9 +132,9 @@ module.exports = function grunt(grunt) {
     grunt.config.merge({
         eslint: {
             options: {
-                config: '.eslintrc'
+                fix: true
             },
-            server: [serverSrcDir + '**/*.js']
+            server: [serverDir + '**/*.js']
         }
     });
 
@@ -213,7 +212,7 @@ module.exports = function grunt(grunt) {
     // Istanbul coverage analysis
     grunt.config.merge({
         instrument: {
-            files: [serverSrcDir + '**/*.js'],
+            files: [serverDir + '**/*.js'],
                 options: {
                 basePath: coverageDir
             }

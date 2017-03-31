@@ -104,7 +104,7 @@ function PluginValidator(pluginManager) {
      */
     function validateId(pluginId) {
         let regex = /^[A-z0-9-_ ]+$/;
-        let isValid = !!regex.exec(pluginId);
+        let isValid = Boolean(regex.exec(pluginId));
 
         allValuesValid = allValuesValid && isValid;
 

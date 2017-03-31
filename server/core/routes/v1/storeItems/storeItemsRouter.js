@@ -1,7 +1,7 @@
 'use strict';
 
-const express  = require('express');
-const router = express.Router();
+const express = require('express');
+const router = express.Router(); // eslint-disable-line new-cap
 
 router.get('/storeitems/keys', require('./getStoreItemKeysRoute'));
 router.get('/storeitems/:key', require('./getStoreItemsRoute'));

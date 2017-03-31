@@ -6,7 +6,7 @@ const state = require('../../../yakServerState');
  * @param request
  * @param response
  */
-function postStartInstancesRoute(request, response)  {
+function postStartInstancesRoute(request, response) {
     state.instanceManager.start(request.params.instanceId);
     response.send();
 }

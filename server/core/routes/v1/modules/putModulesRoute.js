@@ -1,14 +1,13 @@
 'use strict';
 
 const state = require('../../../yakServerState');
-const PluginParser = require('../../../plugin/pluginParser');
-const PluginValidator = require('../../../plugin/pluginValidator');
+const HttpStatus = require('http-status-codes');
 
 /**
  * @param request
  * @param response
  */
-function putModulesRoute(request, response)  {
+function putModulesRoute(request, response) {
     /**
      * @type {string}
      */
@@ -29,7 +28,7 @@ function putModulesRoute(request, response)  {
 
         response.send();
     } else {
-        response.status(400).send({
+        response.status(HttpStatus.BAD_REQUEST).send({
             message: 'No module or module.name missing.'
         });
     }

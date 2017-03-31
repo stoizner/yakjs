@@ -3,7 +3,7 @@
 const Logger = require('./infrastructure/logger');
 const ExpressServer = require('./expressServer');
 
-const ErrorProtectionForTimerFunctions = require('./infrastructure/errorProtectionForTimerFunctions');
+const setupErrorProtectionForTimerFunctions = require('./infrastructure/setupErrorProtectionForTimerFunctions');
 const yakServerState = require('./yakServerState');
 
 /**
@@ -31,7 +31,7 @@ function YakServer() {
      * Initializes the yakjs server.
      */
     function constructor() {
-        setupErrorProtection()
+        setupErrorProtectionForTimerFunctions(global);
     }
 
     /**
@@ -41,14 +41,6 @@ function YakServer() {
         expressServer = new ExpressServer(self, yakServerState.configManager.config);
         expressServer.start();
     };
-
-    /**
-     * Set ups a protection layer to keep YAKjs stable even when
-     * plugins are throwing errors.
-     */
-    function setupErrorProtection() {
-        let timerProtection = new ErrorProtectionForTimerFunctions(global);
-    }
 
     /**
      * Get the used logger.

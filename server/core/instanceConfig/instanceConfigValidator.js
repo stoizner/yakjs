@@ -1,5 +1,7 @@
 'use strict';
 
+const magic = require('../util/magicNumbers');
+
 /**
  * Validate properties of {yak.api.InstanceConfig}.
  * @constructor
@@ -44,9 +46,9 @@ function InstanceConfigValidator(instance) {
      */
     function validateName() {
         let regex = /^[A-z0-9-_ ]+$/;
-        let isValid = !!regex.exec(instance.name);
+        let isValid = Boolean(regex.exec(instance.name));
 
-        allValuesValid = allValuesValid & isValid;
+        allValuesValid = allValuesValid && isValid;
 
         if (!isValid) {
             errorMessage = 'Please correct name. Only use this characters: [A-z0-9_- ]';
@@ -58,18 +60,18 @@ function InstanceConfigValidator(instance) {
      */
     function validatePort() {
         let regex = /^[0-9]+$/;
-        let isTextValid = !!regex.exec(instance.port);
+        let isTextValid = Boolean(regex.exec(instance.port));
 
         let isValueValid = false;
 
         if (isTextValid) {
             let value = parseInt(instance.port, 10);
-            if (value > 0 && value < 65535) {
+            if (value > 0 && value < magic.MAX_PORT_NUMBER) {
                 isValueValid = true;
             }
         }
 
-        allValuesValid = allValuesValid & isTextValid & isValueValid;
+        allValuesValid = allValuesValid && isTextValid && isValueValid;
 
         if (!isValueValid) {
             errorMessage = 'Please correct port. Valid values are between 1-65535.';

@@ -5,8 +5,6 @@
  * @struct
  */
 function InstanceInfo() {
-    'use strict';
-
     /**
      * ID of the instance
      * @type {string}

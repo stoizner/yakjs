@@ -1,3 +1,7 @@
+'use strict';
+
+/* eslint-disable no-empty-function, no-unused-vars */
+
 /**
  * @name randomName
  * @description Creates a random name.
@@ -5,20 +9,18 @@
  * @type WebSocketServerPlugin
  */
 function RandomNamePlugin(require) {
-    'use strict';
-
     var createRandomName = require('randomName').createRandomName;
 
     this.onStart = function onStart() {};
 
     /**
-     * @param {yak.WebSocketConnection} connection
+     * @param {WebSocketConnection} connection
      */
     this.onNewConnection = function onNewConnection(connection) {};
 
     /**
-     * @param {yak.WebSocketMessage} message
-     * @param {yak.WebSocketConnection} connection
+     * @param {WebSocketMessage} message
+     * @param {WebSocketConnection} connection
      */
     this.onMessage = function onMessage(message, connection) {
         connection.send(createRandomName());
@@ -26,13 +28,9 @@ function RandomNamePlugin(require) {
 
     /**
      * Connection closed event. Note that the connection is no longer part of instance.getConnections().
-     * @param {yak.WebSocketConnection} connection
+     * @param {WebSocketConnection} connection
      */
     this.onConnectionClosed = function onConnectionClosed(connection) {};
 
     this.onStop = function onStop() {};
 }
-
-
-
-

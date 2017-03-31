@@ -8,7 +8,7 @@ const state = require('../../../yakServerState');
  * @param request
  * @param response
  */
-function getInstancesRoute(request, response)  {
+function getInstancesRoute(request, response) {
     let instances = state.instanceManager.getInstances();
     let responseMessage = {
         instances: instances.map(toInstanceInfo)

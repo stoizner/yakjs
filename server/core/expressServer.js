@@ -4,9 +4,9 @@ const express = require('express');
 const http = require('http');
 const path = require('path');
 const bodyParser = require('body-parser');
-const dns = require('dns');
 const Logger = require('./infrastructure/logger');
 const apiV1Router = require('./routes/v1/apiV1Router');
+const HttpStatus = require('http-status-codes');
 
 /**
  * @constructor
@@ -32,13 +32,8 @@ function ExpressServer(yakServer, config) {
 
     let app = express();
 
-    /**
-     * @type {Object<string, Object>}
-     */
-    let apiMap = {};
-
     function constructor() {
-        //initializeAPIMap();
+        // initializeAPIMap();
 
         process.on('uncaughtException', function handleUncaughtException(error) {
             log.error('uncaughtException', error);
@@ -67,13 +62,10 @@ function ExpressServer(yakServer, config) {
             app.get('/data/store/*', handleGetStoreValueRequest);
             app.post('/data/store/*', handlePostStoreValueRequest);
 
-            // app.get('/api/*', handleAPIRequest);
-            // app.post('/api/*', handleAPIRequest);
-
             // YAKjs does not implement any authentication, so listen only to localhost (IPv4) and [::1] (IPv6)
             http.createServer(app).listen(app.get('port'), 'localhost', displayWelcomeMessage);
             http.createServer(app).listen(app.get('port'), '[::1]');
-        } catch(ex) {
+        } catch (ex) {
             displayErrorMessage(ex.message);
         }
     };
@@ -107,34 +99,6 @@ function ExpressServer(yakServer, config) {
     }
 
     /**
-     * @route /api/
-     * @param {ExpressRequest} request The HTTP request.
-     * @param {ExpressResponse} response The HTTP response object.
-     */
-    function handleAPIRequest(request, response) {
-        let identfiers = JSON.stringify(findIdentifiers(request.body));
-        let requestLogMessage = ['api', '>', request.body.type, ':', identfiers].join(' ');
-        log.info(requestLogMessage);
-
-        let requestType =  request.body.type;
-        let apiResponse = '';
-
-        if (apiMap[requestType]) {
-             apiResponse = apiMap[requestType].handle(request.body);
-        }
-
-        let responseLogMessage = ['api', '<', apiResponse.type, (apiResponse.success ? 'success' : 'error')].join(' ');
-
-        if (apiResponse.success) {
-            log.info(responseLogMessage);
-        } else {
-            log.warn(responseLogMessage);
-        }
-
-        response.send(apiResponse);
-    }
-
-    /**
      * @route /data/store/
      * @param {ExpressRequest} request
      * @param {ExpressResponse} response
@@ -146,10 +110,10 @@ function ExpressServer(yakServer, config) {
 
         if (yakServer.storeProvider.hasValue(storeKey)) {
             let data = yakServer.storeProvider.getValue(storeKey);
-            response.status(200).send(data);
+            response.send(data);
             log.info(['get', storeKey, '<', 'ok'].join(' '));
         } else {
-            response.sendStatus(404);
+            response.status(HttpStatus.NOT_FOUND).send();
             log.info(['get', storeKey, '<', 'nok'].join(' '));
         }
     }
@@ -160,34 +124,8 @@ function ExpressServer(yakServer, config) {
         log.info(requestLogMessage);
 
         yakServer.storeProvider.updateValue(storeKey, request.body);
-        response.status(200).send();
+        response.send();
         log.info(['get', storeKey, '<', 'ok'].join(' '));
-    }
-
-    /**
-     * Find properties that may be used to identify the object like 'Id', 'Key'
-     * or a combination of it 'pluginId', 'instanceId'
-     * @param {Object} obj
-     * @returns {Object} An object with only the found identifier values.
-     */
-    function findIdentifiers(obj) {
-        let identifierKeys = Object.keys(obj).filter(function isUsedToIdentifySomething(key) {
-            let lowerKey = key.toLowerCase();
-            return (
-                lowerKey.indexOf('key') === 0 ||
-                key.indexOf('Key') >= 0 ||
-                lowerKey.indexOf('id') === 0 ||
-                key.indexOf('Id') >= 0
-            );
-        });
-
-        let identifiers = {};
-
-        identifierKeys.forEach(function mapId(idKey) {
-            identifiers[idKey] = obj[idKey];
-        });
-
-        return identifiers;
     }
 
     /**
@@ -202,41 +140,6 @@ function ExpressServer(yakServer, config) {
 
         response.send(['var yak = yak || {}; yak.config = ', JSON.stringify(uiConfig), ';\n'].join(''));
     }
-
-    // /**
-    //  * Initialize Mapping between request type and handler.
-    //  */
-    // function initializeAPIMap() {
-    //     // Instance
-    //     apiMap['request.getInstances'] = new yak.GetInstancesRequestHandler(yakServer);
-    //     apiMap['request.restartAllRunningInstances'] = new yak.RestartAllRunningInstancesRequestHandler(yakServer);
-    //     apiMap['request.startInstance'] = new yak.StartInstanceRequestHandler(yakServer);
-    //     apiMap['request.stopInstance'] = new yak.StopInstanceRequestHandler(yakServer);
-    //
-    //     // Instance Configs
-    //     apiMap['request.createInstanceConfig'] = new yak.CreateInstanceConfigRequestHandler(yakServer.instanceManager.configProvider, yakServer.instanceManager);
-    //     apiMap['request.updateInstanceConfig'] = new yak.UpdateInstanceConfigRequestHandler(yakServer.instanceManager.configProvider, yakServer.instanceManager);
-    //     apiMap['request.deleteInstanceConfig'] = new yak.DeleteInstanceConfigRequestHandler(yakServer.instanceManager.configProvider, yakServer.instanceManager);
-    //
-    //     // Plugin
-    //     apiMap['request.getPlugins'] = new yak.GetPluginsRequestHandler(yakServer);
-    //     apiMap['request.createOrUpdatePlugin'] = new yak.CreateOrUpdatePluginRequestHandler(yakServer);
-    //     apiMap['request.deletePlugin'] = new yak.DeletePluginRequestHandler(yakServer);
-    //
-    //     // Store
-    //     apiMap['yak.api.GetStoreKeysRequest'] = new yak.GetStoreKeysRequestHandler(yakServer);
-    //     apiMap['yak.api.GetStoreItemRequest'] = new yak.GetStoreItemRequestHandler(yakServer);
-    //     apiMap['yak.api.SetStoreItemRequest'] = new yak.SetStoreItemRequestHandler(yakServer);
-    //     apiMap['yak.api.DeleteStoreItemRequest'] = new yak.DeleteStoreItemRequestHandler(yakServer);
-    //
-    //     // Modules
-    //     apiMap['request.getModuleNames'] = new yak.GetModuleNamesRequestHandler(yakServer);
-    //     apiMap['request.deleteModule'] = new yak.DeleteModuleRequestHandler(yakServer);
-    //     apiMap['request.clearModuleCacheRequest'] = new yak.ClearModuleCacheRequestHandler(yakServer);
-    //
-    //     // File Upload
-    //     apiMap['request.uploadFileRequest'] = new yak.FileUploadRequestHandler(yakServer);
-    // }
 
     constructor();
 }

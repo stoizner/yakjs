@@ -1,5 +1,8 @@
 'use strict';
 
+/**
+ * @type {!StoreProvider}
+ */
 const storeProvider = require('../../store/storeProvider');
 
 /**
@@ -7,14 +10,8 @@ const storeProvider = require('../../store/storeProvider');
  * @public
  * @constructor
  * @struct
- * @param {!StoreProvider} [storeProvider]
  */
-function Store(storeProvider) {
-    /**
-     * @type {!StoreProvider}
-     */
-    let provider = storeProvider;
-
+function Store() {
     /**
      * Sets a store value.
      * @param {string} key The unique key.
@@ -22,7 +19,7 @@ function Store(storeProvider) {
      * @returns {boolean} If setting the value was successful or not.
      */
     this.setValue = function setValue(key, value) {
-        return provider.updateValue(key, value);
+        return storeProvider.updateValue(key, value);
     };
 
     /**
@@ -31,7 +28,7 @@ function Store(storeProvider) {
      * @returns {*} The stored value.
      */
     this.getValue = function getValue(key) {
-        return provider.getValue(key);
+        return storeProvider.getValue(key);
     };
 
     /**
@@ -40,7 +37,7 @@ function Store(storeProvider) {
      * @returns {boolean} Whether there is a value or not.
      */
     this.hasValue = function hasValue(key) {
-        return provider.hasValue(key);
+        return storeProvider.hasValue(key);
     };
 
     /**
@@ -49,8 +46,8 @@ function Store(storeProvider) {
      * @returns {boolean} Whether it was successful.
      */
     this.deleteValue = function deleteValue(key) {
-        return provider.deleteValue(key);
+        return storeProvider.deleteValue(key);
     };
 }
 
-module.exports = new Store(storeProvider);
+module.exports = new Store();
