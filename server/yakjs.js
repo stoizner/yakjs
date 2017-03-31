@@ -1,5 +1,6 @@
+'use strict';
+
 const YakServer = require('./core/yakServer');
 
-let yakServer = new YakServer();
-yakServer = yakServer.start();
-
+const yakServer = new YakServer();
+yakServer.start();

@@ -60,8 +60,8 @@ function PluginCodeProvider() {
      * @returns {!Array<string>} List of plugin code file names found in the PLUGINS_DIR folder.
      */
     function getAvailablePluginCodeFilenames() {
-        let files =  fs.readdirSync(PLUGINS_DIR);
-        let filenames =  _.filter(files, function useFilesWithPluginPostfix(filename) {
+        let files = fs.readdirSync(PLUGINS_DIR);
+        let filenames = _.filter(files, function useFilesWithPluginPostfix(filename) {
             return filename.lastIndexOf(PLUGIN_FILENAME_POSTFIX) === (filename.length - PLUGIN_FILENAME_POSTFIX.length);
         });
 
@@ -77,7 +77,7 @@ function PluginCodeProvider() {
     function loadPluginFiles(filenames) {
         let contentMap = {};
 
-        log.debug('Loading plugins from plugin directory', {dir:PLUGINS_DIR});
+        log.debug('Loading plugins from plugin directory', {dir: PLUGINS_DIR});
 
         _.each(filenames, function readFile(filename) {
             try {
@@ -85,7 +85,7 @@ function PluginCodeProvider() {
 
                 // Clean up windows line endings.
                 contentMap[filename] = fileContent.replace('\r\n', '\n');
-            } catch(ex) {
+            } catch (ex) {
                 log.warn('Could not read plugin file.', {filename: filename, error: ex.message});
             }
         });

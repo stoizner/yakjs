@@ -8,6 +8,7 @@ const InstanceState = require('./instanceState');
 const PluginContext = require('../plugin/pluginContext');
 const WebSocketConnection = require('./webSocketConnection');
 const WebSocketMessage = require('./webSocketMessage');
+const magic = require('../util/magicNumbers');
 
 /**
  * @constructor
@@ -50,7 +51,7 @@ function WebSocketInstance(pluginManager, id, port) {
      * Server port
      * @type {number} default: 8080;
      */
-    this.port = port || 8080;
+    this.port = port || magic.DEFAULT_HTTP_PORT;
 
     /**
      * Description
@@ -102,12 +103,12 @@ function WebSocketInstance(pluginManager, id, port) {
     this.start = function start() {
         log.info('Start WebSocketServer Instance', {id: self.id});
         try {
-            if (self.state !== InstanceState.RUNNING) {
+            if (self.state === InstanceState.RUNNING) {
+                log.info('Can not start, instance already running.', {id: self.id});
+            } else {
                 instantiatePlugins();
                 startServer();
                 self.state = InstanceState.RUNNING;
-            } else {
-                log.info('Can not start, instance already running.', {id: self.id});
             }
         } catch (ex) {
             log.error('Could not start instance: ', {error: ex.message, ex: ex, stack: ex.stack});
@@ -176,7 +177,7 @@ function WebSocketInstance(pluginManager, id, port) {
             pluginContext.instance = self;
             let pluginInstance = pluginManager.createPluginInstance(pluginId, pluginContext);
 
-            if (pluginInstance !== null) {
+            if (pluginInstance) {
                 // Extend with pluginName
                 pluginInstance.name = pluginId;
 
@@ -287,15 +288,15 @@ function WebSocketInstance(pluginManager, id, port) {
 
         connections[connection.id] = connection;
 
-        socket.on('close', function handleClose() {
+        socket.on('close', function handleSocketClose() {
             self.log.info('Connection closed ', {connectionId: connection.id});
             delete connections[connection.id];
 
             callPlluginsOnConnectionClosed(connection);
         });
 
-        socket.on('error', function handleError() {
-            self.log.info('Connection closed with error' , {connectionId: connection.id});
+        socket.on('error', function handleSocketError() {
+            self.log.info('Connection closed with error', {connectionId: connection.id});
             delete connections[connection.id];
 
             callPlluginsOnConnectionClosed(connection);
@@ -311,18 +312,18 @@ function WebSocketInstance(pluginManager, id, port) {
      * @returns {Function} Message handler function.
      */
     function createMessageHandler(connection) {
-        return function handleMessage(data, flags) {
+        return function handleMessage(data) {
             log.debug('Received websocket message ', {fromConnectionId: connection.id, data: data});
 
             let jsonData;
 
             try {
                 jsonData = JSON.parse(data);
-            } catch(ex) {
+            } catch (ex) {
                 jsonData = null;
             }
 
-            for(let i = 0; i < pluginInstances.length; i++) {
+            for (let i = 0; i < pluginInstances.length; i++) {
                 let plugin = pluginInstances[i];
                 callPluginOnMessage(plugin, data, connection);
 
@@ -402,7 +403,7 @@ function WebSocketInstance(pluginManager, id, port) {
                     self.log.info('Plugin.onConnectionClosed', {pluginName: pluginInstance.name});
                     pluginInstance.onConnectionClosed(connection);
                 } catch (ex) {
-                    self.log.error('Plugin.onConnectionClosed failed.', {pluginName: pluginInstance.name, error: ex.name, message:ex.message});
+                    self.log.error('Plugin.onConnectionClosed failed.', {pluginName: pluginInstance.name, error: ex.name, message: ex.message});
                 }
             }
         });

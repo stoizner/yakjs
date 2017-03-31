@@ -3,12 +3,13 @@
 const state = require('../../../yakServerState');
 const PluginParser = require('../../../plugin/pluginParser');
 const PluginValidator = require('../../../plugin/pluginValidator');
+const HttpStatus = require('http-status-codes');
 
 /**
  * @param request
  * @param response
  */
-function putPluginsRoute(request, response)  {
+function putPluginsRoute(request, response) {
     /**
      * @type {string}
      */
@@ -44,7 +45,7 @@ function putPluginsRoute(request, response)  {
 
         response.send();
     } else {
-        response.status(400).send({
+        response.status(HttpStatus.BAD_REQUEST).send({
             message: pluginValidator.getMessage()
         });
     }

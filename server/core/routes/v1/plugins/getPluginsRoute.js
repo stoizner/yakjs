@@ -1,6 +1,5 @@
 'use strict';
 
-const _ = require('underscore');
 const state = require('../../../yakServerState');
 const PluginConfig = require('./pluginConfig');
 
@@ -8,7 +7,7 @@ const PluginConfig = require('./pluginConfig');
  * @param request
  * @param response
  */
-function getPluginsRoute(request, response)  {
+function getPluginsRoute(request, response) {
     let plugins = state.pluginManager.getPlugins();
 
     let pluginConfigs = plugins.map(plugin => {

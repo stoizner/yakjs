@@ -1,12 +1,13 @@
 'use strict';
 
 const state = require('../../../yakServerState');
+const HttpStatus = require('http-status-codes');
 
 /**
  * @param request
  * @param response
  */
-function deletePluginsRoute(request, response)  {
+function deletePluginsRoute(request, response) {
     /**
      * @type {string}
      */
@@ -18,7 +19,7 @@ function deletePluginsRoute(request, response)  {
         state.pluginManager.removePlugin(requestedPluginId);
         response.send();
     } else {
-        response.status(400).send({
+        response.status(HttpStatus.BAD_REQUEST).send({
             message: 'No plugin with requested id found.'
         });
     }

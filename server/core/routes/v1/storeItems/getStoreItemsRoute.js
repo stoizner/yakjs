@@ -1,13 +1,13 @@
 'use strict';
 
-const _ = require('underscore');
 const storeProvider = require('../../../store/storeProvider');
+const HttpStatus = require('http-status-codes');
 
 /**
  * @param request
  * @param response
  */
-function getStoreItemKeysRoute(request, response)  {
+function getStoreItemKeysRoute(request, response) {
     /**
      * @type {string}
      */
@@ -23,7 +23,7 @@ function getStoreItemKeysRoute(request, response)  {
             }
         });
     } else {
-        response.status(400).send({
+        response.status(HttpStatus.BAD_REQUEST).send({
             message: 'Store item with given key does not exist.'
         });
     }

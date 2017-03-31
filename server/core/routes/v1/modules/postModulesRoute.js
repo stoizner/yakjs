@@ -1,12 +1,13 @@
 'use strict';
 
 const state = require('../../../yakServerState');
+const HttpStatus = require('http-status-codes');
 
 /**
  * @param request
  * @param response
  */
-function postModulesRoute(request, response)  {
+function postModulesRoute(request, response) {
     /**
      * @type {!Module}
      */
@@ -16,7 +17,7 @@ function postModulesRoute(request, response)  {
         state.moduleProvider.createOrUpdate(module.name, module.content);
         response.send();
     } else {
-        response.status(400).send({
+        response.status(HttpStatus.BAD_REQUEST).send({
             message: 'No module or module.name missing.'
         });
     }

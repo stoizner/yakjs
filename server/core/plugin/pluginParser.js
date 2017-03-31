@@ -28,7 +28,7 @@ function PluginParser() {
      * @returns {!Plugin} The parsed plugin.
      */
     this.parse = function parse(name, code) {
-        log.debug('Parse plugin content', {name:name, size: code.length});
+        log.debug('Parse plugin content', {name: name, size: code.length});
         let plugin = new Plugin();
 
         let rawJsDoc = extractJsDocPart(code);
@@ -46,7 +46,7 @@ function PluginParser() {
         plugin.id = name.replace('.plugin', '').replace('.js', '');
 
         // This shall be the target way (TODO: Name/ID handling)
-        //plugin.name = getJsDocTagValue(jsdoc, 'name');
+        // plugin.name = getJsDocTagValue(jsdoc, 'name');
 
         // COMPATIBILITY This is currently for intercompatibility
         plugin.name = plugin.id;
@@ -57,7 +57,7 @@ function PluginParser() {
 
         let pluginFunction = extractPluginFunction(code);
         if (!pluginFunction) {
-            throw new Error('Missing plugin function. The plugin has to contain a function with a name. The function name has to start with a uppercase letter.');
+            throw new Error('Missing plugin function. The plugin has to contain a function with a name starting with a uppercase letter.');
         }
 
         plugin.code = pluginFunction.func;

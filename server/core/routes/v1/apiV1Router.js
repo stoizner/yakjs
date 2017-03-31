@@ -1,7 +1,7 @@
 'use strict';
 
-const express  = require('express');
-const router = express.Router();
+const express = require('express');
+const router = express.Router(); // eslint-disable-line new-cap
 
 router.use(require('./instances/instancesRouter'));
 router.use(require('./plugins/pluginsRouter'));

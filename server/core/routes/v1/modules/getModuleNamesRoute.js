@@ -1,13 +1,12 @@
 'use strict';
 
-const _ = require('underscore');
 const state = require('../../../yakServerState');
 
 /**
  * @param request
  * @param response
  */
-function getModuleNamesRoute(request, response)  {
+function getModuleNamesRoute(request, response) {
     let moduleNames = state.moduleProvider.getAllModuleNames();
 
     response.send({

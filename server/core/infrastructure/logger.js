@@ -1,3 +1,5 @@
+'use strict';
+
 const logAdapter = require('./logAdapter');
 
 /**
@@ -6,9 +8,7 @@ const logAdapter = require('./logAdapter');
  * @param {string} [logCategory]
  */
 function Logger(logCategory) {
-    'use strict';
-
-    /**
+     /**
      * @type {string}
      */
     let category = logCategory || '';
@@ -24,7 +24,7 @@ function Logger(logCategory) {
      * @param {*} [data]
      */
     this.info = function info(message, data) {
-       logger.info(message, data || '');
+        logger.info(message, data || '');
     };
 
     /**

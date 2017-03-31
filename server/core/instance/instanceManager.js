@@ -85,7 +85,7 @@ function InstanceManager(configProvider, pluginManager) {
                 self.configProvider.addOrUpdate(instanceConfig);
                 self.createInstance(instanceConfig.id);
                 resolve();
-            } catch(ex) {
+            } catch (ex) {
                 log.warn(ex);
                 reject('Can not parse *.instance.json content.');
             }
@@ -110,7 +110,7 @@ function InstanceManager(configProvider, pluginManager) {
             instance.name = instanceConfig.name;
             instance.description = instanceConfig.description;
             instance.plugins = instanceConfig.plugins;
-        } catch(ex) {
+        } catch (ex) {
             instance = null;
             log.error('Can not create instance.', {id: instance.id, error: ex.message});
             log.debug('Error Stack', {stack: ex.stack});
@@ -179,9 +179,9 @@ function InstanceManager(configProvider, pluginManager) {
      */
     function startInstancesWithAutoStartEnabled() {
         _.each(configProvider.getConfigs(), function startInstances(config) {
-             if (config.autoStartEnabled) {
-                 self.start(config.id);
-             }
+            if (config.autoStartEnabled) {
+                self.start(config.id);
+            }
         });
     }
 

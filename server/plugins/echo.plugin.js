@@ -1,3 +1,7 @@
+'use strict';
+
+/* eslint-disable no-empty-function, no-unused-vars */
+
 /**
  * @name echo
  * @description Every received message will be send back.
@@ -5,18 +9,16 @@
  * @type WebSocketServerPlugin
  */
 function EchoPlugin(require) {
-    'use strict';
-
     this.onStart = function onStart() {};
 
     /**
-     * @param {yak.WebSocketConnection} connection
+     * @param {WebSocketConnection} connection
      */
     this.onNewConnection = function onNewConnection(connection) {};
 
     /**
-     * @param {yak.WebSocketMessage} message
-     * @param {yak.WebSocketConnection} connection
+     * @param {WebSocketMessage} message
+     * @param {WebSocketConnection} connection
      */
     this.onMessage = function onMessage(message, connection) {
         connection.send(message.data);
@@ -24,17 +26,10 @@ function EchoPlugin(require) {
 
     /**
      * Connection closed event. Note that the connection is no longer part of instance.getConnections().
-     * @param {yak.WebSocketConnection} connection
+     * @param {WebSocketConnection} connection
      */
     this.onConnectionClosed = function onConnectionClosed(connection) {};
 
     this.onStop = function onStop() {};
 }
-
-
-
-
-
-
-
 

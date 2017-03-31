@@ -5,8 +5,6 @@
  * @struct
  */
 function PluginContext() {
-    'use strict';
-
     /**
      * @type {WebSocketInstance}
      */

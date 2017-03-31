@@ -5,8 +5,6 @@
  * @struct
  */
 function InstanceConfig() {
-    'use strict';
-
     /**
      * The unique instance ID.
      * @type {string}

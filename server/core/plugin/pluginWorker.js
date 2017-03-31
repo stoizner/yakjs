@@ -1,5 +1,7 @@
 'use strict';
 
+/* eslint-disable no-empty-function, no-unused-vars */
+
 /**
  * @interface
  * @param {string} name The name of the plugin.

@@ -2,12 +2,13 @@
 
 const state = require('../../../yakServerState');
 const InstanceConfigValidator = require('../../../instanceConfig/instanceConfigValidator');
+const HttpStatus = require('http-status-codes');
 
 /**
  * @param request
  * @param response
  */
-function putInstancesConfigRoute(request, response)  {
+function putInstancesConfigRoute(request, response) {
     const instanceId = request.params.instanceId;
     let responseData = {};
 
@@ -32,11 +33,11 @@ function putInstancesConfigRoute(request, response)  {
             response.send(responseData);
         } else {
             responseData.message = 'No instance configuration available for ' + instanceId;
-            response.status(400).send(responseData);
+            response.status(HttpStatus.BAD_REQUEST).send(responseData);
         }
     } else {
         responseData.message = validator.getMessage();
-        response.status(400).send(responseData);
+        response.status(HttpStatus.BAD_REQUEST).send(responseData);
     }
 }
 

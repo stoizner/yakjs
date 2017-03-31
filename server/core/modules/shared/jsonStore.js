@@ -8,13 +8,12 @@ const storeProvider = require('../../store/storeProvider');
  * @public
  * @constructor
  * @struct
- * @param {!StoreProvider} [storeProvider]
  */
-function JsonStore(storeProvider) {
+function JsonStore() {
     /**
-     * @type {!StoreProvider}
+     * @type {number}
      */
-    let provider = storeProvider;
+    const JSON_SPACE = 4;
 
     /**
      * Sets a store value.
@@ -24,9 +23,9 @@ function JsonStore(storeProvider) {
      */
     this.setValue = function setValue(key, value) {
         try {
-            let serialized = JSON.stringify(value, null, 4);
-            provider.updateItem(key, serialized);
-        } catch(ex) {
+            let serialized = JSON.stringify(value, null, JSON_SPACE);
+            storeProvider.updateItem(key, serialized);
+        } catch (ex) {
             throw new JsonStoreError('Set value to json store failed.', ex);
         }
     };
@@ -41,12 +40,12 @@ function JsonStore(storeProvider) {
         let obj = {};
 
         try {
-            let serialized = provider.getValue(key);
+            let serialized = storeProvider.getValue(key);
 
             if (serialized) {
                 obj = JSON.parse(serialized);
             }
-        } catch(ex) {
+        } catch (ex) {
             throw new JsonStoreError('Get value from json store failed.', ex);
         }
 
@@ -59,7 +58,7 @@ function JsonStore(storeProvider) {
      * @returns {boolean} Whether there is a value or not.
      */
     this.hasValue = function hasValue(key) {
-        return provider.hasValue(key);
+        return storeProvider.hasValue(key);
     };
 
     /**
@@ -68,8 +67,8 @@ function JsonStore(storeProvider) {
      * @returns {boolean} Whether it was successful.
      */
     this.deleteValue = function deleteValue(key) {
-        return provider.deleteItem(key);
+        return storeProvider.deleteItem(key);
     };
 }
 
-module.exports = new JsonStore(storeProvider);
+module.exports = new JsonStore();

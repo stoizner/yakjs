@@ -9,10 +9,10 @@ var subscriptions = [];
  * @param {!Object|string} message
  */
 function post(message) {
-    subscriptions.forEach((subscription) => {
+    subscriptions.forEach(subscription => {
         try {
             subscription.callback(message);
-        } catch(ex) {
+        } catch (ex) {
             // Continue...
         }
     });
@@ -36,7 +36,7 @@ function subscribe(onMessageCallback) {
  * @param {{callback:function(Object|string)}} subscription
  */
 function unsubscribe(subscription) {
-    subscriptions = subscriptions.filter((subscriptionItem) => subscriptionItem !== subscription);
+    subscriptions = subscriptions.filter(subscriptionItem => subscriptionItem !== subscription);
 }
 
 module.exports.post = post;

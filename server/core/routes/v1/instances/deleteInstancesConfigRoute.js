@@ -6,7 +6,7 @@ const state = require('../../../yakServerState');
  * @param request
  * @param response
  */
-function deleteInstancesConfigRoute(request, response)  {
+function deleteInstancesConfigRoute(request, response) {
     const instanceId = request.params.instanceId;
 
     state.instanceManager.stopAndRemoveInstance(instanceId);
