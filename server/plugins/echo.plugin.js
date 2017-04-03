@@ -3,12 +3,11 @@
 /* eslint-disable no-empty-function, no-unused-vars */
 
 /**
- * @name echo
- * @description Every received message will be send back.
- * @version 1.0.0
- * @type WebSocketServerPlugin
+ * @constructor
+ * @struct
+ * @extends {PluginWorker}
  */
-function EchoPlugin(require) {
+function EchoPlugin() {
     this.onStart = function onStart() {};
 
     /**
@@ -33,3 +32,11 @@ function EchoPlugin(require) {
     this.onStop = function onStop() {};
 }
 
+/**
+ * @type {!Plugin}
+ */
+module.exports = {
+    name: 'echo',
+    description: 'Every received message will be send back',
+    createWorker: () => new EchoPlugin()
+};

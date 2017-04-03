@@ -20,7 +20,7 @@ describe('WebSocketInstance', function() {
      */
     beforeEach(function() {
         pluginManagerStub = {
-            createPluginInstance: sinon.spy()
+            createPluginWorker: sinon.spy()
         };
 
         sut = new yak.WebSocketInstance(pluginManagerStub, 'test', 8791);
@@ -35,7 +35,7 @@ describe('WebSocketInstance', function() {
             sut.start();
 
             // Then
-            expect(pluginManagerStub.createPluginInstance).to.have.been.calledWith('myPlugin');
+            expect(pluginManagerStub.createPluginWorker).to.have.been.calledWith('myPlugin');
         });
 
         it('call onInitialize on plugin', function() {
@@ -45,7 +45,7 @@ describe('WebSocketInstance', function() {
                 name: 'myPlugin',
                 onInitialize: sinon.spy()
             };
-            pluginManagerStub.createPluginInstance = sinon.stub().returns(plugin);
+            pluginManagerStub.createPluginWorker = sinon.stub().returns(plugin);
 
             // When
             sut.start();
@@ -61,7 +61,7 @@ describe('WebSocketInstance', function() {
                 name: 'myPlugin',
                 onStart: sinon.spy()
             };
-            pluginManagerStub.createPluginInstance = sinon.stub().returns(plugin);
+            pluginManagerStub.createPluginWorker = sinon.stub().returns(plugin);
 
             // When
             sut.start();
@@ -74,7 +74,7 @@ describe('WebSocketInstance', function() {
             // Given
             sut.plugins = ['myPlugin'];
             var plugin = {name: 'myPlugin'};
-            pluginManagerStub.createPluginInstance = sinon.stub().returns(plugin);
+            pluginManagerStub.createPluginWorker = sinon.stub().returns(plugin);
 
             // When
             sut.start();
@@ -87,7 +87,7 @@ describe('WebSocketInstance', function() {
             // Given
             sut.plugins = ['myPlugin'];
             var plugin = {name: 'myPlugin'};
-            pluginManagerStub.createPluginInstance = sinon.stub().returns(plugin);
+            pluginManagerStub.createPluginWorker = sinon.stub().returns(plugin);
 
             // When
             sut.start();
@@ -100,7 +100,7 @@ describe('WebSocketInstance', function() {
             // Given
             sut.plugins = ['myPlugin'];
             var plugin = {name: 'myPlugin'};
-            pluginManagerStub.createPluginInstance = sinon.stub().returns(plugin);
+            pluginManagerStub.createPluginWorker = sinon.stub().returns(plugin);
 
             // When
             sut.start();
@@ -115,7 +115,7 @@ describe('WebSocketInstance', function() {
             // Given
             sut.plugins = ['myPlugin'];
             var plugin = {name: 'myPlugin', onTerminate: sinon.spy()};
-            pluginManagerStub.createPluginInstance = sinon.stub().returns(plugin);
+            pluginManagerStub.createPluginWorker = sinon.stub().returns(plugin);
             sut.start();
             sut.state = yak.InstanceState.RUNNING;
 
@@ -130,7 +130,7 @@ describe('WebSocketInstance', function() {
             // Given
             sut.plugins = ['myPlugin'];
             var plugin = {name: 'myPlugin', onStop: sinon.spy()};
-            pluginManagerStub.createPluginInstance = sinon.stub().returns(plugin);
+            pluginManagerStub.createPluginWorker = sinon.stub().returns(plugin);
             sut.start();
             sut.state = yak.InstanceState.RUNNING;
 

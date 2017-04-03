@@ -161,7 +161,6 @@ yak.ui.PluginView = function PluginView(parent, context, viewModel) {
     function save() {
         var pluginItem = new yak.ui.PluginItem();
         pluginItem.id = parent.find('[name=id]').val();
-        pluginItem.description = parent.find('[name=description]').val();
         pluginItem.code = codeEditor.getValue();
 
         viewModel.createOrUpdate(pluginItem);

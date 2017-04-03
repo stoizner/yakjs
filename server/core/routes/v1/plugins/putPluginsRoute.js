@@ -1,9 +1,6 @@
 'use strict';
 
 const state = require('../../../yakServerState');
-const PluginParser = require('../../../plugin/pluginParser');
-const PluginValidator = require('../../../plugin/pluginValidator');
-const HttpStatus = require('http-status-codes');
 
 /**
  * @param request
@@ -21,8 +18,6 @@ function putPluginsRoute(request, response) {
     const requestedPlugin = request.body.plugin;
 
     let pluginManager = state.pluginManager;
-    let pluginParser = new PluginParser();
-    let pluginValidator = new PluginValidator(pluginManager);
 
     let plugin = pluginManager.getPlugin(requestedPluginId);
 
@@ -30,25 +25,13 @@ function putPluginsRoute(request, response) {
         pluginManager.changePluginId(requestedPluginId, requestedPlugin.id);
     }
 
-    if (pluginValidator.isUpdatePluginValid(requestedPlugin)) {
-        if (pluginParser.hasJsDoc(requestedPlugin.code)) {
-            let parsedPlugin = pluginParser.parse(requestedPlugin.name, requestedPlugin.code);
-            plugin = Object.assign(plugin, parsedPlugin);
-        }
+    plugin.description = requestedPlugin.description;
+    plugin.code = requestedPlugin.code;
 
-        plugin.description = requestedPlugin.description;
-        plugin.code = requestedPlugin.code;
-        plugin.version = requestedPlugin.version;
+    pluginManager.addOrUpdatePlugin(plugin);
+    pluginManager.savePlugin(plugin);
 
-        pluginManager.addOrUpdatePlugin(plugin);
-        pluginManager.savePlugin(plugin);
-
-        response.send();
-    } else {
-        response.status(HttpStatus.BAD_REQUEST).send({
-            message: pluginValidator.getMessage()
-        });
-    }
+    response.send();
 }
 
 module.exports = putPluginsRoute;

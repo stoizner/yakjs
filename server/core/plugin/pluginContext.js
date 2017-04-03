@@ -11,9 +11,9 @@ function PluginContext() {
     this.instance = null;
 
     /**
-     * @type {yakRequire}
+     * @type {Logger}
      */
-    this.require = null;
+    this.log = null;
 }
 
 module.exports = PluginContext;

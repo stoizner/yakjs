@@ -1,7 +1,7 @@
 'use strict';
 
 const JsonStoreError = require('./jsonStoreError');
-const storeProvider = require('../../store/storeProvider');
+const storeProvider = require('../core/store/storeProvider');
 
 /**
  * YAK key-object(json) store

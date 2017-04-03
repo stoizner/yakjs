@@ -3,12 +3,9 @@
 /* eslint-disable no-empty-function, no-unused-vars */
 
 /**
- * @name pingPong
- * @description For every received 'ping' string, this plugin will send an 'pong' string.
- * @version 1.0.0
- * @type WebSocketServerPlugin
+ * For every received 'ping' string, this plugin will send an 'pong' string.
  * @constructor
- * @implements
+ * @struct
  */
 function PingPongPlugin() {
     this.onStart = function onStart() {};
@@ -36,4 +33,10 @@ function PingPongPlugin() {
 
     this.onStop = function onStop() {};
 }
+
+module.exports = {
+    name: 'pingPong',
+    description: 'For every received "ping" string, this plugin will send an "pong" string.',
+    createWorker: () => new PingPongPlugin()
+};
 

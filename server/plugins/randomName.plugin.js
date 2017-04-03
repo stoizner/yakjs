@@ -2,15 +2,14 @@
 
 /* eslint-disable no-empty-function, no-unused-vars */
 
-/**
- * @name randomName
- * @description Creates a random name.
- * @version 0.1.0
- * @type WebSocketServerPlugin
- */
-function RandomNamePlugin(require) {
-    var createRandomName = require('randomName').createRandomName;
+const createRandomName = require('../modules/randomName').createRandomName;
 
+/**
+ * Creates a random name.
+ * @constructor
+ * @struct
+ */
+function RandomNamePlugin() {
     this.onStart = function onStart() {};
 
     /**
@@ -34,3 +33,9 @@ function RandomNamePlugin(require) {
 
     this.onStop = function onStop() {};
 }
+
+module.exports = {
+    name: 'randomName',
+    description: 'Creates a random name.',
+    createWorker: () => new RandomNamePlugin()
+};

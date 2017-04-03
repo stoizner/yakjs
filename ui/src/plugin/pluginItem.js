@@ -1,6 +1,6 @@
 /**
- * PluginItem
  * @constructor
+ * @struct
  */
 yak.ui.PluginItem = function PluginItem() {
     'use strict';
@@ -9,16 +9,6 @@ yak.ui.PluginItem = function PluginItem() {
      * @type {?string}
      */
     this.id = null;
-
-    /**
-     * @type {?string}
-     */
-    this.description = null;
-
-    /**
-     * @type {?string}
-     */
-    this.version = null;
 
     /**
      * @type {?string}

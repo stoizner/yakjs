@@ -175,7 +175,7 @@ function WebSocketInstance(pluginManager, id, port) {
 
             let pluginContext = new PluginContext();
             pluginContext.instance = self;
-            let pluginInstance = pluginManager.createPluginInstance(pluginId, pluginContext);
+            let pluginInstance = pluginManager.createPluginWorker(pluginId, pluginContext);
 
             if (pluginInstance) {
                 // Extend with pluginName

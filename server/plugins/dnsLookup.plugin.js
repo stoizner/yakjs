@@ -2,18 +2,14 @@
 
 /* eslint-disable no-empty-function, no-unused-vars */
 
+const dns = require('dns');
+
 /**
- * @name dnsLookup
- * @description Resolves a hostname (e.g. 'example.com') into the first found A (IPv4).
- * @version 1.0.0
- * @type WebSocketServerPlugin
+ * Resolves a hostname (e.g. 'example.com') into the first found A (IPv4).
  * @constructor
- * @implements
- * @param require
+ * @struct
  */
 function DnsLookupPlugin(require) {
-    var dns = require('dns');
-
     this.onStart = function onStart() {};
 
     /**
@@ -42,4 +38,10 @@ function DnsLookupPlugin(require) {
 
     this.onStop = function onStop() {};
 }
+
+module.exports = {
+    name: 'dnsLookup',
+    description: 'Resolves a hostname (e.g. "example.com") into the first found A (IPv4).',
+    createWorker: context => new DnsLookupPlugin(context)
+};
 

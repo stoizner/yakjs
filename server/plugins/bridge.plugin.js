@@ -2,30 +2,25 @@
 
 /* eslint-disable no-empty-function, no-unused-vars */
 
-/**
- * @name bridge
- * @description Every received message will be posted on the event bus.
- * @version 1.0.0
- * @type WebSocketServerPlugin
- * @example Client A is connected to instance bridge A.
- *      Client B is connected to instance bridge B.
-     Client A sends a message. This message is posted on the event bus. Received by bridge B and sent to Client B.
- * @constructor
- * @implements
- * @param require
- */
-function BridgePlugin(require, context) {
-    var eventBus = require('eventBus');
-    var guid = require('guid');
-    var log = require('log');
+const eventBus = require('../modules/eventBus');
+const guid = require('../common/guid');
 
-    var currentEventId = null;
+/**
+ * Every received message will be posted on the event bus.
+ * Client A is connected to instance bridge A.
+ * Client B is connected to instance bridge B.
+   Client A sends a message. This message is posted on the event bus. Received by bridge B and sent to Client B.
+ * @constructor
+ * @struct
+ */
+function BridgePlugin(context) {
+    let currentEventId = null;
 
     this.onStart = function onStart() {
         eventBus.subscribe(function onEventBusMessage(event) {
             if (event.eventId !== currentEventId) {
-                log.info('Event received', {event: event, currentEventId: currentEventId});
-                var connections = context.instance.getConnections();
+                context.log.info('Event received', {event: event, currentEventId: currentEventId});
+                let connections = context.instance.getConnections();
 
                 connections.forEach(connection => {
                     connection.send(event.data);
@@ -46,12 +41,12 @@ function BridgePlugin(require, context) {
     this.onMessage = function onMessage(message, connection) {
         currentEventId = guid();
 
-        var event = {
+        let event = {
             eventId: currentEventId,
             data: message.data
         };
 
-        log.info('Post event', {event: event});
+        context.log.info('Post event', {event: event});
         eventBus.post(event);
     };
 
@@ -64,3 +59,8 @@ function BridgePlugin(require, context) {
     this.onStop = function onStop(instance) {};
 }
 
+module.exports = {
+    name: 'bridge',
+    description: 'Every received message will be posted on the event bus.',
+    createWorker: context => new BridgePlugin(context)
+};

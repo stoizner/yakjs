@@ -44,7 +44,6 @@ yak.ui.PluginViewModel = function PluginViewModel(context) {
         } else {
             self.isNewItem = true;
             self.pluginItem = new yak.ui.PluginItem();
-            self.pluginItem.version = '0.1.0';
             self.pluginItem.code = yak.ui.EmptyPluginTemplate.toString();
         }
 
