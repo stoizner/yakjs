@@ -8,7 +8,8 @@ const PluginConfig = require('./pluginConfig');
  * @param response
  */
 function getPluginsRoute(request, response) {
-    let plugins = state.pluginManager.getPlugins();
+    let pluginsIndex = state.pluginManager.loadPlugins();
+    let plugins = Object.keys(pluginsIndex).map(key => pluginsIndex[key]);
 
     let pluginConfigs = plugins.map(plugin => {
         let pluginConfig = new PluginConfig();

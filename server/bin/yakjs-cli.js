@@ -3,9 +3,9 @@
 'use strict';
 
 const path = require('path');
-let yakjsModuleDir = path.join(path.dirname(process.argv[1]), '..');
+const rootDir = path.join(path.dirname(process.argv[1]), '..');
 
 // Change the process working directory.
-process.chdir(yakjsModuleDir);
+process.chdir(rootDir);
 
 require('../yakjs.js');

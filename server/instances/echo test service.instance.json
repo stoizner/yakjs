@@ -7,5 +7,5 @@
         "echo"
     ],
     "autoStartEnabled": true,
-    "id": "echo-test"
+    "id": "echo test service"
 }

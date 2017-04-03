@@ -1,6 +1,6 @@
 'use strict';
 
-const createGuid = require('../modules/shared/guid');
+const createGuid = require('../../common/guid');
 const Logger = require('../infrastructure/logger');
 
 /**

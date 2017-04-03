@@ -3,39 +3,34 @@
 /* eslint-disable no-empty-function, no-unused-vars */
 
 /**
- * @name analytics
- * @description Count received messages using the store
- * @version 0.1.0
- * @type WebSocketServerPlugin
- * @constructor
- * @implements
- * @param require
+ * @type {!JsonStore}
  */
-function AnalyticsPlugin(require, context) {
+const jsonStore = require('../common/jsonStore');
+
+/**
+ * @constructor
+ * @struct
+ */
+function AnalyticsPlugin(context) {
     /**
      * @type {string}
      */
-    var DATA_KEY = 'plugin.analytics.data';
+    const DATA_KEY = 'plugin.analytics.data';
+
+    this.onStart = () => {};
 
     /**
-     * @type {JsonStore}
+     * @param {!WebSocketConnection} connection
      */
-    var jsonStore = require('jsonStore');
-
-    this.onStart = function onStart() {};
+    this.onNewConnection = connection => {};
 
     /**
-     * @param {WebSocketConnection} connection
+     * @param {!WebSocketMessage} message
+     * @param {!WebSocketConnection} connection
      */
-    this.onNewConnection = function onNewConnection(connection) {};
-
-    /**
-     * @param {WebSocketMessage} message
-     * @param {WebSocketConnection} connection
-     */
-    this.onMessage = function onMessage(message, connection) {
-        var analyticsData = jsonStore.getValue(DATA_KEY);
-        var instanceName = context.instance.name;
+    this.onMessage = (message, connection) => {
+        let analyticsData = jsonStore.getValue(DATA_KEY);
+        let instanceName = context.instance.name;
 
         if (!analyticsData[instanceName]) {
             analyticsData[instanceName] = {
@@ -50,10 +45,16 @@ function AnalyticsPlugin(require, context) {
 
     /**
      * Connection closed event. Note that the connection is no longer part of instance.getConnections().
-     * @param {WebSocketConnection} connection
+     * @param {!WebSocketConnection} connection
      */
-    this.onConnectionClosed = function onConnectionClosed(connection) {};
+    this.onConnectionClosed = connection => {};
 
-    this.onStop = function onStop() {};
+    this.onStop = () => {};
 }
+
+module.exports = {
+    name: 'analytics',
+    description: 'Count received messages per instance and saves it to the store.',
+    createWorker: context => new AnalyticsPlugin(context)
+};
 
