@@ -4,7 +4,8 @@
     "name": "chat service",
     "plugins": [
         "analytics",
-        "broadcast"
+        "broadcast",
+        "echo"
     ],
     "autoStartEnabled": true,
     "id": "chat"
