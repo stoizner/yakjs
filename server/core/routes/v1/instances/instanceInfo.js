@@ -25,7 +25,7 @@ function InstanceInfo() {
 
     /**
      * Description
-     * @type {null|string}
+     * @type {?string}
      */
     this.description = null;
 
