@@ -14,6 +14,6 @@ router.post('/instances/:instanceId/stop', require('./postStopInstancesRoute'));
 // Instance configuration
 router.post('/instances/config', require('./postInstancesConfigRoute'));
 router.put('/instances/:instanceId/config', require('./putInstancesConfigRoute'));
-router.delete('/instances/:instanceId/config', require('./deleteInstancesConfigRoute'));
+router.delete('/ /:instanceId/config', require('./deleteInstancesConfigRoute'));
 
 module.exports = router;

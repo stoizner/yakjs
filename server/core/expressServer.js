@@ -6,7 +6,6 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const Logger = require('./infrastructure/logger');
 const apiV1Router = require('./routes/v1/apiV1Router');
-const HttpStatus = require('http-status-codes');
 
 /**
  * @constructor
@@ -59,9 +58,6 @@ function ExpressServer(yakServer, config) {
 
             app.use('/v1/', apiV1Router);
 
-            app.get('/data/store/*', handleGetStoreValueRequest);
-            app.post('/data/store/*', handlePostStoreValueRequest);
-
             // YAKjs does not implement any authentication, so listen only to localhost (IPv4) and [::1] (IPv6)
             http.createServer(app).listen(app.get('port'), 'localhost', displayWelcomeMessage);
             http.createServer(app).listen(app.get('port'), '[::1]');
@@ -96,36 +92,6 @@ function ExpressServer(yakServer, config) {
         console.error('Error: ' + message);
         console.error('');
         console.error('See ./log/yakjs.log for more technical details.');
-    }
-
-    /**
-     * @route /data/store/
-     * @param {ExpressRequest} request
-     * @param {ExpressResponse} response
-     */
-    function handleGetStoreValueRequest(request, response) {
-        let storeKey = request.url.replace('/data/store/', '');
-        let requestLogMessage = ['data/store', '>', 'get', storeKey].join(' ');
-        log.info(requestLogMessage);
-
-        if (yakServer.storeProvider.hasValue(storeKey)) {
-            let data = yakServer.storeProvider.getValue(storeKey);
-            response.send(data);
-            log.info(['get', storeKey, '<', 'ok'].join(' '));
-        } else {
-            response.status(HttpStatus.NOT_FOUND).send();
-            log.info(['get', storeKey, '<', 'nok'].join(' '));
-        }
-    }
-
-    function handlePostStoreValueRequest(request, response) {
-        let storeKey = request.url.replace('/data/store/', '');
-        let requestLogMessage = ['data/store', '>', 'post', storeKey].join(' ');
-        log.info(requestLogMessage);
-
-        yakServer.storeProvider.updateValue(storeKey, request.body);
-        response.send();
-        log.info(['get', storeKey, '<', 'ok'].join(' '));
     }
 
     /**
