@@ -8,5 +8,6 @@ router.use(require('./plugins/pluginsRouter'));
 router.use(require('./storeItems/storeItemsRouter'));
 router.use(require('./modules/modulesRouter'));
 router.use(require('./upload/uploadRouter'));
+router.use(require('./package/router'));
 
 module.exports = router;
