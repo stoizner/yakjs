@@ -38,7 +38,7 @@ function YakServer() {
      * Starts the YAKjs server.
      */
     this.start = function start() {
-        expressServer = new ExpressServer(self, yakServerState.configManager.config);
+        expressServer = new ExpressServer(yakServerState.configManager.config);
         expressServer.start();
     };
 

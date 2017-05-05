@@ -10,10 +10,9 @@ const apiV1Router = require('./routes/v1/apiV1Router');
 /**
  * @constructor
  * @struct
- * @param {!YakServer} yakServer
  * @param {!Config} config
  */
-function ExpressServer(yakServer, config) {
+function ExpressServer(config) {
     /**
      * @type {ExpressServer}
      */
@@ -32,8 +31,6 @@ function ExpressServer(yakServer, config) {
     let app = express();
 
     function constructor() {
-        // initializeAPIMap();
-
         process.on('uncaughtException', function handleUncaughtException(error) {
             log.error('uncaughtException', error);
 
