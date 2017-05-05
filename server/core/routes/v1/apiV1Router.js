@@ -3,11 +3,11 @@
 const express = require('express');
 const router = express.Router(); // eslint-disable-line new-cap
 
-router.use(require('./instances/instancesRouter'));
-router.use(require('./plugins/pluginsRouter'));
-router.use(require('./storeItems/storeItemsRouter'));
-router.use(require('./modules/modulesRouter'));
-router.use(require('./upload/uploadRouter'));
+router.use(require('./instances/router'));
+router.use(require('./plugins/router'));
+router.use(require('./storeItems/router'));
+router.use(require('./modules/router'));
+router.use(require('./upload/router'));
 router.use(require('./package/router'));
 
 module.exports = router;
