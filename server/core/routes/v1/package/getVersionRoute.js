@@ -8,13 +8,26 @@ const HttpStatus = require('http-status-codes');
  * @param response
  */
 function getVersionRoute(request, response) {
-    fs.readFile('package.json', 'utf8', (error, file) => {
-        if (error) {
-            response.status(HttpStatus.INTERNAL_SERVER_ERROR).send(error);
-        } else {
-            let pkg = JSON.parse(file);
-            response.send({version: pkg.version});
-        }
+    readFile('package.json')
+        .then(pkg => response.send({version: pkg.version}))
+        .catch(() => readFile('../package.json'))
+        .then(pkg => response.send({version: pkg.version}))
+        .catch(error => response.status(HttpStatus.INTERNAL_SERVER_ERROR).send(error));
+}
+
+/**
+ * @param {string} filename
+ * @returns {!Promise}
+ */
+function readFile(filename) {
+    return new Promise((resolve, reject) => {
+        fs.readFile(filename, 'utf8', (error, file) => {
+            if (error) {
+                reject(error);
+            } else {
+                resolve(JSON.parse(file));
+            }
+        });
     });
 }
 
