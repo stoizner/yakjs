@@ -82,6 +82,7 @@
         "grunt-mocha-test": "^0.13.2",
         "load-grunt-tasks": "~3.5.2",
         "mocha": "3.1.2",
+        "proxyquire": "^1.7.11",
         "request": "^2.81.0",
         "require-all": "^2.0.0",
         "sinon": "~1.17.6",

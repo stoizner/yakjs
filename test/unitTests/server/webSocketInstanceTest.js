@@ -1,29 +1,28 @@
-var sandbox = require('../testSandbox');
-var sinon = sandbox.sinon;
-var expect = sandbox.expect;
+const sandbox = require('../../testSandbox');
+const sinon = sandbox.sinon;
+const expect = sandbox.expect;
+const WebSocketInstance = require('../../../server/core/instance/webSocketInstance');
+const InstanceState = require('../../../server/core/instance/instanceState');
 
 describe('WebSocketInstance', function() {
     'use strict';
 
     /**
-     * @type {yak.WebSocketInstance}
+     * @type {!WebSocketInstance}
      */
     var sut;
 
     /**
-     *  @type {yak.PluginManager}
+     *  @type {PluginManager}
      */
     var pluginManagerStub;
 
-    /**
-     * Setup before each test
-     */
     beforeEach(function() {
         pluginManagerStub = {
             createPluginWorker: sinon.spy()
         };
 
-        sut = new yak.WebSocketInstance(pluginManagerStub, 'test', 8791);
+        sut = new WebSocketInstance(pluginManagerStub, 'test', 8791);
     });
 
     describe('start', function() {
@@ -80,7 +79,7 @@ describe('WebSocketInstance', function() {
             sut.start();
 
             // Then
-            expect(sut.state).to.not.equal(yak.InstanceState.ERROR);
+            expect(sut.state).to.not.equal(InstanceState.ERROR);
         });
 
         it('plugin without onInitialize shall be added to active plugins', function() {
@@ -111,13 +110,13 @@ describe('WebSocketInstance', function() {
     });
 
     describe('stop', function() {
-        it('shall call onTerminate on plugin', function() {
+        it('calls onTerminate on plugin', function() {
             // Given
             sut.plugins = ['myPlugin'];
             var plugin = {name: 'myPlugin', onTerminate: sinon.spy()};
             pluginManagerStub.createPluginWorker = sinon.stub().returns(plugin);
             sut.start();
-            sut.state = yak.InstanceState.RUNNING;
+            sut.state = InstanceState.RUNNING;
 
             // When
             sut.stop();
@@ -126,13 +125,13 @@ describe('WebSocketInstance', function() {
             expect(plugin.onTerminate).calledWith();
         });
 
-        it('shall call onStop on plugin', function() {
+        it('calls onStop on plugin', function() {
             // Given
             sut.plugins = ['myPlugin'];
             var plugin = {name: 'myPlugin', onStop: sinon.spy()};
             pluginManagerStub.createPluginWorker = sinon.stub().returns(plugin);
             sut.start();
-            sut.state = yak.InstanceState.RUNNING;
+            sut.state = InstanceState.RUNNING;
 
             // When
             sut.stop();

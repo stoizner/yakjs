@@ -1,48 +1,53 @@
-var sandbox = require('../../testSandbox');
-var sinon = sandbox.sinon;
-var expect = sandbox.expect;
+const sandbox = require('../../testSandbox');
+const sinon = sandbox.sinon;
+const expect = sandbox.expect;
+const proxyquire =  require('proxyquire');
 
 describe('JsonStore', function() {
     'use strict';
 
     /**
-     * @type {!yak.JsonStore}
+     * @type {!StoreProvider}
      */
-    var sut;
+    let storeProvider;
 
     /**
-     * @type {yak.StoreProvider}
+     * @type {!JsonStore}
      */
-    var storeProvider;
+    let jsonStore;
 
-    /**
-     * Setup before each test
-     */
     beforeEach(function() {
         // Set up stubs
-        storeProvider = sinon.stub(new yak.StoreProvider());
+        storeProvider = {
+            updateItem: sinon.stub(),
+            getValue: sinon.stub(),
+            deleteItem: sinon.stub(),
+            hasValue: sinon.stub()
+        };
 
-        // Set up subject under test.
-        sut = new yak.JsonStore(storeProvider)
+        // Create subject under test
+        jsonStore = proxyquire('../../../server/common/jsonStore', {
+            '../core/store/storeProvider': storeProvider
+        });
     });
 
     describe('set (update or create) a value', function() {
         it('serialize object before setting it as a value.', function() {
             // Given
-            var data = {test: 42};
+            let data = {test: 42};
 
             // When
-            sut.setValue('my.key', data);
+            jsonStore.setValue('my.key', data);
 
             // Then
-            expect(storeProvider.updateValue).to.be.calledWith('my.key', JSON.stringify(data, null, 4));
+            expect(storeProvider.updateItem).to.be.calledWith('my.key', JSON.stringify(data, null, 4));
         });
     });
 
     describe('get a value for given key', function() {
         it('return {} when no value was found', function() {
             // When
-            var data = sut.getValue('keyWithoutValue');
+            let data = jsonStore.getValue('keyWithoutValue');
 
             // Then
             expect(data).to.be.eql({});
@@ -50,11 +55,11 @@ describe('JsonStore', function() {
 
         it('return deserialized object', function() {
             // Given
-            var givenData = {test: 42};
+            let givenData = {test: 42};
             storeProvider.getValue.withArgs('my.key').returns(JSON.stringify(givenData, null, 4));
 
             // When
-            var data = sut.getValue('my.key');
+            let data = jsonStore.getValue('my.key');
 
             // Then
             expect(data).to.be.eql(givenData);
@@ -64,10 +69,10 @@ describe('JsonStore', function() {
     describe('remove value and key from store', function() {
         it('call remove on the provider.', function() {
             // When
-            sut.deleteValue('my.key');
+            jsonStore.deleteValue('my.key');
 
             // Then
-            expect(storeProvider.deleteValue).to.be.calledWith('my.key');
+            expect(storeProvider.deleteItem).to.be.calledWith('my.key');
         });
     });
 
@@ -77,7 +82,7 @@ describe('JsonStore', function() {
             storeProvider.hasValue.withArgs('my.key').returns(true);
 
             // When
-            var hasValue = sut.hasValue('my.key');
+            let hasValue = jsonStore.hasValue('my.key');
 
             // Then
             expect(hasValue).to.be.equal(true);
@@ -88,7 +93,7 @@ describe('JsonStore', function() {
             storeProvider.hasValue.withArgs('my.key').returns(false);
 
             // When
-            var hasValue = sut.hasValue('my.key');
+            let hasValue = jsonStore.hasValue('my.key');
 
             // Then
             expect(hasValue).to.be.equal(false);

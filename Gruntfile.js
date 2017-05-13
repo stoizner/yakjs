@@ -187,18 +187,18 @@ module.exports = function grunt(grunt) {
 
     grunt.config.merge({
         mochaTest: {
-            server: {
+            unitTests: {
                 options: {
                     require: [],
                     reporter: 'spec'
                 },
-                src: ['./test/server/**/*Test.js']
+                src: ['./test/unitTests/**/*Test.js']
             },
             coverage: {
                 options: {
                     reporter: 'spec'
                 },
-                src: [coverageDir + 'test/server/**/*Test.js']
+                src: [coverageDir + 'test/unitTests/**/*Test.js']
             },
             integration: {
                 options: {
@@ -291,17 +291,15 @@ module.exports = function grunt(grunt) {
 
     grunt.registerTask('build-server', [
         'copy:server',
-        'eslint:server',
-        'mochaTest:server']);
+        'eslint:server']);
     grunt.registerTask('build-ui', ['compile-ui', 'clean:tmp']);
 
     grunt.registerTask('coverage', ['instrument', 'copy:coverageTest', 'mochaTest:coverage', 'storeCoverage', 'makeReport']);
 
     // Single runnable tasks
-    grunt.registerTask('testAll', ['mochaTest:dist', 'mochaTest:integration']);
     grunt.registerTask('dev', ['build-server', 'build-ui', 'watch']);
     grunt.registerTask('compile', ['compile-ui']);
-    grunt.registerTask('build', ['clean', 'build-server', 'build-ui']);
+    grunt.registerTask('build', ['clean', 'mochaTest:unitTests', 'build-server', 'build-ui']);
 
     // Creates a releasable zip package
     grunt.registerTask('package', ['build', 'exec:installNodeModules', 'compress', 'exec:npmPack']);
