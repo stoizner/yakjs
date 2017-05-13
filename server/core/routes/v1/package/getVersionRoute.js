@@ -8,10 +8,16 @@ const HttpStatus = require('http-status-codes');
  * @param response
  */
 function getVersionRoute(request, response) {
+    var versionInfo = {};
+
     readFile('package.json')
-        .then(pkg => response.send({version: pkg.version}))
-        .catch(() => readFile('../package.json'))
-        .then(pkg => response.send({version: pkg.version}))
+        .then(pkg => {
+            versionInfo.version = pkg.version;
+        })
+        .catch(() => readFile('../package.json').then(pkg => {
+            versionInfo.version = pkg.version;
+        }))
+        .then(() => response.send(versionInfo))
         .catch(error => response.status(HttpStatus.INTERNAL_SERVER_ERROR).send(error));
 }
 
