@@ -2,7 +2,7 @@
 
 /* eslint-disable no-empty-function, no-unused-vars */
 
-const eventBus = require('../modules/eventBus');
+const eventBus = require('../common/eventBus');
 const guid = require('../common/guid');
 
 /**

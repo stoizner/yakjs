@@ -17,18 +17,7 @@ function AnalyticsPlugin(context) {
      */
     const DATA_KEY = 'plugin.analytics.data';
 
-    this.onStart = () => {};
-
-    /**
-     * @param {!WebSocketConnection} connection
-     */
-    this.onNewConnection = connection => {};
-
-    /**
-     * @param {!WebSocketMessage} message
-     * @param {!WebSocketConnection} connection
-     */
-    this.onMessage = (message, connection) => {
+    this.onMessage = () => {
         let analyticsData = jsonStore.getValue(DATA_KEY);
         let instanceName = context.instance.name;
 
@@ -42,19 +31,11 @@ function AnalyticsPlugin(context) {
 
         jsonStore.setValue(DATA_KEY, analyticsData);
     };
-
-    /**
-     * Connection closed event. Note that the connection is no longer part of instance.getConnections().
-     * @param {!WebSocketConnection} connection
-     */
-    this.onConnectionClosed = connection => {};
-
-    this.onStop = () => {};
 }
 
 module.exports = {
     name: 'analytics',
-    description: 'Count received messages per instance and saves it to the store.',
+    description: 'Counts received messages per instance and updates the "plugin.analytics.data" store item.',
     createWorker: context => new AnalyticsPlugin(context)
 };
 

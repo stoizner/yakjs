@@ -40,7 +40,7 @@ function PluginWorker() {
     /**
      * Called when the instance is stopped.
      */
-    this.onStop = function onTerminate() {};
+    this.onStop = function onStop() {};
 }
 
 module.exports = PluginWorker;

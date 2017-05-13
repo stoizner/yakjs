@@ -13,12 +13,8 @@ function DnsLookupPlugin(require) {
     this.onStart = function onStart() {};
 
     /**
-     * @param {WebSocketConnection} connection
-     */
-    this.onNewConnection = function onNewConnection(connection) {};
-
-    /**
      * @param {WebSocketMessage} message
+     * @param {{action: string, address: string}} message.data
      * @param {WebSocketConnection} connection
      */
     this.onJsonMessage = function onJsonMessage(message, connection) {
