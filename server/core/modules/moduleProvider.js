@@ -18,7 +18,7 @@ function ModuleProvider() {
     /**
      * @type {string}
      */
-    const MODULES_DIRECTORY = '/modules/';
+    const MODULES_DIRECTORY = './modules/';
 
     /**
      * @type {string}

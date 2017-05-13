@@ -4,7 +4,8 @@
         "node": true
     },
     "globals": {
-        "yak": true,
+        "cobu": true,
+        "Mustache": true,
         "_": true,
         "$": true
     },

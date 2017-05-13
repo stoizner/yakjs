@@ -1,17 +1,22 @@
+var StoreKeyValueItem = require('../storeKeyValueItem');
+var ShowViewCommand = require('../../workspace/showViewCommand');
+var StoreListView = require('../list/storeListView');
+
 /**
  * @constructor
- * @param {yak.ui.ViewModelContext} context
+ * @struct
+ * @param {!ViewModelContext} context
  */
-yak.ui.EditStoreItemViewModel = function EditStoreItemViewModel(context) {
+function EditStoreItemViewModel(context) {
     'use strict';
 
     /**
-     * @type {!yak.ui.EditStoreItemViewModel}
+     * @type {!EditStoreItemViewModel}
      */
     var self = this;
 
     /**
-     * @type {yak.ui.StoreKeyValueItem}
+     * @type {StoreKeyValueItem}
      */
     this.storeItem = null;
 
@@ -33,7 +38,7 @@ yak.ui.EditStoreItemViewModel = function EditStoreItemViewModel(context) {
             requestStoreItem(key);
         } else {
             self.isNewStoreItem = true;
-            self.storeItem = new yak.ui.StoreKeyValueItem();
+            self.storeItem = new StoreKeyValueItem();
             self.onItemChanged();
         }
     };
@@ -53,12 +58,12 @@ yak.ui.EditStoreItemViewModel = function EditStoreItemViewModel(context) {
 
     /**
      * Create or update a store item.
-     * @param {yak.ui.StoreKeyValueItem} storeItem
+     * @param {StoreKeyValueItem} storeItem
      */
     this.updateValue = function createOrUpdate(storeItem) {
-        var request = new yak.api.SetStoreItemRequest();
+        var request = {};
 
-        request.storeItem = new yak.api.StoreKeyValueItem();
+        request.storeItem = new StoreKeyValueItem();
         request.storeItem.key = storeItem.key;
         request.storeItem.value = storeItem.value;
 
@@ -81,16 +86,18 @@ yak.ui.EditStoreItemViewModel = function EditStoreItemViewModel(context) {
     };
 
     function showStorePanel() {
-        context.eventBus.post(new yak.ui.ShowViewCommand(yak.ui.StoreListView));
+        context.eventBus.post(new ShowViewCommand(StoreListView));
     }
 
     /**
-     * @param {yak.api.GetStoreItemResponse} response
+     * @param {GetStoreItemResponse} response
      */
     function handleGetStoreItemResponse(response) {
-        self.storeItem = new yak.ui.StoreKeyValueItem(response.storeItem.key);
+        self.storeItem = new StoreKeyValueItem(response.storeItem.key);
         self.storeItem.value = response.storeItem.value;
 
         self.onItemChanged();
     }
-};
+}
+
+module.exports = EditStoreItemViewModel;

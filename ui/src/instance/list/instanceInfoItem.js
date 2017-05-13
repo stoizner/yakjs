@@ -1,9 +1,9 @@
 /**
- * Instance Item.
  * @constructor
+ * @struct
  * @param {string} id
  */
-yak.ui.InstanceInfoItem = function InstanceInfoItem(id) {
+function InstanceInfoItem(id) {
     'use strict';
 
     /**
@@ -65,4 +65,6 @@ yak.ui.InstanceInfoItem = function InstanceInfoItem(id) {
      * @type {boolean}
      */
     this.hasPluginsNotStarted = false;
-};
+}
+
+module.exports = InstanceInfoItem;

@@ -1,13 +1,13 @@
 /**
- * FileUploadViewModel
  * @constructor
- * @param {yak.ui.ViewModelContext} context
+ * @struct
+ * @param {!ViewModelContext} context
  */
-yak.ui.FileUploadViewModel = function FileUploadViewModel(context) {
+function FileUploadViewModel(context) {
     'use strict';
 
     /**
-     * @type {yak.ui.FileUploadViewModel}
+     * @type {FileUploadViewModel}
      */
     var self = this;
 
@@ -68,9 +68,10 @@ yak.ui.FileUploadViewModel = function FileUploadViewModel(context) {
 
         console.log('uploadFile', {filename: filename});
 
-        var fileContainer = new yak.api.UploadFileRequest();
-        fileContainer.filename = filename;
-        fileContainer.content = content;
+        var fileContainer = {
+            filename: filename,
+            content: content
+        };
 
         context.adapter.post('/upload/file', {fileContainer: fileContainer})
             .then(_.partial(handleUploadFileResponse, filename, true))
@@ -93,7 +94,7 @@ yak.ui.FileUploadViewModel = function FileUploadViewModel(context) {
 
     /**
      * @param {string} filename
-     * @param {yak.api.UploadFileResponse} response
+     * @param {!Object} response
      */
     function handleUploadFileResponse(filename, success, response) {
         console.log('handleUploadFileResponse', {response: response});
@@ -109,4 +110,6 @@ yak.ui.FileUploadViewModel = function FileUploadViewModel(context) {
 
         self.onFileUploadItemsChanged(_.toArray(fileUploadItems));
     }
-};
+}
+
+module.exports = FileUploadViewModel;

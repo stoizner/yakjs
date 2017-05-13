@@ -24,7 +24,7 @@ function EmptyPlugin(context) {
     /**
      * @param {!WebSocketConnection} connection
      */
-    this.onConnectionClosed = (connection) => {};
+    this.onConnectionClosed = connection => {};
 
     this.onStop = () => {};
 }

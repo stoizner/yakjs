@@ -1,35 +1,31 @@
+var StoreKeyValueItem = require('../storeKeyValueItem');
+var EditStoreItemView = require('../edit/editStoreItemView');
+var StoreNodeItem = require('./storeNodeItem');
+var StoreNodeItemType = require('./storeNodeItemType');
+var ShowViewCommand = require('../../workspace/showViewCommand');
+
 /**
- * StoreListViewModel
  * @constructor
- * @param {!yak.ui.ViewModelContext} context
+ * @struct
+ * @param {!ViewModelContext} context
  */
-yak.ui.StoreListViewModel = function StoreListViewModel(context) {
+function StoreListViewModel(context) {
     'use strict';
 
     /**
-     * @type {!yak.ui.StoreListViewModel}
+     * @type {!StoreListViewModel}
      */
     var self = this;
 
     /**
-     * @type {?string}
-     */
-    var lastGetValueRequestId = null;
-
-    /**
-     * @type {Function}
-     */
-    var lastGetValueRequestCallback = _.noop;
-
-    /**
-     * @type {!Array<yak.ui.StoreNodeItem>}
+     * @type {!Array<!StoreNodeItem>}
      */
     this.items = [];
 
     /**
-     * @type {!yak.ui.StoreNodeItem}
+     * @type {!StoreNodeItem}
      */
-    this.rootNode = new yak.ui.StoreNodeItem(null, 'root');
+    this.rootNode = new StoreNodeItem(null, 'root');
 
     /**
      * @type {Function}
@@ -40,11 +36,11 @@ yak.ui.StoreListViewModel = function StoreListViewModel(context) {
      * Constructor
      */
     function constructor() {
-        console.log('yak.ui.StoreListViewModel.constructor');
+        console.log('StoreListViewModel.constructor');
     }
 
     this.activate = function activate() {
-        console.log('yak.ui.StoreListViewModel.active');
+        console.log('StoreListViewModel.active');
         context.adapter.get('/storeitems/keys').then(handleGetStoreKeyInfoResponse);
     };
 
@@ -53,15 +49,15 @@ yak.ui.StoreListViewModel = function StoreListViewModel(context) {
     };
 
     /**
-     * @param {!yak.api.GetStoreKeysResponse} response
+     * @param {!Object} response
      */
     function handleGetStoreKeyInfoResponse(response) {
         /**
          * @param {string} key
-         * @returns {!yak.ui.StoreItem}
+         * @returns {!StoreKeyValueItem}
          */
         function toStoreItem(key) {
-            return new yak.ui.StoreKeyValueItem(key);
+            return new StoreKeyValueItem(key);
         }
 
         if (response.keys) {
@@ -75,8 +71,8 @@ yak.ui.StoreListViewModel = function StoreListViewModel(context) {
 
     /**
      * Sort object by key property.
-     * @param {!yak.api.StoreKeyInfo} left
-     * @param {!yak.api.StoreKeyInfo} right
+     * @param {!StoreKeyInfo} left
+     * @param {!StoreKeyInfo} right
      * @returns {number}
      */
     function byKey(left, right) {
@@ -87,15 +83,15 @@ yak.ui.StoreListViewModel = function StoreListViewModel(context) {
      * Initialize the item tree.
      */
     function createItemTree() {
-        self.rootNode = new yak.ui.StoreNodeItem();
+        self.rootNode = new StoreNodeItem();
 
         var groupNodes = {};
 
         /**
-         * @param {!yak.ui.StoreKeyValueItem} item
+         * @param {!StoreKeyValueItem} item
          */
         function createNodeForItem(item) {
-            var node = new yak.ui.StoreNodeItem(self.rootNode, yak.ui.StoreNodeItemType.ITEM, item.name);
+            var node = new StoreNodeItem(self.rootNode, StoreNodeItemType.ITEM, item.name);
             node.key = item.key;
 
             if (item.namespace) {
@@ -109,7 +105,7 @@ yak.ui.StoreListViewModel = function StoreListViewModel(context) {
     }
 
     /**
-     * @param {yak.ui.StoreNodeItem} node
+     * @param {StoreNodeItem} node
      * @param {string} namespace
      * @param {Object<string, string>} groupNodes
      */
@@ -125,7 +121,7 @@ yak.ui.StoreListViewModel = function StoreListViewModel(context) {
             var groupNode = groupNodes[fullGroupName];
 
             if (!groupNode) {
-                groupNode = new yak.ui.StoreNodeItem(parentGroupNode, yak.ui.StoreNodeItemType.GROUP, groupName);
+                groupNode = new StoreNodeItem(parentGroupNode, StoreNodeItemType.GROUP, groupName);
                 groupNodes[fullGroupName] = groupNode;
                 parentGroupNode.nodes.push(groupNode);
             }
@@ -138,10 +134,10 @@ yak.ui.StoreListViewModel = function StoreListViewModel(context) {
 
     /**
      * Show and activate the store entry edit panel for given key.
-     * @param {yak.api.StoreKeyInfo} [storeKeyInfo]
+     * @param {StoreKeyInfo} [storeKeyInfo]
      */
     this.activateStoreEditPanel = function activateStoreEditPanel(storeKeyInfo) {
-        context.eventBus.post(new yak.ui.ShowViewCommand(yak.ui.EditStoreItemView, storeKeyInfo));
+        context.eventBus.post(new ShowViewCommand(EditStoreItemView, storeKeyInfo));
     };
 
     /**
@@ -150,38 +146,10 @@ yak.ui.StoreListViewModel = function StoreListViewModel(context) {
      * @param {Function} callback
      */
     this.getValue = function getValue(key, callback) {
-        var request = new yak.api.GetStoreValueRequest();
-        request.key = key;
-
-        lastGetValueRequestId = request.id;
-        lastGetValueRequestCallback = callback;
-        context.adapter.sendRequest(request, handleGetStoreValueResponse);
+        context.adapter.get('/storeItems/' +  key).then(callback);
     };
-
-    /**
-     * Create or update a store item.
-     * @param {yak.ui.StoreItem} storeItem
-     */
-    this.updateValue = function createOrUpdate(storeItem) {
-        console.log('StoreListViewModel.createOrUpdate', { storeItem: storeItem });
-
-        self.item = storeItem;
-
-        var request = new yak.api.SetStoreValueRequest();
-        request.key = self.item.key;
-        request.value = self.item.value;
-
-        context.adapter.sendRequest(request, self.reloadAndRefreshList);
-    };
-
-    /**
-     * @param {yak.api.GetStoreValueResponse} response
-     */
-    function handleGetStoreValueResponse(response) {
-        if (lastGetValueRequestId === response.requestId) {
-            lastGetValueRequestCallback(response.key, response.value);
-        }
-    }
 
     constructor();
-};
+}
+
+module.exports = StoreListViewModel;

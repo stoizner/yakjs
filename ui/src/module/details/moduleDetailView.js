@@ -2,15 +2,16 @@
 
 /**
  * @constructor
+ * @struct
  * @param {jQuery} parent
- * @param {yak.ui.ViewContext} context
- * @param {yak.ui.ModuleDetailViewModel} viewModel
+ * @param {ViewContext} context
+ * @param {ModuleDetailViewModel} viewModel
  */
-yak.ui.ModuleDetailView = function ModuleDetailView(parent, context, viewModel) {
+function ModuleDetailView(parent, context, viewModel) {
     'use strict';
 
     /**
-     * @type {yak.ui.Template}
+     * @type {Template}
      */
     var template = context.template.load('moduleDetailView');
 
@@ -54,4 +55,6 @@ yak.ui.ModuleDetailView = function ModuleDetailView(parent, context, viewModel) 
     }
 
     constructor();
-};
+}
+
+module.exports = ModuleDetailView;

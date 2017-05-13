@@ -1,17 +1,19 @@
 /**
- * ViewContext
  * @constructor
+ * @struct
  */
-yak.ui.ViewContext = function ViewContext() {
+function ViewContext() {
     'use strict';
 
     /**
-     * @type {yak.ui.ViewFactory}
+     * @type {ViewFactory}
      */
     this.viewFactory = null;
 
     /**
-     * @type {yak.ui.TemplateLoader}
+     * @type {TemplateLoader}
      */
     this.template = null;
-};
+}
+
+module.exports = ViewContext;

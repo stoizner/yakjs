@@ -1,15 +1,15 @@
 /**
- * InstanceListView
  * @constructor
+ * @struct
  * @param {jQuery} parent
- * @param {yak.ui.ViewContext} context
- * @param {yak.ui.InstanceListViewModel} viewModel
+ * @param {ViewContext} context
+ * @param {InstanceListViewModel} viewModel
  */
-yak.ui.InstanceListView = function InstanceListView(parent, context, viewModel) {
+function InstanceListView(parent, context, viewModel) {
     'use strict';
 
     /**
-     * @type {yak.ui.Template}
+     * @type {Template}
      */
     var template = context.template.load('instanceList');
 
@@ -67,4 +67,6 @@ yak.ui.InstanceListView = function InstanceListView(parent, context, viewModel) 
     }
 
     constructor();
-};
+}
+
+module.exports = InstanceListView;

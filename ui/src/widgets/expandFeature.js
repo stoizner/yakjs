@@ -3,7 +3,7 @@
  * @constructor
  * @param {jQuery} parent
  */
-yak.ui.ExpandFeature = function ExpandFeature(parent) {
+function ExpandFeature(parent) {
     'use strict';
 
     var ATTR_IS_EXPANDED = 'data-is-expanded';
@@ -49,4 +49,6 @@ yak.ui.ExpandFeature = function ExpandFeature(parent) {
     }
 
     constructor();
-};
+}
+
+module.exports = ExpandFeature;

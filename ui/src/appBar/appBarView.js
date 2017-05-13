@@ -1,32 +1,32 @@
 /**
- * AppBarView
  * @constructor
- * @param {$} parent
- * @param {yak.ui.ViewContext} context
- * @param {yak.ui.AppBarViewModel} viewModel
+ * @struct
+ * @param {jQuery} parent
+ * @param {!ViewContext} context
+ * @param {!AppBarViewModel} viewModel
  */
-yak.ui.AppBarView = function AppBarView(parent, context, viewModel) {
+function AppBarView(parent, context, viewModel) {
     'use strict';
 
     /**
-     * @type {yak.ui.Template}
+     * @type {Template}
      */
     var template = context.template.load('appBar');
 
-    /**
-     * Constructor
-     */
     function constructor() {
         viewModel.onVersionCheckResultChanged = updateAppBar;
+        viewModel.onVersionChanged = updateAppBar;
         updateAppBar();
     }
 
     function updateAppBar() {
         parent.html(template.build({
-            version: yak.ui.appInfo.version,
+            version: viewModel.version,
             versionCheck: viewModel.versionCheckResult
         }));
     }
 
     constructor();
-};
+}
+
+module.exports = AppBarView;

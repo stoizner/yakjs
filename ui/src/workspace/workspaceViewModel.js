@@ -1,12 +1,17 @@
+var ShowViewCommand = require('./showViewCommand');
+var InstanceListView = require('../instance/list/instanceListView');
+
 /**
- * WorkspaceViewModel
  * @constructor
- * @param {yak.ui.ViewModelContext} context
+ * @struct
+ * @param {!ViewModelContext} context
  */
-yak.ui.WorkspaceViewModel = function WorkspaceViewModel(context) {
+function WorkspaceViewModel(context) {
     'use strict';
 
-    /** @type {yak.ui.WorkspaceViewModel} */
+    /**
+     * @type {WorkspaceViewModel}
+     */
     var self = this;
 
     /**
@@ -30,14 +35,14 @@ yak.ui.WorkspaceViewModel = function WorkspaceViewModel(context) {
      *  Constructor
      */
     function constructor() {
-        context.eventBus.on(yak.ui.ShowViewCommand).register(handleShowViewCommand);
+        context.eventBus.on(ShowViewCommand).register(handleShowViewCommand);
 
-        self.activeView = yak.ui.InstanceListView.prototype.constructor.name;
+        self.activeView = InstanceListView.prototype.constructor.name;
         self.onActiveViewChanged();
     }
 
     /**
-     * @param {!yak.ui.ShowViewCommand} command
+     * @param {!ShowViewCommand} command
      */
     function handleShowViewCommand(command) {
         console.log('Change active view', {command: command});
@@ -57,4 +62,6 @@ yak.ui.WorkspaceViewModel = function WorkspaceViewModel(context) {
     };
 
     constructor();
-};
+}
+
+module.exports = WorkspaceViewModel;

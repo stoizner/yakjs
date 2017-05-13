@@ -1,8 +1,7 @@
 /**
- * EmptyPluginTemplate
  * @constructor
  */
-yak.ui.EmptyPluginTemplate = function Plugin() {
+function EmptyPluginTemplate() {
 
     'use strict';
 
@@ -35,4 +34,6 @@ yak.ui.EmptyPluginTemplate = function Plugin() {
      * @param {yak.WebSocketInstance} instance
      */
     this.onTerminate = function onTerminate(instance) {};
-};
+}
+
+module.exports = EmptyPluginTemplate;

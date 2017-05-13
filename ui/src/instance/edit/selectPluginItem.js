@@ -1,8 +1,9 @@
 /**
  * SelectPluginItem
  * @constructor
+ * @struct
  */
-yak.ui.SelectPluginItem = function SelectPluginItem() {
+function SelectPluginItem() {
     'use strict';
 
     /**
@@ -22,4 +23,6 @@ yak.ui.SelectPluginItem = function SelectPluginItem() {
      * @type {boolean}
      */
     this.isActive = false;
-};
+}
+
+module.exports = SelectPluginItem;

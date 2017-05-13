@@ -1,30 +1,33 @@
+var ExpandFeature = require('../../widgets/expandFeature');
+
 /**
  * @constructor
- * @param {yak.ui.ViewContext} context
+ * @struct
+ * @param {ViewContext} context
  * @param {jQuery} parent
- * @param {yak.ui.StoreListViewModel} viewModel
+ * @param {StoreListViewModel} viewModel
  */
-yak.ui.StoreListView = function StoreListView(parent, context, viewModel) {
+function StoreListView(parent, context, viewModel) {
     'use strict';
 
     /**
-     * @type {!yak.ui.Template}
+     * @type {!Template}
      */
     var template = context.template.load('storeList');
 
     /**
-     * @type {!yak.ui.Template}
+     * @type {!Template}
      */
     var nodeItemTemplate = context.template.load('storeNodeItem');
 
     /**
-     * @type {!yak.ui.Template}
+     * @type {!Template}
      */
     var nodeGroupTemplate = context.template.load('storeNodeGroup');
 
     /**
      *
-     * @type {yak.ui.ExpandFeature}
+     * @type {ExpandFeature}
      */
     var expandFeature = null;
 
@@ -34,7 +37,7 @@ yak.ui.StoreListView = function StoreListView(parent, context, viewModel) {
      * Constructor
      */
     function constructor() {
-        console.log('yak.ui.StoreListView.constructor');
+        console.log('StoreListView.constructor');
         parent.html(template.build());
 
         parent.find('[data-command=create]').click(function() { viewModel.activateStoreEditPanel(); });
@@ -69,12 +72,12 @@ yak.ui.StoreListView = function StoreListView(parent, context, viewModel) {
         var treeElement = parent.find('[data-element="tree"]');
         treeElement.html(rootNodeHtml);
 
-        expandFeature = new yak.ui.ExpandFeature(treeElement);
+        expandFeature = new ExpandFeature(treeElement);
         expandFeature.collapseAll();
     }
 
     /**
-     * @param {!yak.ui.StoreNodeItem} node
+     * @param {!StoreNodeItem} node
      * @param {number} level
      * @return {string}
      */
@@ -88,7 +91,7 @@ yak.ui.StoreListView = function StoreListView(parent, context, viewModel) {
     }
 
     /**
-     * @param {!yak.ui.StoreNodeItem} node
+     * @param {!StoreNodeItem} node
      * @param {number} level
      */
     function renderNodeItem(node, level) {
@@ -103,7 +106,7 @@ yak.ui.StoreListView = function StoreListView(parent, context, viewModel) {
     }
 
     /**
-     * @param {!yak.ui.StoreNodeItem} node
+     * @param {!StoreNodeItem} node
      * @param {number} level
      * @returns {string}
      */
@@ -144,4 +147,6 @@ yak.ui.StoreListView = function StoreListView(parent, context, viewModel) {
     }
 
     constructor();
-};
+}
+
+module.exports = StoreListView;

@@ -1,5 +1,7 @@
 /* global module:false */
 
+const path = require('path');
+
 /**
  * Gruntfile for yakjs
  * @param {?} grunt
@@ -47,7 +49,7 @@ module.exports = function grunt(grunt) {
         created: (new Date()).toISOString()
     };
 
-    let uiFooter = 'yak.ui.appInfo = ' + JSON.stringify(appInfo, null, 4) + ';';
+    let uiFooter = 'appVersion = ' + JSON.stringify(appInfo, null, 4) + ';';
 
     grunt.initConfig({
         pkg: pkg,
@@ -73,19 +75,6 @@ module.exports = function grunt(grunt) {
         concat: {
             options: {
                 separator: '\n'
-            },
-            ui: {
-                options: {
-                    banner: banner,
-                    footer: uiFooter
-                },
-                src: [
-                        uiDir + '_namespaces.js',
-                        uiSrcDir + '**/*.js',
-                        uiDir + '_bootstrap.js'
-                ],
-                dest: uiPkgDir + 'scripts/' + pkg.name + '-ui.js',
-                nonull: true
             },
             less: {
                 options: {},
@@ -276,13 +265,60 @@ module.exports = function grunt(grunt) {
        }
     });
 
+    let webpackConsoleConfig = {
+        // Configure the console output
+        colors: false,
+        modules: true,
+        reasons: true
+    };
+
+    grunt.config.merge({
+        webpack: {
+            ui: {
+                // webpack options
+                entry: uiSrcDir + 'index.js',
+                output: {
+                    path: path.join(__dirname, uiPkgDir),
+                    filename: pkg.name + '-ui.js'
+                },
+
+                stats: webpackConsoleConfig,
+                progress: true,
+                failOnError: true
+            },
+            uiWatch: {
+                // webpack options
+                entry: uiSrcDir + 'index.js',
+                output: {
+                    path: process.cwd() + distDir,
+                    filename: pkg.name + '.js'
+                },
+
+                stats: {
+                    // Configure the console output
+                    colors: false,
+                    modules: true,
+                    reasons: true
+                },
+
+                progress: false,
+                failOnError: false,
+                watch: true,
+                watchOptions: {
+                    aggregateTimeout: 500,
+                    poll: true
+                }
+            }
+        }
+    });
+
     // Load all npm tasks.
     require('load-grunt-tasks')(grunt);
 
     grunt.loadTasks(buildDir + 'grunt-tasks');
 
     grunt.registerTask('compile-ui', [
-        'concat:ui',
+        'webpack:ui',
         'concat:less',
         'copy:ui',
         'less',

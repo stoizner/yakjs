@@ -2,7 +2,7 @@
  * @constructor
  * @struct
  */
-yak.ui.PluginItem = function PluginItem() {
+function PluginItem() {
     'use strict';
 
     /**
@@ -14,4 +14,6 @@ yak.ui.PluginItem = function PluginItem() {
      * @type {?string}
      */
     this.code = null;
-};
+}
+
+module.exports = PluginItem;

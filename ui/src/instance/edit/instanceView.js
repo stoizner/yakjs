@@ -1,25 +1,26 @@
+var InstanceConfigItem = require('./instanceConfigItem');
+
 /**
- * InstanceView
  * @constructor
- * @param {yak.ui.ViewContext} context
+ * @param {ViewContext} context
  * @param {jQuery} parent
- * @param {yak.ui.InstanceViewModel} viewModel
+ * @param {InstanceViewModel} viewModel
  */
-yak.ui.InstanceView = function InstanceView(parent, context, viewModel) {
+function InstanceView(parent, context, viewModel) {
     'use strict';
 
     /**
-     *  @type {yak.ui.InstanceView}
+     *  @type {InstanceView}
      */
     var self = this;
 
     /**
-     * @type {yak.ui.Template}
+     * @type {Template}
      */
     var template = context.template.load('instanceEdit');
 
     /**
-     * @type {yak.ui.Template}
+     * @type {Template}
      */
     var pluginListTemplate = context.template.load('selectedPluginsList');
 
@@ -27,7 +28,7 @@ yak.ui.InstanceView = function InstanceView(parent, context, viewModel) {
      * Constructor
      */
     function constructor() {
-        console.log('yak.ui.InstanceView.constructor', self);
+        console.log('InstanceView.constructor', self);
 
         updateView();
 
@@ -99,7 +100,7 @@ yak.ui.InstanceView = function InstanceView(parent, context, viewModel) {
     function handleSaveCommand() {
         parent.find('[data-element=error-message]').hide();
 
-        var item = new yak.ui.InstanceConfigItem();
+        var item = new InstanceConfigItem();
         item.id = parent.find('[name=name]').val();
         item.name = parent.find('[name=name]').val();
         item.description = parent.find('[name=description]').val();
@@ -109,4 +110,6 @@ yak.ui.InstanceView = function InstanceView(parent, context, viewModel) {
     }
 
     constructor();
-};
+}
+
+module.exports = InstanceView;

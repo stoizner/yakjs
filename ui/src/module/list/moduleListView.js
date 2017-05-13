@@ -2,19 +2,19 @@
  * ModuleListView
  * @constructor
  * @param {jQuery} parent
- * @param {yak.ui.ViewContext} context
- * @param {yak.ui.ModuleListViewModel} viewModel
+ * @param {ViewContext} context
+ * @param {ModuleListViewModel} viewModel
  */
-yak.ui.ModuleListView = function ModuleListView(parent, context, viewModel) {
+function ModuleListView(parent, context, viewModel) {
     'use strict';
 
     /**
-     * @type {yak.ui.Template}
+     * @type {Template}
      */
     var template = context.template.load('moduleList');
 
     /**
-     * @type {yak.ui.Template}
+     * @type {Template}
      */
     var itemTemplate = context.template.load('moduleListItem');
 
@@ -27,7 +27,7 @@ yak.ui.ModuleListView = function ModuleListView(parent, context, viewModel) {
      * Constructor
      */
     function constructor() {
-        console.log('yak.ui.ModuleListView.constructor');
+        console.log('ModuleListView.constructor');
         parent.html(template.build());
 
         parent.find('[data-command=refresh]').click(viewModel.reloadAndRefreshList);
@@ -65,4 +65,6 @@ yak.ui.ModuleListView = function ModuleListView(parent, context, viewModel) {
     }
 
     constructor();
-};
+}
+
+module.exports = ModuleListView;

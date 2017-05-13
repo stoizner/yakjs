@@ -1,18 +1,23 @@
+var EmptyPluginTemplate = require('./emptyPluginTemplate');
+var PluginItem = require('../pluginItem');
+var ShowViewCommand = require('../../workspace/showViewCommand');
+var PluginListView = require('../list/pluginListView');
+
 /**
  * @constructor
  * @struct
- * @param {yak.ui.ViewModelContext} context
+ * @param {!ViewModelContext} context
  */
-yak.ui.PluginViewModel = function PluginViewModel(context) {
+function PluginViewModel(context) {
     'use strict';
 
     /**
-     * @type {!yak.ui.PluginViewModel}
+     * @type {!PluginViewModel}
      */
     var self = this;
 
     /**
-     * @type {yak.ui.PluginItem}
+     * @type {PluginItem}
      */
     this.pluginItem = null;
 
@@ -39,12 +44,12 @@ yak.ui.PluginViewModel = function PluginViewModel(context) {
         console.log('PluginViewModel.activate', data);
 
         if (data !== null) {
-            self.pluginItem = new yak.ui.PluginItem();
+            self.pluginItem = new PluginItem();
             _.extend(self.pluginItem, data);
         } else {
             self.isNewItem = true;
-            self.pluginItem = new yak.ui.PluginItem();
-            self.pluginItem.code = yak.ui.EmptyPluginTemplate.toString();
+            self.pluginItem = new PluginItem();
+            self.pluginItem.code = EmptyPluginTemplate.toString();
         }
 
         Object.freeze(self.pluginItem);
@@ -54,18 +59,18 @@ yak.ui.PluginViewModel = function PluginViewModel(context) {
 
     /**
      * Create or update a plugin
-     * @param {yak.ui.PluginItem} pluginItem
+     * @param {PluginItem} pluginItem
      */
     this.createOrUpdate = function createOrUpdate(pluginItem) {
         console.log('PluginViewModel.createOrUpdate', {pluginItem: pluginItem});
-        var request = new yak.api.CreateOrUpdatePluginRequest();
+        var request = new CreateOrUpdatePluginRequest();
 
         // Set the original plugin id so the the name(=id) can be updated.
         if (!self.isNewItem) {
             request.pluginId = self.pluginItem.id;
         }
 
-        request.plugin = new yak.api.PluginConfig();
+        request.plugin = new PluginItem();
         $.extend(request.plugin, pluginItem);
         request.plugin.id = pluginItem.id;
 
@@ -84,7 +89,7 @@ yak.ui.PluginViewModel = function PluginViewModel(context) {
     };
 
     this.cancel = function cancel() {
-        context.eventBus.post(new yak.ui.ShowViewCommand(yak.ui.PluginListView));
+        context.eventBus.post(new ShowViewCommand(PluginListView));
     };
 
     this.deletePlugin = function deletePlugin() {
@@ -97,10 +102,12 @@ yak.ui.PluginViewModel = function PluginViewModel(context) {
     };
 
     function showPluginPanel() {
-        context.eventBus.post(new yak.ui.ShowViewCommand(yak.ui.PluginListView));
+        context.eventBus.post(new ShowViewCommand(PluginListView));
     }
 
     function showErrorMessage(error) {
         self.onErrorResponse(error.message);
     }
-};
+}
+
+module.exports = PluginViewModel;

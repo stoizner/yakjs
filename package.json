@@ -76,6 +76,7 @@
         "grunt-contrib-nodeunit": "~1.0.0",
         "grunt-contrib-uglify": "~3.0.0",
         "grunt-contrib-watch": "^1.0.0",
+        "grunt-webpack": "^2.0.1",
         "grunt-eslint": "^19.0.0",
         "grunt-exec": "^2.0.0",
         "grunt-istanbul": "~0.7.2",
@@ -85,6 +86,7 @@
         "proxyquire": "^1.7.11",
         "request": "^2.81.0",
         "sinon": "~2.2.0",
-        "sinon-chai": "~2.10.0"
+        "sinon-chai": "~2.10.0",
+        "webpack": "^2.3.3"
     }
 }

@@ -1,12 +1,13 @@
 /**
  * @constructor
+ * @struct
  * @param {string} [key]
  */
-yak.ui.StoreKeyValueItem = function StoreItem(key) {
+function StoreKeyValueItem(key) {
     'use strict';
 
     /**
-     * @type {yak.ui.StoreKeyValueItem}
+     * @type {!StoreKeyValueItem}
      */
     var self = this;
 
@@ -46,4 +47,6 @@ yak.ui.StoreKeyValueItem = function StoreItem(key) {
     }
 
     constructor();
-};
+}
+
+module.exports = StoreKeyValueItem;

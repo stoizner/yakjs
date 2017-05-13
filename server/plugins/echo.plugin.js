@@ -14,7 +14,7 @@ function EchoPlugin() {
      */
     this.onMessage = (message, connection) => {
         connection.send(message.data);
-    }
+    };
 }
 
 /**

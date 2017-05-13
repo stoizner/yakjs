@@ -1,26 +1,24 @@
 /* global CodeMirror:false */
 
+var StoreKeyValueItem = require('../storeKeyValueItem');
+
 /**
  * @constructor
+ * @struct
  * @param {jQuery} parent
- * @param {yak.ui.ViewContext} context
- * @param {yak.ui.EditStoreItemViewModel} viewModel
+ * @param {ViewContext} context
+ * @param {EditStoreItemViewModel} viewModel
  */
-yak.ui.EditStoreItemView = function EditStoreItemView(parent, context, viewModel) {
+function EditStoreItemView(parent, context, viewModel) {
     'use strict';
 
     /**
-     * @type {yak.ui.EditStoreItemView}
-     */
-    var self = this;
-
-    /**
-    * @type {null|CodeMirror}
+    * @type {CodeMirror}
     */
     var codeEditor = null;
 
     /**
-     * @type {yak.ui.Template}
+     * @type {!Template}
      */
     var template = context.template.load('editStoreItem');
 
@@ -148,7 +146,7 @@ yak.ui.EditStoreItemView = function EditStoreItemView(parent, context, viewModel
 
     function save() {
         console.warn('SAVE');
-        var item = new yak.ui.StoreKeyValueItem(parent.find('[name=key]').val());
+        var item = new StoreKeyValueItem(parent.find('[name=key]').val());
         item.value = codeEditor.getValue();
 
         viewModel.updateValue(item);
@@ -183,4 +181,6 @@ yak.ui.EditStoreItemView = function EditStoreItemView(parent, context, viewModel
     }
 
     constructor();
-};
+}
+
+module.exports = EditStoreItemView;

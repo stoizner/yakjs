@@ -1,17 +1,22 @@
-/** *
+var PluginItem = require('../pluginItem');
+var PluginView = require('../edit/pluginView');
+var ShowViewCommand = require('../../workspace/showViewCommand');
+
+/**
  * @constructor
- * @param {!yak.ui.ViewModelContext} context
+ * @struct
+ * @param {!ViewModelContext} context
  */
-yak.ui.PluginListViewModel = function PluginListViewModel(context) {
+function PluginListViewModel(context) {
     'use strict';
 
     /**
-     * @type {!yak.ui.PluginListViewModel}
+     * @type {!PluginListViewModel}
      */
     var self = this;
 
     /**
-     * @type {!Array<!yak.ui.PluginItem>}
+     * @type {!Array<!PluginItem>}
      */
     this.items = [];
 
@@ -21,11 +26,11 @@ yak.ui.PluginListViewModel = function PluginListViewModel(context) {
     this.onItemsChanged = _.noop;
 
     function constructor() {
-        console.log('yak.ui.PluginListViewModel.constructor');
+        console.log('PluginListViewModel.constructor');
     }
 
     this.activate = function activate() {
-        console.log('yak.ui.PluginListViewModel.active');
+        console.log('PluginListViewModel.active');
         context.adapter.get('/plugins').then(handleGetPluginsResponse);
     };
 
@@ -40,7 +45,7 @@ yak.ui.PluginListViewModel = function PluginListViewModel(context) {
             item = _.findWhere(self.items, {id: id});
         }
 
-        context.eventBus.post(new yak.ui.ShowViewCommand(yak.ui.PluginView, item));
+        context.eventBus.post(new ShowViewCommand(PluginView, item));
     };
 
     this.reloadAndRefreshList = function reloadAndRefreshList() {
@@ -48,13 +53,13 @@ yak.ui.PluginListViewModel = function PluginListViewModel(context) {
     };
 
     /**
-     * @param {yak.api.GetPluginsResponse} response
+     * @param {GetPluginsResponse} response
      */
     function handleGetPluginsResponse(response) {
         console.log('handleGetPluginsResponse', response);
 
         self.items = _.map(response.plugins, function toItem(plugin) {
-            var item = new yak.ui.PluginItem();
+            var item = new PluginItem();
             _.extend(item, plugin);
             return item;
         });
@@ -63,4 +68,6 @@ yak.ui.PluginListViewModel = function PluginListViewModel(context) {
     }
 
     constructor();
-};
+}
+
+module.exports = PluginListViewModel;

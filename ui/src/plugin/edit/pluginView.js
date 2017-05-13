@@ -1,17 +1,20 @@
 /* global CodeMirror:false */
 
+var codeEditorAutoComplete = require('./codeEditorAutoComplete');
+var codeEditorAutoDocument = require('./codeEditorAutoDocument');
+
 /**
  * @constructor
  * @struct
  * @param {!jQuery} parent
- * @param {!yak.ui.ViewContext} context
- * @param {!yak.ui.PluginViewModel} viewModel
+ * @param {!ViewContext} context
+ * @param {!PluginViewModel} viewModel
  */
-yak.ui.PluginView = function PluginView(parent, context, viewModel) {
+function PluginView(parent, context, viewModel) {
     'use strict';
 
     /**
-     * @type {!yak.ui.PluginView}
+     * @type {!PluginView}
      */
     var self = this;
 
@@ -21,12 +24,12 @@ yak.ui.PluginView = function PluginView(parent, context, viewModel) {
     var codeEditor = null;
 
     /**
-     * @type {!yak.ui.Template}
+     * @type {!Template}
      */
     var template = context.template.load('pluginEdit');
 
     function constructor() {
-        console.log('yak.ui.InstanceView.constructor', self);
+        console.log('InstanceView.constructor', self);
 
         initializeView();
 
@@ -35,8 +38,8 @@ yak.ui.PluginView = function PluginView(parent, context, viewModel) {
     }
 
     function initializeCodeEditor() {
-        CodeMirror.commands.autocomplete = yak.ui.codeEditorAutoComplete;
-        CodeMirror.commands.autodocument = yak.ui.codeEditorAutoDocument;
+        CodeMirror.commands.autocomplete = codeEditorAutoComplete;
+        CodeMirror.commands.autodocument = codeEditorAutoDocument;
         CodeMirror.commands.quicksave = save;
 
         codeEditor = new CodeMirror(parent.find('[data-element=codeEditor]')[0], {
@@ -159,7 +162,7 @@ yak.ui.PluginView = function PluginView(parent, context, viewModel) {
      * Handle Save Button Click
      */
     function save() {
-        var pluginItem = new yak.ui.PluginItem();
+        var pluginItem = new PluginItem();
         pluginItem.id = parent.find('[name=id]').val();
         pluginItem.code = codeEditor.getValue();
 
@@ -181,4 +184,6 @@ yak.ui.PluginView = function PluginView(parent, context, viewModel) {
     }
 
     constructor();
-};
+}
+
+module.exports = PluginView;

@@ -3,7 +3,7 @@
  * @param {Function} callback
  * @returns {Function}
  */
-yak.ui.preventDefault = function preventDefault(callback) {
+function preventDefault(callback) {
     'use strict';
 
     return function(event) {
@@ -18,4 +18,6 @@ yak.ui.preventDefault = function preventDefault(callback) {
 
         return false;
     }
-};
+}
+
+module.exports = preventDefault;
