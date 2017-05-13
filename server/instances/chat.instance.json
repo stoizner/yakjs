@@ -7,6 +7,6 @@
         "broadcast",
         "echo"
     ],
-    "autoStartEnabled": false,
+    "autoStartEnabled": true,
     "id": "chat"
 }
