@@ -28,9 +28,39 @@ function BroadcastPlugin(context) {
     };
 }
 
+/**
+ * @param {?} data
+ * @param {PluginContext} context
+ * @param {CommandConfig} command
+ */
+function executeBroadcastCommand(data, context, command) {
+    let connections = context.instance.getConnections();
+
+    context.log.debug('Execute command: ' + command.name);
+    connections.forEach(connection => {
+        context.log.debug('Sending message to ' + connection.id);
+        connection.send(data);
+    });
+
+    return Promise.resolve({
+        message: `Data was send on instance "${context.instance.name}" to ${connections.length} connections`,
+        instanceName: context.instance.name,
+        connectionCount: connections.length
+    });
+}
+
 module.exports = {
     name: 'broadcast',
     description: 'Every received message will be sent to all connected clients.',
-    createWorker: context => new BroadcastPlugin(context)
+    createWorker: context => new BroadcastPlugin(context),
+    commands: [
+        {
+            name: 'broadcast',
+            displayName: 'Broadcast',
+            description: 'Send a message to all connected clients',
+            execute: executeBroadcastCommand,
+            dataExample: 'This is a broadcast message.'
+        }
+    ]
 };
 

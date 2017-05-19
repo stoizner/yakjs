@@ -26,6 +26,12 @@ function Plugin() {
      * @type {?string}
      */
     this.code = null;
+
+    /**
+     * A list of commands that the plugin provides.
+     * @type {Array<CommandConfig>}
+     */
+    this.commands = null;
 }
 
 module.exports = Plugin;

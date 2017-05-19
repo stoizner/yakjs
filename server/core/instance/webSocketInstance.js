@@ -9,6 +9,7 @@ const PluginContext = require('../plugin/pluginContext');
 const WebSocketConnection = require('./webSocketConnection');
 const WebSocketMessage = require('./webSocketMessage');
 const magic = require('../util/magicNumbers');
+const commandDispatcher = require('../command/commandDispatcher');
 
 /**
  * @constructor
@@ -93,9 +94,14 @@ function WebSocketInstance(pluginManager, id, port) {
     this.activePluginCount = 0;
 
     /**
-     * @type {Array<PluginWorker>}
+     * @type {!Array<!PluginWorker>}
      */
     let pluginInstances = [];
+
+    /**
+     * @type {!PluginContext}
+     */
+    let pluginContext = null;
 
     /**
      * Start server instance
@@ -125,9 +131,12 @@ function WebSocketInstance(pluginManager, id, port) {
             if (server && self.state === InstanceState.RUNNING) {
                 self.state = InstanceState.STOPPING;
                 self.activePluginCount = 0;
+
+                commandDispatcher.unregisterAllWithContext(getOrCreatePluginContext());
                 stopAllPlugins();
                 server.close();
                 server = null;
+
                 self.state = InstanceState.STOPPED;
             }
         } catch (ex) {
@@ -173,18 +182,18 @@ function WebSocketInstance(pluginManager, id, port) {
         self.plugins.forEach(function instantiatePlugin(pluginId) {
             log.debug('Instantiate plugin.', {plugin: pluginId});
 
-            let pluginContext = new PluginContext();
-            pluginContext.instance = self;
-            let pluginInstance = pluginManager.createPluginWorker(pluginId, pluginContext);
+            let pluginWorker = pluginManager.createPluginWorker(pluginId, getOrCreatePluginContext());
 
-            if (pluginInstance) {
+            if (pluginWorker) {
                 // Extend with pluginName
-                pluginInstance.name = pluginId;
+                pluginWorker.name = pluginId;
+                pluginWorker.pluginId = pluginId;
 
                 // When one plugin instantiation fails, it shall continue with the next plugin.
                 try {
-                    callPluginOnStart(pluginInstance);
-                    pluginInstances.push(pluginInstance);
+                    registerPluginCommands(pluginManager.getPlugin(pluginId), getOrCreatePluginContext());
+                    callPluginOnStart(pluginWorker);
+                    pluginInstances.push(pluginWorker);
                     self.activePluginCount++;
                 } catch (ex) {
                     log.warn('Plugin start/initialize failed.', {plugin: pluginId, error: ex.message});
@@ -193,8 +202,36 @@ function WebSocketInstance(pluginManager, id, port) {
                 log.error('Plugin could not be loaded.', {plugin: pluginId});
             }
 
-            return pluginInstance;
+            return pluginWorker;
         });
+    }
+
+    /**
+     * Gets or creates the plugin context.
+     * @returns {!PluginContext}
+     */
+    function getOrCreatePluginContext() {
+        if (!pluginContext) {
+            pluginContext = new PluginContext();
+            pluginContext.instance = self;
+            pluginContext.log = log;
+        }
+
+        return pluginContext;
+    }
+
+    /**
+     * @param {!Plugin} plugin
+     * @param {!PluginContext} context
+     */
+    function registerPluginCommands(plugin, context) {
+        log.debug('Register plugin commands', {plugin: plugin.name});
+
+        if (plugin.commands) {
+            plugin.commands.forEach(config => {
+                commandDispatcher.register(config, context);
+            });
+        }
     }
 
     /**
@@ -226,13 +263,13 @@ function WebSocketInstance(pluginManager, id, port) {
     function stopAllPlugins() {
         log.debug('Stop all plugins.', {count: self.plugins.length});
 
-        _.each(pluginInstances, function saveTerminatePlugin(pluginInstance) {
+        _.each(pluginInstances, function saveTerminatePlugin(pluginWorker) {
             // A termination fail, shall not stop the loop, so
             // that other plugins can be terminated.
             try {
-                callPluginOnStop(pluginInstance);
+                callPluginOnStop(pluginWorker);
             } catch (ex) {
-                log.error('Could not stop plugin', {plugin: pluginInstance.name, error: ex, stack: ex.stack});
+                log.error('Could not stop plugin', {plugin: pluginWorker.name, error: ex, stack: ex.stack});
             }
         });
 

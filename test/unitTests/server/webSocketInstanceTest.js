@@ -19,7 +19,8 @@ describe('WebSocketInstance', function() {
 
     beforeEach(function() {
         pluginManagerStub = {
-            createPluginWorker: sinon.spy()
+            createPluginWorker: sinon.spy(),
+            getPlugin: sinon.stub().returns({})
         };
 
         sut = new WebSocketInstance(pluginManagerStub, 'test', 8791);
