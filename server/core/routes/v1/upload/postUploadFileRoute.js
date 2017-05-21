@@ -12,6 +12,7 @@ uploadHandlers[fileExtension.PLUGIN_EXTENSION] = state.pluginManager.upload;
 uploadHandlers[fileExtension.MODULE_EXTENSION] = state.moduleProvider.upload;
 uploadHandlers[fileExtension.STORE_EXTENSION] = storeProvider.upload;
 uploadHandlers[fileExtension.STORE_EXTENSION_OLD] = storeProvider.upload;
+uploadHandlers[fileExtension.COMMAND_PRESET_EXTENSION] = state.commandPresetsProvider.upload;
 
 const fileTypes = {};
 fileTypes[fileExtension.INSTANCE_EXTENSION] = 'instance';
