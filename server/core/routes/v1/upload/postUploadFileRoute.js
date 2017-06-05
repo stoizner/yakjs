@@ -20,6 +20,7 @@ fileTypes[fileExtension.PLUGIN_EXTENSION] = 'plugin';
 fileTypes[fileExtension.MODULE_EXTENSION] = 'module';
 fileTypes[fileExtension.STORE_EXTENSION] = 'store';
 fileTypes[fileExtension.STORE_EXTENSION_OLD] = 'store';
+fileTypes[fileExtension.COMMAND_PRESET_EXTENSION] = 'command-preset';
 
 /**
  * @param request

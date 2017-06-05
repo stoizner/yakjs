@@ -31,7 +31,7 @@ function CommandConfig() {
      * The data example needs to be JSON serializable.
      * @type {?}
      */
-    this.dataExample = null;
+    this.exampleData = null;
 }
 
 module.exports = CommandConfig;
