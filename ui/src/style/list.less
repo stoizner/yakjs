@@ -1,3 +1,5 @@
+@row-height: 50px;
+
 .list {
     display: block;
     width: 100%;
@@ -7,15 +9,16 @@
 }
 
 .list[data-selectable] .list-item:hover {
-    background-color: @color-lime-300;
     cursor: pointer;
+    border-left: @grid-size @color-lime-300 solid;
 }
 
 .list-item {
     display: block;
-    min-height: @line-height;
+    min-height: @row-height;
     overflow: hidden;
     border-bottom: 1px @color-grey solid;
+    border-left: @grid-size transparent solid;
 }
 
 .list-item[data-selected] {
@@ -29,16 +32,16 @@
 
 .list-item-cell {
     padding-right: 10px;
-    height: @line-height;
-    line-height: @line-height;
+    height: @row-height;
+    line-height: @row-height;
     overflow: hidden;
     float: left;
 }
 
 .list-item-cell-right {
     padding-left: 10px;
-    height: @line-height;
-    line-height: @line-height;
+    height: @row-height;
+    line-height: @row-height;
     overflow: hidden;
     float: right;
 }
@@ -56,6 +59,26 @@
 
 .list-item-icon {
     float: left;
-    width: @line-height;
+    width: @row-height;
+    height: @row-height;
+}
+
+.list-inline-button {
+    margin: @grid-size 0;
+    min-width: 60px;
+    border: 2px @color-mulberry solid;
+    letter-spacing: -1px;
     height: @line-height;
+    background-color: white;
+    font-weight: bold;
+    line-height: @line-height - 4px;
+    outline: 0;
+    color: @color-mulberry;
+    cursor: pointer;
+}
+
+.list-inline-button:hover {
+    background-color: @color-mulberry;
+    color: white;
+    outline: 0;
 }
