@@ -10,35 +10,49 @@ function HttpAdapter() {
      * @returns {!Promise}
      */
     this.get = function get(url) {
-        return sendHttpJsonRequest('GET', url).then(maybeJsonParse);
+        console.log('GET ' + url);
+        return sendHttpJsonRequest('GET', url).then(logResponse).then(maybeJsonParse);
     };
 
     /**
      * @param {string} url
-     * @returns {Promise}
+     * @returns {!Promise}
      */
     this.deleteResource = function deleteResource(url) {
-        return sendHttpJsonRequest('DELETE', url).then(maybeJsonParse);
+        console.log('DELETE ' + url);
+        return sendHttpJsonRequest('DELETE', url).then(logResponse).then(maybeJsonParse);
     };
 
     /**
      * @param {string} url
      * @param {!Object} [request]
-     * @returns {Promise}
+     * @returns {!Promise}
      */
     this.post = function post(url, request) {
-        return sendHttpJsonRequest('POST', url, request).then(maybeJsonParse);
+        console.log('POST ' + url, {request: request});
+        return sendHttpJsonRequest('POST', url, request).then(logResponse).then(maybeJsonParse);
     };
 
     /**
      * @param {string} url
      * @param {!Object} request
-     * @returns {Promise}
+     * @returns {!Promise}
      */
     this.put = function post(url, request) {
-        return sendHttpJsonRequest('PUT', url, request).then(maybeJsonParse);
+        console.log('PUT ' + url, {request: request});
+        return sendHttpJsonRequest('PUT', url, request).then(logResponse).then(maybeJsonParse);
     };
 
+    /**
+     * @param {T} response
+     * @template T
+     * @returns T
+     */
+    function logResponse(response) {
+        console.log('Response received', {response: response});
+
+        return response
+    }
     /**
      * @param {string} url
      * @param {string} type
