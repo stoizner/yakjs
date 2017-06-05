@@ -34,7 +34,7 @@ function PluginListView(parent, context, viewModel) {
 
 
         parent.find('[data-command=create]').click(viewModel.activatePluginEditPanel);
-        parent.find('[data-command=refresh]').click(viewModel.reloadAndRefreshList);
+        parent.find('[data-command=refresh]').click(viewModel.reload);
         parent.find('.plugin-items').click(handleListClick);
 
         viewModel.onItemsChanged = function onItemsChanged() { createList(); };

@@ -48,7 +48,7 @@ function PluginListViewModel(context) {
         context.eventBus.post(new ShowViewCommand(PluginView, item));
     };
 
-    this.reloadAndRefreshList = function reloadAndRefreshList() {
+    this.reload = function reload() {
         context.adapter.get('/plugins').then(handleGetPluginsResponse);
     };
 

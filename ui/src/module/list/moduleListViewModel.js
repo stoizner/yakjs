@@ -44,7 +44,7 @@ function ModuleListViewModel(context) {
      * @param {string} name
      */
     this.deleteModule = function deleteModule(name) {
-        context.adapter.deleteResource('/modules/' + name).then(self.reloadAndRefreshList);
+        context.adapter.deleteResource('/modules/' + name).then(self.reload);
     };
 
     /**
@@ -61,7 +61,7 @@ function ModuleListViewModel(context) {
         context.eventBus.post(new ShowViewCommand(ModuleDetailView, item.moduleName));
     };
 
-    this.reloadAndRefreshList = function reloadAndRefreshList() {
+    this.reload = function reload() {
         context.adapter.get('/modules/names').then(handleGetModulesResponse);
     };
 

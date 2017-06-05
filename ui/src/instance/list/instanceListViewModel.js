@@ -43,14 +43,14 @@ function InstanceListViewModel(context) {
      * @param {string} id
      */
     this.startInstance = function startInstance(id) {
-        context.adapter.post('/instances/' + id + '/start').then(self.reloadAndRefreshList);
+        context.adapter.post('/instances/' + id + '/start').then(self.reload);
     };
 
     /**
      * Send request to restart all running instances.
      */
     this.restartAllInstances = function restartAllInstances() {
-        context.adapter.post('/instances/running/restart').then(self.reloadAndRefreshList);
+        context.adapter.post('/instances/running/restart').then(self.reload);
     };
 
     /**
@@ -58,7 +58,7 @@ function InstanceListViewModel(context) {
      * @param {string} id
      */
     this.stopInstance = function stopInstance(id) {
-        context.adapter.post('/instances/' + id + '/stop').then(self.reloadAndRefreshList);
+        context.adapter.post('/instances/' + id + '/stop').then(self.reload);
     };
 
     /**
@@ -69,10 +69,7 @@ function InstanceListViewModel(context) {
         context.eventBus.post(new ShowViewCommand(InstanceView, item));
     };
 
-    /**
-     * Reload and refresh list.
-     */
-    this.reloadAndRefreshList = function reloadAndRefreshList() {
+    this.reload = function reload() {
         context.adapter.get('/instances').then(handleGetInstancesResponse);
     };
 
