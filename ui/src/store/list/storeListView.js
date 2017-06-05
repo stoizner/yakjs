@@ -41,7 +41,7 @@ function StoreListView(parent, context, viewModel) {
         parent.html(template.build());
 
         parent.find('[data-command=create]').click(function() { viewModel.activateStoreEditPanel(); });
-        parent.find('[data-command=refresh]').click(viewModel.reloadAndRefreshList);
+        parent.find('[data-command=refresh]').click(viewModel.reload);
 
         parent.find('[data-command=expand-all]').click(function() { expandFeature.expandAll(); });
         parent.find('[data-command=collapse-all]').click(function() { expandFeature.collapseAll(); });

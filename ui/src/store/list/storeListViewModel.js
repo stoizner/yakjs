@@ -44,7 +44,7 @@ function StoreListViewModel(context) {
         context.adapter.get('/storeitems/keys').then(handleGetStoreKeyInfoResponse);
     };
 
-    this.reloadAndRefreshList = function reloadAndRefreshList() {
+    this.reload = function reload() {
         context.adapter.get('/storeitems/keys').then(handleGetStoreKeyInfoResponse);
     };
 
