@@ -59,7 +59,9 @@ module.exports = {
             displayName: 'Broadcast',
             description: 'Send a message to all connected clients',
             execute: executeBroadcastCommand,
-            dataExample: 'This is a broadcast message.'
+            exampleData: {
+                message: 'Hello World'
+            }
         }
     ]
 };
