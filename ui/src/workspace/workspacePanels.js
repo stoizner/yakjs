@@ -20,6 +20,11 @@ var ModuleListViewModel = require('../module/list/moduleListViewModel');
 var ModuleDetailView = require('../module/details/moduleDetailView');
 var ModuleDetailViewModel = require('../module/details/moduleDetailViewModel');
 
+var CommandListView = require('../command/list/commandListView');
+var CommandListViewModel = require('../command/list/commandListViewModel');
+var CommandDetailView = require('../command/edit/commandDetailView');
+var CommandDetailViewModel = require('../command/edit/commandDetailViewModel');
+
 var FileUploadView = require('../fileUpload/fileUploadView');
 var FileUploadViewModel = require('../fileUpload/fileUploadViewModel');
 
@@ -33,6 +38,8 @@ register(StoreListView, StoreListViewModel);
 register(EditStoreItemView, EditStoreItemViewModel);
 register(ModuleListView, ModuleListViewModel);
 register(ModuleDetailView, ModuleDetailViewModel);
+register(CommandListView, CommandListViewModel);
+register(CommandDetailView, CommandDetailViewModel);
 register(FileUploadView, FileUploadViewModel);
 
 /**
