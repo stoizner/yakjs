@@ -145,7 +145,6 @@ function EditStoreItemView(parent, context, viewModel) {
     }
 
     function save() {
-        console.warn('SAVE');
         var item = new StoreKeyValueItem(parent.find('[name=key]').val());
         item.value = codeEditor.getValue();
 
