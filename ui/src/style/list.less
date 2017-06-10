@@ -14,8 +14,9 @@
 }
 
 .list-item {
-    display: block;
+    display: flex;
     min-height: @row-height;
+    height: @row-height;
     overflow: hidden;
     border-bottom: 1px @color-grey solid;
     border-left: @grid-size transparent solid;
@@ -31,34 +32,22 @@
 }
 
 .list-item-cell {
+    flex: 0 0 auto;
     padding-right: 10px;
     height: @row-height;
     line-height: @row-height;
     overflow: hidden;
-    float: left;
 }
 
-.list-item-cell-right {
-    padding-left: 10px;
+.list-item-cell-fill {
+    flex: 1 100%;
+    padding-right: 10px;
     height: @row-height;
     line-height: @row-height;
-    overflow: hidden;
-    float: right;
-}
-
-.list-item-cell-max {
-    float: left;
-    padding-right: 10px;
-}
-
-.list-item-cell-full {
-    float: left;
-    height: 30px;
-    overflow: hidden;
 }
 
 .list-item-icon {
-    float: left;
+    flex: 0 0 auto;
     width: @row-height;
     height: @row-height;
 }
@@ -66,19 +55,33 @@
 .list-inline-button {
     margin: @grid-size 0;
     min-width: 60px;
-    border: 2px @color-mulberry solid;
     letter-spacing: -1px;
     height: @line-height;
     background-color: white;
     font-weight: bold;
     line-height: @line-height - 4px;
     outline: 0;
-    color: @color-mulberry;
     cursor: pointer;
 }
 
-.list-inline-button:hover {
+.list-inline-button-red {
+    border: 2px @color-mulberry solid;
+    color: @color-mulberry;
+}
+
+.list-inline-button-red.list-inline-button-active,
+.list-inline-button-red:hover {
     background-color: @color-mulberry;
     color: white;
-    outline: 0;
+}
+
+.list-inline-button-green {
+    border: 2px @color-lime solid;
+    color: @color-lime;
+}
+
+.list-inline-button-green.list-inline-button-active,
+.list-inline-button-green:hover {
+    background-color: @color-lime;
+    color: white;
 }
