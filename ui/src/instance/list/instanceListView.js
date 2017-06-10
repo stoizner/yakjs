@@ -19,8 +19,10 @@ function InstanceListView(parent, context, viewModel) {
     this.activate = viewModel.activate;
 
     /**
-     * Constructor
+     * @type {jquery}
      */
+    var itemList;
+
     function constructor() {
         viewModel.onItemsChanged = createList;
         createList();
@@ -32,38 +34,35 @@ function InstanceListView(parent, context, viewModel) {
     function createList() {
         parent.html(template.build({instances: viewModel.items}));
 
-        parent.find('[data-command=edit]').click(handleEditClick);
-        parent.find('[data-command=start]').click(handleStartClick);
-        parent.find('[data-command=stop]').click(handleStopClick);
+        itemList = parent.find('[data-element=instanceList]');
+        itemList.click(handleListClick);
 
-        parent.find('[data-command=create]').click(function() { viewModel.activateInstanceEditPanel(); });
-        parent.find('[data-command=restart]').click(function() { viewModel.restartAllInstances(); });
-        parent.find('[data-command=refresh]').click(viewModel.reload);
+        parent.find('[data-element=create]').click(function() { viewModel.activateInstanceEditPanel(); });
+        parent.find('[data-element=restart]').click(function() { viewModel.restartAllInstances(); });
+        parent.find('[data-element=refresh]').click(viewModel.reload);
     }
 
     /**
      * @param {jQuery.Event} event
      */
-    function handleEditClick(event) {
-        var instanceId = $(event.target).closest('[data-id]').attr('data-id');
-        var contextItem = _.findWhere(viewModel.items, { id: instanceId});
-        viewModel.activateInstanceEditPanel(contextItem);
-    }
+    function handleListClick(event) {
+        var clickTarget = $(event.target);
+        var listItemElement = clickTarget.closest('[data-id]');
+        var instanceId = listItemElement.attr('data-id');
+        var elementName = clickTarget.attr('data-element');
 
-    /**
-     * @param {jQuery.Event} event
-     */
-    function handleStartClick(event) {
-        var instanceId = $(event.target).closest('[data-id]').attr('data-id');
-        viewModel.startInstance(instanceId);
-    }
+        var handlers = {
+            startButton: viewModel.startInstance,
+            stopButton: viewModel.stopInstance
+        };
 
-    /**
-     * @param {jQuery.Event} event
-     */
-    function handleStopClick(event) {
-        var instanceId = $(event.target).closest('[data-id]').attr('data-id');
-        viewModel.stopInstance(instanceId);
+        if (instanceId) {
+            if (handlers[elementName]) {
+                handlers[elementName](instanceId);
+            } else {
+                viewModel.activateInstanceEditPanel(instanceId);
+            }
+        }
     }
 
     constructor();

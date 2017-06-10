@@ -63,10 +63,14 @@ function InstanceListViewModel(context) {
 
     /**
      * Show and activate the instance edit panel.
-     * @param {InstanceInfo} [item]
+     * @param {string} instanceId
      */
-    this.activateInstanceEditPanel = function activateInstanceEditPanel(item) {
-        context.eventBus.post(new ShowViewCommand(InstanceView, item));
+    this.activateInstanceEditPanel = function activateInstanceEditPanel(instanceId) {
+        var contextItem = _.findWhere(self.items, { id: instanceId});
+
+        if (contextItem) {
+            context.eventBus.post(new ShowViewCommand(InstanceView, contextItem));
+        }
     };
 
     this.reload = function reload() {
@@ -96,6 +100,8 @@ function InstanceListViewModel(context) {
         instanceItem.state = instanceInfo.state;
         instanceItem.description = instanceInfo.description;
         instanceItem.plugins = instanceInfo.plugins;
+
+        instanceItem.isStarted = (instanceInfo.state === 'running');
 
         if (instanceInfo.state === 'running' && instanceInfo.pluginActiveCount !== instanceInfo.pluginTotalCount) {
             instanceItem.state = 'warning';

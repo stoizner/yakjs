@@ -31,6 +31,12 @@ function InstanceInfoItem(id) {
     this.state = 'stopped';
 
     /**
+     * Based on state.
+     * @type {boolean}
+     */
+    this.isStarted = false;
+
+    /**
      * @type {string}
      */
     this.stateTooltipText = '';

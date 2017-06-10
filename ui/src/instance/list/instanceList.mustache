@@ -3,9 +3,9 @@
         <div class="tool-bar-block">
             <div class="tool-bar-block-line">
                 <div class="center-panel">
-                    <div class="text-button" data-command="create">Create instance</div>
-                    <div class="text-button" data-command="restart">Restart running instances</div>
-                    <div class="text-button" data-command="refresh">Refresh</div>
+                    <div class="text-button" data-element="create">Create instance</div>
+                    <div class="text-button" data-element="restart">Restart running instances</div>
+                    <div class="text-button" data-element="refresh">Refresh</div>
                 </div>
             </div>
         </div>
@@ -15,42 +15,38 @@
             <div class="center-panel">
                 <div class="content-panel">
                     <div class="scroll-panel">
-                        <ul class="list instance-items">
+                        <ul class="list" data-element="instanceList" data-selectable>
                             {{#instances}}
-                                <li class="list-item" data-instance="{{name}}" data-id="{{id}}" data-state="{{state}}">
-                                    <div class="line-block">
-                                        <div class="list-item-cell status-indicator-box" title="{{stateTooltipText}}"></div>
-                                        <div style="width: 50px" class="list-item-cell text-line-block">{{port}}</div>
-                                        <div style="width: 450px" class="list-item-cell text-line-block">
-                                            <span class="strong-text">{{name}}</span>
-                                            {{#description}}
-                                                <span class="light-text">, {{description}}</span>
-                                            {{/description}}
-                                        </div>
-
-                                        <div class="list-item-cell-right text-line-block" style="width: 340px; text-align: right; padding-right: 10px">
-                                            <span class="light-text">{{state}} | </span>
-                                            <span class="light-text" data-elemet="pluginStatus">{{pluginActiveCount}}/{{pluginTotalCount}}</span> <span class="light-text">plugins active | </span>
-                                            <span class="light-text">{{connectionCount}}</span> <span class="light-text" title="Total number of client connections">clients </span>
-                                        </div>
+                                <li class="list-item clickable" data-id="{{id}}" data-state="{{state}}">
+                                    <div class="list-item-icon icon-instance" title="{{state}} {{stateTooltipText}}"></div>
+                                    <div class="list-item-cell">
+                                        <button
+                                            class="list-inline-button list-inline-button-green {{#isStarted}}list-inline-button-active{{/isStarted}}"
+                                            data-element="startButton"
+                                            title="Starts the instance and runs it on port {{port}}. Other instances using the same port will be stopped.">START</button>
+                                    </div>
+                                    <div class="list-item-cell">
+                                        <button
+                                            class="list-inline-button list-inline-button-red {{^isStarted}}list-inline-button-active{{/isStarted}}"
+                                            data-element="stopButton"
+                                            title="Stops the instance and runs it on port {{port}}.">STOP</button>
                                     </div>
 
-                                    <div class="line-block">
-                                        <div style="width: 90px" class="list-item-cell"></div>
-                                        <div class="list-item-cell">
-                                            <span class="flat-button" data-command="start">Start</span>
-                                            <span class="flat-button" data-command="stop">Stop</span>
-                                            <span class="flat-button" data-command="edit">Configure</span>
-                                        </div>
+                                    <div style="width: 50px" class="list-item-cell text-line-block">
+                                        <span class="strong-text">{{port}}</span>
+                                    </div>
+                                    <div style="width: 350px" class="list-item-cell-fill text-line-block" title="{{description}}">{{name}}</div>
 
-                                        {{#hasPluginsNotStarted}}
-                                        <div class="list-item-cell-right text-line-block" style="width: 340px; text-align: right; padding-right: 10px">
-                                            <span class="light-text">Inactive plugins: {{inactivePluginsList}}</span>
-                                        </div>
-                                        {{/hasPluginsNotStarted}}
+                                    <div
+                                        class="list-item-icon {{#hasPluginsNotStarted}}icon-plugin-mullberry{{/hasPluginsNotStarted}} {{^hasPluginsNotStarted}}icon-plugin{{/hasPluginsNotStarted}}"
+                                        title="Inactive plugins: {{inactivePluginsList}}"></div>
+                                    <div class="list-item-cell">
+                                        <span class="light-text" data-elemet="pluginStatus" title="Number of active/inactive plugins">{{pluginActiveCount}}/{{pluginTotalCount}}</span>
                                     </div>
 
-                                    <div class="line-block">
+                                    <div class="list-item-icon icon-lan-connect" title="Number of client connections"></div>
+                                    <div class="list-item-cell" title="Number of client connections">
+                                        <span class="light-text">{{connectionCount}}</span>
                                     </div>
                                 </li>
                             {{/instances}}
