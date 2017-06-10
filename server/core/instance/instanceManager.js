@@ -122,14 +122,14 @@ function InstanceManager(configProvider, pluginManager) {
     /**
      * Start an instance entity.
      * @param {string} id The id of the instance.
-     * @throws {Error} Instance entity not found.
      */
     this.start = function start(id) {
-        log.debug('Create instance', {instance: id});
+        log.debug('Start instance', {instance: id});
 
         let instance = instances[id];
 
         if (instance) {
+            stopAllInstancesByPort(instance.port);
             instance.start();
             updateAutoStartEnabledConfig(id, true);
         }
@@ -138,7 +138,6 @@ function InstanceManager(configProvider, pluginManager) {
     /**
      * Stop an instance entity.
      * @param {string} id The ID of the instance.
-     * @throws {Error} Instance entity not found.
      */
     this.stop = function stop(id) {
         log.info('Stop instance', {instance: id});
@@ -150,6 +149,18 @@ function InstanceManager(configProvider, pluginManager) {
             updateAutoStartEnabledConfig(id, false);
         }
     };
+
+    /**
+     * @param {number} port
+     */
+    function stopAllInstancesByPort(port) {
+        Object.keys(instances)
+            .map(key => instances[key])
+            .filter(instance => instance.port === port)
+            .forEach(instance => {
+                self.stop(instance.id);
+            });
+    }
 
     /**
      * @param {string} id
