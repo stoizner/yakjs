@@ -11,7 +11,7 @@ function HttpAdapter() {
      */
     this.get = function get(url) {
         console.log('GET ' + url);
-        return sendHttpJsonRequest('GET', url).then(logResponse).then(maybeJsonParse);
+        return sendHttpRequest('GET', url).then(logResponse).then(maybeJsonParse);
     };
 
     /**
@@ -20,27 +20,27 @@ function HttpAdapter() {
      */
     this.deleteResource = function deleteResource(url) {
         console.log('DELETE ' + url);
-        return sendHttpJsonRequest('DELETE', url).then(logResponse).then(maybeJsonParse);
+        return sendHttpRequest('DELETE', url).then(logResponse).then(maybeJsonParse);
     };
 
     /**
      * @param {string} url
-     * @param {!Object} [request]
+     * @param {!Object|string} [request]
      * @returns {!Promise}
      */
     this.post = function post(url, request) {
         console.log('POST ' + url, {request: request});
-        return sendHttpJsonRequest('POST', url, request).then(logResponse).then(maybeJsonParse);
+        return sendHttpRequest('POST', url, request).then(logResponse).then(maybeJsonParse);
     };
 
     /**
      * @param {string} url
-     * @param {!Object} request
+     * @param {!Object|string} request
      * @returns {!Promise}
      */
     this.put = function post(url, request) {
         console.log('PUT ' + url, {request: request});
-        return sendHttpJsonRequest('PUT', url, request).then(logResponse).then(maybeJsonParse);
+        return sendHttpRequest('PUT', url, request).then(logResponse).then(maybeJsonParse);
     };
 
     /**
@@ -56,23 +56,24 @@ function HttpAdapter() {
     /**
      * @param {string} url
      * @param {string} type
-     * @param [data]
+     * @param {Object|string} [data]
      * @returns {!Promise}
      */
-    function sendHttpJsonRequest(type, url, data) {
+    function sendHttpRequest(type, url, data) {
         return new Promise(function(resolve, reject) {
             $.ajax({
                 url: '/v1' + url,
                 type: type,
-                data: data ? JSON.stringify(data) : null,
+                data: _.isObject(data) ? JSON.stringify(data) : _.isString(data) ? data : null,
                 contentType: 'application/json',
                 dataType: 'text',
                 success: resolve,
                 error: function(request, message, error) {
-                    var responseError = { message: message};
-                    if (request.responseText) {
-                        responseError = JSON.parse(request.responseText);
-                    }
+                    var responseError = {
+                        message: message,
+                        text: request.responseText,
+                        error: error
+                    };
                     reject(responseError);
                 }
             });
