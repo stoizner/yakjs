@@ -80,8 +80,8 @@ function CommandListViewModel(context) {
 
         if(item.isPreset) {
             context.adapter.get('/commands/presets/' + item.commandPresetName + '/execute');
-        } else if (item.commandPresetName) {
-            context.adapter.get('/commands/' + item.commandName + '/execute');
+        } else if (item.commandName) {
+            context.adapter.post('/commands/' + item.commandName + '/execute', item.exampleData);
         }
     };
 

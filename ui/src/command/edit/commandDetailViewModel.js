@@ -45,7 +45,7 @@ function CommandDetailViewModel(context) {
 
     this.deleteCommandPreset = function deleteCommandPreset() {
         if (self.item.commandPresetName) {
-            context.adapter.deleteResource('/commands/presets/' + self.item.commandPresetName).then(showCommandListView);
+            context.adapter.deleteResource('/commands/presets/' + self.item.commandPresetName).then(self.showCommandListView);
         }
     };
 
@@ -55,6 +55,13 @@ function CommandDetailViewModel(context) {
 
     this.runPreset = function runPreset() {
         context.adapter.get('/commands/presets/' + self.item.commandPresetName + '/execute');
+    };
+
+    /**
+     * @param {Object} commandData
+     */
+    this.runCommand = function runCommand(commandData) {
+        context.adapter.post('/commands/' + self.item.commandName + '/execute', commandData);
     };
 
     /**

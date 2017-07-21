@@ -39,6 +39,7 @@ function CommandDetailView(parent, context, viewModel) {
 
         parent.find('[data-element=save]').click(save);
         parent.find('[data-element=saveAndRun]').click(saveAndRun);
+        parent.find('[data-element=run]').click(run);
         parent.find('[data-element=saveNew]').click(saveNew);
         parent.find('[data-element=create]').click(save);
         parent.find('[data-element=deleteButton]').click(handleDeleteCommand);
@@ -70,6 +71,11 @@ function CommandDetailView(parent, context, viewModel) {
 
     function saveAndRun() {
         viewModel.saveOrUpdate(getItemFromDom()).then(viewModel.runPreset);
+    }
+
+    function run() {
+        var commandData = codeEditor.getValue();
+        viewModel.runCommand(commandData);
     }
 
     function saveNew() {
