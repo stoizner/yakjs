@@ -14,7 +14,11 @@ function MessageBox(parent) {
     this.showWarning = function showWarning(messageText) {
         parent.show();
         parent.html('<div class="warning-text">' + messageText + '</div>');
-    }
+    };
+
+    this.hide = function hide() {
+        parent.hide();
+    };
 }
 
 module.exports = MessageBox;
