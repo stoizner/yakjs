@@ -64,18 +64,17 @@ function InstanceConfigProvider() {
 
     /**
      * @param {string} pluginId
-     * @returns {Array<yak.InstanceConfig>} List of instance configurations.
+     * @returns {!Array<!InstanceConfig>} List of instance configurations.
      */
     this.getInstanceConfigsByPlugin = function getInstanceByPlugin(pluginId) {
         return Object
             .keys(instanceConfigs)
-            .filter(function isPluginUsedBy(instanceConfig) {
-                return instanceConfig.plugins && instanceConfig.plugins.indexOf(pluginId) >= 0;
-            });
+            .map(key => instanceConfigs[key])
+            .filter(instanceConfig => instanceConfig.plugins && instanceConfig.plugins.indexOf(pluginId) >= 0);
     };
 
     /**
-     * @param {yak.InstanceConfig} config
+     * @param {!InstanceConfig} config
      */
     this.addOrUpdate = function addOrUpdate(config) {
         log.debug('Add or update instance configuration.', {instanceId: config.id});
@@ -177,12 +176,12 @@ function InstanceConfigProvider() {
             log.warn('Can not load instance. Maybe the instance file is not a valid json.', {filename: filename, error: ex.message});
         }
 
-        return /** @type {yak.InstanceConfig} */(Object.seal(instanceConfig));
+        return /** @type {!InstanceConfig} */(Object.seal(instanceConfig));
     }
 
     /**
      * Save a instance config to the file system.
-     * @param {yak.InstanceConfig} config
+     * @param {!InstanceConfig} config
      */
     function save(config) {
         let filename = toFilename(config.id);
