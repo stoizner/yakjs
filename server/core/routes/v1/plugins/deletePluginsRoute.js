@@ -17,6 +17,8 @@ function deletePluginsRoute(request, response) {
 
     if (plugin) {
         state.pluginManager.removePlugin(requestedPluginId);
+        state.instanceManager.removePlugin(requestedPluginId);
+
         response.send();
     } else {
         response.status(HttpStatus.BAD_REQUEST).send({
