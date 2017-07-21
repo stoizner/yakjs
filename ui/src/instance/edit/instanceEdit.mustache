@@ -25,12 +25,12 @@
                             <div class="column-block-column" style="width: 50%">
                                 <div class="frame-block">
                                     <label class="input-label">Name</label>
-                                    <input type="text" class="input-text" name="name" value="{{instance.name}}"/>
                                     <div class="light-text">Use a unique name for your WebSocket instance.</div>
+                                    <input type="text" class="input-text" name="name" value="{{instance.name}}"/>
 
                                     <label class="input-label">Port</label>
-                                    <input type="text" class="input-number" min="0" max="65535" name="port" value="{{instance.port}}" />
                                     <div class="light-text">A port number between 0 and 65535. Avoid using well-known ports like: 80, 8080, 8790</div>
+                                    <input type="text" class="input-number" min="0" max="65535" name="port" value="{{instance.port}}" />
 
                                     <label class="input-label">Plugins</label>
                                     <div class="light-text">Assign plugins to this instance</div>
@@ -45,8 +45,8 @@
                             <div class="column-block-column" style="width: 50%">
                                 <div class="frame-block">
                                     <label class="input-label">Description</label>
-                                    <input type="text" class="input-text" name="description" value="{{instance.description}}" />
                                     <div class="light-text">Optional: Any text that helps to understand what this instance does.</div>
+                                    <input type="text" class="input-text" name="description" value="{{instance.description}}" />
                                 </div>
                             </div>
                         </div>
