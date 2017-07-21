@@ -8,18 +8,22 @@
     padding: 0;
 }
 
-.list[data-selectable] .list-item:hover {
-    cursor: pointer;
-    border-left: @grid-size @color-lime-300 solid;
+.list[data-selectable] .list-item:hover:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-bottom: solid 4px @color-blue-grey-300;
 }
 
 .list-item {
+    position: relative;
     display: flex;
     min-height: @row-height;
     height: @row-height;
     overflow: hidden;
     border-bottom: 1px @color-grey solid;
-    border-left: @grid-size transparent solid;
 }
 
 .list-item[data-selected] {
