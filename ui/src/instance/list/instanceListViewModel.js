@@ -67,10 +67,7 @@ function InstanceListViewModel(context) {
      */
     this.activateInstanceEditPanel = function activateInstanceEditPanel(instanceId) {
         var contextItem = _.findWhere(self.items, { id: instanceId});
-
-        if (contextItem) {
-            context.eventBus.post(new ShowViewCommand(InstanceView, contextItem));
-        }
+        context.eventBus.post(new ShowViewCommand(InstanceView, contextItem));
     };
 
     this.reload = function reload() {
