@@ -40,11 +40,11 @@ function StoreListView(parent, context, viewModel) {
         console.log('StoreListView.constructor');
         parent.html(template.build());
 
-        parent.find('[data-command=create]').click(function() { viewModel.activateStoreEditPanel(); });
-        parent.find('[data-command=refresh]').click(viewModel.reload);
+        parent.find('[data-element=create]').click(function() { viewModel.activateStoreEditPanel(); });
+        parent.find('[data-element=refresh]').click(viewModel.reload);
 
-        parent.find('[data-command=expand-all]').click(function() { expandFeature.expandAll(); });
-        parent.find('[data-command=collapse-all]').click(function() { expandFeature.collapseAll(); });
+        parent.find('[data-element=expandAll]').click(function() { expandFeature.expandAll(); });
+        parent.find('[data-element=collapseAll]').click(function() { expandFeature.collapseAll(); });
 
         viewModel.onItemsChanged = handleItemsChanged;
 
