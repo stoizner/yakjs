@@ -23,16 +23,14 @@
                 <div class="content-panel">
                     <div class="header-panel">
                         <header class="header-panel-header" data-section="config">
-                            <div class="frame-block" data-element="error-message">
-                                <div class="warning-text"></div>
-                            </div>
+                            <div class="frame-block" data-element="errorMessageBox"></div>
 
                             <div class="column-block">
                                 <div class="column-block-column" style="width: 50%">
                                     <div class="frame-block">
                                         <label class="input-label">Name</label>
-                                        <input type="text" class="input-text" name="id" value="{{pluginItem.id}}"/>
                                         <div class="light-text">Use a unique name for your plugin.</div>
+                                        <input type="text" class="input-text" name="id" value="{{pluginItem.id}}"/>
                                     </div>
                                 </div>
 
@@ -53,7 +51,6 @@
                                 <div class="line-block">
                                     <span data-editor-error="none"></span>
                                     <span class="light-text"><span data-bind="editorCursorLine">0</span>:<span data-bind="editorCursorColumn">0</span>
-                                    <span class="light-text">Press CTRL + SPACE for code completion.</span>
                                 </div>
                             </div>
                         </footer>

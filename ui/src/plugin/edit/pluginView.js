@@ -2,6 +2,8 @@
 
 var codeEditorAutoComplete = require('./codeEditorAutoComplete');
 var codeEditorAutoDocument = require('./codeEditorAutoDocument');
+var PluginItem = require('../pluginItem');
+var MessageBox = require('../../widgets/messageBox');
 
 /**
  * @constructor
@@ -28,13 +30,18 @@ function PluginView(parent, context, viewModel) {
      */
     var template = context.template.load('pluginEdit');
 
+    /**
+     * @type {MessageBox}
+     */
+    var messageBox;
+
     function constructor() {
         console.log('InstanceView.constructor', self);
 
         initializeView();
 
         viewModel.onPluginItemChanged = handlePluginItemChanged;
-        viewModel.onErrorResponse = handleErrorResponse;
+        viewModel.onErrorResponse = messageBox.showWarning;
     }
 
     function initializeCodeEditor() {
@@ -66,6 +73,8 @@ function PluginView(parent, context, viewModel) {
         parent.find('[data-command=maximize-editor]').click(maximizeCodeEditor);
         parent.find('[data-command=minimize-editor]').click(minimizeCodeEditor);
 
+        messageBox = new MessageBox(parent.find('[data-element=errorMessageBox]'));
+
         initializeCodeEditor();
 
         if (viewModel.pluginItem) {
@@ -91,15 +100,6 @@ function PluginView(parent, context, viewModel) {
         parent.find('[data-command=minimize-editor]').hide();
 
         parent.find('[data-section=config]').show();
-    }
-
-    /**
-     * @param {string} message
-     */
-    function handleErrorResponse(message) {
-        var errorMessageElement = parent.find('[data-element=error-message]');
-        errorMessageElement.show();
-        errorMessageElement.find('.warning-text').html(message);
     }
 
     /**
@@ -166,7 +166,11 @@ function PluginView(parent, context, viewModel) {
         pluginItem.id = parent.find('[name=id]').val();
         pluginItem.code = codeEditor.getValue();
 
-        viewModel.createOrUpdate(pluginItem);
+        if (pluginItem.id) {
+            viewModel.createOrUpdate(pluginItem);
+        } else {
+            messageBox.showWarning('Please use a plugin name.');
+        }
     }
 
     /**

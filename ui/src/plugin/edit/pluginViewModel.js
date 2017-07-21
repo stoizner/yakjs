@@ -1,7 +1,8 @@
-var EmptyPluginTemplate = require('./emptyPluginTemplate');
 var PluginItem = require('../pluginItem');
 var ShowViewCommand = require('../../workspace/showViewCommand');
 var PluginListView = require('../list/pluginListView');
+
+var loadTemplate = require('../../core/template/loadTemplate');
 
 /**
  * @constructor
@@ -49,7 +50,7 @@ function PluginViewModel(context) {
         } else {
             self.isNewItem = true;
             self.pluginItem = new PluginItem();
-            self.pluginItem.code = EmptyPluginTemplate.toString();
+            self.pluginItem.code = loadTemplate('emptyPluginTemplate').build();
         }
 
         Object.freeze(self.pluginItem);
@@ -63,16 +64,14 @@ function PluginViewModel(context) {
      */
     this.createOrUpdate = function createOrUpdate(pluginItem) {
         console.log('PluginViewModel.createOrUpdate', {pluginItem: pluginItem});
-        var request = new CreateOrUpdatePluginRequest();
+        var request = {};
 
-        // Set the original plugin id so the the name(=id) can be updated.
+        // Preserve the original plugin ID so the ID can be updated.
         if (!self.isNewItem) {
             request.pluginId = self.pluginItem.id;
         }
 
-        request.plugin = new PluginItem();
-        $.extend(request.plugin, pluginItem);
-        request.plugin.id = pluginItem.id;
+        request.plugin = pluginItem;
 
         if (self.isNewItem) {
             context.adapter

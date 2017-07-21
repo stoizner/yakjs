@@ -3,6 +3,7 @@
     "description": "Received messages will be sent to other clients.",
     "name": "chat",
     "plugins": [
+        "a",
         "analytics",
         "broadcast",
         "echo"
