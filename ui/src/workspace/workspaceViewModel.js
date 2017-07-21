@@ -32,6 +32,16 @@ function WorkspaceViewModel(context) {
     this.onActiveViewChanged = _.noop;
 
     /**
+     * @type {string}
+     */
+    this.version = '';
+
+    /**
+     * @type {Function}
+     */
+    this.onVersionChanged = _.noop;
+
+    /**
      *  Constructor
      */
     function constructor() {
@@ -39,6 +49,11 @@ function WorkspaceViewModel(context) {
 
         self.activeView = InstanceListView.prototype.constructor.name;
         self.onActiveViewChanged();
+
+        context.adapter.get('/version').then(function(info) {
+            self.version = info.version;
+            self.onVersionChanged(info.version);
+        });
     }
 
     /**

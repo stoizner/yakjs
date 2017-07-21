@@ -15,7 +15,6 @@ function AppBarView(parent, context, viewModel) {
 
     function constructor() {
         viewModel.onVersionCheckResultChanged = updateAppBar;
-        viewModel.onVersionChanged = updateAppBar;
         updateAppBar();
     }
 

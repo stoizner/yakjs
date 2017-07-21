@@ -31,15 +31,20 @@ function WorkspaceView(parent, context, viewModel) {
     var activeView = null;
 
     function constructor() {
-        parent.html(template.build());
+        initializeView();
 
-        context.viewFactory.create($('.app-bar'), AppBarView, AppBarViewModel);
+        viewModel.onActiveViewChanged = createAndShowView;
+        viewModel.onVersionChanged = initializeView;
+
+        parent.bind('dragover', handleFileDragOver);
+    }
+
+    function initializeView() {
+        parent.html(template.build(viewModel));
+        context.viewFactory.create(parent.find('[data-element=applicationBar]'), AppBarView, AppBarViewModel);
 
         navigation = new Navigation(parent.find('.navigation'));
         navigation.onNavigationChanged = handleNavigationChanged;
-        viewModel.onActiveViewChanged = createAndShowView;
-
-        parent.bind('dragover', handleFileDragOver);
 
         createAndShowView();
     }
