@@ -65,13 +65,17 @@ function InstanceManager(configProvider, pluginManager) {
 
     /**
      * @param {string} id The ID of the instance.
+     * @returns {!WebSocketInstance}
      */
     this.createInstance = function createInstance(id) {
         let instanceConfig = configProvider.getConfig(id);
 
         self.stop(id);
 
-        instances[id] = setupInstance(instanceConfig);
+        var instance = setupInstance(instanceConfig);
+        instances[id] = instance;
+
+        return instance;
     };
 
     /**
@@ -126,7 +130,8 @@ function InstanceManager(configProvider, pluginManager) {
     this.start = function start(id) {
         log.debug('Start instance', {instance: id});
 
-        let instance = instances[id];
+        // Creates a fresh instance.
+        let instance = self.createInstance(id);
 
         if (instance) {
             stopAllInstancesByPort(instance.port);
@@ -148,6 +153,19 @@ function InstanceManager(configProvider, pluginManager) {
             instance.stop();
             updateAutoStartEnabledConfig(id, false);
         }
+    };
+
+    /**
+     * @param {string} pluginId
+     */
+    this.removePlugin = function removePlugin(pluginId) {
+        var instanceConfigs = configProvider.getInstanceConfigsByPlugin(pluginId);
+
+        instanceConfigs.forEach(instanceConfig => {
+            instanceConfig.plugins = instanceConfig.plugins.filter(id => id !== pluginId);
+            configProvider.addOrUpdate(instanceConfig);
+            self.createInstance(instanceConfig.id);
+        });
     };
 
     /**
