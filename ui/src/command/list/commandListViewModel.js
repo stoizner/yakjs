@@ -1,7 +1,7 @@
 var CommandListItem = require('./commandListItem');
 var CommandDetailView = require('../edit/commandDetailView');
 var ShowViewCommand = require('../../workspace/showViewCommand');
-var magicNumbers = require('../../../../server/core/util/magicNumbers');
+var magicNumbers = require('../../../../server/src/util/magicNumbers');
 
 /**
  * @constructor
