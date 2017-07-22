@@ -134,8 +134,9 @@ function WebSocketInstance(pluginManager, id, port) {
 
                 commandDispatcher.unregisterAllWithContext(getOrCreatePluginContext());
                 stopAllPlugins();
-                server.close();
-                server = null;
+                server.close(() => {
+                    server = null;
+                });
 
                 self.state = InstanceState.STOPPED;
             }
@@ -185,7 +186,7 @@ function WebSocketInstance(pluginManager, id, port) {
             let pluginWorker = pluginManager.createPluginWorker(pluginId, getOrCreatePluginContext());
 
             if (pluginWorker) {
-                // Extend with pluginName
+                // #HACK Extend with pluginName
                 pluginWorker.name = pluginId;
                 pluginWorker.pluginId = pluginId;
 
@@ -227,8 +228,8 @@ function WebSocketInstance(pluginManager, id, port) {
     function registerPluginCommands(plugin, context) {
         log.debug('Register plugin commands', {plugin: plugin.name});
 
-        if (plugin.commands) {
-            plugin.commands.forEach(config => {
+        if (plugin.module && plugin.module.commands) {
+            plugin.module.commands.forEach(config => {
                 commandDispatcher.register(config, context);
             });
         }
