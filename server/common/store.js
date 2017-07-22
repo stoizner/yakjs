@@ -3,7 +3,7 @@
 /**
  * @type {!StoreProvider}
  */
-const storeProvider = require('../core/store/storeProvider');
+const storeProvider = require('./store/storeProvider');
 
 /**
  * YAK key-value store

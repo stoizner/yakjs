@@ -8,6 +8,15 @@ const magicNumbers = require('../util/magicNumbers');
 const fileExtension = require('../infrastructure/fileExtension');
 
 /**
+ * @type {string}
+ */
+const COMMAND_PRESETS_DIRECTORY = './commandPresets/';
+
+if (!fs.existsSync(COMMAND_PRESETS_DIRECTORY)) {
+    fs.mkdirSync(COMMAND_PRESETS_DIRECTORY);
+}
+
+/**
  * @constructor
  * @struct
  */
@@ -16,11 +25,6 @@ function CommandPresetProvider() {
      * @type {!CommandPresetProvider}
      */
     const self = this;
-
-    /**
-     * @type {string}
-     */
-    const COMMAND_PRESETS_DIRECTORY = './commandPresets/';
 
     /**
      * @type {!Logger}
