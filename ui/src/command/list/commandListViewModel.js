@@ -93,6 +93,13 @@ function CommandListViewModel(context) {
     };
 
     this.activatePresetFilter = function activatePresetFilter() {
+        self.items = allItems.filter(function(item) {
+            return item.isPreset;
+        });
+        self.onItemsChanged(self.items);
+    };
+
+    this.clearFilter = function clearFilter() {
         self.items = allItems;
         self.onItemsChanged(self.items);
     };

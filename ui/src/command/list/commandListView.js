@@ -38,9 +38,10 @@ function CommandListView(parent, context, viewModel) {
         console.log('CommandListView.constructor');
         parent.html(template.build());
 
-        parent.find('[data-element=refresh]').click(reloadAndRefreshList);
-        parent.find('[data-element=commandsFilter]').click(activateCommandFilter);
-        parent.find('[data-element=presetsFilter]').click(activatePresetFilter);
+        parent.find('[data-element=refresh]').click(viewModel.reload);
+        parent.find('[data-element=clearFilter]').click(viewModel.clearFilter);
+        parent.find('[data-element=commandsFilter]').click(viewModel.activateCommandFilter);
+        parent.find('[data-element=presetsFilter]').click(viewModel.activatePresetFilter);
 
         itemList = parent.find('[data-element=commandList]');
         itemList.click(handleListClick);
@@ -50,7 +51,6 @@ function CommandListView(parent, context, viewModel) {
 
         viewModel.onItemsChanged = updateList;
 
-        activatePresetFilter();
         updateList();
     }
 
@@ -79,7 +79,6 @@ function CommandListView(parent, context, viewModel) {
         var groupItemElement = clickTarget.closest('[data-id]');
         var groupName = groupItemElement.attr('data-id');
 
-        activateCommandFilter();
         viewModel.activateGroupFilter(groupName);
     }
 
@@ -92,25 +91,6 @@ function CommandListView(parent, context, viewModel) {
         } else {
             parent.find('[data-element=groups]').hide();
         }
-    }
-
-    function activateCommandFilter() {
-        parent.find('[data-element=commandsFilter]').hide();
-        parent.find('[data-element=presetsFilter]').show();
-
-        viewModel.activateCommandFilter();
-    }
-
-    function activatePresetFilter() {
-        parent.find('[data-element=commandsFilter]').show();
-        parent.find('[data-element=presetsFilter]').hide();
-
-        viewModel.activatePresetFilter();
-    }
-
-    function reloadAndRefreshList() {
-        activatePresetFilter();
-        viewModel.reload();
     }
 
     constructor();
