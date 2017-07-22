@@ -1,6 +1,6 @@
 {
     "name": "yakjs",
-    "version": "3.0.0-SNAPSHOT.1",
+    "version": "3.0.0-SNAPSHOT.2",
     "description": "YAKjs - a local server to stub WebSocket backends.",
     "keywords": [
         "YAK",
@@ -28,26 +28,27 @@
         "vsa"
     ],
     "scripts": {
-        "start": "node yakjs.js"
+        "start": "grunt && node ./dist/yakjs/yakjs.js",
+        "debug": "grunt && node ./dist/yakjs/yakjs.js --debug"
     },
     "bin": {
         "yakjs": "./bin/yakjs-cli.js"
     },
-    "main": "dist/yakjs.js",
+    "main": "yakjs.js",
     "files": [
         "bin",
         "common",
+        "commandPresets",
         "config.json",
-        "core",
         "instances",
         "modules",
         "plugins",
-        "start-yakjs-server.bat",
-        "start-yakjs-server.sh",
+        "src",
         "stores",
         "ui",
+        "yakjs.bat",
         "yakjs.js",
-        "yakjs.min.js"
+        "yakjs.sh"
     ],
     "dependencies": {
         "body-parser": "^1.17.1",
