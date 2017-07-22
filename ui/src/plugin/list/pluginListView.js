@@ -13,7 +13,7 @@ function PluginListView(parent, context, viewModel) {
     /**
      * @type {!Template}
      */
-    var template = context.template.load('panelPlugins');
+    var template = context.template.load('pluginList');
 
     /**
      * @type {!Template}
@@ -33,8 +33,8 @@ function PluginListView(parent, context, viewModel) {
         parent.html(template.build());
 
 
-        parent.find('[data-command=create]').click(viewModel.activatePluginEditPanel);
-        parent.find('[data-command=refresh]').click(viewModel.reload);
+        parent.find('[data-element=create]').click(viewModel.activatePluginEditPanel);
+        parent.find('[data-element=refresh]').click(viewModel.reload);
         parent.find('.plugin-items').click(handleListClick);
 
         viewModel.onItemsChanged = function onItemsChanged() { createList(); };

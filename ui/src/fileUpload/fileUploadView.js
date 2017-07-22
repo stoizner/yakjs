@@ -44,7 +44,7 @@ function FileUploadView(parent, context, viewModel) {
         fileDropZone.bind('dragover', handleFileDragOver);
         fileDropZone.bind('dragleave', handleFileDragLeave);
 
-        parent.find('[data-command=choose]').click(handleChooseCommand);
+        parent.find('[data-element=choose]').click(handleChooseCommand);
         parent.find('[name=fileInput]').change(handleFileInputChange);
 
         viewModel.onFileUploadItemsChanged = updateUploadProgress;

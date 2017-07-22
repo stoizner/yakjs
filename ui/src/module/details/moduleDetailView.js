@@ -27,8 +27,8 @@ function ModuleDetailView(parent, context, viewModel) {
     function initializeView() {
         parent.html(template.build(viewModel));
 
-        parent.find('[data-command=delete]').click(handleDeleteCommand);
-        parent.find('[data-command=cancel]').click(handleCancelCommand);
+        parent.find('[data-element=delete]').click(handleDeleteCommand);
+        parent.find('[data-element=cancel]').click(handleCancelCommand);
     }
 
     /**

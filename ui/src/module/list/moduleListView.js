@@ -30,8 +30,8 @@ function ModuleListView(parent, context, viewModel) {
         console.log('ModuleListView.constructor');
         parent.html(template.build());
 
-        parent.find('[data-command=refresh]').click(viewModel.reload);
-        parent.find('[data-command=clearModuleCache]').click(viewModel.clearModuleCache);
+        parent.find('[data-element=refresh]').click(viewModel.reload);
+        parent.find('[data-element=clearModuleCache]').click(viewModel.clearModuleCache);
         parent.find('.module-items').click(handleListClick);
 
         viewModel.onItemsChanged = function onItemsChanged() { createList(); };

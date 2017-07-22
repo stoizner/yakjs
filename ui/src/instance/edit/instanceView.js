@@ -57,12 +57,12 @@ function InstanceView(parent, context, viewModel) {
 
         updatePluginList();
 
-        parent.find('[data-command=save]').click(handleSaveCommand);
-        parent.find('[data-command=delete]').click(viewModel.deleteInstance);
-        parent.find('[data-command=cancel]').click(viewModel.cancel);
+        parent.find('[data-element=save]').click(handleSaveCommand);
+        parent.find('[data-element=delete]').click(viewModel.deleteInstance);
+        parent.find('[data-element=cancel]').click(viewModel.cancel);
         parent.find('[data-list=plugin]').click(handleSelectPluginClick);
-        parent.find('[data-command=plugins-all]').click(viewModel.useAllPlugins);
-        parent.find('[data-command=plugins-none]').click(viewModel.useNoPlugins);
+        parent.find('[data-element=plugins-all]').click(viewModel.useAllPlugins);
+        parent.find('[data-element=plugins-none]').click(viewModel.useNoPlugins);
     }
 
     function updatePluginList() {
