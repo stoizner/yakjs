@@ -3,7 +3,9 @@
 [![npm](https://img.shields.io/npm/v/yakjs.svg?style=flat-square)](https://www.npmjs.com/package/yakjs)
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://raw.githubusercontent.com/cschuller/yakjs/master/LICENSE)
 
-A local server to stub complex WebSocket backends. See [yakjs.com](http://www.yakjs.com/) for more information and documentation.
+A local server to stub complex WebSocket backends.
+
+Visit [yakjs.com](http://www.yakjs.com/) for full documentation.
 
 ## Getting started
 
@@ -18,7 +20,7 @@ npm install yakjs -g
 ### Start YAKjs
 
 ```
-yakjs
+> yakjs
 ```
 
 This will start YAKjs using default port `8790`.
@@ -30,4 +32,4 @@ Open the YKAjs user interface at [**http://localhost:8790**](http://localhost:87
 ### Alternative install via download
 
 Download the complete zip package with the **[latest release here](https://github.com/cschuller/yakjs/releases)**.
-Run the startup script  ``` start-yakjs-server.bat ```
+Run the startup script  ```> yakjs.bat ```
