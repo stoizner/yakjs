@@ -3,7 +3,7 @@ const sinon = sandbox.sinon;
 const expect = sandbox.expect;
 const proxyquire =  require('proxyquire');
 
-const commandDispatcher = require('../../../server/core/command/commandDispatcher');
+const commandDispatcher = require('../../../server/src/command/commandDispatcher');
 
 describe('commandDispatcher', function() {
     'use strict';

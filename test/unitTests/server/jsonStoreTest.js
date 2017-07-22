@@ -27,7 +27,7 @@ describe('JsonStore', function() {
 
         // Create subject under test
         jsonStore = proxyquire('../../../server/common/jsonStore', {
-            '../core/store/storeProvider': storeProvider
+            '../src/store/storeProvider': storeProvider
         });
     });
 

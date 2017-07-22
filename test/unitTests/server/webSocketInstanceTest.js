@@ -1,8 +1,8 @@
 const sandbox = require('../../testSandbox');
 const sinon = sandbox.sinon;
 const expect = sandbox.expect;
-const WebSocketInstance = require('../../../server/core/instance/webSocketInstance');
-const InstanceState = require('../../../server/core/instance/instanceState');
+const WebSocketInstance = require('../../../server/src/instance/webSocketInstance');
+const InstanceState = require('../../../server/src/instance/instanceState');
 
 describe('WebSocketInstance', function() {
     'use strict';
