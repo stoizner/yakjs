@@ -15,9 +15,8 @@ function getPluginsRoute(request, response) {
         let pluginConfig = new PluginConfig();
 
         pluginConfig.id = plugin.id;
-        pluginConfig.description = plugin.description;
+        pluginConfig.description = plugin.module ? plugin.module.description : 'Bad YAK. Plugin module could not be loaded';
         pluginConfig.code = plugin.code;
-        pluginConfig.version = plugin.version;
 
         return pluginConfig;
     });

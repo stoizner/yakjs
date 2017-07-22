@@ -18,11 +18,6 @@ function PluginConfig() {
     /**
      * @type {?string}
      */
-    this.version = null;
-
-    /**
-     * @type {?string}
-     */
     this.code = null;
 }
 

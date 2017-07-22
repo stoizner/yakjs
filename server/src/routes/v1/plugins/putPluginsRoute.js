@@ -19,17 +19,11 @@ function putPluginsRoute(request, response) {
 
     let pluginManager = state.pluginManager;
 
-    let plugin = pluginManager.getPlugin(requestedPluginId);
-
     if (requestedPluginId !== requestedPlugin.id) {
         pluginManager.changePluginId(requestedPluginId, requestedPlugin.id);
     }
 
-    plugin.description = requestedPlugin.description;
-    plugin.code = requestedPlugin.code;
-
-    pluginManager.addOrUpdatePlugin(plugin);
-    pluginManager.savePlugin(plugin);
+    pluginManager.addOrUpdatePlugin(requestedPlugin.id, requestedPlugin.code);
 
     response.send();
 }

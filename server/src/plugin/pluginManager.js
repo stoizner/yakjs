@@ -4,7 +4,6 @@ const _ = require('underscore');
 const Logger = require('../infrastructure/logger');
 const pluginProvider = require('../plugin/pluginProvider');
 const fileExtension = require('../infrastructure/fileExtension');
-const Plugin = require('./plugin');
 
 /**
  * @constructor
@@ -54,18 +53,20 @@ function PluginManager() {
     };
 
     /**
-     * @param {!Plugin} plugin
+     * @param {string} pluginId
+     * @param {string} pluginCode
      */
-    this.addOrUpdatePlugin = function addOrUpdatePlugin(plugin) {
-        log.debug('Update plugin instance', {pluginId: plugin.id});
+    this.addOrUpdatePlugin = function addOrUpdatePlugin(pluginId, pluginCode) {
+        log.debug('Add or update plugin instance', {pluginId: pluginId});
 
-        if (!plugins[plugin.id]) {
-            plugins[plugin.id] = plugin;
+        pluginProvider.savePlugin(pluginId, pluginCode);
+
+        delete plugins[pluginId];
+        let plugin = pluginProvider.loadPluginById(pluginId);
+
+        if (pluginId) {
+            plugins[pluginId] = plugin;
         }
-
-        let existingPlugin = plugins[plugin.id];
-
-        _.extend(existingPlugin, plugin);
     };
 
     /**
@@ -118,12 +119,16 @@ function PluginManager() {
 
         if (plugin) {
             try {
-                if (typeof plugin.createWorker === 'function') {
-                    pluginContext.log = pluginLog;
-                    pluginWorker = plugin.createWorker(pluginContext);
-                    pluginWorker.name = pluginName;
+                if (plugin.module) {
+                    if (typeof plugin.module.createWorker === 'function') {
+                        pluginContext.log = pluginLog;
+                        pluginWorker = plugin.module.createWorker(pluginContext);
+                        pluginWorker.name = pluginName;
+                    } else {
+                        pluginLog.error('No createWorker function available, can not create plugin worker.');
+                    }
                 } else {
-                    pluginLog.error('No createWorker function available, can not create plugin worker.');
+                    pluginLog.error('Bad YAK. A yak lost a plugin module.');
                 }
             } catch (ex) {
                 pluginWorker = null;
@@ -143,13 +148,14 @@ function PluginManager() {
         return new Promise((resolve, reject) => {
             try {
                 let pluginId = fileContainer.filename.replace(fileExtension.PLUGIN_EXTENSION, '');
-                let plugin = new Plugin();
-                plugin.id = pluginId;
-                plugin.code = fileContainer.content;
-                plugin.description = 'Created via file upload ' + fileContainer.filename;
 
-                self.addOrUpdatePlugin(plugin);
-                self.savePlugin(plugin);
+                self.addOrUpdatePlugin(pluginId, fileContainer.content);
+                let plugin = pluginProvider.loadPluginById(pluginId);
+
+                if (pluginId) {
+                    plugins[pluginId] = plugin;
+                }
+
                 resolve();
             } catch (error) {
                 log.error(error);

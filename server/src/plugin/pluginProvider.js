@@ -3,8 +3,8 @@
 const Logger = require('../infrastructure/logger');
 const fs = require('fs');
 const path = require('path');
-const _ = require('underscore');
 const fileExtension = require('../infrastructure/fileExtension');
+const Plugin = require('./plugin');
 
 /**
  * @constructor
@@ -43,7 +43,7 @@ function PluginProvider() {
     };
 
     /**
-     * Saves plugin code.
+     * Saves plugin definition.
      * @param {string} pluginId
      * @param {string} pluginCode
      */
@@ -57,14 +57,12 @@ function PluginProvider() {
      * @returns {!Array<string>} List of plugin code file names found in the PLUGINS_DIR folder.
      */
     function getAvailablePluginFilenames() {
-        let files = fs.readdirSync(PLUGINS_DIR);
-        let filenames = _.filter(files, function useFilesWithPluginPostfix(filename) {
-            return filename.lastIndexOf(fileExtension.PLUGIN_EXTENSION) === (filename.length - fileExtension.PLUGIN_EXTENSION.length);
-        });
+        let filenames = fs.readdirSync(PLUGINS_DIR);
+        let pluginFilenames = filenames.filter(isPluginFile);
 
-        log.debug('Plugin files found.', {filesFound: filenames.length, pluginFilenames: filenames});
+        log.debug('Plugin files found.', {filesFound: pluginFilenames.length, pluginFilenames: pluginFilenames});
 
-        return filenames;
+        return pluginFilenames;
     }
 
     /**
@@ -76,22 +74,10 @@ function PluginProvider() {
 
         log.debug('Loading plugins from plugin directory', {dir: PLUGINS_DIR});
 
-        _.each(filenames, function loadPlugin(filename) {
-            try {
-                let pluginId = toPluginId(filename);
-
-                /* eslint-disable global-require */
-                const modulePath = path.normalize('../../' + PLUGINS_DIR + filename);
-                delete require.cache[require.resolve(modulePath)];
-                let plugin = require(modulePath);
-                /* eslint-enable global-require */
-
-                plugin.id = pluginId;
-                plugin.code = fs.readFileSync(PLUGINS_DIR + filename, 'utf8');
-
-                plugins[pluginId] = plugin;
-            } catch (ex) {
-                log.warn('Could not read plugin file.', {filename: filename, error: ex.message});
+        filenames.forEach(filename => {
+            var plugin = self.loadPlugin(filename);
+            if (plugin) {
+                plugins[plugin.id] = plugin;
             }
         });
 
@@ -101,12 +87,72 @@ function PluginProvider() {
     }
 
     /**
-     *
+     * @param {string} filename
+     * @returns {Plugin}
+     */
+    this.loadPlugin = function loadPlugin(filename) {
+        let plugin = null;
+
+        try {
+            plugin = new Plugin();
+            plugin.module = self.loadPluginModule(filename);
+            plugin.id = toPluginId(filename);
+            plugin.code = fs.readFileSync(PLUGINS_DIR + filename, 'utf8');
+        } catch (ex) {
+            plugin = null;
+            log.warn('Could not read plugin file.', {filename: filename, error: ex.message});
+        }
+
+        return plugin;
+    };
+
+    /**
+     * @param {string} pluginId
+     * @returns {Plugin}
+     */
+    this.loadPluginById = function loadPluginById(pluginId) {
+        let plugin = null;
+        let filename = pluginId + fileExtension.PLUGIN_EXTENSION;
+
+        try {
+            plugin = new Plugin();
+            plugin.module = self.loadPluginModule(filename);
+            plugin.id = toPluginId(filename);
+            plugin.code = fs.readFileSync(PLUGINS_DIR + filename, 'utf8');
+        } catch (ex) {
+            log.warn('Could not read plugin file.', {filename: filename, error: ex.message});
+        }
+
+        return plugin;
+    };
+
+    /**
+     * @param {string} filename
+     */
+    this.loadPluginModule = function loadPluginModule(filename) {
+        const modulePath = path.normalize('../../' + PLUGINS_DIR + filename);
+
+        /* eslint-disable global-require */
+        delete require.cache[require.resolve(modulePath)];
+
+        return require(modulePath);
+        /* eslint-enable global-require */
+    };
+
+    /**
      * @param {string} filename
      * @returns {string}
      */
     function toPluginId(filename) {
         return filename.substring(0, filename.lastIndexOf(fileExtension.PLUGIN_EXTENSION));
+    }
+
+    /**
+     * @param {string} filename
+     * @returns {boolean}
+     */
+    function isPluginFile(filename) {
+        return filename.lastIndexOf(fileExtension.PLUGIN_EXTENSION) === (filename.length - fileExtension.PLUGIN_EXTENSION.length);
     }
 }
 
