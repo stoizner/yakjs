@@ -15,6 +15,18 @@ function WorkspaceViewModel(context) {
     var self = this;
 
     /**
+     * @const
+     * @type {number}
+     */
+    var ONLINE_POLLING_TIMESPAN = 10000;
+
+    /**
+     * @const
+     * @type {number}
+     */
+    var OFFLINE_POLLING_TIMESPAN = 2000;
+
+    /**
      * The current active panel.
      * @type {?string}
      */
@@ -42,8 +54,13 @@ function WorkspaceViewModel(context) {
     this.onVersionChanged = _.noop;
 
     /**
-     *  Constructor
+     * Callback function when yakjs is online or not.
+     * @type {function(boolean)}
      */
+    this.onIsOnlineChanged = _.noop;
+
+    var isYakjsOnline = false;
+
     function constructor() {
         context.eventBus.on(ShowViewCommand).register(handleShowViewCommand);
 
@@ -59,6 +76,30 @@ function WorkspaceViewModel(context) {
             self.version = info.version;
             self.onVersionChanged(info.version);
         });
+
+        checkOnlineStatus();
+    }
+
+    function checkOnlineStatus() {
+        context.adapter
+            .get('/version')
+            .then(function() {
+                if (!isYakjsOnline) {
+                    isYakjsOnline = true;
+                    self.onIsOnlineChanged(isYakjsOnline);
+                    self.onActiveViewChanged();
+                }
+
+                setTimeout(checkOnlineStatus, ONLINE_POLLING_TIMESPAN);
+            })
+            .catch(function() {
+                if (isYakjsOnline) {
+                    isYakjsOnline = false;
+                    self.onIsOnlineChanged(isYakjsOnline);
+                }
+
+                setTimeout(checkOnlineStatus, OFFLINE_POLLING_TIMESPAN);
+            });
     }
 
     /**

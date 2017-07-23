@@ -35,7 +35,7 @@ function WorkspaceView(parent, context, viewModel) {
 
         viewModel.onActiveViewChanged = createAndShowView;
         viewModel.onVersionChanged = initializeView;
-
+        viewModel.onIsOnlineChanged = handleIsOnlineChanged;
         parent.bind('dragover', handleFileDragOver);
     }
 
@@ -95,6 +95,14 @@ function WorkspaceView(parent, context, viewModel) {
             console.error('No view found.', {activeView: viewModel.activeView });
         }
 
+    }
+
+    /**
+     * @param {boolean} isOnline
+     */
+    function handleIsOnlineChanged(isOnline) {
+        parent.find('[data-container=page]').toggle(isOnline);
+        parent.find('[data-container=offlineWarning]').toggle(!isOnline);
     }
 
     constructor();
