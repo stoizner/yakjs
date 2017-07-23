@@ -47,7 +47,12 @@ function WorkspaceViewModel(context) {
     function constructor() {
         context.eventBus.on(ShowViewCommand).register(handleShowViewCommand);
 
-        self.activeView = InstanceListView.prototype.constructor.name;
+        if (location.hash) {
+            self.activeView = location.hash.replace('#', '');
+        } else {
+            self.activeView = InstanceListView.prototype.constructor.name;
+        }
+
         self.onActiveViewChanged();
 
         context.adapter.get('/version').then(function(info) {
@@ -60,10 +65,7 @@ function WorkspaceViewModel(context) {
      * @param {!ShowViewCommand} command
      */
     function handleShowViewCommand(command) {
-        console.log('Change active view', {command: command});
-        self.activeView = command.ViewConstructor.prototype.constructor.name;
-        self.activeViewData = command.data;
-        self.onActiveViewChanged();
+        self.showView(command.ViewConstructor.prototype.constructor.name, command.data);
     }
 
     /**
@@ -71,9 +73,15 @@ function WorkspaceViewModel(context) {
      * @param {*} [data]
      */
     this.showView = function showView(name, data) {
+        console.log('Show view', {name: name, data:data});
+
         self.activeView = name;
         self.activeViewData = data || null;
         self.onActiveViewChanged();
+
+        if (!data) {
+            history.pushState(null, '', '#' + name);
+        }
     };
 
     constructor();
