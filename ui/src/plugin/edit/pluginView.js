@@ -57,7 +57,6 @@ function PluginView(parent, context, viewModel) {
             extraKeys: { 'Ctrl-Space': 'autocomplete', 'Ctrl-D': 'autodocument', 'Ctrl-S': 'quicksave' }
         });
 
-        codeEditor.on('change', handleCodeEditorChange);
         codeEditor.on('cursorActivity', handleCodeCursorActivity);
 
         minimizeCodeEditor();
@@ -110,28 +109,6 @@ function PluginView(parent, context, viewModel) {
         var cursorPosition = instance.getCursor();
         parent.find('[data-bind=editorCursorLine]').html(cursorPosition.line);
         parent.find('[data-bind=editorCursorColumn]').html(cursorPosition.ch);
-    }
-
-    /**
-     * Handle if code in editor was change to perform a syntax check.
-     * @param {string} doc
-     * @param {string} change
-     */
-    function handleCodeEditorChange(doc, change) {
-        try {
-            var code = codeEditor.getValue();
-            (function checkIfCodeThrowsError() {
-                /*eslint-disable no-new-func */
-                new Function('return ' + code)();
-                /*eslint-enable no-new-func */
-            })();
-            updateEditorSyntaxError('none', '');
-        } catch(ex) {
-            console.log(ex);
-
-            var title = 'Last code change was done near ' + change.from.line + ':' + change.from.ch;
-            updateEditorSyntaxError('syntax', title);
-        }
     }
 
     /**
