@@ -1,7 +1,6 @@
 'use strict';
 
 const state = require('../../../yakServerState');
-const Plugin = require('../../../plugin/plugin');
 
 /**
  * @param request
@@ -9,16 +8,11 @@ const Plugin = require('../../../plugin/plugin');
  */
 function postPluginsRoute(request, response) {
     /**
-     * @type {!Plugin}
+     * @type {!PluginCode}
      */
     const requestedPlugin = request.body.plugin;
 
-    let newPlugin = new Plugin();
-    newPlugin.id = requestedPlugin.id;
-    newPlugin.code = requestedPlugin.code;
-
-    state.pluginManager.addOrUpdatePlugin(newPlugin);
-    state.pluginManager.savePlugin(newPlugin);
+    state.pluginManager.addOrUpdatePlugin(requestedPlugin.id, requestedPlugin.code);
 
     response.send();
 }
