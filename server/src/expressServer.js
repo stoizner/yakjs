@@ -32,12 +32,11 @@ function ExpressServer(config) {
 
     function constructor() {
         process.on('uncaughtException', function handleUncaughtException(error) {
-            log.error('uncaughtException', error);
-
             if (error.errno === 'EADDRINUSE') {
                 displayErrorMessage('Port (' + error.port + ') is already in use by another server or service.');
             } else {
                 displayErrorMessage('Unexpected error ' + error.errno);
+                log.error('uncaughtException', error);
             }
         });
     }
@@ -68,11 +67,10 @@ function ExpressServer(config) {
      */
     function displayWelcomeMessage() {
         console.info('.........................................................................');
-        console.info('YAKjs server initialized and running on http port ' + config.httpPort);
+        console.info('YAKjs server initialized and running on http port: ' + config.httpPort);
         console.info('.........................................................................');
         console.info('');
         console.info('See ./log/yakjs.log for errors and warnings.');
-        console.info('Use --debug to display all log messages in the console.');
         console.info('');
         console.info('Press CTRL + C to stop YAKjs.');
     }
@@ -83,7 +81,7 @@ function ExpressServer(config) {
      */
     function displayErrorMessage(message) {
         console.error('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
-        console.error('Could not start YAKjs server on http port' + config.httpPort);
+        console.error('Could not start YAKjs server on http port: ' + config.httpPort);
         console.error('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
         console.error('');
         console.error('Error: ' + message);

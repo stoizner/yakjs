@@ -120,7 +120,7 @@ function PluginProvider() {
             plugin.id = toPluginId(filename);
             plugin.code = fs.readFileSync(PLUGINS_DIR + filename, 'utf8');
         } catch (ex) {
-            log.warn('Could not read plugin file.', {filename: filename, error: ex.message});
+            log.warn('Could not load plugin', {filename: filename, error: ex.message});
         }
 
         return plugin;
@@ -132,11 +132,19 @@ function PluginProvider() {
     this.loadPluginModule = function loadPluginModule(filename) {
         const modulePath = path.normalize('../../' + PLUGINS_DIR + filename);
 
-        /* eslint-disable global-require */
         delete require.cache[require.resolve(modulePath)];
 
-        return require(modulePath);
-        /* eslint-enable global-require */
+        var pluginModule = {};
+
+        try {
+            /* eslint-disable global-require */
+            pluginModule = require(modulePath);
+            /* eslint-enable global-require */
+        } catch (ex) {
+            log.warn('Could not load plugin module', {ex: ex.message});
+        }
+
+        return pluginModule;
     };
 
     /**
