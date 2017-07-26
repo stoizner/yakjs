@@ -1,22 +1,24 @@
+'use strict';
+
+const magic = require('../util/magicNumbers');
+
 /**
  * Validate properties of {yak.api.InstanceConfig}.
  * @constructor
  * @param {!yak.api.InstanceConfig} instance
  */
-yak.api.InstanceConfigValidator = function InstanceConfigValidator(instance) {
-    'use strict';
-
+function InstanceConfigValidator(instance) {
     /**
      * Last or top prio validation error message.
      * @type {string}
      */
-    var errorMessage = '';
+    let errorMessage = '';
 
     /**
      * Whether the instance has valid values.
      * @type {boolean}
      */
-    var allValuesValid = true;
+    let allValuesValid = true;
 
     /**
      * Has instance valid values.
@@ -43,10 +45,10 @@ yak.api.InstanceConfigValidator = function InstanceConfigValidator(instance) {
      * Validate name.
      */
     function validateName() {
-        var regex = /^[A-z0-9-_ ]+$/;
-        var isValid = !!regex.exec(instance.name);
+        let regex = /^[A-z0-9-_ ]+$/;
+        let isValid = Boolean(regex.exec(instance.name));
 
-        allValuesValid = allValuesValid & isValid;
+        allValuesValid = allValuesValid && isValid;
 
         if (!isValid) {
             errorMessage = 'Please correct name. Only use this characters: [A-z0-9_- ]';
@@ -57,22 +59,24 @@ yak.api.InstanceConfigValidator = function InstanceConfigValidator(instance) {
      * Validate port number.
      */
     function validatePort() {
-        var regex = /^[0-9]+$/;
-        var isTextValid = !!regex.exec(instance.port);
+        let regex = /^[0-9]+$/;
+        let isTextValid = Boolean(regex.exec(instance.port));
 
-        var isValueValid = false;
+        let isValueValid = false;
 
         if (isTextValid) {
-            var value = parseInt(instance.port, 10);
-            if (value > 0 && value < 65535) {
+            let value = parseInt(instance.port, 10);
+            if (value > 0 && value < magic.MAX_PORT_NUMBER) {
                 isValueValid = true;
             }
         }
 
-        allValuesValid = allValuesValid & isTextValid & isValueValid;
+        allValuesValid = allValuesValid && isTextValid && isValueValid;
 
         if (!isValueValid) {
             errorMessage = 'Please correct port. Valid values are between 1-65535.';
         }
     }
-};
+}
+
+module.exports = InstanceConfigValidator;

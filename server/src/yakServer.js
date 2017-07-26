@@ -1,103 +1,56 @@
+'use strict';
+
+const Logger = require('./infrastructure/logger');
+const ExpressServer = require('./expressServer');
+
+const setupErrorProtectionForTimerFunctions = require('./infrastructure/setupErrorProtectionForTimerFunctions');
+const yakServerState = require('./yakServerState');
+
 /**
  * @constructor
+ * @struct
  */
-yak.YakServer = function YakServer() {
+function YakServer() {
     /**
-     * @type {yak.YakServer}
+     * @type {YakServer}
      */
-    var self = this;
+    let self = this;
 
     /**
-     * @type {yak.Logger}
+     * @type {!Logger}
      */
-    var log = new yak.Logger(self.constructor.name);
+    const log = new Logger(self.constructor.name);
 
     /**
-     * The HTTP Server
-     * @type {yak.HttpServer}
+     * The HTTP express server
+     * @type {ExpressServer}
      */
-    var httpServer = null;
-
-    /**
-     * @type {!yak.PluginManager}
-     */
-    this.pluginManager = null;
-
-    /**
-     * @type {!yak.InstanceManager}
-     */
-    this.instanceManager = null;
-
-    /**
-     * @type {!yak.StoreProvider}
-     */
-    this.storeProvider = null;
-
-    /**
-     * @type {!yak.ModuleProvider}
-     */
-    this.moduleProvider = null;
-
-    /**
-     * @type {!yak.ConfigManager} configManager
-     */
-    this.configManager = null;
+    let expressServer = null;
 
     /**
      * Initializes the yakjs server.
      */
     function constructor() {
-        initialize();
-        setupErrorProtection()
+        setupErrorProtectionForTimerFunctions(global);
     }
 
     /**
      * Starts the YAKjs server.
      */
     this.start = function start() {
-        httpServer = new yak.HttpServer(self, self.configManager.config);
-        httpServer.start();
+        expressServer = new ExpressServer(yakServerState.configManager.config);
+        expressServer.start();
     };
 
     /**
-     * Initialize and set up the YAKjs server.
-     */
-    function initialize() {
-        self.configManager = new yak.ConfigManager();
-        self.configManager.load();
-
-        self.pluginManager = new yak.PluginManager();
-        self.pluginManager.loadPlugins();
-
-        self.storeProvider = new yak.StoreProvider();
-        self.storeProvider.load();
-
-        self.moduleProvider = new yak.ModuleProvider();
-
-        // Exports internal features as modules that can be used by plugins.
-        yak.modules.jsonStore = new yak.JsonStore(self.storeProvider);
-        yak.modules.store = new yak.Store(self.storeProvider);
-        yak.modules.guid = yak.guid;
-
-        var configProvider = new yak.InstanceConfigProvider();
-        self.instanceManager = new yak.InstanceManager(configProvider, self.pluginManager);
-    }
-
-    /**
-     * Set ups a protection layer to keep YAKjs stable even when
-     * plugins are throwing errors.
-     */
-    function setupErrorProtection() {
-        var timerProtection = new yak.ErrorProtectionForTimerFunctions(global);
-    }
-
-    /**
      * Get the used logger.
-     * @returns {yak.Logger} The logger.
+     * @returns {Logger} The logger.
      */
     this.getLogger = function getLogger() {
         return log;
     };
 
     constructor();
-};
+}
+
+module.exports = YakServer;

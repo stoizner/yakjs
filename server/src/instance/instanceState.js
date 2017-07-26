@@ -1,11 +1,15 @@
+'use strict';
+
 /**
  * InstanceState
  * @enum {string}
  */
-yak.InstanceState = {
+const InstanceState = {
     STARTING: 'starting',
     STOPPED: 'stopped',
     RUNNING: 'running',
     STOPPING: 'stopping',
     ERROR: 'error'
 };
+
+module.exports = InstanceState;

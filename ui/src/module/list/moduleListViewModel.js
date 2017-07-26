@@ -1,18 +1,22 @@
+var ModuleListItem = require('./moduleListItem');
+var ModuleDetailView = require('../details/moduleDetailView');
+var ShowViewCommand = require('../../workspace/showViewCommand');
+
 /**
- * ModuleListViewModel
  * @constructor
- * @param {yak.ui.ViewModelContext} context
+ * @struct
+ * @param {!ViewModelContext} context
  */
-yak.ui.ModuleListViewModel = function ModuleListViewModel(context) {
+function ModuleListViewModel(context) {
     'use strict';
 
     /**
-     * @type {yak.ui.ModuleListViewModel}
+     * @type {!ModuleListViewModel}
      */
     var self = this;
 
     /**
-     * @type {!Array<!yak.ui.ModuleListItem>}
+     * @type {!Array<!ModuleListItem>}
      */
     this.items = [];
 
@@ -25,25 +29,22 @@ yak.ui.ModuleListViewModel = function ModuleListViewModel(context) {
      * Constructor
      */
     function constructor() {
-        console.log('yak.ui.ModuleListViewModel.constructor');
+        console.log('ModuleListViewModel.constructor');
     }
 
     /**
      * Activate View
      */
     this.activate = function activate() {
-        console.log('yak.ui.ModuleListViewModel.active');
-        context.adapter.sendRequest(new yak.api.GetModuleNamesRequest(), handleGetModulesResponse);
+        console.log('ModuleListViewModel.active');
+        context.adapter.get('/modules/names').then(handleGetModulesResponse);
     };
 
     /**
-     * Delete module.
      * @param {string} name
      */
     this.deleteModule = function deleteModule(name) {
-        var request = new yak.api.DeleteModuleRequest();
-        request.moduleName = name;
-        context.adapter.sendRequest(request, handleDeleteModuleResponse);
+        context.adapter.deleteResource('/modules/' + name).then(self.reload);
     };
 
     /**
@@ -57,36 +58,31 @@ yak.ui.ModuleListViewModel = function ModuleListViewModel(context) {
             item = _.findWhere(self.items, {moduleName: moduleName});
         }
 
-        context.eventBus.post(new yak.ui.ShowViewCommand(yak.ui.ModuleDetailView, item.moduleName));
+        context.eventBus.post(new ShowViewCommand(ModuleDetailView, item.moduleName));
     };
 
-    this.reloadAndRefreshList = function reloadAndRefreshList() {
-        context.adapter.sendRequest(new yak.api.GetModuleNamesRequest(), handleGetModulesResponse);
+    this.reload = function reload() {
+        context.adapter.get('/modules/names').then(handleGetModulesResponse);
     };
 
     this.clearModuleCache = function clearModuleCache() {
-        context.adapter.sendRequest(new yak.api.ClearModuleCacheRequest(), _.noop);
+        context.adapter.post('/modules/cache/clear');
     };
 
     /**
-     * @param {!yak.api.GetModuleNamesResponse} response
+     * @param {{moduleNames: Array<string>}} response
      */
     function handleGetModulesResponse(response) {
         console.log('handleGetModulesResponse', response);
 
-        self.items = _.map(response.moduleNames, function toItem(moduleName) {
-            return new yak.ui.ModuleListItem(moduleName);
+        self.items = response.moduleNames.map(function toItem(moduleName) {
+            return new ModuleListItem(moduleName);
         });
         self.onItemsChanged();
     }
 
-    /**
-     * @param {!yak.DeleteModuleResponse} response
-     */
-    function handleDeleteModuleResponse(response) {
-        console.log('handleDeleteModuleResponse', response);
-        self.reloadAndRefreshList();
-    }
-
     constructor();
-};
+}
+
+module.exports = ModuleListViewModel;
+

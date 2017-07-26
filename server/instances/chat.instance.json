@@ -1,0 +1,12 @@
+{
+    "port": "9020",
+    "description": "Received messages will be sent to other clients.",
+    "name": "chat",
+    "plugins": [
+        "analytics",
+        "broadcast",
+        "echo"
+    ],
+    "autoStartEnabled": true,
+    "id": "chat"
+}

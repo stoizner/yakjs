@@ -1,24 +1,26 @@
 /**
- * ActivatePanelCommand
  * @constructor
+ * @struct
  * @param {Function} View The View to show.
- * @param {string|object} [data]
+ * @param {string|Object} [data]
  */
-yak.ui.ShowViewCommand = function ShowViewCommand(View, data) {
+function ShowViewCommand(View, data) {
     'use strict';
 
     /**
      * @type {string}
      */
-    this.type='yak.ui.ShowViewCommand';
+    this.type='ShowViewCommand';
 
     /**
-     * @type {string}
+     * @type {Function}
      */
     this.ViewConstructor = View;
 
     /**
-     * @type {string|object}
+     * @type {string|Object}
      */
     this.data = data || null;
-};
+}
+
+module.exports = ShowViewCommand;

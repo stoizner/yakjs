@@ -1,20 +1,11 @@
+'use strict';
+
+/* eslint-disable no-empty-function, no-unused-vars */
+
 /**
  * @interface
- * @param {string} name The name of the plugin.
  */
-yak.PluginWorker = function PluginWorker(name) {
-    /**
-     * Plugin name
-     * @type {string}
-     */
-    this.name = name;
-
-    /**
-     * Called when the instance is started.
-     * @deprecated Since 2.x - Please use onStart
-     */
-    this.onInitialize = function onInitialize() {};
-
+function PluginWorker() {
     /**
      * Called when the instance is started.
      */
@@ -22,38 +13,34 @@ yak.PluginWorker = function PluginWorker(name) {
 
     /**
      * Called on new client connected to instance.
-     * @param {yak.WebSocketConnection} connection
+     * @param {!WebSocketConnection} connection
      */
     this.onNewConnection = function onNewConnection(connection) {};
 
     /**
      * Called for every received websocket message.
-     * @param {yak.WebSocketMessage} message
-     * @param {yak.WebSocketConnection} connection
+     * @param {!WebSocketMessage} message
+     * @param {!WebSocketConnection} connection
      */
     this.onMessage = function onMessage(message, connection) {};
 
     /**
      * Called for every received json websocket message.
-     * @param {yak.WebSocketMessage} message
-     * @param {yak.WebSocketConnection} connection
+     * @param {!WebSocketMessage} message
+     * @param {!WebSocketConnection} connection
      */
     this.onJsonMessage = function onJsonMessage(message, connection) {};
 
     /**
      * Connection closed event. Note that the connection is no longer part of instance.getConnections().
-     * @param {yak.WebSocketConnection} connection
+     * @param {!WebSocketConnection} connection
      */
     this.onConnectionClosed = function onConnectionClosed(connection) {};
 
     /**
      * Called when the instance is stopped.
-     * @deprecated
      */
-    this.onTerminate = function onTerminate() {};
+    this.onStop = function onStop() {};
+}
 
-    /**
-     * Called when the instance is stopped.
-     */
-    this.onStop = function onTerminate() {};
-};
+module.exports = PluginWorker;

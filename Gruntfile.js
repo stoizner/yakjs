@@ -1,5 +1,7 @@
 /* global module:false */
 
+const path = require('path');
+
 /**
  * Gruntfile for yakjs
  * @param {?} grunt
@@ -7,35 +9,34 @@
 module.exports = function grunt(grunt) {
     'use strict';
 
-    var pkg = grunt.file.readJSON('package.json');
+    let pkg = grunt.file.readJSON('package.json');
 
     // Build Folder: for build related tasks
-    var buildDir = './build/';
+    let buildDir = './build/';
 
     // Default Folder: containing default YAKjs setup of instances, plugins and stores
-    var defaultDir = './default/';
+    let defaultDir = './default/';
 
     // Server Folders: source code of the YAKjs server
-    var serverDir = './server/';
-    var serverSrcDir = serverDir + 'src/';
+    let serverDir = './server/';
 
     // User Interface Folders: source code of the YAKjs user interface
-    var uiDir = './ui/';
-    var uiSrcDir = uiDir + 'src/';
+    let uiDir = './ui/';
+    let uiSrcDir = uiDir + 'src/';
 
     // Test Folders: containing unit test and integration tests.
-    var testDir = './test/';
-    var testServerDir = testDir + 'server/';
+    let testDir = './test/';
+    let testServerDir = testDir + 'server/';
 
     // Distribution Folder: intermediate and final output for the build process
-    var distDir = './dist/';
-    var tmpDir = distDir + 'tmp/';
-    var pkgDir = './dist/yakjs/';
-    var uiPkgDir = pkgDir + 'ui/';
-    var reportsDir = distDir + 'reports/';
-    var coverageDir = distDir + 'coverage/';
+    let distDir = './dist/';
+    let tmpDir = distDir + 'tmp/';
+    let pkgDir = './dist/yakjs/';
+    let uiPkgDir = pkgDir + 'ui/';
+    let reportsDir = distDir + 'reports/';
+    let coverageDir = distDir + 'coverage/';
 
-    var banner = ['/**',
+    let banner = ['/**',
             ' * ' + pkg.name,
             ' * @version ' + pkg.version,
             ' * @author ' + pkg.author,
@@ -43,12 +44,12 @@ module.exports = function grunt(grunt) {
             ' * @license ' + pkg.license,
         ' */\n\n'].join('\n');
 
-    var appInfo = {
+    let appInfo = {
         version: pkg.version,
         created: (new Date()).toISOString()
     };
 
-    var uiFooter = 'yak.ui.appInfo = ' + JSON.stringify(appInfo, null, 4) + ';';
+    let uiFooter = 'appVersion = ' + JSON.stringify(appInfo, null, 4) + ';';
 
     grunt.initConfig({
         pkg: pkg,
@@ -75,42 +76,6 @@ module.exports = function grunt(grunt) {
             options: {
                 separator: '\n'
             },
-            server: {
-                options: {
-                    banner: banner
-                },
-                src: [
-                        serverDir + '_namespaces.js',
-                        serverSrcDir + '**/*.js',
-                        serverDir + '_bootstrap.js'
-                ],
-                dest: pkgDir + pkg.name + '.js',
-                nonull: true
-            },
-            api: {
-                options: {
-                    banner: banner
-                },
-                src: [
-                        serverDir + '_namespaces.js',
-                        serverSrcDir + 'api/**/*.js'
-                ],
-                dest: uiPkgDir + 'scripts/' + pkg.name + '-api.js',
-                nonull: true
-            },
-            ui: {
-                options: {
-                    banner: banner,
-                    footer: uiFooter
-                },
-                src: [
-                        uiDir + '_namespaces.js',
-                        uiSrcDir + '**/*.js',
-                        uiDir + '_bootstrap.js'
-                ],
-                dest: uiPkgDir + 'scripts/' + pkg.name + '-ui.js',
-                nonull: true
-            },
             less: {
                 options: {},
                 src: [
@@ -127,16 +92,15 @@ module.exports = function grunt(grunt) {
             server: {
                 files: [
                     {flatten: true, src: ['README.md', 'LICENSE', 'package.json'], dest: pkgDir},
+                    {flatten: false, cwd: serverDir, src: ['yakjs.js'], dest: pkgDir, expand: true},
+                    {flatten: false, cwd: serverDir, src: ['src/**/*'], dest: pkgDir, expand: true},
+                    {flatten: false, cwd: serverDir, src: ['common/**/*'], dest: pkgDir, expand: true},
+                    {flatten: false, cwd: serverDir, src: ['instances/**/*'], dest: pkgDir, expand: true},
+                    {flatten: false, cwd: serverDir, src: ['modules/**/*'], dest: pkgDir, expand: true},
+                    {flatten: false, cwd: serverDir, src: ['plugins/**/*'], dest: pkgDir, expand: true},
+                    {flatten: false, cwd: serverDir, src: ['stores/**/*'], dest: pkgDir, expand: true},
                     {flatten: true, cwd: serverDir + 'bin/', src: ['*.bat', '*.sh'], dest: pkgDir, expand: true},
                     {flatten: true, cwd: serverDir + 'bin/', src: ['*.js'], dest: pkgDir + 'bin/', expand: true}
-                ]
-            },
-            defaults: {
-                files: [
-                    {flatten: true, cwd: defaultDir + 'plugins/', src: ['*.js'], dest: pkgDir + 'plugins/', expand: true},
-                    {flatten: true, cwd: defaultDir + 'instances/', src: ['*.json'], dest: pkgDir + 'instances/', expand: true},
-                    {flatten: true, cwd: defaultDir + 'stores/', src: ['*.*'], dest: pkgDir + 'stores/', expand: true},
-                    {flatten: true, cwd: defaultDir + 'modules/', src: ['*.*'], dest: pkgDir + 'modules/', expand: true}
                 ]
             },
             ui: {
@@ -158,9 +122,9 @@ module.exports = function grunt(grunt) {
     grunt.config.merge({
         eslint: {
             options: {
-                config: '.eslintrc'
+                fix: true
             },
-            server: [serverSrcDir + '**/*.js']
+            server: [serverDir + '**/*.js']
         }
     });
 
@@ -212,18 +176,18 @@ module.exports = function grunt(grunt) {
 
     grunt.config.merge({
         mochaTest: {
-            server: {
+            unitTests: {
                 options: {
                     require: [],
                     reporter: 'spec'
                 },
-                src: ['./test/server/**/*Test.js']
+                src: ['./test/unitTests/**/*Test.js']
             },
             coverage: {
                 options: {
                     reporter: 'spec'
                 },
-                src: [coverageDir + 'test/server/**/*Test.js']
+                src: [coverageDir + 'test/unitTests/**/*Test.js']
             },
             integration: {
                 options: {
@@ -238,7 +202,7 @@ module.exports = function grunt(grunt) {
     // Istanbul coverage analysis
     grunt.config.merge({
         instrument: {
-            files: [serverSrcDir + '**/*.js'],
+            files: [serverDir + '**/*.js'],
                 options: {
                 basePath: coverageDir
             }
@@ -301,29 +265,77 @@ module.exports = function grunt(grunt) {
        }
     });
 
+    let webpackConsoleConfig = {
+        // Configure the console output
+        colors: false,
+        modules: true,
+        reasons: true
+    };
+
+    grunt.config.merge({
+        webpack: {
+            ui: {
+                // webpack options
+                entry: uiSrcDir + 'index.js',
+                output: {
+                    path: path.join(__dirname, uiPkgDir),
+                    filename: pkg.name + '-ui.js'
+                },
+
+                stats: webpackConsoleConfig,
+                progress: true,
+                failOnError: true
+            },
+            uiWatch: {
+                // webpack options
+                entry: uiSrcDir + 'index.js',
+                output: {
+                    path: process.cwd() + distDir,
+                    filename: pkg.name + '.js'
+                },
+
+                stats: {
+                    // Configure the console output
+                    colors: false,
+                    modules: true,
+                    reasons: true
+                },
+
+                progress: false,
+                failOnError: false,
+                watch: true,
+                watchOptions: {
+                    aggregateTimeout: 500,
+                    poll: true
+                }
+            }
+        }
+    });
+
     // Load all npm tasks.
     require('load-grunt-tasks')(grunt);
 
     grunt.loadTasks(buildDir + 'grunt-tasks');
 
-    grunt.registerTask('compile-server', ['concat:server', 'concat:api']);
-    grunt.registerTask('compile-ui', ['concat:api', 'concat:ui', 'concat:less', 'copy:ui', 'less', 'mustache']);
+    grunt.registerTask('compile-ui', [
+        'webpack:ui',
+        'concat:less',
+        'copy:ui',
+        'less',
+        'mustache'
+    ]);
 
     grunt.registerTask('build-server', [
-        'compile-server',
         'copy:server',
-        'copy:defaults',
-        'eslint:server',
-        'mochaTest:server']);
+        'eslint:server']);
     grunt.registerTask('build-ui', ['compile-ui', 'clean:tmp']);
 
     grunt.registerTask('coverage', ['instrument', 'copy:coverageTest', 'mochaTest:coverage', 'storeCoverage', 'makeReport']);
 
     // Single runnable tasks
-    grunt.registerTask('testAll', ['mochaTest:dist', 'mochaTest:integration']);
     grunt.registerTask('dev', ['build-server', 'build-ui', 'watch']);
-    grunt.registerTask('compile', ['compile-server', 'compile-ui']);
-    grunt.registerTask('build', ['clean', 'build-server', 'build-ui', 'coverage']);
+    grunt.registerTask('compile', ['compile-ui']);
+    grunt.registerTask('build', ['clean', 'mochaTest:unitTests', 'build-server', 'build-ui']);
 
     // Creates a releasable zip package
     grunt.registerTask('package', ['build', 'exec:installNodeModules', 'compress', 'exec:npmPack']);

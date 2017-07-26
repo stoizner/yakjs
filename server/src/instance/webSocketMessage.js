@@ -1,11 +1,15 @@
+'use strict';
+
 /**
- * WebSocketMessage
  * @constructor
+ * @struct
  * @param {Object|string|null} data
  */
-yak.WebSocketMessage = function WebSocketMessage(data) {
+function WebSocketMessage(data) {
     /**
      * @type {Object|string|null}
      */
     this.data = data || null;
-};
+}
+
+module.exports = WebSocketMessage;

@@ -1,40 +1,43 @@
+'use strict';
+
+const Logger = require('../infrastructure/logger');
+const fs = require('fs');
+const path = require('path');
+const _ = require('underscore');
+const magic = require('../util/magicNumbers');
+
 /**
  * Provides the instance configurations.
  * @constructor
+ * @struct
  */
-yak.InstanceConfigProvider = function InstanceConfigProvider() {
+function InstanceConfigProvider() {
     /**
-     * @type {!yak.InstanceConfigProvider}
+     * @type {!InstanceConfigProvider}
      */
-    var self = this;
+    const self = this;
 
     /**
      * @type {string}
      */
-    var INSTANCES_DIR = './instances/';
+    const INSTANCES_DIR = './instances/';
 
     /**
      * A instance config is stored in the format id.instance.json
      * @type {string}
      */
-    var INSTANCE_CONFIG_MARKER = '.instance';
-
-    /**
-     * Filesystem
-     */
-    var fs = require('fs');
-    var path = require('path');
+    const INSTANCE_CONFIG_MARKER = '.instance';
 
     /**
      * Configs indexed by instance id.
      * @type {!Object<string, !yak.InstanceConfig>}
      */
-    var instanceConfigs = {};
+    let instanceConfigs = {};
 
     /**
-     * @type {yak.Logger}
+     * @type {!Logger}
      */
-    var log = new yak.Logger(self.constructor.name);
+    const log = new Logger(self.constructor.name);
 
     /**
      * Initializes the config provider.
@@ -61,18 +64,17 @@ yak.InstanceConfigProvider = function InstanceConfigProvider() {
 
     /**
      * @param {string} pluginId
-     * @returns {Array<yak.InstanceConfig>} List of instance configurations.
+     * @returns {!Array<!InstanceConfig>} List of instance configurations.
      */
     this.getInstanceConfigsByPlugin = function getInstanceByPlugin(pluginId) {
         return Object
             .keys(instanceConfigs)
-            .filter(function isPluginUsedBy(instanceConfig) {
-                return instanceConfig.plugins && instanceConfig.plugins.indexOf(pluginId) >= 0;
-            });
+            .map(key => instanceConfigs[key])
+            .filter(instanceConfig => instanceConfig.plugins && instanceConfig.plugins.indexOf(pluginId) >= 0);
     };
 
     /**
-     * @param {yak.InstanceConfig} config
+     * @param {!InstanceConfig} config
      */
     this.addOrUpdate = function addOrUpdate(config) {
         log.debug('Add or update instance configuration.', {instanceId: config.id});
@@ -89,7 +91,7 @@ yak.InstanceConfigProvider = function InstanceConfigProvider() {
         if (instanceConfigs[id]) {
             delete instanceConfigs[id];
 
-            var filename = toFilename(id);
+            let filename = toFilename(id);
 
             try {
                 fs.unlinkSync(filename);
@@ -103,9 +105,9 @@ yak.InstanceConfigProvider = function InstanceConfigProvider() {
      * Load instance configs from instances directory.
      */
     function loadConfigurations() {
-        log.debug('Loading instance configurations from instance directory', {dir:INSTANCES_DIR});
+        log.debug('Loading instance configurations from instance directory', {dir: INSTANCES_DIR});
 
-        var filenames = getInstanceConfigs();
+        let filenames = getInstanceConfigs();
 
         log.info('Instance configuration files found.', {instances: filenames});
 
@@ -117,7 +119,7 @@ yak.InstanceConfigProvider = function InstanceConfigProvider() {
      * @returns {!Array<string>} List of filenames to instance config files found in the INSTANCES_DIR folder.
      */
     function getInstanceConfigs() {
-        var filenames = fs.readdirSync(INSTANCES_DIR);
+        let filenames = fs.readdirSync(INSTANCES_DIR);
 
         return _.filter(filenames, function usingInstanceExtension(filename) {
             return path.extname(path.basename(filename, '.json')) === INSTANCE_CONFIG_MARKER;
@@ -129,8 +131,8 @@ yak.InstanceConfigProvider = function InstanceConfigProvider() {
      * @param {!Array<string>} filenames
      */
     function readAndParseInstanceConfigFiles(filenames) {
-        var configs = _.map(filenames, function readAndParseConfig(filename) {
-            var content = readConfig(filename);
+        let configs = _.map(filenames, function readAndParseConfig(filename) {
+            let content = readConfig(filename);
             return parseConfig(filename, content);
         });
 
@@ -142,14 +144,14 @@ yak.InstanceConfigProvider = function InstanceConfigProvider() {
      * @returns {string} The file content
      */
     function readConfig(filename) {
-        var fileContent = null;
+        let fileContent = null;
 
         try {
             fileContent = fs.readFileSync(INSTANCES_DIR + filename, {encoding: 'utf8'});
 
             // Clean up windows line endings.
             fileContent = fileContent.replace('\r\n', '\n');
-        } catch(ex) {
+        } catch (ex) {
             log.warn('Could not read instance configuration file.', {basename: filename, error: ex.message});
         }
 
@@ -165,28 +167,28 @@ yak.InstanceConfigProvider = function InstanceConfigProvider() {
         /**
          * @type {yak.InstanceConfig}
          */
-        var instanceConfig = null;
+        let instanceConfig = null;
 
         try {
             instanceConfig = JSON.parse(content);
-            instanceConfig.id = path.basename( path.basename(filename, '.json'), INSTANCE_CONFIG_MARKER);
-        } catch(ex) {
+            instanceConfig.id = path.basename(path.basename(filename, '.json'), INSTANCE_CONFIG_MARKER);
+        } catch (ex) {
             log.warn('Can not load instance. Maybe the instance file is not a valid json.', {filename: filename, error: ex.message});
         }
 
-        return /** @type {yak.InstanceConfig} */(Object.seal(instanceConfig));
+        return /** @type {!InstanceConfig} */(Object.seal(instanceConfig));
     }
 
     /**
      * Save a instance config to the file system.
-     * @param {yak.InstanceConfig} config
+     * @param {!InstanceConfig} config
      */
     function save(config) {
-        var filename = toFilename(config.id);
+        let filename = toFilename(config.id);
 
         try {
-            fs.writeFileSync(filename, JSON.stringify(config, null, 4), {encoding: 'utf8'});
-        } catch(ex) {
+            fs.writeFileSync(filename, JSON.stringify(config, null, magic.JSON_SPACE), {encoding: 'utf8'});
+        } catch (ex) {
             log.error('Could not save instance to file system.', {instance: config.id, filename: filename, error: ex.message});
         }
     }
@@ -201,4 +203,6 @@ yak.InstanceConfigProvider = function InstanceConfigProvider() {
     }
 
     constructor();
-};
+}
+
+module.exports = InstanceConfigProvider;

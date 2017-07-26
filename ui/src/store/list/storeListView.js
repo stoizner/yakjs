@@ -1,52 +1,50 @@
+var ExpandFeature = require('../../widgets/expandFeature');
+
 /**
  * @constructor
- * @param {yak.ui.ViewContext} context
+ * @struct
+ * @param {ViewContext} context
  * @param {jQuery} parent
- * @param {yak.ui.StoreListViewModel} viewModel
+ * @param {StoreListViewModel} viewModel
  */
-yak.ui.StoreListView = function StoreListView(parent, context, viewModel) {
+function StoreListView(parent, context, viewModel) {
     'use strict';
 
     /**
-     * @type {yak.ui.StoreListView}
-     */
-    var self = this;
-
-    /**
-     * @type {yak.ui.Template}
+     * @type {!Template}
      */
     var template = context.template.load('storeList');
 
     /**
-     * @type {yak.ui.Template}
+     * @type {!Template}
      */
     var nodeItemTemplate = context.template.load('storeNodeItem');
 
     /**
-     * @type {yak.ui.Template}
+     * @type {!Template}
      */
     var nodeGroupTemplate = context.template.load('storeNodeGroup');
 
     /**
      *
-     * @type {yak.ui.ExpandFeature}
+     * @type {ExpandFeature}
      */
     var expandFeature = null;
 
-    this.activate = function activate() { viewModel.activate(); };
+    this.activate = viewModel.activate();
 
     /**
      * Constructor
      */
     function constructor() {
-        console.log('yak.ui.StoreListView.constructor');
+        console.log('StoreListView.constructor');
         parent.html(template.build());
 
-        parent.find('[data-command=create]').click(function() { viewModel.activateStoreEditPanel(); });
-        parent.find('[data-command=refresh]').click(viewModel.reloadAndRefreshList);
+        parent.find('[data-element=create]').click(function() { viewModel.activateStoreEditPanel(); });
+        parent.find('[data-element=refresh]').click(viewModel.reload);
 
-        parent.find('[data-command=expand-all]').click(function() { expandFeature.expandAll(); });
-        parent.find('[data-command=collapse-all]').click(function() { expandFeature.collapseAll(); });
+        parent.find('[data-element=expandAll]').click(function() { expandFeature.expandAll(); });
+        parent.find('[data-element=collapseAll]').click(function() { expandFeature.collapseAll(); });
 
         viewModel.onItemsChanged = handleItemsChanged;
 
@@ -74,11 +72,12 @@ yak.ui.StoreListView = function StoreListView(parent, context, viewModel) {
         var treeElement = parent.find('[data-element="tree"]');
         treeElement.html(rootNodeHtml);
 
-        expandFeature = new yak.ui.ExpandFeature(treeElement);
+        expandFeature = new ExpandFeature(treeElement);
+        expandFeature.collapseAll();
     }
 
     /**
-     * @param {!yak.ui.StoreNodeItem} node
+     * @param {!StoreNodeItem} node
      * @param {number} level
      * @return {string}
      */
@@ -92,7 +91,7 @@ yak.ui.StoreListView = function StoreListView(parent, context, viewModel) {
     }
 
     /**
-     * @param {!yak.ui.StoreNodeItem} node
+     * @param {!StoreNodeItem} node
      * @param {number} level
      */
     function renderNodeItem(node, level) {
@@ -107,7 +106,7 @@ yak.ui.StoreListView = function StoreListView(parent, context, viewModel) {
     }
 
     /**
-     * @param {!yak.ui.StoreNodeItem} node
+     * @param {!StoreNodeItem} node
      * @param {number} level
      * @returns {string}
      */
@@ -148,4 +147,6 @@ yak.ui.StoreListView = function StoreListView(parent, context, viewModel) {
     }
 
     constructor();
-};
+}
+
+module.exports = StoreListView;

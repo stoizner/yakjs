@@ -3,7 +3,7 @@
  * @param {{name:string}} a The first object
  * @param{{name:string}} b The second object
  */
-yak.ui.nameCompare = function nameCompare(a, b) {
+function nameCompare(a, b) {
     'use strict';
 
     /**
@@ -18,4 +18,6 @@ yak.ui.nameCompare = function nameCompare(a, b) {
     }
 
     return result;
-};
+}
+
+module.exports = nameCompare;

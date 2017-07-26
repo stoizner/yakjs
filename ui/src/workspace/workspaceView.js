@@ -1,25 +1,26 @@
+var AppBarView = require('../appBar/appBarView');
+var AppBarViewModel = require('../appBar/appBarViewModel');
+var Navigation = require('../navigation/navigation');
+
+var panels = require('./workspacePanels');
+
 /**
- * WorkspaceView
  * @constructor
- * @param {yak.ui.ViewContext} context
+ * @struct
  * @param {jQuery} parent
- * @param {yak.ui.WorkspaceViewModel} viewModel
+ * @param {!ViewContext} context
+ * @param {!WorkspaceViewModel} viewModel
  */
-yak.ui.WorkspaceView = function WorkspaceView(parent, context, viewModel) {
+function WorkspaceView(parent, context, viewModel) {
     'use strict';
 
     /**
-     * @type {yak.ui.WorkspaceView}
-     */
-    var self = this;
-
-    /**
-     * @type {yak.ui.Template}
+     * @type {!Template}
      */
     var template = context.template.load('workspace');
 
     /**
-     * @type {yak.ui.Navigation}
+     * @type {!Navigation}
      */
     var navigation = null;
 
@@ -29,19 +30,21 @@ yak.ui.WorkspaceView = function WorkspaceView(parent, context, viewModel) {
      */
     var activeView = null;
 
-    /**
-     *  Constructor
-     */
     function constructor() {
-        parent.html(template.build());
+        initializeView();
 
-        context.viewFactory.create($('.app-bar'), yak.ui.AppBarView, yak.ui.AppBarViewModel);
-
-        navigation = new yak.ui.Navigation(parent.find('.navigation'));
-        navigation.onNavigationChanged = handleNavigationChanged;
         viewModel.onActiveViewChanged = createAndShowView;
-
+        viewModel.onVersionChanged = initializeView;
+        viewModel.onIsOnlineChanged = handleIsOnlineChanged;
         parent.bind('dragover', handleFileDragOver);
+    }
+
+    function initializeView() {
+        parent.html(template.build(viewModel));
+        context.viewFactory.create(parent.find('[data-element=applicationBar]'), AppBarView, AppBarViewModel);
+
+        navigation = new Navigation(parent.find('.navigation'));
+        navigation.onNavigationChanged = handleNavigationChanged;
 
         createAndShowView();
     }
@@ -75,13 +78,13 @@ yak.ui.WorkspaceView = function WorkspaceView(parent, context, viewModel) {
 
         var pageContainer = parent.find('[data-container=page]');
 
-        if (yak.ui[viewModel.activeView]) {
+        if (panels[viewModel.activeView]) {
             if (activeView && activeView.dispose) {
                 activeView.dispose();
             }
 
-            var View = yak.ui[viewModel.activeView];
-            var ViewModel = yak.ui[viewModel.activeView + 'Model'];
+            var View = panels[viewModel.activeView].View;
+            var ViewModel = panels[viewModel.activeView].ViewModel;
 
             activeView = context.viewFactory.create(pageContainer, View, ViewModel);
 
@@ -94,5 +97,15 @@ yak.ui.WorkspaceView = function WorkspaceView(parent, context, viewModel) {
 
     }
 
+    /**
+     * @param {boolean} isOnline
+     */
+    function handleIsOnlineChanged(isOnline) {
+        parent.find('[data-container=page]').toggle(isOnline);
+        parent.find('[data-container=offlineWarning]').toggle(!isOnline);
+    }
+
     constructor();
-};
+}
+
+module.exports = WorkspaceView;

@@ -1,8 +1,8 @@
 /**
- * Instance Config Item.
  * @constructor
+ * @struct
  */
-yak.ui.InstanceConfigItem = function InstanceConfigItem() {
+function InstanceConfigItem() {
     'use strict';
 
     /**
@@ -34,4 +34,6 @@ yak.ui.InstanceConfigItem = function InstanceConfigItem() {
      * @type {Array<string>}
      */
     this.plugins = [];
-};
+}
+
+module.exports = InstanceConfigItem;

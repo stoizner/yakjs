@@ -2,7 +2,7 @@
  * Auto Document
  * @param {CodeMirror} cm
  */
-yak.ui.codeEditorAutoDocument = function(cm) {
+function codeEditorAutoDocument(cm) {
     'use strict';
 
     var cursor = cm.getCursor();
@@ -12,4 +12,6 @@ yak.ui.codeEditorAutoDocument = function(cm) {
     cm.setCursor(cursor.line, 0);
     cm.replaceSelection('/**\n * \n */');
     cm.setCursor(cursor.line+1, cursor.ch);
-};
+}
+
+module.exports = codeEditorAutoDocument;

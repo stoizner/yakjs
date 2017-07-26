@@ -1,18 +1,24 @@
+var PluginItem = require('../pluginItem');
+var ShowViewCommand = require('../../workspace/showViewCommand');
+var PluginListView = require('../list/pluginListView');
+
+var loadTemplate = require('../../core/template/loadTemplate');
+
 /**
- * ViewModel for editing a plugin.
  * @constructor
- * @param {yak.ui.ViewModelContext} context
+ * @struct
+ * @param {!ViewModelContext} context
  */
-yak.ui.PluginViewModel = function PluginViewModel(context) {
+function PluginViewModel(context) {
     'use strict';
 
     /**
-     * @type {yak.ui.PluginViewModel}
+     * @type {!PluginViewModel}
      */
     var self = this;
 
     /**
-     * @type {yak.ui.PluginItem}
+     * @type {PluginItem}
      */
     this.pluginItem = null;
 
@@ -30,7 +36,7 @@ yak.ui.PluginViewModel = function PluginViewModel(context) {
     /**
      * @type {boolean}
      */
-    this.isNewStoreItem = false;
+    this.isNewItem = false;
 
     /**
      * @param {string|object} data
@@ -39,13 +45,12 @@ yak.ui.PluginViewModel = function PluginViewModel(context) {
         console.log('PluginViewModel.activate', data);
 
         if (data !== null) {
-            self.pluginItem = new yak.ui.PluginItem();
+            self.pluginItem = new PluginItem();
             _.extend(self.pluginItem, data);
         } else {
-            self.isNewStoreItem = true;
-            self.pluginItem = new yak.ui.PluginItem();
-            self.pluginItem.version = '0.1.0';
-            self.pluginItem.code = yak.ui.EmptyPluginTemplate.toString();
+            self.isNewItem = true;
+            self.pluginItem = new PluginItem();
+            self.pluginItem.code = loadTemplate('emptyPluginTemplate').build();
         }
 
         Object.freeze(self.pluginItem);
@@ -55,54 +60,53 @@ yak.ui.PluginViewModel = function PluginViewModel(context) {
 
     /**
      * Create or update a plugin
-     * @param {yak.ui.PluginItem} pluginItem
+     * @param {PluginItem} pluginItem
      */
-    this.updateValue = function createOrUpdate(pluginItem) {
+    this.createOrUpdate = function createOrUpdate(pluginItem) {
         console.log('PluginViewModel.createOrUpdate', {pluginItem: pluginItem});
-        var request = new yak.api.CreateOrUpdatePluginRequest();
+        var request = {};
 
-        // Set the original plugin id so the the name(=id) can be updated.
-        if (!self.isNewStoreItem) {
+        // Preserve the original plugin ID so the ID can be updated.
+        if (!self.isNewItem) {
             request.pluginId = self.pluginItem.id;
         }
 
-        request.plugin = new yak.api.PluginConfig();
-        $.extend(request.plugin, pluginItem);
-        request.plugin.id = pluginItem.id;
+        request.plugin = pluginItem;
 
-        context.adapter.sendRequest(request, handleResponse);
+        if (self.isNewItem) {
+            context.adapter
+                .post('/plugins', request)
+                .then(showPluginPanel)
+                .catch(showErrorMessage);
+        } else {
+            context.adapter
+                .put('/plugins/' + self.pluginItem.id, request)
+                .then(showPluginPanel)
+                .catch(showErrorMessage);
+        }
+
     };
 
-    /**
-     * Cancel instance edit.
-     */
     this.cancel = function cancel() {
-        context.eventBus.post(new yak.ui.ShowViewCommand(yak.ui.PluginListView));
+        context.eventBus.post(new ShowViewCommand(PluginListView));
     };
 
-    /**
-     * Deletes a plugin
-     */
     this.deletePlugin = function deletePlugin() {
         if (self.pluginItem) {
-            var request = new yak.api.DeletePluginRequest();
-            request.pluginId = self.pluginItem.id;
-            context.adapter.sendRequest(request, showPluginPanel);
+            context.adapter
+                .deleteResource('/plugins/' + self.pluginItem.id)
+                .then(showPluginPanel)
+                .catch(showErrorMessage);
         }
     };
 
     function showPluginPanel() {
-        context.eventBus.post(new yak.ui.ShowViewCommand(yak.ui.PluginListView));
+        context.eventBus.post(new ShowViewCommand(PluginListView));
     }
 
-    /**
-     * @param {yak.api.CreateOrUpdatePluginResponse} response
-     */
-    function handleResponse(response) {
-        if (response.success) {
-            showPluginPanel();
-        } else {
-            self.onErrorResponse(response.message);
-        }
+    function showErrorMessage(error) {
+        self.onErrorResponse(error.message);
     }
-};
+}
+
+module.exports = PluginViewModel;

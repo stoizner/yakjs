@@ -1,6 +1,6 @@
 <div class="header-panel">
     <header class="header-panel-header">
-        <div class="app-bar"></div>
+        <div class="app-bar" data-element="applicationBar"></div>
         <div class="tool-bar-block">
             <div class="dark-background-panel">
                 <div class="center-panel">
@@ -10,9 +10,15 @@
                             <li data-ref="PluginListView">Plugins</li>
                             <li data-ref="StoreListView">Store</li>
                             <li data-ref="ModuleListView">Modules</li>
+                            <li data-ref="CommandListView">Commands</li>
                             <li data-ref="FileUploadView">Upload</li>
                         </ul>
                         <div class="navigation-indicator"></div>
+                        <ul style="float: right">
+                            <a class="navigation-link-item" href="https://github.com/cschuller/yak-js" target="_blank">GitHub</a>
+                            <a class="navigation-link-item" href="http://www.yakjs.com" target="_blank">www.yakjs.com</a>
+                            <a class="navigation-link-item" href="https://github.com/cschuller/yak-js/releases" target="_blank">v{{version}}</a>
+                        </ul>
                     </nav>
                 </div>
             </div>
@@ -21,13 +27,18 @@
 
     <div class="header-panel-body">
         <div class="panel" data-container="page"></div>
+        <div class="panel" data-container="offlineWarning">
+            <div class="center-panel">
+                <<div class="content-panel">
+                    <div class="warning-text">YAKjs is offline. Please start/restart YAKjs.</div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <footer class="header-panel-footer">
         <div class="tool-bar-block">
-            <div class="tool-bar-block-line">
-
-            </div>
+            <div class="tool-bar-block-line"></div>
         </div>
     </footer>
 </div>

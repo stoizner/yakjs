@@ -1,10 +1,11 @@
+'use strict';
+
+/* eslint-disable no-empty-function */
+
 /**
- * Instance
  * @interface
  */
-yak.Instance = function Instance() {
-    'use strict';
-
+function Instance() {
     /**
      * The unique instance ID.
      * @type {string}
@@ -34,7 +35,9 @@ yak.Instance = function Instance() {
     this.description = '';
 
     /**
-     * @type {yak.Logger}
+     * @type {Logger}
      */
     this.log = null;
-};
+}
+
+module.exports = Instance;

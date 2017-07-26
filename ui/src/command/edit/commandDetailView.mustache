@@ -1,0 +1,75 @@
+<div class="header-panel">
+    <header class="header-panel-header">
+        <div class="tool-bar-block">
+            <div class="tool-bar-block-line">
+                <div class="center-panel">
+                    {{#item.originalCommandPresetName}}
+                        <div class="button" data-element="save" title="Saves and overwrites existing preset">Save</div>
+                        <div class="button" data-element="saveAndRun" title="Saves and runs the preset">Save and Run</div>
+                        <div class="button" data-element="saveNew" title="Saves this preset as a new preset">Save New</div>
+                    {{/item.originalCommandPresetName}}
+
+                    {{^item.originalCommandPresetName}}
+                        <div class="button" data-element="create">Create new preset</div>
+                        <div class="button" data-element="run" title="Runs the command">Run</div>
+                    {{/item.originalCommandPresetName}}
+
+                    {{#canBeDeleted}}
+                        <div class="button" data-element="deleteButton" >Delete</div>
+                    {{/canBeDeleted}}
+                    <div class="button" data-element="cancelButton">Cancel</div>
+
+                    <div class="tool-box">
+                        <div class="icon-button icon-healing" data-element="prettify-json" title="Click to auto-format JSON data with 4 spaces. Use CTRL+LMB for 2 spaces."></div>
+                        <div class="icon-button icon-minimize" data-element="minimize-editor" title="Minimize the code editor."></div>
+                        <div class="icon-button icon-maximize" data-element="maximize-editor" title="Maximize the code editor."></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="header-panel-body">
+        <div class="panel">
+            <div class="center-panel">
+                <div class="content-panel">
+                    <div class="header-panel">
+                        <header class="header-panel-header" data-section="config">
+                            <div class="frame-block" data-element="error-message">
+                                <div class="warning-text"></div>
+                            </div>
+
+                            <div class="frame-block">
+                                <label class="input-label">Preset name</label>
+                                <p class="light-text">The unique name for your command preset. To put a preset into a group use groupName/presetName.</p>
+
+                                <input type="text" class="input-text" name="commandPresetName" value="{{#item.groupName}}{{item.groupName}}/{{/item.groupName}}{{item.commandPresetName}}"/>
+                                <button class="inline-button" data-element="useGroupButton" data-group-name="*">Use star group</button>
+                                <button class="inline-button" data-element="useGroupButton" data-group-name="fav">Use favourite group</button>
+                            </div>
+
+                            <div class="frame-block">
+                                <label class="input-label">Display name</label>
+                                <div class="light-text">Optional: The user interface will use this name.</div>
+                                <input type="text" class="input-text" name="displayName" value="{{item.displayName}}"/>
+                            </div>
+
+                            <div class="frame-block">
+                                <label class="input-label">Command Data</label>
+                                <div class="light-text">Optional: Provide JSON or text data that can be used by the command.</div>
+                            </div>
+
+                            <div class="divider-block"></div>
+                        </header>
+
+                        <div class="header-panel-body" data-section="editor">
+                            <div class="panel">
+                                <div data-element="storeValueEditor" class="code-editor-panel"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

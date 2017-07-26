@@ -1,18 +1,23 @@
+var InstanceInfoItem = require('./instanceInfoItem');
+var InstanceView = require('../edit/instanceView');
+var nameCompare = require('../../core/nameComparer');
+var ShowViewCommand = require('../../workspace/showViewCommand');
+
 /**
- * InstanceListView
  * @constructor
- * @param {yak.ui.ViewModelContext} context
+ * @struct
+ * @param {!ViewModelContext} context
  */
-yak.ui.InstanceListViewModel = function InstanceListViewModel(context) {
+function InstanceListViewModel(context) {
     'use strict';
 
     /**
-     * @type {yak.ui.InstanceListViewModel}
+     * @type {!InstanceListViewModel}
      */
     var self = this;
 
     /**
-     * @type {!Array<yak.ui.InstanceInfoItem>}
+     * @type {!Array<!InstanceInfoItem>}
      */
     this.items = [];
 
@@ -21,19 +26,16 @@ yak.ui.InstanceListViewModel = function InstanceListViewModel(context) {
      */
     this.onItemsChanged = _.noop;
 
-    /**
-     * Constructor
-     */
     function constructor() {
-        console.log('yak.ui.InstanceListViewModel.constructor');
+        console.log('InstanceListViewModel.constructor');
     }
 
     /**
      * Activate View
      */
     this.activate = function activate() {
-        console.log('yak.ui.InstanceListViewModel.active');
-        context.adapter.sendRequest(new yak.api.GetInstancesRequest(), handleGetInstancesResponse);
+        console.log('InstanceListViewModel.active');
+        context.adapter.get('/instances').then(handleGetInstancesResponse);
     };
 
     /**
@@ -41,17 +43,14 @@ yak.ui.InstanceListViewModel = function InstanceListViewModel(context) {
      * @param {string} id
      */
     this.startInstance = function startInstance(id) {
-        var request = new yak.api.StartInstanceRequest();
-        request.instanceId = id;
-        context.adapter.sendRequest(request, self.reloadAndRefreshList);
+        context.adapter.post('/instances/' + id + '/start').then(self.reload);
     };
 
     /**
      * Send request to restart all running instances.
      */
     this.restartAllInstances = function restartAllInstances() {
-        var request = new yak.api.RestartAllRunningInstancesRequest();
-        context.adapter.sendRequest(request, self.reloadAndRefreshList);
+        context.adapter.post('/instances/running/restart').then(self.reload);
     };
 
     /**
@@ -59,59 +58,47 @@ yak.ui.InstanceListViewModel = function InstanceListViewModel(context) {
      * @param {string} id
      */
     this.stopInstance = function stopInstance(id) {
-        var request = new yak.api.StopInstanceRequest();
-        request.instanceId = id;
-        context.adapter.sendRequest(request, self.reloadAndRefreshList);
-    };
-
-    /**
-     * Restart instance.
-     * @param {string} id
-     */
-    this.restartInstance = function restartInstance(id) {
-        var request = new yak.api.RestartInstanceRequest();
-        request.instanceId = id;
-        context.adapter.sendRequest(request, self.reloadAndRefreshList);
+        context.adapter.post('/instances/' + id + '/stop').then(self.reload);
     };
 
     /**
      * Show and activate the instance edit panel.
-     * @param {yak.api.InstanceInfo} [item]
+     * @param {string} instanceId
      */
-    this.activateInstanceEditPanel = function activateInstanceEditPanel(item) {
-        context.eventBus.post(new yak.ui.ShowViewCommand(yak.ui.InstanceView, item));
+    this.activateInstanceEditPanel = function activateInstanceEditPanel(instanceId) {
+        var contextItem = _.findWhere(self.items, { id: instanceId});
+        context.eventBus.post(new ShowViewCommand(InstanceView, contextItem));
+    };
+
+    this.reload = function reload() {
+        context.adapter.get('/instances').then(handleGetInstancesResponse);
     };
 
     /**
-     * Reload and refresh list.
-     */
-    this.reloadAndRefreshList = function reloadAndRefreshList() {
-        context.adapter.sendRequest(new yak.api.GetInstancesRequest(), handleGetInstancesResponse);
-    };
-
-    /**
-     * @param {yak.api.GetInstancesResponse} response
+     * @param {GetInstancesResponse} response
      */
     function handleGetInstancesResponse(response) {
         console.log('handleGetInstancesResponse', {response: response});
 
-        self.items = _.map(response.instances, toInstanceItem);
-        self.items = self.items.sort(yak.ui.nameCompare);
+        self.items = response.instances.map(toInstanceItem);
+        self.items = self.items.sort(nameCompare);
 
         self.onItemsChanged();
     }
 
     /**
-     * @param {!yak.api.InstanceInfo} instanceInfo
-     * @returns {!yak.ui.InstanceInfoItem}
+     * @param {!InstanceInfo} instanceInfo
+     * @returns {!InstanceInfoItem}
      */
     function toInstanceItem(instanceInfo) {
-        var instanceItem = new yak.ui.InstanceInfoItem(instanceInfo.id);
+        var instanceItem = new InstanceInfoItem(instanceInfo.id);
         instanceItem.name = instanceInfo.name;
         instanceItem.port = instanceInfo.port;
         instanceItem.state = instanceInfo.state;
         instanceItem.description = instanceInfo.description;
         instanceItem.plugins = instanceInfo.plugins;
+
+        instanceItem.isStarted = (instanceInfo.state === 'running');
 
         if (instanceInfo.state === 'running' && instanceInfo.pluginActiveCount !== instanceInfo.pluginTotalCount) {
             instanceItem.state = 'warning';
@@ -128,4 +115,6 @@ yak.ui.InstanceListViewModel = function InstanceListViewModel(context) {
     }
 
     constructor();
-};
+}
+
+module.exports = InstanceListViewModel;

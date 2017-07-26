@@ -1,25 +1,19 @@
 /**
- * FileUploadView
  * @constructor
  * @param {$} parent
- * @param {yak.ui.ViewContext} context
- * @param {yak.ui.FileUploadViewModel} viewModel
+ * @param {ViewContext} context
+ * @param {FileUploadViewModel} viewModel
  */
-yak.ui.FileUploadView = function FileUploadView(parent, context, viewModel) {
+function FileUploadView(parent, context, viewModel) {
     'use strict';
 
     /**
-     * @type {yak.ui.AppBarView}
-     */
-    var self = this;
-
-    /**
-     * @type {yak.ui.Template}
+     * @type {Template}
      */
     var template = context.template.load('fileUpload');
 
     /**
-     * @type {yak.ui.Template}
+     * @type {Template}
      */
     var uploadReportTemplate = context.template.load('fileUploadReport');
 
@@ -38,11 +32,8 @@ yak.ui.FileUploadView = function FileUploadView(parent, context, viewModel) {
      */
     var progressSection;
 
-    /**
-     * Constructor
-     */
     function constructor() {
-        parent.html(template.build({ version: yak.ui.version}));
+        parent.html(template.build());
 
         fileDropZone = parent.find('.drop-block');
         progressBar = parent.find('.progress-block');
@@ -53,7 +44,7 @@ yak.ui.FileUploadView = function FileUploadView(parent, context, viewModel) {
         fileDropZone.bind('dragover', handleFileDragOver);
         fileDropZone.bind('dragleave', handleFileDragLeave);
 
-        parent.find('[data-command=choose]').click(handleChooseCommand);
+        parent.find('[data-element=choose]').click(handleChooseCommand);
         parent.find('[name=fileInput]').change(handleFileInputChange);
 
         viewModel.onFileUploadItemsChanged = updateUploadProgress;
@@ -153,4 +144,6 @@ yak.ui.FileUploadView = function FileUploadView(parent, context, viewModel) {
     }
 
     constructor();
-};
+}
+
+module.exports = FileUploadView;

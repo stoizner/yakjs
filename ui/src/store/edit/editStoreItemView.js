@@ -1,26 +1,24 @@
 /* global CodeMirror:false */
 
+var StoreKeyValueItem = require('../storeKeyValueItem');
+
 /**
  * @constructor
+ * @struct
  * @param {jQuery} parent
- * @param {yak.ui.ViewContext} context
- * @param {yak.ui.EditStoreItemViewModel} viewModel
+ * @param {ViewContext} context
+ * @param {EditStoreItemViewModel} viewModel
  */
-yak.ui.EditStoreItemView = function EditStoreItemView(parent, context, viewModel) {
+function EditStoreItemView(parent, context, viewModel) {
     'use strict';
 
     /**
-     * @type {yak.ui.EditStoreItemView}
-     */
-    var self = this;
-
-    /**
-    * @type {null|CodeMirror}
+    * @type {CodeMirror}
     */
     var codeEditor = null;
 
     /**
-     * @type {yak.ui.Template}
+     * @type {!Template}
      */
     var template = context.template.load('editStoreItem');
 
@@ -36,14 +34,14 @@ yak.ui.EditStoreItemView = function EditStoreItemView(parent, context, viewModel
     function initializeView() {
         parent.html(template.build(viewModel));
 
-        parent.find('[data-command=save]').click(save);
-        parent.find('[data-command=delete]').click(handleDeleteCommand);
-        parent.find('[data-command=refresh]').click(function() { viewModel.refresh(); });
-        parent.find('[data-command=cancel]').click(handleCancelCommand);
-        parent.find('[data-command=prettify-json]').click(handlePrettifyJsonCommand);
+        parent.find('[data-element=save]').click(save);
+        parent.find('[data-element=delete]').click(handleDeleteCommand);
+        parent.find('[data-element=refresh]').click(function() { viewModel.refresh(); });
+        parent.find('[data-element=cancel]').click(handleCancelCommand);
+        parent.find('[data-element=prettify-json]').click(handlePrettifyJsonCommand);
 
-        parent.find('[data-command=maximize-editor]').click(maximizeCodeEditor);
-        parent.find('[data-command=minimize-editor]').click(minimizeCodeEditor);
+        parent.find('[data-element=maximize-editor]').click(maximizeCodeEditor);
+        parent.find('[data-element=minimize-editor]').click(minimizeCodeEditor);
 
         CodeMirror.commands.quicksave = save;
 
@@ -147,8 +145,7 @@ yak.ui.EditStoreItemView = function EditStoreItemView(parent, context, viewModel
     }
 
     function save() {
-        console.warn('SAVE');
-        var item = new yak.ui.StoreKeyValueItem(parent.find('[name=key]').val());
+        var item = new StoreKeyValueItem(parent.find('[name=key]').val());
         item.value = codeEditor.getValue();
 
         viewModel.updateValue(item);
@@ -166,8 +163,8 @@ yak.ui.EditStoreItemView = function EditStoreItemView(parent, context, viewModel
      * Maximizes the code editor and hides the config section.
      */
     function maximizeCodeEditor() {
-        parent.find('[data-command=maximize-editor]').hide();
-        parent.find('[data-command=minimize-editor]').show();
+        parent.find('[data-element=maximize-editor]').hide();
+        parent.find('[data-element=minimize-editor]').show();
 
         parent.find('[data-section=config]').hide();
     }
@@ -176,11 +173,13 @@ yak.ui.EditStoreItemView = function EditStoreItemView(parent, context, viewModel
      * Minimizes the code editor to available space.
      */
     function minimizeCodeEditor() {
-        parent.find('[data-command=maximize-editor]').show();
-        parent.find('[data-command=minimize-editor]').hide();
+        parent.find('[data-element=maximize-editor]').show();
+        parent.find('[data-element=minimize-editor]').hide();
 
         parent.find('[data-section=config]').show();
     }
 
     constructor();
-};
+}
+
+module.exports = EditStoreItemView;
