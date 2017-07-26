@@ -1,7 +1,7 @@
 /**
  * Code Editor context for improved code completion.
  */
-yak.ui.codeEditorContext = {
+codeEditorContext = {
     connection: {
         id: null,
         send: function(data) {}
@@ -22,3 +22,6 @@ yak.ui.codeEditorContext = {
         state: ''
     }
 };
+
+module.exports = codeEditorContext;
+

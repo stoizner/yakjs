@@ -4,7 +4,8 @@
         "node": true
     },
     "globals": {
-        "yak": true,
+        "cobu": true,
+        "Mustache": true,
         "_": true,
         "$": true
     },
@@ -14,15 +15,6 @@
         "no-unused-vars": 0,
         "no-trailing-spaces": 0,
         "no-extra-strict": 0,
-
-        "valid-jsdoc": [2, {
-            "requireReturn": false,
-            "requireParamDescription": false,
-            "prefer": {
-                "return": "returns"
-            }
-        }],
-
         "quotes": [2, "single"],
         "strict": 0,
         "func-names": 2,

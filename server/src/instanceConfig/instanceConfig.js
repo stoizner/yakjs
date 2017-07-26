@@ -1,10 +1,10 @@
-/**
- * Instance
- * @constructor
- */
-yak.InstanceConfig = function Instance() {
-    'use strict';
+'use strict';
 
+/**
+ * @constructor
+ * @struct
+ */
+function InstanceConfig() {
     /**
      * The unique instance ID.
      * @type {string}
@@ -40,4 +40,6 @@ yak.InstanceConfig = function Instance() {
      * @type {Array<string>}
      */
     this.plugins = [];
-};
+}
+
+module.exports = InstanceConfig;

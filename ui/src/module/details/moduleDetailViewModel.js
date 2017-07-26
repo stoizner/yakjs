@@ -1,12 +1,16 @@
+var ShowViewCommand = require('../../workspace/showViewCommand');
+var ModuleListView = require('../list/moduleListView');
+
 /**
  * @constructor
- * @param {!yak.ui.ViewModelContext} context
+ * @struct
+ * @param {!ViewModelContext} context
  */
-yak.ui.ModuleDetailViewModel = function ModuleDetailViewModel(context) {
+function ModuleDetailViewModel(context) {
     'use strict';
 
     /**
-     * @type {!yak.ui.ModuleDetailViewModel}
+     * @type {!ModuleDetailViewModel}
      */
     var self = this;
 
@@ -36,16 +40,13 @@ yak.ui.ModuleDetailViewModel = function ModuleDetailViewModel(context) {
         showModuleListView();
     };
 
-    /**
-     * Deletes the module.
-     */
     this.deleteModule = function deleteModule() {
-        var request = new yak.api.DeleteModuleRequest();
-        request.moduleName = self.moduleName;
-        context.adapter.sendRequest(request, showModuleListView);
+        context.adapter.deleteResource('/modules/' + self.moduleName).then(showModuleListView);
     };
 
     function showModuleListView() {
-        context.eventBus.post(new yak.ui.ShowViewCommand(yak.ui.ModuleListView));
+        context.eventBus.post(new ShowViewCommand(ModuleListView));
     }
-};
+}
+
+module.exports = ModuleDetailViewModel;

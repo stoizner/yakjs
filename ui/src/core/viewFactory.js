@@ -1,17 +1,11 @@
 /**
- * ViewContext
  * @constructor
- * @param {yak.ui.ViewContext} viewContext
- * @param {yak.ui.ViewModelContext} viewModelContext
+ * @struct
+ * @param {!ViewContext} viewContext
+ * @param {!ViewModelContext} viewModelContext
  */
-yak.ui.ViewFactory = function ViewFactory(viewContext, viewModelContext) {
+function ViewFactory(viewContext, viewModelContext) {
     'use strict';
-
-    /**
-     * Preserve instance.
-     * @type {yak.ui.ViewFactory}
-     */
-    var self = this;
 
     /**
      * Create a new View an place it to its parent container.
@@ -25,4 +19,6 @@ yak.ui.ViewFactory = function ViewFactory(viewContext, viewModelContext) {
         var viewModel = new ViewModelConstructor(viewModelContext);
         return new ViewConstructor(parent, viewContext, viewModel);
     };
-};
+}
+
+module.exports = ViewFactory;

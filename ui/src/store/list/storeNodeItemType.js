@@ -2,7 +2,9 @@
  * @constructor
  * @enum {string}
  */
-yak.ui.StoreNodeItemType = {
+StoreNodeItemType = {
     GROUP: 'group',
     ITEM: 'item'
 };
+
+module.exports = StoreNodeItemType;

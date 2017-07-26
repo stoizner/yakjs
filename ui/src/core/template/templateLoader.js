@@ -1,9 +1,11 @@
+var Template = require('./template');
+
 /**
- * TemplateLoader
  * @constructor
+ * @struct
  * @param {Mustache} mustache
  */
-yak.ui.TemplateLoader = function TemplateLoader(mustache) {
+function TemplateLoader(mustache) {
     'use strict';
 
     /**
@@ -21,6 +23,10 @@ yak.ui.TemplateLoader = function TemplateLoader(mustache) {
         var templateRaw = templateElement.html();
         Mustache.parse(templateRaw);
 
-        return new yak.ui.Template(templateRaw);
+        return new Template(templateRaw);
     };
-};
+}
+
+module.exports = TemplateLoader;
+
+

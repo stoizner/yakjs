@@ -1,13 +1,13 @@
 /**
- * AppBarViewModel
  * @constructor
- * @param {yak.ui.ViewModelContext} context
+ * @struct
+ * @param {!ViewModelContext} context
  */
-yak.ui.AppBarViewModel = function AppBarViewModel(context) {
+function AppBarViewModel(context) {
     'use strict';
 
     /**
-     * @type {yak.ui.AppBarViewModel}
+     * @type {AppBarViewModel}
      */
     var self = this;
 
@@ -21,9 +21,6 @@ yak.ui.AppBarViewModel = function AppBarViewModel(context) {
      */
     this.onVersionCheckResultChanged = _.noop;
 
-    /**
-     * Initializes the app view.
-     */
     function constructor() {
         context.versionChecker.checkLatestRelease().then(function(versionCheckResult) {
             self.versionCheckResult = versionCheckResult;
@@ -32,4 +29,6 @@ yak.ui.AppBarViewModel = function AppBarViewModel(context) {
     }
 
     constructor();
-};
+}
+
+module.exports = AppBarViewModel;

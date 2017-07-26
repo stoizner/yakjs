@@ -1,16 +1,19 @@
+'use strict';
+
 /**
  * @constructor
+ * @struct
  */
-yak.PluginContext = function PluginContext() {
-    'use strict';
-
+function PluginContext() {
     /**
-     * @type {yak.WebSocketInstance}
+     * @type {WebSocketInstance}
      */
     this.instance = null;
 
     /**
-     * @type {yak.require}
+     * @type {Logger}
      */
-    this.require = null;
-};
+    this.log = null;
+}
+
+module.exports = PluginContext;

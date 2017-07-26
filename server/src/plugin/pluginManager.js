@@ -1,97 +1,72 @@
+'use strict';
+
+const _ = require('underscore');
+const Logger = require('../infrastructure/logger');
+const pluginProvider = require('../plugin/pluginProvider');
+const fileExtension = require('../infrastructure/fileExtension');
+
 /**
  * @constructor
- * @param {!yak.PluginCodeProvider} [pluginCodeProvider]
- * @param {!yak.PluginParser} [pluginCodeParser]
+ * @struct
  */
-yak.PluginManager = function PluginManager(pluginCodeProvider, pluginCodeParser) {
+function PluginManager() {
     /**
-     * @type {yak.PluginManager}
+     * @type {!PluginManager}
      */
-    var self = this;
+    const self = this;
 
     /**
-     * @type {!Object<string, !yak.Plugin>}
+     * @type {!Object<string, !Plugin>}
      */
-    var plugins = {};
+    let plugins = {};
 
     /**
-     * @type {yak.Logger}
+     * @type {!Logger}
      */
-    var log = new yak.Logger(self.constructor.name);
-
-    /**
-     * @type {!yak.PluginCodeProvider}
-     */
-    var provider = pluginCodeProvider || new yak.PluginCodeProvider();
-
-    /**
-     * @type {!yak.PluginParser}
-     */
-    var parser = pluginCodeParser || new yak.PluginParser();
+    const log = new Logger(self.constructor.name);
 
     /**
      * Load plugins.
+     * @return {!Object<string, !Plugin>}
      */
     this.loadPlugins = function loadPlugins() {
-        var pluginCode = provider.getPluginCode();
-        parsePluginCode(pluginCode);
+        plugins = pluginProvider.loadPlugins();
 
         log.info('Plugins loaded.', {plugins: Object.keys(plugins)});
+        return plugins;
     };
 
     /**
-     * Read file content and parse it.
-     * @param {!Object<string, string>} pluginCode
+     * @param {string} pluginId
+     * @returns {!Plugin}
      */
-    function parsePluginCode(pluginCode) {
-        _.each(pluginCode, function parse(content, filename) {
-            try {
-                var plugin = parser.parse(filename, content);
-                self.addOrUpdatePlugin(plugin);
-            } catch(ex) {
-                log.warn('Can not load plugin.', {filename: filename, error: ex.message});
-            }
-        });
-    }
-
-    /**
-     * @param {string} id
-     * @returns {yak.Plugin} The plugin.
-     */
-    this.getPlugin = function getPlugin(id) {
-        return plugins[id];
+    this.getPlugin = function getPlugin(pluginId) {
+        return plugins[pluginId];
     };
 
     /**
-     * Get list of plugins.
-     * @returns {Array<yak.Plugin>} List of plugins.
+     * Gets list of plugins.
+     * @returns {!Array<!Plugin>} List of plugins.
      */
     this.getPlugins = function getPlugins() {
-        var result = [];
-
-        for(var key in plugins) {
-            if (plugins.hasOwnProperty(key)) {
-                result.push(plugins[key]);
-            }
-        }
-
-        return result;
+        return Object.keys(plugins).map(key => plugins[key]);
     };
 
     /**
-     * @param {yak.Plugin} plugin
+     * @param {string} pluginId
+     * @param {string} pluginCode
      */
-    this.addOrUpdatePlugin = function addOrUpdatePlugin(plugin) {
-        log.debug('Update plugin instance', { pluginId: plugin.id });
+    this.addOrUpdatePlugin = function addOrUpdatePlugin(pluginId, pluginCode) {
+        log.debug('Add or update plugin instance', {pluginId: pluginId});
 
-        if (!plugins[plugin.id]) {
-            plugins[plugin.id] = plugin;
+        pluginProvider.savePlugin(pluginId, pluginCode);
+
+        delete plugins[pluginId];
+        let plugin = pluginProvider.loadPluginById(pluginId);
+
+        if (pluginId) {
+            plugins[pluginId] = plugin;
         }
-
-        var existingPlugin = plugins[plugin.id];
-
-        existingPlugin = _.extend(existingPlugin, plugin);
-        existingPlugin.PluginConstructor = createPluginConstructor(existingPlugin.code);
     };
 
     /**
@@ -100,9 +75,9 @@ yak.PluginManager = function PluginManager(pluginCodeProvider, pluginCodeParser)
      * @param {string} newId
      */
     this.changePluginId = function changedPluginId(originalId, newId) {
-        log.info('Change Plugin ID.', {originalId: originalId, newId: newId});
+        log.info('Change Plugin ID.', {originalId, newId});
 
-        var existingPlugin = plugins[originalId];
+        let existingPlugin = plugins[originalId];
 
         if (!existingPlugin) {
             throw new Error('Cannot change plugin ID, no plugin found for originalId', {originalId: originalId});
@@ -110,99 +85,84 @@ yak.PluginManager = function PluginManager(pluginCodeProvider, pluginCodeParser)
 
         delete plugins[originalId];
 
-        provider.deletePlugin(originalId);
+        pluginProvider.deletePlugin(originalId);
 
         existingPlugin.id = newId;
         plugins[newId] = existingPlugin;
 
-        self.savePlugin(existingPlugin);
+        // self.savePlugin(existingPlugin);
     };
 
     /**
-     * @param {string} id The id of the plugin.
+     * @param {string} name
      */
-    this.removePlugin = function removePlugin(id) {
-        log.info('Remove plugin instance', { pluginId: id });
-        if (plugins.hasOwnProperty(id)) {
-            delete plugins[id];
+    this.removePlugin = function removePlugin(name) {
+        log.info('Remove plugin instance', {pluginId: name});
+        if (plugins.hasOwnProperty(name)) {
+            delete plugins[name];
         }
 
-        provider.deletePlugin(id);
+        pluginProvider.deletePlugin(name);
     };
 
     /**
      * Creates a plugin instance.
-     * @param {string} pluginId
-     * @param {!yak.PluginContext} pluginContext
+     * @param {string} pluginName
+     * @param {!PluginContext} pluginContext
      * @returns {*} A working plugin instance.
      */
-    this.createPluginInstance = function createPluginInstance(pluginId, pluginContext) {
-        var pluginLog = new yak.Logger(pluginId + '.plugin');
+    this.createPluginWorker = function createPluginWorker(pluginName, pluginContext) {
+        let pluginLog = new Logger(pluginName + '.plugin');
 
-        var pluginInstance = null;
-        var plugin = plugins[pluginId];
+        let pluginWorker = null;
+        let plugin = plugins[pluginName];
 
         if (plugin) {
             try {
-                if (typeof plugin.PluginConstructor === 'function') {
-                    var requireContext = _.partial(pluginRequire, {log: pluginLog});
-
-                    pluginContext.require = requireContext;
-
-                    pluginInstance = new plugin.PluginConstructor(requireContext, pluginContext);
-                    pluginInstance.pluginId = pluginId;
+                if (plugin.module) {
+                    if (typeof plugin.module.createWorker === 'function') {
+                        pluginContext.log = pluginLog;
+                        pluginWorker = plugin.module.createWorker(pluginContext);
+                        pluginWorker.name = pluginName;
+                    } else {
+                        pluginLog.error('No createWorker function available, can not create plugin worker.');
+                    }
                 } else {
-                    pluginLog.error('No constructor function available, can not create plugin instance.');
+                    pluginLog.error('Bad YAK. A yak lost a plugin module.');
                 }
-            } catch(ex) {
-                pluginInstance = null;
-                pluginLog.error('Can not create plugin instance. Unexpected error.', {error: ex.message });
+            } catch (ex) {
+                pluginWorker = null;
+                pluginLog.error('Can not create plugin worker. Unexpected error.', {error: ex.message});
             }
         } else {
-            log.error('Can not create plugin instance. Unknown plugin.', {pluginId: pluginId});
+            log.error('Can not create plugin worker. Unknown plugin.', {pluginName});
         }
 
-        return pluginInstance;
+        return pluginWorker;
     };
 
     /**
-     * Returns the plugin require context.
-     * @param {!Object<string, Function|Object>} pluginModules
-     * @param {string} moduleId
-     * @returns {*} A require function with a plugin context.
+     * @param {!FileContainer} fileContainer
      */
-    function pluginRequire(pluginModules, moduleId) {
-        var module = _.noop;
+    this.upload = function upload(fileContainer) {
+        return new Promise((resolve, reject) => {
+            try {
+                let pluginId = fileContainer.filename.replace(fileExtension.PLUGIN_EXTENSION, '');
 
-        if (_.has(pluginModules, moduleId)) {
-            module = pluginModules[moduleId];
-        } else {
-            module = yak.require(moduleId);
-        }
+                self.addOrUpdatePlugin(pluginId, fileContainer.content);
+                let plugin = pluginProvider.loadPluginById(pluginId);
 
-        return module;
-    }
+                if (pluginId) {
+                    plugins[pluginId] = plugin;
+                }
 
-    /**
-     * Creates the constructor function to create a plugin instance.
-     * @param {string} code
-     * @returns {Function} The execution function of the plugin.
-     */
-    function createPluginConstructor(code) {
-        var worker = null;
-
-        try {
-            // Function is a form of eval, but we are using it here for executing custom plugin code.
-
-            /*eslint-disable no-new-func */
-            worker = new Function('return ' + code)();
-            /*eslint-enable no-new-func */
-        } catch (ex) {
-            log.error('No valid plugin code.', { name: ex.name, message:ex.message, line: ex.line});
-        }
-
-        return worker;
-    }
+                resolve();
+            } catch (error) {
+                log.error(error);
+                reject();
+            }
+        });
+    };
 
     /**
      * Update config and save it.
@@ -215,46 +175,16 @@ yak.PluginManager = function PluginManager(pluginCodeProvider, pluginCodeParser)
     };
 
     /**
-     * Save a plugin to the file system.
-     * @param {!yak.Plugin} plugin
+     * Saves a plugin to the file system.
+     * @param {!Plugin} plugin
      */
     this.savePlugin = function savePlugin(plugin) {
         try {
-            var pluginString = '';
-
-            var tags = [];
-
-            tags.push({title: 'name', description: plugin.id});
-            tags.push({title: 'description', description: plugin.description});
-            tags.push({title: 'version', description: plugin.version});
-            tags.push({title: 'type', description: plugin.type});
-
-            if (plugin.jsDoc && plugin.jsDoc.tags) {
-                tags = tags.concat(plugin.jsDoc.tags);
-            }
-
-            tags = _.uniq(tags, function useOnlyUniqueTitles(tag) { return tag.title; });
-
-            pluginString += '/**';
-
-            _.each(tags, function toJsDocLine(tag) {
-                pluginString += ['\n * @', tag.title, ' '].join('');
-
-                if (tag.description) {
-                    pluginString += tag.description.replace('\r\n', '\n').replace('\n', '\n * ');
-                } else if (tag.name) {
-                    pluginString += tag.name.replace('\r\n', '\n').replace('\n', '\n * ');
-                }
-            });
-
-            pluginString += '\n */\n';
-            pluginString += plugin.code;
-            pluginString += '\n\n';
-
-            provider.savePlugin(plugin.id, pluginString);
-
-        } catch(ex) {
-            log.error('Could not save plugin.', {pluginName: plugin.id, error: ex.message});
+            pluginProvider.savePlugin(plugin.id, plugin.code);
+        } catch (ex) {
+            log.error('Could not save plugin.', {pluginIde: plugin.id, error: ex.message});
         }
     };
-};
+}
+
+module.exports = PluginManager;

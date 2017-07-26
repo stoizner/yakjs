@@ -3,15 +3,18 @@
         <div class="tool-bar-block">
             <div class="tool-bar-block-line">
                 <div class="center-panel">
-                    <div class="text-button" data-command="save">Save</div>
+                    <div class="text-button" data-element="save">Save</div>
                     {{^isNewPlugin}}
-                    <div class="text-button" data-command="delete" >Delete</div>
+                    <div class="text-button" data-element="delete" >Delete</div>
                     {{/isNewPlugin}}
-                    <div class="text-button" data-command="cancel">Cancel</div>
+                    <div class="text-button" data-element="cancel">Cancel</div>
 
                     <div class="tool-box">
-                        <div class="icon-button icon-minimize" data-command="minimize-editor" title="Minimize the code editor."></div>
-                        <div class="icon-button icon-maximize" data-command="maximize-editor" title="Maximize the code editor."></div>
+                        <div class="icon-button icon-minimize" data-element="minimize-editor" title="Minimize the code editor."></div>
+                        <div class="icon-button icon-maximize" data-element="maximize-editor" title="Maximize the code editor."></div>
+                        {{^isNewPlugin}}
+                        <a href="/v1/logs/plugins/{{pluginItem.id}}" target="_blank" class="icon-button icon-bug-white" title="Opens the plugin log file."></a>
+                        {{/isNewPlugin}}
                     </div>
                 </div>
             </div>
@@ -23,20 +26,14 @@
                 <div class="content-panel">
                     <div class="header-panel">
                         <header class="header-panel-header" data-section="config">
-                            <div class="frame-block" data-element="error-message">
-                                <div class="warning-text"></div>
-                            </div>
+                            <div class="frame-block" data-element="errorMessageBox"></div>
 
                             <div class="column-block">
                                 <div class="column-block-column" style="width: 50%">
                                     <div class="frame-block">
                                         <label class="input-label">Name</label>
-                                        <input type="text" class="input-text" name="id" value="{{pluginItem.id}}"/>
                                         <div class="light-text">Use a unique name for your plugin.</div>
-
-                                        <label class="input-label">Description</label>
-                                        <input type="text" class="input-text" name="description" value="{{pluginItem.description}}" />
-                                        <div class="light-text">Optional: Any text that helps to understand what this instance does.</div>
+                                        <input type="text" class="input-text" name="id" value="{{pluginItem.id}}"/>
                                     </div>
                                 </div>
 
@@ -57,7 +54,6 @@
                                 <div class="line-block">
                                     <span data-editor-error="none"></span>
                                     <span class="light-text"><span data-bind="editorCursorLine">0</span>:<span data-bind="editorCursorColumn">0</span>
-                                    <span class="light-text">Press CTRL + SPACE for code completion.</span>
                                 </div>
                             </div>
                         </footer>

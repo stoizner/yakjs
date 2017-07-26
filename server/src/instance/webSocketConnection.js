@@ -1,24 +1,29 @@
+'use strict';
+
+const createGuid = require('../../common/guid');
+const Logger = require('../infrastructure/logger');
+
 /**
- * WebSocketConnection
  * @constructor
+ * @struct
  * @param {WebSocket} [socket]
  */
-yak.WebSocketConnection = function WebSocketConnection(socket) {
+function WebSocketConnection(socket) {
     /**
-     * @type {yak.WebSocketConnection}
+     * @type {!WebSocketConnection}
      */
-    var self = this;
+    const self = this;
 
     /**
-     * @type {yak.Logger}
+     * @type {!Logger}
      */
-    var log = new yak.Logger(self.constructor.name);
+    const log = new Logger(self.constructor.name);
 
     /**
      * Unique Id of the web socket connection.
      * @type {string}
      */
-    this.id = yak.guid();
+    this.id = createGuid();
 
     /**
      * @type {WebSocket|null}
@@ -32,8 +37,8 @@ yak.WebSocketConnection = function WebSocketConnection(socket) {
     this.send = function send(data) {
         log.debug('Sending message', {type: data.type, data: data});
 
-        var isObject = typeof data === 'object';
-        var message = isObject ? JSON.stringify(data) : data;
+        let isObject = typeof data === 'object';
+        let message = isObject ? JSON.stringify(data) : data;
 
         sendMessage(message);
     };
@@ -53,4 +58,6 @@ yak.WebSocketConnection = function WebSocketConnection(socket) {
             log.info('Could not send message, the WebSocket connection is no longer open.');
         }
     }
-};
+}
+
+module.exports = WebSocketConnection;

@@ -1,20 +1,23 @@
+var httpAdapter = require('./httpAdapter/httpAdapter');
+
 /**
  * @constructor
+ * @struct
  */
-yak.ui.VersionChecker = function VersionChecker() {
+function VersionChecker() {
     'use strict';
 
     var LOCALSTORE_KEY = 'versionCheckResult';
 
     /**
-     * @returns {Promise}
+     * @returns {!Promise}
      */
     this.checkLatestRelease = function checkLatestRelease() {
         return getLatestRelease();
     };
 
     /**
-     * @returns {Promise}
+     * @returns {!Promise}
      */
     function getLatestRelease() {
         var promise;
@@ -25,13 +28,23 @@ yak.ui.VersionChecker = function VersionChecker() {
             promise = Promise.resolve(cachedVersionCheckResult);
         } else {
             console.log('Request releases via github api');
-            promise = sendGitHubApiRequest('/repos/cschuller/yakjs/releases')
-                .then(findLatestRelease)
+            promise = Promise.all([
+                    sendGitHubApiRequest('/repos/cschuller/yakjs/releases').then(findLatestRelease).then(extractLatestVersion),
+                    getCurrentVersion()
+                ])
                 .then(checkIfLatestReleaseIsUsed)
                 .then(persistInLocalstorage);
         }
 
         return promise;
+    }
+
+    function extractLatestVersion(latestRelease) {
+        return latestRelease['tag_name'].replace('v', '');
+    }
+
+    function getCurrentVersion() {
+        return httpAdapter.get('/version').then(response => response.version);
     }
 
     function getCachedVersionCheckResult() {
@@ -61,7 +74,7 @@ yak.ui.VersionChecker = function VersionChecker() {
 
     /**
      * @param {string} httpResponse
-     * @returns {T?}
+     * @returns {?T}
      */
     function findLatestRelease(httpResponse) {
         var releases = JSON.parse(httpResponse);
@@ -74,20 +87,19 @@ yak.ui.VersionChecker = function VersionChecker() {
     }
 
     /**
-     * @param {?} latestRelease
-     * @returns {{lastCheckedAt: string, latestReleaseVersion: (XML|string|void), currentReleaseVersion: *, isLatestReleaseInUse: boolean, latestRelease: *}}
+     * @param {!Array} values With latest and current Version.
+     * @returns{{lastCheckedAt: string, latestVersion: *, currentVersion: *, isLatestVersionInUse: boolean}}
      */
-    function checkIfLatestReleaseIsUsed(latestRelease) {
-        var latestReleaseVersion = latestRelease['tag_name'].replace('v', '');
-        var currentReleaseVersion = yak.ui.appInfo.version;
-        var isLatestReleaseInUse =  latestReleaseVersion === currentReleaseVersion;
+    function checkIfLatestReleaseIsUsed(values) {
+        var latestVersion = values.shift();
+        var currentVersion = values.shift();
+        var isLatestVersionInUse =  latestVersion === currentVersion;
 
         return {
             lastCheckedAt: (new Date()).toISOString(),
-            latestReleaseVersion: latestReleaseVersion,
-            currentReleaseVersion: currentReleaseVersion,
-            isLatestReleaseInUse: isLatestReleaseInUse,
-            latestRelease: latestRelease
+            latestVersion: latestVersion,
+            currentVersion: currentVersion,
+            isLatestVersionInUse: isLatestVersionInUse
         }
     }
 
@@ -115,4 +127,6 @@ yak.ui.VersionChecker = function VersionChecker() {
             });
         });
     }
-};
+}
+
+module.exports = VersionChecker;

@@ -3,7 +3,7 @@
  * @param {{id:string}} a The first object
  * @param{{id:string}} b The second object
  */
-yak.ui.idCompare = function idCompare(a, b) {
+function idCompare(a, b) {
     'use strict';
 
     /**
@@ -18,4 +18,6 @@ yak.ui.idCompare = function idCompare(a, b) {
     }
 
     return result;
-};
+}
+
+module.exports = idCompare;

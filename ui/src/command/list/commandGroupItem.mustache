@@ -1,0 +1,10 @@
+<div class="column-block">
+    {{#groups}}
+        {{#icon}}
+            <div class="column-block-fix-column text-button icon-button {{icon}}-white" data-id="{{groupName}}"  title="Show presets of group {{groupName}}"></div>
+        {{/icon}}
+        {{^icon}}
+            <div class="column-block-fix-column text-button" data-id="{{groupName}}" title="Show presets of group {{groupName}}">{{groupName}}</div>
+        {{/icon}}
+    {{/groups}}
+</div>

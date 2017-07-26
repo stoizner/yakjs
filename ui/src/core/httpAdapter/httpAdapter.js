@@ -1,108 +1,101 @@
 /**
- * HttpAdapter
  * @constructor
- * @param {cobu.EventBus} eventBus
+ * @struct
  */
-yak.ui.HttpAdapter = function HttpAdapter(eventBus) {
+function HttpAdapter() {
     'use strict';
 
     /**
-     * @type {yak.ui.HttpAdapter}
+     * @param {string} url
+     * @returns {!Promise}
      */
-    var self = this;
-
-    /**
-     * Response to request callback map.
-     * @type {Object<string, function(yak.api.Response)>}
-     */
-    var requestResponseCallbackMap = {};
-
-    /**
-     * Constructor
-     */
-    function constructor() {
-    }
-
-    /**
-     * Send a request to the YAKjs server
-     * @param {yak.api.Request} request
-     * @param {Function} responseCallback Callback function for handling response message.
-     */
-    this.sendRequest = function sendRequest(request, responseCallback) {
-        console.log('Request sending.', {request: request});
-
-        if (!request.id) {
-            throw new Error('Can not send a request without an request id.');
-        }
-        requestResponseCallbackMap[request.id] = responseCallback;
-
-        send(request);
+    this.get = function get(url) {
+        console.log('GET ' + url);
+        return sendHttpRequest('GET', url).then(logResponse).then(maybeJsonParse);
     };
 
     /**
-     * @param {string|object} message
+     * @param {string} url
+     * @returns {!Promise}
      */
-    function send(message) {
-        if (typeof message === 'object') {
+    this.deleteResource = function deleteResource(url) {
+        console.log('DELETE ' + url);
+        return sendHttpRequest('DELETE', url).then(logResponse).then(maybeJsonParse);
+    };
+
+    /**
+     * @param {string} url
+     * @param {!Object|string} [request]
+     * @returns {!Promise}
+     */
+    this.post = function post(url, request) {
+        console.log('POST ' + url, {request: request});
+        return sendHttpRequest('POST', url, request).then(logResponse).then(maybeJsonParse);
+    };
+
+    /**
+     * @param {string} url
+     * @param {!Object|string} request
+     * @returns {!Promise}
+     */
+    this.put = function post(url, request) {
+        console.log('PUT ' + url, {request: request});
+        return sendHttpRequest('PUT', url, request).then(logResponse).then(maybeJsonParse);
+    };
+
+    /**
+     * @param {T} response
+     * @template T
+     * @returns T
+     */
+    function logResponse(response) {
+        console.log('Response received', {response: response});
+
+        return response
+    }
+    /**
+     * @param {string} url
+     * @param {string} type
+     * @param {Object|string} [data]
+     * @returns {!Promise}
+     */
+    function sendHttpRequest(type, url, data) {
+        return new Promise(function(resolve, reject) {
             $.ajax({
-                url: '/api/' + message.type,
-                type: 'POST',
-                data: JSON.stringify(message),
+                url: '/v1' + url,
+                type: type,
+                data: _.isObject(data) ? JSON.stringify(data) : _.isString(data) ? data : null,
                 contentType: 'application/json',
                 dataType: 'text',
-                success: handleMessage
+                success: resolve,
+                error: function(request, message, error) {
+                    var responseError = {
+                        message: message,
+                        text: request.responseText,
+                        error: error
+                    };
+                    reject(responseError);
+                }
             });
-        }
+        });
     }
 
-    /**
-     * @param {?} data
-     */
-    function handleMessage(data) {
-        var msg = null;
+    function maybeJsonParse(response) {
+        var data = null;
 
-        try {
-            msg = JSON.parse(data);
-        } catch(ex) {
-            console.error(ex);
-        }
-
-        if (msg) {
-            if (isResponse(msg)) {
-                var callback = requestResponseCallbackMap[msg.requestId];
-                delete requestResponseCallbackMap[msg.requestId];
-
-                console.log('Response received.', {response: msg});
-                if (callback) {
-                    callback(msg);
-                }
-            } else {
-                eventBus.post(msg);
+        if (response) {
+            try {
+                data = JSON.parse(response);
+            } catch(error) {
+                console.warn('Could not parse received JSON data', {response: response, error: error});
             }
         }
+
+        return data;
     }
+}
 
-    /**
-     * Check if a received websocket message is a response.
-     * @param {Object} message
-     * @returns {boolean} Whether received message is a response.
-     */
-    function isResponse(message) {
-        return message.type && message.type.toLowerCase().indexOf('response') >= 0;
-    }
-
-    /**
-     * @param {?} event
-     */
-    function handleError(event) {
-        console.warn('yak.ui.HttpAdapter.handleError', {event: event});
-
-        if (self.onerror) {
-            self.onerror();
-        }
-
-        eventBus.post(new yak.ui.HttpErrorEvent());
-    }
-
-    constructor();
-};
+/**
+ * @type {!HttpAdapter}
+ */
+module.exports = new HttpAdapter();

@@ -1,14 +1,17 @@
+var httpAdapter = require('./httpAdapter/httpAdapter');
+var VersionChecker = require('./versionChecker');
+
 /**
- * ViewModelContext
  * @constructor
+ * @struct
  */
-yak.ui.ViewModelContext = function ViewModelContext(eventBus) {
+function ViewModelContext(eventBus) {
     'use strict';
 
     /**
-     * @type {yak.ui.HttpAdapter}
+     * @type {!HttpAdapter}
      */
-    this.adapter = new yak.ui.HttpAdapter(eventBus);
+    this.adapter = httpAdapter;
 
     /**
      * @type {!cobu.EventBus}
@@ -16,7 +19,9 @@ yak.ui.ViewModelContext = function ViewModelContext(eventBus) {
     this.eventBus = eventBus;
 
     /**
-     * @type {!yak.ui.VersionChecker}
+     * @type {!VersionChecker}
      */
-    this.versionChecker = new yak.ui.VersionChecker();
-};
+    this.versionChecker = new VersionChecker();
+}
+
+module.exports = ViewModelContext;

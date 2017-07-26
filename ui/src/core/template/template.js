@@ -1,8 +1,10 @@
+'use strict';
+
 /**
- * TemplateEngine
  * @constructor
+ * @struct
  */
-yak.ui.Template = function Template(template) {
+function Template(template) {
     'use strict';
 
     /**
@@ -12,4 +14,6 @@ yak.ui.Template = function Template(template) {
     this.build = function build(view) {
         return Mustache.render(template, view);
     };
-};
+}
+
+module.exports = Template;

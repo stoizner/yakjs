@@ -1,17 +1,24 @@
+var InstanceConfigItem = require('./instanceConfigItem');
+var SelectPluginItem = require('./selectPluginItem');
+var ShowViewCommand = require('../../workspace/showViewCommand');
+var InstanceListView = require('../list/instanceListView');
+
 /**
- * InstanceViewModel
  * @constructor
- * @param {yak.ui.ViewModelContext} context
+ * @struct
+ * @param {!ViewModelContext} context
  */
-yak.ui.InstanceViewModel = function InstanceViewModel(context) {
+function InstanceViewModel(context) {
     'use strict';
 
-    /** @type {yak.ui.InstanceViewModel} */
+    /**
+     * @type {!InstanceViewModel}
+     */
     var self = this;
 
     /**
-    * @type {yak.ui.InstanceConfigItem}
-    */
+     * @type {InstanceConfigItem}
+     */
     this.instanceConfigItem = null;
 
     /**
@@ -20,19 +27,17 @@ yak.ui.InstanceViewModel = function InstanceViewModel(context) {
     this.onInstanceConfigItemChanged = _.noop;
 
     /**
-     * @type {Array<yak.ui.SelectPluginItem>}
+     * @type {!Array<!SelectPluginItem>}
      */
     this.allPluginItems = [];
 
     /**
-     *
-     * @type {Array}
+     * @type {!Array}
      */
     this.selectedPluginItems = [];
 
     /**
-     *
-     * @type {Array}
+     * @type {!Array}
      */
     this.notSelectedPluginItems = [];
 
@@ -48,20 +53,14 @@ yak.ui.InstanceViewModel = function InstanceViewModel(context) {
     this.onErrorResponse = _.noop;
 
     /**
-     * Constructor
-     */
-    function constructor() {
-    }
-
-    /**
      * Activate view
-     * @param {yak.ui.InstanceInfoItem} data
+     * @param {InstanceInfoItem} data
      */
     this.activate = function activate(data) {
         console.log('InstanceViewModel.activate', {data: data});
 
         if (data) {
-            self.instanceConfigItem = new yak.ui.InstanceConfigItem();
+            self.instanceConfigItem = new InstanceConfigItem();
             self.instanceConfigItem.id = data.id;
             self.instanceConfigItem.description = data.description;
             self.instanceConfigItem.name = data.name;
@@ -73,21 +72,22 @@ yak.ui.InstanceViewModel = function InstanceViewModel(context) {
 
         self.onInstanceConfigItemChanged();
 
-        context.adapter.sendRequest(new yak.api.GetPluginsRequest(), handleGetPluginsResponse);
+        context.adapter.get('/plugins').then(handleGetPluginsResponse);
     };
 
     /**
      * Delete instance.
      */
     this.deleteInstance = function deleteInstance() {
-        var request = new yak.api.DeleteInstanceConfigRequest();
-        request.instanceId = self.instanceConfigItem.id;
-        context.adapter.sendRequest(request, showPanelInstanceList);
+        context.adapter
+            .deleteResource('/instances/' + self.instanceConfigItem.id + '/config')
+            .then(showList)
+            .catch(showErrorResponse);
     };
 
     /**
      *
-     * @param {yak.api.GetPluginsResponse} response
+     * @param {GetPluginsResponse} response
      */
     function handleGetPluginsResponse(response) {
         console.log('InstanceViewModel.handleGetPluginsResponse', {response: response});
@@ -95,7 +95,7 @@ yak.ui.InstanceViewModel = function InstanceViewModel(context) {
         self.allPluginItems = [];
 
         _.each(response.plugins, function toItem(pluginsInfo) {
-            var item = new yak.ui.SelectPluginItem();
+            var item = new SelectPluginItem();
             item.name = pluginsInfo.id;
             item.description = pluginsInfo.description;
 
@@ -118,7 +118,7 @@ yak.ui.InstanceViewModel = function InstanceViewModel(context) {
 
         if (self.selectedPluginItems.length === 0) {
             // Add special placeholder item
-            var placeholder = new yak.ui.SelectPluginItem();
+            var placeholder = new SelectPluginItem();
             placeholder.name = 'No plugin selected...';
             placeholder.isActive = false;
             self.selectedPluginItems.push(placeholder);
@@ -129,23 +129,13 @@ yak.ui.InstanceViewModel = function InstanceViewModel(context) {
 
     /**
      * Create or update a new websocket instance.
-     * @param {!yak.ui.InstanceConfigItem} instanceConfigItem
+     * @param {!InstanceConfigItem} instanceConfigItem
      */
     this.createOrUpdate = function createOrUpdate(instanceConfigItem) {
         console.log('InstanceViewModel.createOrUpdate', {instanceConfigItem: instanceConfigItem});
 
-        var request = null;
-
-        var instanceConfig = new yak.api.InstanceConfig();
-
-        if (self.instanceConfigItem === null) {
-            request = new yak.api.CreateInstanceConfigRequest();
-            _.extend(instanceConfig, instanceConfigItem);
-        } else {
-            request = new yak.api.UpdateInstanceConfigRequest();
-            _.extend(instanceConfig, instanceConfigItem);
-            request.instanceId = self.instanceConfigItem.id;
-        }
+        var instanceConfig = new InstanceConfigItem();
+        _.extend(instanceConfig, instanceConfigItem);
 
         instanceConfig.plugins = [];
 
@@ -153,9 +143,21 @@ yak.ui.InstanceViewModel = function InstanceViewModel(context) {
             instanceConfig.plugins.push(selectPluginItem.name);
         });
 
-        request.instance = instanceConfig;
+        var request = {
+            instanceConfig: instanceConfig
+        };
 
-        context.adapter.sendRequest(request, handleInstanceResponse);
+        if (self.instanceConfigItem === null) {
+            context.adapter
+                .post('/instances/config', request)
+                .then(showList)
+                .catch(showErrorResponse);
+        } else {
+            context.adapter
+                .put('/instances/' + self.instanceConfigItem.id + '/config', request)
+                .then(showList)
+                .catch(showErrorResponse);
+        }
     };
 
     /**
@@ -191,7 +193,7 @@ yak.ui.InstanceViewModel = function InstanceViewModel(context) {
      * Show the panel instance list.
      */
     function showPanelInstanceList() {
-        context.eventBus.post(new yak.ui.ShowViewCommand(yak.ui.InstanceListView));
+        context.eventBus.post(new ShowViewCommand(InstanceListView));
     }
 
     /**
@@ -206,18 +208,13 @@ yak.ui.InstanceViewModel = function InstanceViewModel(context) {
         updateSelectedPluginItems();
     };
 
-    /**
-     * @param {yak.api.CreateInstanceConfigResponse} response
-     */
-    function handleInstanceResponse(response) {
-        console.log('InstanceViewModel.handleInstanceResponse', {response: response});
-
-        if (response.success) {
-            context.eventBus.post(new yak.ui.ShowViewCommand(yak.ui.InstanceListView));
-        } else {
-            self.onErrorResponse(response.message);
-        }
+    function showList() {
+        context.eventBus.post(new ShowViewCommand(InstanceListView));
     }
 
-    constructor();
-};
+    function showErrorResponse(response) {
+        self.onErrorResponse(response.message);
+    }
+}
+
+module.exports = InstanceViewModel;

@@ -1,25 +1,22 @@
+var nameCompare = require('../../core/nameComparer');
+
 /**
- * PluginListView
  * @constructor
+ * @struct
  * @param {jQuery} parent
- * @param {yak.ui.ViewContext} context
- * @param {yak.ui.PluginListViewModel} viewModel
+ * @param {ViewContext} context
+ * @param {PluginListViewModel} viewModel
  */
-yak.ui.PluginListView = function PluginListView(parent, context, viewModel) {
+function PluginListView(parent, context, viewModel) {
     'use strict';
 
     /**
-     * @type {yak.ui.PluginListView}
+     * @type {!Template}
      */
-    var self = this;
+    var template = context.template.load('pluginList');
 
     /**
-     * @type {yak.ui.Template}
-     */
-    var template = context.template.load('panelPlugins');
-
-    /**
-     * @type {yak.ui.Template}
+     * @type {!Template}
      */
     var itemTemplate = context.template.load('pluginItem');
 
@@ -32,12 +29,12 @@ yak.ui.PluginListView = function PluginListView(parent, context, viewModel) {
      * Constructor
      */
     function constructor() {
-        console.log('yak.ui.PluginListView.constructor');
+        console.log('PluginListView.constructor');
         parent.html(template.build());
 
 
-        parent.find('[data-command=create]').click(viewModel.activatePluginEditPanel);
-        parent.find('[data-command=refresh]').click(viewModel.reloadAndRefreshList);
+        parent.find('[data-element=create]').click(viewModel.activatePluginEditPanel);
+        parent.find('[data-element=refresh]').click(viewModel.reload);
         parent.find('.plugin-items').click(handleListClick);
 
         viewModel.onItemsChanged = function onItemsChanged() { createList(); };
@@ -64,7 +61,7 @@ yak.ui.PluginListView = function PluginListView(parent, context, viewModel) {
         var html = '';
         var itemContainer = parent.find('.plugin-items');
 
-        viewModel.items.sort(yak.ui.nameCompare);
+        viewModel.items.sort(nameCompare);
 
         _.each(viewModel.items, function createListItem(item) {
             html += itemTemplate.build(item);
@@ -74,4 +71,6 @@ yak.ui.PluginListView = function PluginListView(parent, context, viewModel) {
     }
 
     constructor();
-};
+}
+
+module.exports = PluginListView;

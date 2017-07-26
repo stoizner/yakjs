@@ -2,12 +2,13 @@
  * Tab Panel behaviour
  * @param {jQuery} parent
  * @constructor
+ * @struct
  */
-yak.ui.Navigation = function Navigation(parent) {
+function Navigation(parent) {
     'use strict';
 
     /**
-     * @type {yak.ui.Navigation}
+     * @type {Navigation}
      */
     var self = this;
 
@@ -68,4 +69,6 @@ yak.ui.Navigation = function Navigation(parent) {
     }
 
     constructor();
-};
+}
+
+module.exports = Navigation;

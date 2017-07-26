@@ -1,48 +1,52 @@
 /* global CodeMirror:false */
 
+var codeEditorAutoComplete = require('./codeEditorAutoComplete');
+var codeEditorAutoDocument = require('./codeEditorAutoDocument');
+var PluginItem = require('../pluginItem');
+var MessageBox = require('../../widgets/messageBox');
+
 /**
- * PluginListView
  * @constructor
- * @param {jQuery} parent
- * @param {yak.ui.ViewContext} context
- * @param {yak.ui.PluginViewModel} viewModel
+ * @struct
+ * @param {!jQuery} parent
+ * @param {!ViewContext} context
+ * @param {!PluginViewModel} viewModel
  */
-yak.ui.PluginView = function PluginView(parent, context, viewModel) {
+function PluginView(parent, context, viewModel) {
     'use strict';
 
     /**
-     * @type {yak.ui.PluginView}
+     * @type {!PluginView}
      */
     var self = this;
 
     /**
-    * @type {null|CodeMirror}
+    * @type {CodeMirror}
     */
     var codeEditor = null;
 
     /**
-     * @type {yak.ui.Template}
+     * @type {!Template}
      */
     var template = context.template.load('pluginEdit');
 
     /**
-     * Constructor
+     * @type {MessageBox}
      */
+    var messageBox;
+
     function constructor() {
-        console.log('yak.ui.InstanceView.constructor', self);
+        console.log('InstanceView.constructor', self);
 
         initializeView();
 
         viewModel.onPluginItemChanged = handlePluginItemChanged;
-        viewModel.onErrorResponse = handleErrorResponse;
+        viewModel.onErrorResponse = messageBox.showWarning;
     }
 
-    /**
-     * Initializes the code editor.
-     */
     function initializeCodeEditor() {
-        CodeMirror.commands.autocomplete = yak.ui.codeEditorAutoComplete;
-        CodeMirror.commands.autodocument = yak.ui.codeEditorAutoDocument;
+        CodeMirror.commands.autocomplete = codeEditorAutoComplete;
+        CodeMirror.commands.autodocument = codeEditorAutoDocument;
         CodeMirror.commands.quicksave = save;
 
         codeEditor = new CodeMirror(parent.find('[data-element=codeEditor]')[0], {
@@ -53,24 +57,22 @@ yak.ui.PluginView = function PluginView(parent, context, viewModel) {
             extraKeys: { 'Ctrl-Space': 'autocomplete', 'Ctrl-D': 'autodocument', 'Ctrl-S': 'quicksave' }
         });
 
-        codeEditor.on('change', handleCodeEditorChange);
         codeEditor.on('cursorActivity', handleCodeCursorActivity);
 
         minimizeCodeEditor();
     }
 
-    /**
-     * Updates the view
-     */
     function initializeView() {
         parent.html(template.build(viewModel));
 
-        parent.find('[data-command=save]').click(save);
-        parent.find('[data-command=delete]').click(handleDeleteCommand);
-        parent.find('[data-command=cancel]').click(handleCancelCommand);
+        parent.find('[data-element=save]').click(save);
+        parent.find('[data-element=delete]').click(handleDeleteCommand);
+        parent.find('[data-element=cancel]').click(handleCancelCommand);
 
-        parent.find('[data-command=maximize-editor]').click(maximizeCodeEditor);
-        parent.find('[data-command=minimize-editor]').click(minimizeCodeEditor);
+        parent.find('[data-element=maximize-editor]').click(maximizeCodeEditor);
+        parent.find('[data-element=minimize-editor]').click(minimizeCodeEditor);
+
+        messageBox = new MessageBox(parent.find('[data-element=errorMessageBox]'));
 
         initializeCodeEditor();
 
@@ -83,8 +85,8 @@ yak.ui.PluginView = function PluginView(parent, context, viewModel) {
      * Maximizes the code editor and hides the config section.
      */
     function maximizeCodeEditor() {
-        parent.find('[data-command=maximize-editor]').hide();
-        parent.find('[data-command=minimize-editor]').show();
+        parent.find('[data-element=maximize-editor]').hide();
+        parent.find('[data-element=minimize-editor]').show();
 
         parent.find('[data-section=config]').hide();
     }
@@ -93,19 +95,10 @@ yak.ui.PluginView = function PluginView(parent, context, viewModel) {
      * Minimizes the code editor to available space.
      */
     function minimizeCodeEditor() {
-        parent.find('[data-command=maximize-editor]').show();
-        parent.find('[data-command=minimize-editor]').hide();
+        parent.find('[data-element=maximize-editor]').show();
+        parent.find('[data-element=minimize-editor]').hide();
 
         parent.find('[data-section=config]').show();
-    }
-
-    /**
-     * @param {string} message
-     */
-    function handleErrorResponse(message) {
-        var errorMessageElement = parent.find('[data-element=error-message]');
-        errorMessageElement.show();
-        errorMessageElement.find('.warning-text').html(message);
     }
 
     /**
@@ -116,28 +109,6 @@ yak.ui.PluginView = function PluginView(parent, context, viewModel) {
         var cursorPosition = instance.getCursor();
         parent.find('[data-bind=editorCursorLine]').html(cursorPosition.line);
         parent.find('[data-bind=editorCursorColumn]').html(cursorPosition.ch);
-    }
-
-    /**
-     * Handle if code in editor was change to perform a syntax check.
-     * @param {string} doc
-     * @param {string} change
-     */
-    function handleCodeEditorChange(doc, change) {
-        try {
-            var code = codeEditor.getValue();
-            (function checkIfCodeThrowsError() {
-                /*eslint-disable no-new-func */
-                new Function('return ' + code)();
-                /*eslint-enable no-new-func */
-            })();
-            updateEditorSyntaxError('none', '');
-        } catch(ex) {
-            console.log(ex);
-
-            var title = 'Last code change was done near ' + change.from.line + ':' + change.from.ch;
-            updateEditorSyntaxError('syntax', title);
-        }
     }
 
     /**
@@ -160,11 +131,7 @@ yak.ui.PluginView = function PluginView(parent, context, viewModel) {
         viewModel.activate(data);
     };
 
-    /**
-     * Handle plugin item changed event.
-     */
     function handlePluginItemChanged() {
-        console.log('InstanceView.handleInstanceInfoChanged', viewModel.instanceItem);
         initializeView();
     }
 
@@ -172,12 +139,15 @@ yak.ui.PluginView = function PluginView(parent, context, viewModel) {
      * Handle Save Button Click
      */
     function save() {
-        var pluginItem = new yak.ui.PluginItem();
+        var pluginItem = new PluginItem();
         pluginItem.id = parent.find('[name=id]').val();
-        pluginItem.description = parent.find('[name=description]').val();
         pluginItem.code = codeEditor.getValue();
 
-        viewModel.updateValue(pluginItem);
+        if (pluginItem.id) {
+            viewModel.createOrUpdate(pluginItem);
+        } else {
+            messageBox.showWarning('Please use a plugin name.');
+        }
     }
 
     /**
@@ -195,4 +165,6 @@ yak.ui.PluginView = function PluginView(parent, context, viewModel) {
     }
 
     constructor();
-};
+}
+
+module.exports = PluginView;

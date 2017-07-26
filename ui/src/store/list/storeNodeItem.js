@@ -1,22 +1,23 @@
 /**
  * @constructor
- * @param {yak.ui.StoreNodeItem} [parentNode]
- * @param {!yak.ui.StoreNodeItemType} [type]
+ * @struct
+ * @param {StoreNodeItem} [parentNode]
+ * @param {!StoreNodeItemType} [type]
  * @param {string} [name]
- * @param {Array<yak.ui.StoreNodeItemType>} [nodes]
+ * @param {Array<StoreNodeItemType>} [nodes]
  */
-yak.ui.StoreNodeItem = function StoreNodeItem(parentNode, type, name, nodes) {
+function StoreNodeItem(parentNode, type, name, nodes) {
     'use strict';
 
     /**
-     * @type {yak.ui.StoreNodeItemType}
+     * @type {StoreNodeItemType}
      */
     this.parentNode = parentNode || null;
 
     /**
-     * @type {!yak.ui.StoreNodeItemType}
+     * @type {!StoreNodeItemType}
      */
-    this.type = type || yak.ui.StoreNodeItemType.GROUP;
+    this.type = type || StoreNodeItemType.GROUP;
 
     /**
      * The item name is the most specific part of the key
@@ -26,7 +27,7 @@ yak.ui.StoreNodeItem = function StoreNodeItem(parentNode, type, name, nodes) {
 
     /**
      * The child nodes.
-     * @type {!Array<!yak.ui.StoreNodeItemType>}
+     * @type {!Array<!StoreNodeItemType>}
      */
     this.nodes = nodes || [];
 
@@ -34,4 +35,6 @@ yak.ui.StoreNodeItem = function StoreNodeItem(parentNode, type, name, nodes) {
      * @type {string}
      */
     this.key = null;
-};
+}
+
+module.exports = StoreNodeItem;

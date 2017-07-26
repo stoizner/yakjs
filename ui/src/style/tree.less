@@ -7,14 +7,27 @@
 }
 
 .tree-item[data-selectable]:hover {
-    background-color: @color-lime-300;
+    //border-left: @grid-size @color-lime-300 solid;
     cursor: pointer;
+    //border-top: 2px @color-lime-300 solid;
+    //border-bottom: 2px @color-lime-300 solid;
+}
+
+.tree-item[data-selectable]:hover:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-bottom: solid 4px @color-blue-grey-300;
 }
 
 .tree-item {
+    position: relative;
     display: block;
-    min-height: @line-height;
+    min-height: @row-height;
     overflow: hidden;
+    border-bottom: 1px @color-grey solid;
 }
 
 .tree-item[data-selected] {
@@ -28,16 +41,16 @@
 
 .tree-item-cell {
     padding-right: 10px;
-    height: @line-height;
-    line-height: @line-height;
+    height: @row-height;
+    line-height: @row-height;
     overflow: hidden;
     float: left;
 }
 
 .tree-item-cell-right {
     padding-left: 10px;
-    height: @line-height;
-    line-height: @line-height;
+    height: @row-height;
+    line-height: @row-height;
     overflow: hidden;
     float: right;
 }
@@ -49,12 +62,12 @@
 
 .tree-item-cell-full {
     float: left;
-    height: 30px;
+    height: @row-height;
     overflow: hidden;
 }
 
 .tree-item-icon {
     float: left;
-    width: @line-height;
-    height: @line-height;
+    width: @row-height;
+    height: @row-height;
 }
