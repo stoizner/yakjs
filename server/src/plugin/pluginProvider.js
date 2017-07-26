@@ -141,7 +141,18 @@ function PluginProvider() {
             pluginModule = require(modulePath);
             /* eslint-enable global-require */
         } catch (ex) {
+            var pluginLog = new Logger(toPluginId(filename) + '.plugin');
+
             log.warn('Could not load plugin module', {ex: ex.message});
+            pluginLog.error('Could not load plugin module', {ex: ex.message});
+
+            if (ex.message.indexOf('\'./common') >= 0) {
+                pluginLog.error('Use two dots, like ../common/ to load a common module.');
+            }
+
+            if (ex.message.indexOf('\'./module') >= 0) {
+                pluginLog.error('Use two dots, like ../modules/ to load a module.');
+            }
         }
 
         return pluginModule;
