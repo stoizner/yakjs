@@ -58,12 +58,12 @@ function ExpressServer(config) {
 
             let restrictedToHostname = 'localhost';
 
-            if (process.env.YAKJS_NO_LOCALHOST_RESTRICTION) {
+            if (process.env.YAKJS_NO_LOCALHOST_RESTRICTION) { // eslint-disable-line no-process-env
                 console.warn('No localhost hostname restriction active. All connections will be accepted.');
                 restrictedToHostname = null;
             }
 
-            http.createServer(app).listen(app.get('port'),  'localhost', displayWelcomeMessage);
+            http.createServer(app).listen(app.get('port'), restrictedToHostname, displayWelcomeMessage);
 
             http.createServer(app).on('error', () => {
                 console.info('Not listening on IPV6 interface.');
