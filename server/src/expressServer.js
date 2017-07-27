@@ -57,11 +57,9 @@ function ExpressServer(config) {
             // YAKjs does not implement any authentication, so listen only to localhost (IPv4) and [::1] (IPv6)
             http.createServer(app).listen(app.get('port'), 'localhost', displayWelcomeMessage);
 
-            try {
-                http.createServer(app).listen(app.get('port'), '[::1]');
-            } catch (ex) {
-                console.info('IPV6 interface not available.');
-            }
+            http.createServer(app).on('error', () => {
+                console.info('Not listening on IPV6 interface.');
+            }).listen(app.get('port'), '[::1]');
         } catch (ex) {
             displayErrorMessage(ex.message);
         }
