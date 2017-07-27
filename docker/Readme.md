@@ -1,18 +1,22 @@
-# Build yakjs docker image
-To build a yakjs docker image, use the `docker build` command:
+# Build YAKjs docker image
+
+To build a YAKjs docker image, use the `docker build` command:
 ```
 docker build -t yakjs github.com/cschuller/yakjs#:docker
 ```
 
 # Run yakjs docker image
 
-To create and run a new container using the previously created yakjs image, use the following command:
+To create and run a new container using the previously created YAKjs image, use the following command:
 
 ```
-docker run -d -p 8790:8790 -p 9000-9099:9000-9099 --name yakjs-demo yakjs -e YAKJS_NO_LOCALHOST_RESTRICTION=true
+docker run -d -p 8790:8790 -p 9000-9099:9000-9099 -e YAKJS_NO_LOCALHOST_RESTRICTION=true --name yakjs-demo yakjs
 ```
 
-To stop and start this yakjs instance, you can then use the following commands:
+The environment variable `YAKJS_NO_LOCALHOST_RESTRICTION` needs to be set to `true` to disable the localhost restriction.
+So we can use the user interface and the API via the docker machine IP.
+
+To stop and start this YAKjs instance, you can then use the following commands:
 ```
 docker stop yakjs-demo
 
