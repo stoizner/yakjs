@@ -6,3 +6,4 @@ ui/bower_components/
 npm-debug.log
 
 /server/logs/
+*.log

@@ -55,7 +55,15 @@ function ExpressServer(config) {
             app.use('/v1/', apiV1Router);
 
             // YAKjs does not implement any authentication, so listen only to localhost (IPv4) and [::1] (IPv6)
-            http.createServer(app).listen(app.get('port'), 'localhost', displayWelcomeMessage);
+
+            let restrictedToHostname = 'localhost';
+
+            if (process.env.YAKJS_NO_LOCALHOST_RESTRICTION) { // eslint-disable-line no-process-env
+                console.warn('No localhost hostname restriction active. All connections will be accepted.');
+                restrictedToHostname = null;
+            }
+
+            http.createServer(app).listen(app.get('port'), restrictedToHostname, displayWelcomeMessage);
 
             http.createServer(app).on('error', () => {
                 console.info('Not listening on IPV6 interface.');
