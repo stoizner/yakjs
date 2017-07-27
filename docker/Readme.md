@@ -31,3 +31,15 @@ The built image can be removed using:
 ```
 docker rmi yakjs
 ```
+
+# Trouble shooting
+
+To connect to the running container  use:
+```
+docker exec -t -i yakjs-demo /bin/bash
+```
+
+The log files can be found under:
+```
+/usr/local/lib/node_modules/yakjs/logs/
+```
