@@ -9,7 +9,7 @@ docker build -t yakjs github.com/cschuller/yakjs#:docker
 To create and run a new container using the previously created yakjs image, use the following command:
 
 ```
-docker run -d -p 8790:8790 -p 9000-9099:9000-9099 --name yakjs-demo yakjs
+docker run -d -p 8790:8790 -p 9000-9099:9000-9099 --name yakjs-demo yakjs -e YAKJS_NO_LOCALHOST_RESTRICTION=true
 ```
 
 To stop and start this yakjs instance, you can then use the following commands:
