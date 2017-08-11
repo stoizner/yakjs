@@ -19,7 +19,7 @@ function Store() {
      * @returns {boolean} If setting the value was successful or not.
      */
     this.setValue = function setValue(key, value) {
-        return storeProvider.updateValue(key, value);
+        return storeProvider.updateItem(key, value);
     };
 
     /**
@@ -46,7 +46,7 @@ function Store() {
      * @returns {boolean} Whether it was successful.
      */
     this.deleteValue = function deleteValue(key) {
-        return storeProvider.deleteValue(key);
+        return storeProvider.deleteItem(key);
     };
 }
 

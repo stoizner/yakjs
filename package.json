@@ -1,6 +1,6 @@
 {
     "name": "yakjs",
-    "version": "3.0.3",
+    "version": "3.0.4",
     "description": "YAKjs - a local server to stub WebSocket backends.",
     "keywords": [
         "YAK",
@@ -68,6 +68,7 @@
         "blanket": "^1.2.1",
         "chai": "^3.4.1",
         "chai-as-promised": "^6.0.0",
+        "dirty-chai": "^2.0.1",
         "eslint": "^3.19.0",
         "grunt": "~1.0.1",
         "grunt-contrib-clean": "^1.1.0",
@@ -85,6 +86,7 @@
         "grunt-webpack": "^2.0.1",
         "load-grunt-tasks": "~3.5.2",
         "mocha": "3.3.0",
+        "mockery": "^2.1.0",
         "proxyquire": "^1.7.11",
         "request": "^2.81.0",
         "sinon": "~2.2.0",
