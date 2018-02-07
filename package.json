@@ -1,6 +1,6 @@
 {
     "name": "yakjs",
-    "version": "3.0.4",
+    "version": "3.0.5-SNAPSHOT",
     "description": "YAKjs - a local server to stub WebSocket backends.",
     "keywords": [
         "YAK",
