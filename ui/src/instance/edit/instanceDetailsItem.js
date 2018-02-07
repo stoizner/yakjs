@@ -2,7 +2,7 @@
  * @constructor
  * @struct
  */
-function InstanceConfigItem() {
+function InstanceDetailsItem() {
     'use strict';
 
     /**
@@ -18,22 +18,24 @@ function InstanceConfigItem() {
     this.name = '';
 
     /**
-     * Description
      * @type {string}
      */
     this.description = '';
 
     /**
-     *
      * @type {number}
      */
     this.port = '';
 
     /**
-     * @readonly
-     * @type {Array<string>}
+     * @type {!Array<!PluginItem>}
      */
     this.plugins = [];
+
+    /**
+     * @type {!Array<!PluginItem>}
+     */
+    this.filteredPlugins = [];
 }
 
-module.exports = InstanceConfigItem;
+module.exports = InstanceDetailsItem;

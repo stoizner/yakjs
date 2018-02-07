@@ -5,7 +5,7 @@
                 <div class="center-panel">
                     <div class="button" data-element="save">Save</div>
                     {{#instance}}
-                    <div class="button" data-element="delete" >Delete</div>
+                    <div class="button" data-element="delete">Delete</div>
                     {{/instance}}
                     <div class="button" data-element="cancel">Cancel</div>
                 </div>
@@ -17,38 +17,34 @@
             <div class="center-panel">
                 <div class="content-panel">
                     <div class="scroll-panel">
-                        <div class="frame-block" data-element="error-message">
+                        <div class="frame-block" data-element="errorMessage">
                             <div class="warning-text"></div>
                         </div>
 
-                        <div class="column-block">
-                            <div class="column-block-column" style="width: 50%">
-                                <div class="frame-block">
-                                    <label class="input-label">Name</label>
-                                    <div class="light-text">Use a unique name for your WebSocket instance.</div>
-                                    <input type="text" class="input-text" name="name" value="{{instance.name}}"/>
+                        <div class="frame-block">
+                            <label class="input-label">Name</label>
+                            <div class="light-text">Use a unique name for your WebSocket instance.</div>
+                            <input type="text" class="input-text" name="name" value="{{instance.name}}"/>
 
-                                    <label class="input-label">Port</label>
-                                    <div class="light-text">A port number between 0 and 65535. Avoid using well-known ports like: 80, 8080, 8790</div>
-                                    <input type="text" class="input-number" min="0" max="65535" name="port" value="{{instance.port}}" />
+                            <label class="input-label">Description</label>
+                            <div class="light-text">Optional: Any text that helps to understand what this instance does.</div>
+                            <input type="text" class="input-text" name="description" value="{{instance.description}}" />
 
-                                    <label class="input-label">Plugins</label>
-                                    <div class="light-text">Assign plugins to this instance</div>
-                                    <div>
-                                        <div class="flat-button" data-element="plugins-all" title="Assign all plugins.">All</div>
-                                        <div class="flat-button" data-element="plugins-none" title="Remove all plugins." >None</div>
-                                    </div>
-                                    <div class="plugin-list" data-list="plugin"></div>
-                                </div>
+                            <label class="input-label">Port</label>
+                            <div class="light-text">A port number between 0 and 65535. Avoid using well-known ports like: 80, 8080, 8790</div>
+                            <input type="text" class="input-number" min="0" max="65535" name="port" value="{{instance.port}}" />
+
+                            <label class="input-label">Plugins</label>
+                            <div class="light-text">Assign plugins to this instance</div>
+                            <input type="text" class="input-text" data-element="pluginSearchInput" value="" placeholder="Search..." />
+
+                            <div class="vertical-margin-block">
+                                <div class="flat-button" data-element="selectAllButton" title="Assign all plugins.">All</div>
+                                <div class="flat-button" data-element="selectNoneButton" title="Remove all plugins." >None</div>
+                                <div class="flat-button" data-element="clearSearchButton" title="Remove all plugins." >Clear search</div>
                             </div>
 
-                            <div class="column-block-column" style="width: 50%">
-                                <div class="frame-block">
-                                    <label class="input-label">Description</label>
-                                    <div class="light-text">Optional: Any text that helps to understand what this instance does.</div>
-                                    <input type="text" class="input-text" name="description" value="{{instance.description}}" />
-                                </div>
-                            </div>
+                            <div class="list" data-selectable data-element="pluginList"></div>
                         </div>
                     </div>
                 </div>

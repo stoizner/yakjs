@@ -2,15 +2,18 @@
  * SelectPluginItem
  * @constructor
  * @struct
+ * @param {string} [name]
+ * @param {string} [description]
+ * @param {boolean} [isActive]
  */
-function SelectPluginItem() {
+function PluginItem(name, description, isActive) {
     'use strict';
 
     /**
      * Name of the instance
      * @type {string}
      */
-    this.name = '';
+    this.name = name || '';
 
     /**
      * Description
@@ -22,7 +25,7 @@ function SelectPluginItem() {
      * Is Plugin active for instance.
      * @type {boolean}
      */
-    this.isActive = false;
+    this.isActive = Boolean(isActive);
 }
 
-module.exports = SelectPluginItem;
+module.exports = PluginItem;

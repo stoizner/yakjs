@@ -1,7 +1,10 @@
-var InstanceConfigItem = require('./instanceConfigItem');
-var SelectPluginItem = require('./selectPluginItem');
-var ShowViewCommand = require('../../workspace/showViewCommand');
-var InstanceListView = require('../list/instanceListView');
+'use strict';
+
+const InstanceDetailsItem = require('./instanceDetailsItem');
+const PluginItem = require('./pluginItem');
+const ShowViewCommand = require('../../workspace/showViewCommand');
+const InstanceListView = require('../list/instanceListView');
+const nameComparer = require('../../core/nameComparer');
 
 /**
  * @constructor
@@ -9,42 +12,20 @@ var InstanceListView = require('../list/instanceListView');
  * @param {!ViewModelContext} context
  */
 function InstanceViewModel(context) {
-    'use strict';
-
     /**
      * @type {!InstanceViewModel}
      */
-    var self = this;
+    let self = this;
 
     /**
-     * @type {InstanceConfigItem}
+     * @type {InstanceDetailsItem}
      */
-    this.instanceConfigItem = null;
-
-    /**
-     * @type {Function}
-     */
-    this.onInstanceConfigItemChanged = _.noop;
-
-    /**
-     * @type {!Array<!SelectPluginItem>}
-     */
-    this.allPluginItems = [];
-
-    /**
-     * @type {!Array}
-     */
-    this.selectedPluginItems = [];
-
-    /**
-     * @type {!Array}
-     */
-    this.notSelectedPluginItems = [];
+    this.instanceDetailsItem = null;
 
     /**
      * @type {Function}
      */
-    this.onSelectPluginItemsChanged = _.noop;
+    this.onInstanceDetailsItemChanged = _.noop;
 
     /**
      * Callback for received error response.
@@ -55,24 +36,27 @@ function InstanceViewModel(context) {
     /**
      * Activate view
      * @param {InstanceInfoItem} data
+     * @returns {!Promise}
      */
     this.activate = function activate(data) {
         console.log('InstanceViewModel.activate', {data: data});
 
         if (data) {
-            self.instanceConfigItem = new InstanceConfigItem();
-            self.instanceConfigItem.id = data.id;
-            self.instanceConfigItem.description = data.description;
-            self.instanceConfigItem.name = data.name;
-            self.instanceConfigItem.port = data.port;
-            self.instanceConfigItem.plugins = data.plugins;
+            self.instanceDetailsItem = new InstanceDetailsItem();
+            self.instanceDetailsItem.id = data.id;
+            self.instanceDetailsItem.description = data.description;
+            self.instanceDetailsItem.name = data.name;
+            self.instanceDetailsItem.port = data.port;
+            self.instanceDetailsItem.plugins = data.plugins.map(pluginName => new PluginItem(pluginName, '', true)).sort(nameComparer);
+            self.instanceDetailsItem.filteredPlugins = self.instanceDetailsItem.plugins
         } else {
-            self.instanceConfigItem = null;
+            self.instanceDetailsItem = null;
         }
 
-        self.onInstanceConfigItemChanged();
+        self.onInstanceDetailsItemChanged();
 
-        context.adapter.get('/plugins').then(handleGetPluginsResponse);
+        // Load all plugins to get extend the plugins with the description.
+        return context.adapter.get('/plugins').then(handleGetPluginsResponse);
     };
 
     /**
@@ -80,84 +64,56 @@ function InstanceViewModel(context) {
      */
     this.deleteInstance = function deleteInstance() {
         context.adapter
-            .deleteResource('/instances/' + self.instanceConfigItem.id + '/config')
+            .deleteResource('/instances/' + self.instanceDetailsItem.id + '/config')
             .then(showList)
             .catch(showErrorResponse);
     };
 
     /**
-     *
      * @param {GetPluginsResponse} response
      */
     function handleGetPluginsResponse(response) {
-        console.log('InstanceViewModel.handleGetPluginsResponse', {response: response});
+        self.instanceDetailsItem.plugins = response.plugins.map(plugin => {
+            let item = self.instanceDetailsItem.plugins.find(item => item.name === plugin.id);
 
-        self.allPluginItems = [];
-
-        _.each(response.plugins, function toItem(pluginsInfo) {
-            var item = new SelectPluginItem();
-            item.name = pluginsInfo.id;
-            item.description = pluginsInfo.description;
-
-            if (self.instanceConfigItem && _.contains(self.instanceConfigItem.plugins, item.name)) {
-                item.isActive = true;
+            if (item) {
+                item.description = plugin.description;
+            } else {
+                item = new PluginItem(plugin.id, plugin.description);
             }
 
-            self.allPluginItems.push(item);
+            return item;
         });
 
-        updateSelectedPluginItems();
+        self.instanceDetailsItem.plugins.sort(nameComparer);
+        self.instanceDetailsItem.filteredPlugins = self.instanceDetailsItem.plugins;
     }
 
     /**
-     * Updates selectedPluginItems and notSelectedPluginItems.
+     * Create or update a new WebSocket instance.
+     * @param {!InstanceDetailsItem} instanceDetailsItem
      */
-    function updateSelectedPluginItems() {
-        self.selectedPluginItems = _.where(self.allPluginItems, {isActive: true});
-        self.notSelectedPluginItems = _.where(self.allPluginItems, {isActive: false});
-
-        if (self.selectedPluginItems.length === 0) {
-            // Add special placeholder item
-            var placeholder = new SelectPluginItem();
-            placeholder.name = 'No plugin selected...';
-            placeholder.isActive = false;
-            self.selectedPluginItems.push(placeholder);
-        }
-
-        self.onSelectPluginItemsChanged();
-    }
-
-    /**
-     * Create or update a new websocket instance.
-     * @param {!InstanceConfigItem} instanceConfigItem
-     */
-    this.createOrUpdate = function createOrUpdate(instanceConfigItem) {
-        console.log('InstanceViewModel.createOrUpdate', {instanceConfigItem: instanceConfigItem});
-
-        var instanceConfig = new InstanceConfigItem();
-        _.extend(instanceConfig, instanceConfigItem);
-
-        instanceConfig.plugins = [];
-
-        _.each(_.where(self.allPluginItems, { isActive: true }), function select(selectPluginItem) {
-            instanceConfig.plugins.push(selectPluginItem.name);
-        });
-
-        var request = {
-            instanceConfig: instanceConfig
+    this.createOrUpdate = function createOrUpdate(instanceDetailsItem) {
+        let request = {
+            instanceConfig: {
+                id: instanceDetailsItem.id,
+                name: instanceDetailsItem.name,
+                description: instanceDetailsItem.description,
+                port: instanceDetailsItem.port,
+                plugins: self.instanceDetailsItem.plugins.filter(item => item.isActive).map(item => item.name)
+            }
         };
 
-        if (self.instanceConfigItem === null) {
-            context.adapter
-                .post('/instances/config', request)
-                .then(showList)
-                .catch(showErrorResponse);
-        } else {
-            context.adapter
-                .put('/instances/' + self.instanceConfigItem.id + '/config', request)
-                .then(showList)
-                .catch(showErrorResponse);
+        let apiUrl = '/instances/config';
+
+        if (self.instanceDetailsItem) {
+            apiUrl = '/instances/' + self.instanceDetailsItem.id + '/config';
         }
+
+        context.adapter
+            .put(apiUrl, request)
+            .then(showList)
+            .catch(showErrorResponse);
     };
 
     /**
@@ -171,22 +127,37 @@ function InstanceViewModel(context) {
      * Uses all available plugins.
      */
     this.useAllPlugins = function useAllPlugins() {
-        _.each(self.allPluginItems, function(item) {
+        self.instanceDetailsItem.filteredPlugins.forEach(item => {
             item.isActive = true;
         });
 
-        updateSelectedPluginItems();
+        self.onInstanceDetailsItemChanged();
     };
 
     /**
      * Don't use any plugin.
      */
     this.useNoPlugins = function useNoPlugins() {
-        _.each(self.allPluginItems, function(item) {
+        self.instanceDetailsItem.filteredPlugins.forEach(item => {
             item.isActive = false;
         });
 
-        updateSelectedPluginItems();
+        self.onInstanceDetailsItemChanged();
+    };
+
+    /**
+     * @param {string} searchText
+     */
+    this.filterPlugin = function filterPlugin(searchText) {
+        if (searchText) {
+            self.instanceDetailsItem.filteredPlugins = self.instanceDetailsItem.plugins.filter(item => {
+                return JSON.stringify(item).toLowerCase().indexOf(searchText) >= 0;
+            });
+        } else {
+            self.instanceDetailsItem.filteredPlugins = self.instanceDetailsItem.plugins;
+        }
+
+        self.onInstanceDetailsItemChanged();
     };
 
     /**
@@ -201,11 +172,10 @@ function InstanceViewModel(context) {
      * @param {string} pluginName
      */
     this.togglePluginSelection = function togglePluginSelection(pluginName) {
-        console.log('InstanceViewModel.togglePluginSelection', pluginName);
-        var pluginItem = _.findWhere(self.allPluginItems, {name: pluginName});
+        let pluginItem = self.instanceDetailsItem.plugins.find(item => item.name === pluginName);
         pluginItem.isActive = !pluginItem.isActive;
 
-        updateSelectedPluginItems();
+        self.onInstanceDetailsItemChanged();
     };
 
     function showList() {

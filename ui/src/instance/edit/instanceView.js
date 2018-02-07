@@ -1,4 +1,4 @@
-var InstanceConfigItem = require('./instanceConfigItem');
+const InstanceDetailsItem = require('./instanceDetailsItem');
 
 /**
  * @constructor
@@ -22,18 +22,10 @@ function InstanceView(parent, context, viewModel) {
     /**
      * @type {Template}
      */
-    var pluginListTemplate = context.template.load('selectedPluginsList');
+    var pluginItemListTemplate = context.template.load('pluginItemList');
 
-    /**
-     * Constructor
-     */
     function constructor() {
-        console.log('InstanceView.constructor', self);
-
-        updateView();
-
-        viewModel.onInstanceConfigItemChanged = updateView;
-        viewModel.onSelectPluginItemsChanged = updatePluginList;
+        viewModel.onInstanceDetailsItemChanged = updatePluginList;
         viewModel.onErrorResponse = handleErrorResponse;
     }
 
@@ -42,7 +34,7 @@ function InstanceView(parent, context, viewModel) {
      * @param {?} [data]
      */
     this.activate = function activate(data) {
-        viewModel.activate(data);
+        viewModel.activate(data).then(updateView);
     };
 
     /**
@@ -50,37 +42,38 @@ function InstanceView(parent, context, viewModel) {
      */
     function updateView() {
         var context = {
-            instance: viewModel.instanceConfigItem
+            instance: viewModel.instanceDetailsItem
         };
 
         parent.html(template.build(context));
 
         updatePluginList();
 
+        var searchInput = parent.find('[data-element=pluginSearchInput]');
+        searchInput.on('input propertychange paste', handlePluginSearchInputChange);
+
         parent.find('[data-element=save]').click(handleSaveCommand);
         parent.find('[data-element=delete]').click(viewModel.deleteInstance);
         parent.find('[data-element=cancel]').click(viewModel.cancel);
-        parent.find('[data-list=plugin]').click(handleSelectPluginClick);
-        parent.find('[data-element=plugins-all]').click(viewModel.useAllPlugins);
-        parent.find('[data-element=plugins-none]').click(viewModel.useNoPlugins);
+        parent.find('[data-element=pluginList]').click(handlePluginItemClick);
+        parent.find('[data-element=selectAllButton]').click(viewModel.useAllPlugins);
+        parent.find('[data-element=selectNoneButton]').click(viewModel.useNoPlugins);
+        parent.find('[data-element=clearSearchButton]').click(() => {
+            searchInput.val('');
+            viewModel.filterPlugin(null);
+        });
     }
 
     function updatePluginList() {
-        var context = {
-            allPlugins: viewModel.allPluginItems,
-            selectedPluginItems: viewModel.selectedPluginItems,
-            notSelectedPluginItems: viewModel.notSelectedPluginItems
-        };
-
-        parent.find('[data-list=plugin]').html(pluginListTemplate.build(context));
+        parent.find('[data-element=pluginList]').html(pluginItemListTemplate.build(viewModel.instanceDetailsItem));
     }
 
     /**
      * @param {?} event
      */
-    function handleSelectPluginClick(event) {
-        var plugin = $(event.target).closest('.select-plugin-item');
-        var pluginName = plugin.attr('data-plugin-name');
+    function handlePluginItemClick(event) {
+        var plugin = $(event.target).closest('[data-element=pluginItem]');
+        var pluginName = plugin.attr('data-name');
 
         viewModel.togglePluginSelection(pluginName);
     }
@@ -89,7 +82,7 @@ function InstanceView(parent, context, viewModel) {
      * @param {string} message
      */
     function handleErrorResponse(message) {
-        var errorMessageElement = parent.find('[data-element=error-message]');
+        var errorMessageElement = parent.find('[data-element=errorMessage]');
         errorMessageElement.show();
         errorMessageElement.find('.warning-text').html(message);
     }
@@ -98,15 +91,19 @@ function InstanceView(parent, context, viewModel) {
      * Handle Save Button Click
      */
     function handleSaveCommand() {
-        parent.find('[data-element=error-message]').hide();
+        parent.find('[data-element=errorMessage]').hide();
 
-        var item = new InstanceConfigItem();
+        var item = new InstanceDetailsItem();
         item.id = parent.find('[name=name]').val();
         item.name = parent.find('[name=name]').val();
         item.description = parent.find('[name=description]').val();
         item.port = parent.find('[name=port]').val();
 
         viewModel.createOrUpdate(item);
+    }
+
+    function handlePluginSearchInputChange(event) {
+        viewModel.filterPlugin(event.currentTarget.value);
     }
 
     constructor();
