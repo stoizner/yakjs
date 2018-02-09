@@ -68,6 +68,7 @@ function HttpAdapter() {
                 contentType: 'application/json',
                 dataType: 'text',
                 success: resolve,
+                cache: false,
                 error: function(request, message, error) {
                     var responseError = {
                         message: message,
