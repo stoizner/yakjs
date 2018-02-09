@@ -81,7 +81,7 @@ function ExpressServer(config) {
         console.info('YAKjs server initialized and running on http port: ' + config.httpPort);
         console.info('.........................................................................');
         console.info('');
-        console.info('See ./log/yakjs.log for errors and warnings.');
+        console.info('See ./logs/yakjs.log for errors and warnings.');
         console.info('');
         console.info('Press CTRL + C to stop YAKjs.');
     }
@@ -97,7 +97,7 @@ function ExpressServer(config) {
         console.error('');
         console.error('Error: ' + message);
         console.error('');
-        console.error('See ./log/yakjs.log for more technical details.');
+        console.error('See ./logs/yakjs.log for more technical details.');
     }
 
     /**
