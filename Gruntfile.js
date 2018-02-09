@@ -3,71 +3,38 @@
 const path = require('path');
 
 /**
- * Gruntfile for yakjs
  * @param {?} grunt
  */
 module.exports = function grunt(grunt) {
     'use strict';
 
-    let pkg = grunt.file.readJSON('package.json');
+    const pkg = grunt.file.readJSON('package.json');
 
     // Build Folder: for build related tasks
-    let buildDir = './build/';
-
-    // Default Folder: containing default YAKjs setup of instances, plugins and stores
-    let defaultDir = './default/';
+    const buildDir = './build/';
 
     // Server Folders: source code of the YAKjs server
-    let serverDir = './server/';
+    const serverDir = './server/';
 
     // User Interface Folders: source code of the YAKjs user interface
-    let uiDir = './ui/';
-    let uiSrcDir = uiDir + 'src/';
+    const uiDir = './ui/';
+    const uiSrcDir = uiDir + 'src/';
 
     // Test Folders: containing unit test and integration tests.
-    let testDir = './test/';
-    let testServerDir = testDir + 'server/';
+    const testDir = './test/';
+    const testServerDir = testDir + 'server/';
 
     // Distribution Folder: intermediate and final output for the build process
-    let distDir = './dist/';
-    let tmpDir = distDir + 'tmp/';
-    let pkgDir = './dist/yakjs/';
-    let uiPkgDir = pkgDir + 'ui/';
-    let reportsDir = distDir + 'reports/';
-    let coverageDir = distDir + 'coverage/';
-
-    let banner = ['/**',
-            ' * ' + pkg.name,
-            ' * @version ' + pkg.version,
-            ' * @author ' + pkg.author,
-            ' * @created ' + grunt.template.today('yyyy-mm-dd'),
-            ' * @license ' + pkg.license,
-        ' */\n\n'].join('\n');
-
-    let appInfo = {
-        version: pkg.version,
-        created: (new Date()).toISOString()
-    };
-
-    let uiFooter = 'appVersion = ' + JSON.stringify(appInfo, null, 4) + ';';
+    const tmpDir = './tmp/';
+    const uiDistDir = './ui/dist/';
+    const reportsDir = tmpDir + 'reports/';
+    const coverageDir = tmpDir + 'coverage/';
 
     grunt.initConfig({
         pkg: pkg,
         clean: {
-            dist: [distDir],
+            uiDistDir: [uiDistDir],
             tmp: [tmpDir]
-        }
-    });
-
-    grunt.config.merge({
-        uglify: {
-            options: {
-                banner: banner
-            },
-            build: {
-                src: pkgDir + pkg.name + '.js',
-                dest: pkgDir + pkg.name + '.min.js'
-            }
         }
     });
 
@@ -89,24 +56,10 @@ module.exports = function grunt(grunt) {
 
     grunt.config.merge({
         copy: {
-            server: {
-                files: [
-                    {flatten: true, src: ['README.md', 'LICENSE', 'package.json'], dest: pkgDir},
-                    {flatten: false, cwd: serverDir, src: ['yakjs.js'], dest: pkgDir, expand: true},
-                    {flatten: false, cwd: serverDir, src: ['src/**/*'], dest: pkgDir, expand: true},
-                    {flatten: false, cwd: serverDir, src: ['common/**/*'], dest: pkgDir, expand: true},
-                    {flatten: false, cwd: serverDir, src: ['instances/**/*'], dest: pkgDir, expand: true},
-                    {flatten: false, cwd: serverDir, src: ['modules/**/*'], dest: pkgDir, expand: true},
-                    {flatten: false, cwd: serverDir, src: ['plugins/**/*'], dest: pkgDir, expand: true},
-                    {flatten: false, cwd: serverDir, src: ['stores/**/*'], dest: pkgDir, expand: true},
-                    {flatten: true, cwd: serverDir + 'bin/', src: ['*.bat', '*.sh'], dest: pkgDir, expand: true},
-                    {flatten: true, cwd: serverDir + 'bin/', src: ['*.js'], dest: pkgDir + 'bin/', expand: true}
-                ]
-            },
             ui: {
                 files: [
-                    {expand: true, cwd: uiSrcDir, src: ['**/*.*', '!**/*.less', '!**/*.js', '!**/*.mustache'], dest: uiPkgDir, filter: 'isFile'},
-                    {expand: true, cwd: uiDir, src: ['ext/**/*'], dest: uiPkgDir}
+                    {expand: true, cwd: uiSrcDir, src: ['**/*.*', '!**/*.less', '!**/*.js', '!**/*.mustache'], dest: uiDistDir, filter: 'isFile'},
+                    {expand: true, cwd: uiDir, src: ['ext/**/*'], dest: uiDistDir}
                 ]
             },
             coverageTest: {
@@ -156,7 +109,7 @@ module.exports = function grunt(grunt) {
                 expand: true,
                 cwd:    tmpDir + 'less/',
                 src:    pkg.name + '-style.less',
-                dest:   uiPkgDir + 'style/',
+                dest:   uiDistDir + 'style/',
                 ext:    '.css'
             }
         }
@@ -169,7 +122,7 @@ module.exports = function grunt(grunt) {
                     src: [uiSrcDir + '**/*.mustache']
                 },
                 srcMerge: uiSrcDir + 'index.html',
-                    target: uiPkgDir + 'index.html'
+                target: uiDistDir + 'index.html'
             }
         }
     });
@@ -229,35 +182,16 @@ module.exports = function grunt(grunt) {
     });
 
     grunt.config.merge({
-        compress: {
-            zip: {
-                options: {
-                    archive: distDir + pkg.name + '-' + pkg.version + '.zip',
-                    level: 9,
-                    mode: 'zip',
-                    pretty: true
-                },
-                files: [{
-                    src: ['**/*'],
-                    expand: true,
-                    cwd: pkgDir,
-                    dest: '.'
-                }]
-            }
-        }
-    });
-
-    grunt.config.merge({
        exec: {
            installNodeModules: {
-               cwd: './dist/yakjs/',
-               command: 'npm install --production',
+               cwd: './',
+               command: 'npm prune && npm install --production',
                stdout: true,
                stderr: true
            },
 
            npmPack: {
-               cwd: './dist/yakjs/',
+               cwd: './',
                command: 'npm pack',
                stdout: true,
                stderr: true
@@ -278,7 +212,7 @@ module.exports = function grunt(grunt) {
                 // webpack options
                 entry: uiSrcDir + 'index.js',
                 output: {
-                    path: path.join(__dirname, uiPkgDir),
+                    path: path.join(__dirname, uiDistDir),
                     filename: pkg.name + '-ui.js'
                 },
 
@@ -290,7 +224,7 @@ module.exports = function grunt(grunt) {
                 // webpack options
                 entry: uiSrcDir + 'index.js',
                 output: {
-                    path: process.cwd() + distDir,
+                    path: process.cwd() + uiDistDir,
                     filename: pkg.name + '.js'
                 },
 
@@ -325,9 +259,7 @@ module.exports = function grunt(grunt) {
         'mustache'
     ]);
 
-    grunt.registerTask('build-server', [
-        'copy:server',
-        'eslint:server']);
+    grunt.registerTask('build-server', ['eslint:server']);
     grunt.registerTask('build-ui', ['compile-ui', 'clean:tmp']);
 
     grunt.registerTask('coverage', ['instrument', 'copy:coverageTest', 'mochaTest:coverage', 'storeCoverage', 'makeReport']);
@@ -338,7 +270,7 @@ module.exports = function grunt(grunt) {
     grunt.registerTask('build', ['clean', 'mochaTest:unitTests', 'build-server', 'build-ui']);
 
     // Creates a releasable zip package
-    grunt.registerTask('package', ['build', 'exec:installNodeModules', 'compress', 'exec:npmPack']);
+    grunt.registerTask('package', ['build', 'exec:installNodeModules', 'exec:npmPack']);
 
     // TASK: default
     grunt.registerTask('default', ['build']);

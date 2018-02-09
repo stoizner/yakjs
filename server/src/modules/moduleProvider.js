@@ -18,7 +18,7 @@ function ModuleProvider() {
     /**
      * @type {string}
      */
-    const MODULES_DIRECTORY = './modules/';
+    const MODULES_DIRECTORY = path.join(__dirname, '../../modules/');
 
     /**
      * @type {string}
@@ -86,7 +86,7 @@ function ModuleProvider() {
         let moduleNames = self.getAllModuleNames();
 
         moduleNames.forEach(moduleName => {
-            let fullModuleName = path.join(__dirname, '../../', MODULES_DIRECTORY, moduleName);
+            let fullModuleName = path.join(MODULES_DIRECTORY, moduleName);
             delete require.cache[require.resolve(fullModuleName)];
         });
     };

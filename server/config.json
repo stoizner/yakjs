@@ -1,4 +1,4 @@
 {
     "httpPort": 8790,
-    "frontendFolder": "../dist/yakjs/ui/"
+    "frontendFolder": "../ui/dist/"
 }

@@ -19,7 +19,7 @@ function PluginProvider() {
     /**
      * @type {string}
      */
-    const PLUGINS_DIR = './plugins/';
+    const PLUGINS_DIR = path.join(__dirname, '../../plugins/');
 
     /**
      * @type {!Logger}
@@ -130,7 +130,7 @@ function PluginProvider() {
      * @param {string} filename
      */
     this.loadPluginModule = function loadPluginModule(filename) {
-        const modulePath = path.normalize('../../' + PLUGINS_DIR + filename);
+        const modulePath = path.normalize(PLUGINS_DIR + filename);
 
         delete require.cache[require.resolve(modulePath)];
 

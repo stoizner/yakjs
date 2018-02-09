@@ -8,4 +8,4 @@ const rootDir = path.join(path.dirname(process.argv[1]), '..');
 // Change the process working directory.
 process.chdir(rootDir);
 
-require('../yakjs.js');
+require('../server/yakjs.js');

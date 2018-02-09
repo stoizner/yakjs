@@ -16,7 +16,7 @@ function Config() {
      * The folder location of the static frontend application.
      * @type {string}
      */
-    this.frontendFolder = './ui/';
+    this.frontendFolder = '../ui/dist/';
 }
 
 module.exports = Config;

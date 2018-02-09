@@ -47,7 +47,11 @@ function ExpressServer(config) {
     this.start = function start() {
         try {
             app.set('port', config.httpPort);
-            app.use(express.static(path.join(config.frontendFolder)));
+
+            let rootPath = path.join(__dirname, '../', config.frontendFolder);
+            console.debug('Serving YAKjs UI from', {rootPath});
+            app.use(express.static(rootPath));
+
             app.use(bodyParser.json({limit: '10MB'}));
 
             app.get('/scripts/yakjs-ui-config.js', getUIConfig);

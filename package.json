@@ -37,15 +37,8 @@
     "main": "yakjs.js",
     "files": [
         "bin",
-        "common",
-        "commandPresets",
-        "config.json",
-        "instances",
-        "modules",
-        "plugins",
-        "src",
-        "stores",
-        "ui",
+        "server",
+        "ui/dist",
         "yakjs.bat",
         "yakjs.js",
         "yakjs.sh"

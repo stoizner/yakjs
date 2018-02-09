@@ -1,6 +1,7 @@
 'use strict';
 
 const fs = require('fs');
+const path = require('path');
 const Logger = require('../infrastructure/logger');
 const StoreKeyValueItem = require('./storeKeyValueItem');
 const fileExtension = require('../infrastructure/fileExtension');
@@ -18,7 +19,7 @@ function StoreProvider() {
     /**
      * @type {string}
      */
-    const STORES_DIR = './stores/';
+    const STORES_DIR = path.join(__dirname, '../../stores/');
 
     /**
      * @type {string}

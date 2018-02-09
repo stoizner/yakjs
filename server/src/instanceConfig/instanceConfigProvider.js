@@ -20,7 +20,7 @@ function InstanceConfigProvider() {
     /**
      * @type {string}
      */
-    const INSTANCES_DIR = './instances/';
+    const INSTANCES_DIR = path.join(__dirname, '../../instances/');
 
     /**
      * A instance config is stored in the format id.instance.json
