@@ -2,10 +2,12 @@
 
 const express = require('express');
 const http = require('http');
+const https = require('https');
 const path = require('path');
 const bodyParser = require('body-parser');
 const Logger = require('./infrastructure/logger');
 const apiV1Router = require('./routes/v1/apiV1Router');
+const httpsServerOptionsProvider = require('./config/httpsServerOptionsProvider');
 
 /**
  * @constructor
@@ -72,11 +74,18 @@ function ExpressServer(config) {
                 restrictedToHostname = null;
             }
 
-            http.createServer(app).listen(app.get('port'), restrictedToHostname, displayWelcomeMessage);
+            if (config.useSecureConnection) {
+                https.createServer(httpsServerOptionsProvider.options, app).listen(app.get('port'), restrictedToHostname, displayWelcomeMessage);
+                https.createServer(httpsServerOptionsProvider.options, app).on('error', () => {
+                    console.info('Not listening on IPV6 interface.');
+                }).listen(app.get('port'), '[::1]');
+            } else {
+                http.createServer(app).listen(app.get('port'), restrictedToHostname, displayWelcomeMessage);
 
-            http.createServer(app).on('error', () => {
-                console.info('Not listening on IPV6 interface.');
-            }).listen(app.get('port'), '[::1]');
+                http.createServer(app).on('error', () => {
+                    console.info('Not listening on IPV6 interface.');
+                }).listen(app.get('port'), '[::1]');
+            }
         } catch (ex) {
             displayErrorMessage(ex.message);
         }
@@ -86,8 +95,10 @@ function ExpressServer(config) {
      * Displays the welcome message to the console.
      */
     function displayWelcomeMessage() {
+        var protocol = config.useSecureConnection ? 'HTTPS' : 'HTTP';
+
         console.info('.........................................................................');
-        console.info('YAKjs server initialized and running on http port: ' + config.httpPort);
+        console.info('YAKjs server initialized and running on ' + protocol + ' port: ' + config.httpPort);
         console.info('.........................................................................');
         console.info('');
         console.info('See ./logs/yakjs.log for errors and warnings.');
@@ -100,8 +111,10 @@ function ExpressServer(config) {
      * @param {string} message
      */
     function displayErrorMessage(message) {
+        var protocol = config.useSecureConnection ? 'HTTPS' : 'HTTP';
+
         console.error('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
-        console.error('Could not start YAKjs server on http port: ' + config.httpPort);
+        console.error('Could not start YAKjs server on ' + protocol + ' port: ' + config.httpPort);
         console.error('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
         console.error('');
         console.error('Error: ' + message);

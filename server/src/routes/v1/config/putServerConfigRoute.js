@@ -1,9 +1,6 @@
 'use strict';
 
-const path = require('path');
-const fsAdapter = require('../../../adapter/fsAdapter');
-
-const serverConfig = require('../../../../config.json');
+const configProvider = require('../../../config/configProvider');
 const HttpStatus = require('http-status-codes');
 
 /**
@@ -19,6 +16,8 @@ function putServerConfigRoute(request, response) {
      */
     const newServerConfig = request.body.serverConfig;
 
+    const serverConfig = Object.assign({}, configProvider.config);
+
     if (newServerConfig) {
         Object.keys(serverConfig).forEach(key => {
             if (newServerConfig.hasOwnProperty(key)) {
@@ -26,8 +25,8 @@ function putServerConfigRoute(request, response) {
             }
         });
 
-        promise = fsAdapter
-            .writeJsonFile(path.join(__dirname, '../../../../config.json'), serverConfig)
+        promise = configProvider
+            .update(serverConfig)
             .then(() => response.send());
     } else {
         promise = response.status(HttpStatus.BAD_REQUEST).send({

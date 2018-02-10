@@ -1,6 +1,6 @@
 'use strict';
 
-const ConfigProvider = require('./config/configProvider');
+const configProvider = require('./config/configProvider');
 const PluginManager = require('./plugin/pluginManager');
 const storeProvider = require('./store/storeProvider');
 const ModuleProvider = require('./modules/moduleProvider');
@@ -8,20 +8,28 @@ const CommandPresetProvider = require('./command/commandPresetProvider');
 const InstanceConfigProvider = require('./instanceConfig/instanceConfigProvider');
 const InstanceManager = require('./instance/instanceManager');
 
-let serverState = {};
+/**
+ * @class
+ */
+class ServerState {
+    /**
+     * @constructor
+     * @struct
+     */
+    constructor() {
+        this.config = configProvider.config;
 
-serverState.configManager = new ConfigProvider();
-serverState.configManager.load();
+        this.pluginManager = new PluginManager();
+        this.pluginManager.loadPlugins();
 
-serverState.pluginManager = new PluginManager();
-serverState.pluginManager.loadPlugins();
+        storeProvider.load();
 
-storeProvider.load();
+        this.moduleProvider = new ModuleProvider();
+        this.commandPresetsProvider = new CommandPresetProvider();
 
-serverState.moduleProvider = new ModuleProvider();
-serverState.commandPresetsProvider = new CommandPresetProvider();
+        this.instanceConfigProvider = new InstanceConfigProvider();
+        this.instanceManager = new InstanceManager(this.instanceConfigProvider, this.pluginManager);
+    }
+}
 
-serverState.instanceConfigProvider = new InstanceConfigProvider();
-serverState.instanceManager = new InstanceManager(serverState.instanceConfigProvider, serverState.pluginManager);
-
-module.exports = serverState;
+module.exports = new ServerState();

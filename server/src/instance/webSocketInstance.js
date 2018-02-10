@@ -2,6 +2,8 @@
 
 const _ = require('underscore');
 const WebSocketServer = require('ws').Server;
+const https = require('https');
+const http = require('http');
 
 const Logger = require('../infrastructure/logger');
 const InstanceState = require('./instanceState');
@@ -10,6 +12,8 @@ const WebSocketConnection = require('./webSocketConnection');
 const WebSocketMessage = require('./webSocketMessage');
 const magic = require('../util/magicNumbers');
 const commandDispatcher = require('../command/commandDispatcher');
+const httpsServerOptionsProvider = require('../config/httpsServerOptionsProvider');
+const configProvider = require('../config/configProvider');
 
 /**
  * @constructor
@@ -29,7 +33,12 @@ function WebSocketInstance(pluginManager, id, port) {
      * WebSocketServer instance
      * @type {WebSocketServer}
      */
-    let server = null;
+    let webSocketServer = null;
+
+    /**
+     * @type {Server}
+     */
+    let webServer = null;
 
     /**
      * @type {Object<string, WebSocketConnection>}
@@ -128,17 +137,23 @@ function WebSocketInstance(pluginManager, id, port) {
     this.stop = function stop() {
         log.info('Stop WebSocketServer Instance', {name: self.name, state: self.state});
         try {
-            if (server && self.state === InstanceState.RUNNING) {
+            if (webSocketServer && self.state === InstanceState.RUNNING) {
                 self.state = InstanceState.STOPPING;
                 self.activePluginCount = 0;
 
                 commandDispatcher.unregisterAllWithContext(getOrCreatePluginContext());
                 stopAllPlugins();
-                server.close(() => {
-                    server = null;
-                });
 
-                self.state = InstanceState.STOPPED;
+                webSocketServer.close(() => {
+                    webSocketServer = null;
+
+                    if (webServer) {
+                        webServer.close(() => {
+                            webServer = null;
+                            self.state = InstanceState.STOPPED;
+                        });
+                    }
+                });
             }
         } catch (ex) {
             log.info('Could not stop instance, maybe instance is not running.', {error: ex.message, ex: ex, stack: ex.stack});
@@ -150,10 +165,17 @@ function WebSocketInstance(pluginManager, id, port) {
      * Start the web socket.
      */
     function startServer() {
-        log.info('Start WebSocket server instance.', {port: self.port});
-        server = new WebSocketServer({port: self.port});
-        server.on('connection', handleConnection);
-        server.on('error', handleError);
+        log.info('Start WebSocket server instance.', {port: self.port, useSecureConnection: configProvider.config.useSecureConnection});
+
+        if (configProvider.config.useSecureConnection) {
+            webServer = https.createServer(httpsServerOptionsProvider.options).listen(self.port);
+        } else {
+            webServer = http.createServer().listen(self.port);
+        }
+
+        webSocketServer = new WebSocketServer({server: webServer});
+        webSocketServer.on('connection', handleConnection);
+        webSocketServer.on('error', handleError);
     }
 
     /**
@@ -229,8 +251,8 @@ function WebSocketInstance(pluginManager, id, port) {
         log.debug('Register plugin commands', {plugin: plugin.name});
 
         if (plugin.module && plugin.module.commands) {
-            plugin.module.commands.forEach(config => {
-                commandDispatcher.register(config, context);
+            plugin.module.commands.forEach(pluginConfig => {
+                commandDispatcher.register(pluginConfig, context);
             });
         }
     }

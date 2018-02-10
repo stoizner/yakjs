@@ -1,5 +1,0 @@
-{
-    "httpPort": "8790",
-    "frontendFolder": "../ui/dist/",
-    "staticRoutes": []
-}

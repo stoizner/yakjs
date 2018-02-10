@@ -1,4 +1,3 @@
-const path = require('path');
 const proxyquire =  require('proxyquire');
 const HttpStatus = require('http-status-codes');
 
@@ -14,24 +13,14 @@ describe('putServerConfigRoute', function() {
      */
     let sut;
 
-    /**
-     * @type {!Object<string, string>}
-     */
-    let pkg;
-
     let request;
 
     let response;
 
     /**
-     * @type {FsAdapter}
+     * @type {!ConfigProvider}
      */
-    let fsAdapter;
-
-    /**
-     * @type {!Config}
-     */
-    let defaultConfig;
+    let configProvider;
 
     beforeEach(function() {
         // Setup stubs
@@ -46,20 +35,18 @@ describe('putServerConfigRoute', function() {
         };
         response.status = sinon.stub().returns(response);
 
-        fsAdapter = {
-            writeJsonFile: sinon.stub().resolves()
-        };
-
-        defaultConfig = {
-            port: '8790',
-            frontendFolder: '../ui/dist/',
-            staticRoutes: []
+        configProvider = {
+            config: {
+                port: '8790',
+                frontendFolder: '../ui/dist/',
+                staticRoutes: []
+            },
+            update: sinon.stub().resolves()
         };
 
         // Setup subject under test
         sut = proxyquire('../../../../server/src/routes/v1/config/putServerConfigRoute', {
-            '../../../adapter/fsAdapter': fsAdapter,
-            '../../../../config.json': defaultConfig
+            '../../../config/configProvider': configProvider
         });
     });
 
@@ -97,10 +84,10 @@ describe('putServerConfigRoute', function() {
 
             // Then
             return promise.then(() => {
-                let expectedConfig = Object.assign(defaultConfig, {
+                let expectedConfig = Object.assign(configProvider.config, {
                     port: '8080'
                 });
-                expect(fsAdapter.writeJsonFile).to.be.calledWith(path.join(__dirname, '../../../../server/config.json'), expectedConfig);
+                expect(configProvider.update).to.be.calledWith(expectedConfig);
             });
         });
 

@@ -1,6 +1,6 @@
 'use strict';
 
-const config = require('../../../../config');
+const configProvider = require('../../../config/configProvider');
 
 /**
  * @param request
@@ -8,7 +8,7 @@ const config = require('../../../../config');
  */
 function getServerConfigRoute(request, response) {
     let responseData = {
-        serverConfig: config
+        serverConfig: configProvider.config
     };
 
     response.send(responseData);
