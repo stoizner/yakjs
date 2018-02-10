@@ -51,7 +51,7 @@ function ModuleProvider() {
      * @returns {!Array<string>} List of all available modules.
      */
     this.getAllModuleNames = function getAllModuleNames() {
-        let moduleFilenames = fs.readdirSync('./modules');
+        let moduleFilenames = fs.readdirSync(MODULES_DIRECTORY);
         return moduleFilenames.map(filename => path.basename(filename, MODULE_EXTENSION));
     };
 
