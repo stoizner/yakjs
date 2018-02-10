@@ -2,10 +2,10 @@
     <div class="center-panel">
         <div class="app-bar-logo yakjs-logo-white"></div>
 
-        {{^versionCheck.isLatestReleaseInUse}}
+        {{#versionInfo.isNewVersionAvailable}}
             <div class="app-bar-bubble">
-                <a class="app-bar-bubble-text" href="{{versionCheck.latestRelease.html_url}}" target="_blank">A new version {{versionCheck.latestReleaseVersion}} is available.</a>
+                <p class="app-bar-bubble-text">A new version {{versionInfo.lastReleasedVersion}} is available.</p>
             </div>
-        {{/versionCheck.isLatestReleaseInUse}}
+        {{/versionInfo.isNewVersionAvailable}}
     </div>
 </div>

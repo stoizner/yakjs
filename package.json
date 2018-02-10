@@ -51,7 +51,9 @@
         "log4js": "^0.6.38",
         "minimist": "^1.2.0",
         "moment": "^2.18.1",
+        "semver": "^5.5.0",
         "underscore": "^1.8.3",
+        "util.promisify": "^1.0.0",
         "ws": "~2.3.1"
     },
     "engines": {

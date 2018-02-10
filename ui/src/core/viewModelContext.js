@@ -1,5 +1,4 @@
 var httpAdapter = require('./httpAdapter/httpAdapter');
-var VersionChecker = require('./versionChecker');
 
 /**
  * @constructor
@@ -17,11 +16,6 @@ function ViewModelContext(eventBus) {
      * @type {!cobu.EventBus}
      */
     this.eventBus = eventBus;
-
-    /**
-     * @type {!VersionChecker}
-     */
-    this.versionChecker = new VersionChecker();
 }
 
 module.exports = ViewModelContext;

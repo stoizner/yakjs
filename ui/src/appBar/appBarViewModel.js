@@ -12,19 +12,20 @@ function AppBarViewModel(context) {
     var self = this;
 
     /**
-     * @type {{lastCheckedAt: string, latestReleaseVersion: string, currentReleaseVersion: string, isLatestReleaseInUse: boolean, latestRelease: *}}
+     * See VersionInfo documentation at http://www.yakjs.com/api/package.html
+     * @type {Object}
      */
-    this.versionCheckResult = null;
+    this.versionInfo = null;
 
     /**
      * @type {Function}
      */
-    this.onVersionCheckResultChanged = _.noop;
+    this.onVersionInfoChanged = _.noop;
 
     function constructor() {
-        context.versionChecker.checkLatestRelease().then(function(versionCheckResult) {
-            self.versionCheckResult = versionCheckResult;
-            self.onVersionCheckResultChanged(versionCheckResult);
+        context.adapter.get('/version').then(versionInfo => {
+            self.versionInfo = versionInfo;
+            self.onVersionInfoChanged(versionInfo);
         });
     }
 
