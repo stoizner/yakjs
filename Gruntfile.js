@@ -83,13 +83,6 @@ module.exports = function grunt(grunt) {
 
     grunt.config.merge({
         watch: {
-            server: {
-                files: [serverDir + '**/*.js'],
-                tasks: ['compile-server'],
-                options: {
-                    spawn: false
-                }
-            },
             client: {
                 files: [uiDir + '**/*.*'],
                 tasks: ['compile-ui'],
