@@ -14,5 +14,6 @@ router.use(require('./package/router'));
 router.use(require('./plugins/router'));
 router.use(require('./storeItems/router'));
 router.use(require('./upload/router'));
+router.use(require('./config/router'));
 
 module.exports = router;

@@ -52,6 +52,11 @@ function ExpressServer(config) {
             console.debug('Serving YAKjs UI from', {rootPath});
             app.use(express.static(rootPath));
 
+            config.staticRoutes.forEach(route => {
+                console.debug('Serving custom static route', {route});
+                app.use('/' + route.name + '/', express.static(route.path));
+            });
+
             app.use(bodyParser.json({limit: '10MB'}));
 
             app.get('/scripts/yakjs-ui-config.js', getUIConfig);

@@ -1,4 +1,5 @@
 {
-    "httpPort": 8790,
-    "frontendFolder": "../ui/dist/"
+    "httpPort": "8790",
+    "frontendFolder": "../ui/dist/",
+    "staticRoutes": []
 }
