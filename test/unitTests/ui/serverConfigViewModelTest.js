@@ -40,7 +40,8 @@ describe('ServerConfigViewModel', function() {
                 let expectedBody = {
                     serverConfig: {
                         httpPort: '8080',
-                        staticRoutes: []
+                        staticRoutes: [],
+                        useSecureConnection: false
                     }
                 };
                 expect(context.adapter.put).to.be.calledWith('/config', expectedBody);
@@ -59,6 +60,7 @@ describe('ServerConfigViewModel', function() {
                 let expectedBody = {
                     serverConfig: {
                         httpPort: '8080',
+                        useSecureConnection: false,
                         staticRoutes: [{
                             name: 'foo',
                             path: '/var/www/foo'

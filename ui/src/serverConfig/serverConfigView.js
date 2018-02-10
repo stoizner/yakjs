@@ -28,14 +28,18 @@ function ServerConfigView(parent, context, viewModel) {
         findErrorMessageElement().hide();
         findHttpPortElement().val(viewModel.serverConfig.httpPort);
         findStaticRoutesElement().val(viewModel.serverConfig.staticRoutesText);
+        findUseSecureConnectionElement().attr('checked', viewModel.serverConfig.useSecureConnection);
     }
 
     function handleSaveCommand() {
         var httPort = findHttpPortElement().val();
         var staticRoutesText = findStaticRoutesElement().val();
 
+        var updateItem = new ServerConfigItem(httPort, staticRoutesText);
+        updateItem.useSecureConnection = Boolean(findUseSecureConnectionElement()[0].checked);
+
         viewModel
-            .update(new ServerConfigItem(httPort, staticRoutesText))
+            .update(updateItem)
             .catch(error => {
                 findErrorMessageElement().html(error.message).show();
             });
@@ -60,6 +64,13 @@ function ServerConfigView(parent, context, viewModel) {
      */
     function findStaticRoutesElement() {
         return parent.find('[data-element=staticRoutes]');
+    }
+
+    /**
+     * @returns {jQuery}
+     */
+    function findUseSecureConnectionElement() {
+        return parent.find('[data-element=useSecureConnection]');
     }
 
     constructor();

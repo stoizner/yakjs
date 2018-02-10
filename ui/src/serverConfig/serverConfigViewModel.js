@@ -35,7 +35,8 @@ function ServerConfigViewModel(context) {
     this.update = function update(serverConfigItem) {
         var serverConfig = {
             httpPort: serverConfigItem.httpPort,
-            staticRoutes: parse(serverConfigItem.staticRoutesText)
+            staticRoutes: parse(serverConfigItem.staticRoutesText),
+            useSecureConnection: serverConfigItem.useSecureConnection
         };
 
         return context
@@ -76,6 +77,7 @@ function ServerConfigViewModel(context) {
             response.serverConfig.httpPort,
             response.serverConfig.staticRoutes.map(route => route.name + '=' + route.path).join('\n')
         );
+        self.serverConfig.useSecureConnection = response.serverConfig.useSecureConnection;
         self.onServerConfigChanged(self.serverConfig);
     }
 }
