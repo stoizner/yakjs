@@ -11,7 +11,7 @@ function HttpAdapter() {
      */
     this.get = function get(url) {
         console.log('GET ' + url);
-        return sendHttpRequest('GET', url).then(logResponse).then(maybeJsonParse);
+        return sendHttpRequest('GET', url).then(maybeJsonParse);
     };
 
     /**
@@ -20,7 +20,7 @@ function HttpAdapter() {
      */
     this.deleteResource = function deleteResource(url) {
         console.log('DELETE ' + url);
-        return sendHttpRequest('DELETE', url).then(logResponse).then(maybeJsonParse);
+        return sendHttpRequest('DELETE', url).then(maybeJsonParse);
     };
 
     /**
@@ -30,7 +30,7 @@ function HttpAdapter() {
      */
     this.post = function post(url, request) {
         console.log('POST ' + url, {request: request});
-        return sendHttpRequest('POST', url, request).then(logResponse).then(maybeJsonParse);
+        return sendHttpRequest('POST', url, request).then(maybeJsonParse);
     };
 
     /**
@@ -40,19 +40,9 @@ function HttpAdapter() {
      */
     this.put = function post(url, request) {
         console.log('PUT ' + url, {request: request});
-        return sendHttpRequest('PUT', url, request).then(logResponse).then(maybeJsonParse);
+        return sendHttpRequest('PUT', url, request).then(maybeJsonParse);
     };
 
-    /**
-     * @param {T} response
-     * @template T
-     * @returns T
-     */
-    function logResponse(response) {
-        console.log('Response received', {response: response});
-
-        return response
-    }
     /**
      * @param {string} url
      * @param {string} type
