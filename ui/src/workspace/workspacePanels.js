@@ -28,6 +28,9 @@ var CommandDetailViewModel = require('../command/edit/commandDetailViewModel');
 var FileUploadView = require('../fileUpload/fileUploadView');
 var FileUploadViewModel = require('../fileUpload/fileUploadViewModel');
 
+var ServerConfigView = require('../serverConfig/serverConfigView');
+var ServerConfigViewModel = require('../serverConfig/serverConfigViewModel');
+
 var panels = {};
 
 register(InstanceListView, InstanceListViewModel);
@@ -41,6 +44,7 @@ register(ModuleDetailView, ModuleDetailViewModel);
 register(CommandListView, CommandListViewModel);
 register(CommandDetailView, CommandDetailViewModel);
 register(FileUploadView, FileUploadViewModel);
+register(ServerConfigView, ServerConfigViewModel);
 
 /**
  * @param {Function} View
