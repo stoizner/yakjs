@@ -1,0 +1,6 @@
+{
+    "httpPort": "8790",
+    "frontendFolder": "../ui/dist/",
+    "useSecureConnection": false,
+    "staticRoutes": []
+}
