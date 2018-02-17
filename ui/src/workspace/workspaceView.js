@@ -35,7 +35,8 @@ function WorkspaceView(parent, context, viewModel) {
 
         viewModel.onActiveViewChanged = createAndShowView;
         viewModel.onVersionChanged = initializeView;
-        viewModel.onIsOnlineChanged = handleIsOnlineChanged;
+        viewModel.onIsOnlineChanged = updateOfflineWarning;
+
         parent.bind('dragover', handleFileDragOver);
     }
 
@@ -46,6 +47,7 @@ function WorkspaceView(parent, context, viewModel) {
         navigation = new Navigation(parent.find('.navigation'));
         navigation.onNavigationChanged = handleNavigationChanged;
 
+        updateOfflineWarning(viewModel.isServerOnline);
         createAndShowView();
     }
 
@@ -100,7 +102,7 @@ function WorkspaceView(parent, context, viewModel) {
     /**
      * @param {boolean} isOnline
      */
-    function handleIsOnlineChanged(isOnline) {
+    function updateOfflineWarning(isOnline) {
         parent.find('[data-container=page]').toggle(isOnline);
         parent.find('[data-container=offlineWarning]').toggle(!isOnline);
     }

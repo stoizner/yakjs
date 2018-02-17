@@ -59,7 +59,7 @@ function WorkspaceViewModel(context) {
      */
     this.onIsOnlineChanged = _.noop;
 
-    var isYakjsOnline = false;
+    this.isServerOnline = true;
 
     function constructor() {
         context.eventBus.on(ShowViewCommand).register(handleShowViewCommand);
@@ -84,20 +84,21 @@ function WorkspaceViewModel(context) {
         context.adapter
             .get('/version')
             .then(function() {
-                if (!isYakjsOnline) {
-                    isYakjsOnline = true;
-                    self.onIsOnlineChanged(isYakjsOnline);
+                self.onIsOnlineChanged(self.isServerOnline);
+
+                if (!self.isServerOnline) {
                     self.onActiveViewChanged();
                 }
 
+                self.isServerOnline = true;
                 setTimeout(checkOnlineStatus, ONLINE_POLLING_TIMESPAN);
             })
             .catch(function() {
-                if (isYakjsOnline) {
-                    isYakjsOnline = false;
-                    self.onIsOnlineChanged(isYakjsOnline);
+                if (self.isServerOnline) {
+                    self.onIsOnlineChanged(self.isServerOnline);
                 }
 
+                self.isServerOnline = false;
                 setTimeout(checkOnlineStatus, OFFLINE_POLLING_TIMESPAN);
             });
     }
