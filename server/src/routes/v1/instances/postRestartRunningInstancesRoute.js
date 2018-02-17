@@ -12,20 +12,23 @@ const log = new Logger('postRestartRunningInstancesRoute');
  * @param response
  */
 function postRestartRunningInstancesRoute(request, response) {
-    try {
-        let instances = state.instanceManager.getInstances();
+    let instances = state.instanceManager.getInstances();
 
-        instances
+    Promise
+        .all(instances
             .filter(instance => instance.state === InstanceState.RUNNING)
-            .forEach(instance => {
-                instance.stop();
-                instance.start();
-            });
-    } catch (ex) {
-        response.status(HttpStatus.INTERNAL_SERVER_ERROR);
-        log.warn('Could not restart all running instances.');
-    }
-    response.send();
+            .map(instance => instance
+                .stop()
+                .then(instance.start)
+                .catch(() => {
+                    response.status(HttpStatus.INTERNAL_SERVER_ERROR);
+                    log.warn('Could not restart all running instances.');
+                })
+            )
+        )
+        .then(() => {
+            response.send();
+        });
 }
 
 module.exports = postRestartRunningInstancesRoute;
