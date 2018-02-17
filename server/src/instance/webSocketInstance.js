@@ -133,10 +133,11 @@ function WebSocketInstance(pluginManager, id, port) {
 
     /**
      * Stop server instance.
+     * @returns {!Promise}
      */
     this.stop = function stop() {
         log.info('Stop WebSocketServer Instance', {name: self.name, state: self.state});
-        try {
+        return new Promise(resolve => {
             if (webSocketServer && self.state === InstanceState.RUNNING) {
                 self.state = InstanceState.STOPPING;
                 self.activePluginCount = 0;
@@ -151,14 +152,17 @@ function WebSocketInstance(pluginManager, id, port) {
                         webServer.close(() => {
                             webServer = null;
                             self.state = InstanceState.STOPPED;
+                            resolve();
                         });
+                    } else {
+                        resolve();
                     }
                 });
             }
-        } catch (ex) {
-            log.info('Could not stop instance, maybe instance is not running.', {error: ex.message, ex: ex, stack: ex.stack});
+        }).catch(reason => {
+            log.info('Could not stop instance, maybe instance is not running.', {reason: reason, stack: reason.stack});
             self.state = InstanceState.STOPPED;
-        }
+        });
     };
 
     /**

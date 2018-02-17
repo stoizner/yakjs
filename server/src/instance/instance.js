@@ -25,6 +25,7 @@ function Instance() {
 
     /**
      * Stop instance.
+     * @returns {!Promise}
      */
     this.stop = function stop() {};
 

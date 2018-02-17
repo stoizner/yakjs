@@ -143,16 +143,22 @@ function InstanceManager(configProvider, pluginManager) {
     /**
      * Stop an instance entity.
      * @param {string} id The ID of the instance.
+     * @returns {!Promise}
      */
     this.stop = function stop(id) {
+        let promise;
         log.info('Stop instance', {instance: id});
 
         let instance = instances[id];
 
         if (instance) {
-            instance.stop();
+            promise = instance.stop();
             updateAutoStartEnabledConfig(id, false);
+        } else {
+            promise = Promise.reject();
         }
+
+        return promise;
     };
 
     /**
