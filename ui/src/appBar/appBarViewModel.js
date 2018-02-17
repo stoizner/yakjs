@@ -1,3 +1,5 @@
+const serverStatusProvider = require('../core/serverStatusProvider');
+
 /**
  * @constructor
  * @struct
@@ -12,21 +14,11 @@ function AppBarViewModel(context) {
     var self = this;
 
     /**
-     * See VersionInfo documentation at http://www.yakjs.com/api/package.html
-     * @type {Object}
+     * @type {!Subject<Object>}
      */
-    this.versionInfo = null;
-
-    /**
-     * @type {Function}
-     */
-    this.onVersionInfoChanged = _.noop;
+    this.versionInfo = serverStatusProvider.versionInfo;
 
     function constructor() {
-        context.adapter.get('/version').then(versionInfo => {
-            self.versionInfo = versionInfo;
-            self.onVersionInfoChanged(versionInfo);
-        });
     }
 
     constructor();

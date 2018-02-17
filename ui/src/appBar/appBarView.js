@@ -14,14 +14,14 @@ function AppBarView(parent, context, viewModel) {
     var template = context.template.load('appBar');
 
     function constructor() {
-        viewModel.onVersionInfoChanged = updateAppBar;
-        updateAppBar();
+        viewModel.versionInfo.subscribeAndInvoke(updateAppBar);
     }
 
-    function updateAppBar() {
-        parent.html(template.build({
-            versionInfo: viewModel.versionInfo
-        }));
+    /**
+     * @param {Object} versionInfo
+     */
+    function updateAppBar(versionInfo) {
+        parent.html(template.build({versionInfo}));
     }
 
     constructor();

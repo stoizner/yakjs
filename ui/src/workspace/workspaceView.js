@@ -34,8 +34,7 @@ function WorkspaceView(parent, context, viewModel) {
         initializeView();
 
         viewModel.onActiveViewChanged = createAndShowView;
-        viewModel.onVersionChanged = initializeView;
-        viewModel.onIsOnlineChanged = updateOfflineWarning;
+        viewModel.isServerOnline.subscribeAndInvoke(updateOfflineWarning);
 
         parent.bind('dragover', handleFileDragOver);
     }
@@ -47,7 +46,6 @@ function WorkspaceView(parent, context, viewModel) {
         navigation = new Navigation(parent.find('.navigation'));
         navigation.onNavigationChanged = handleNavigationChanged;
 
-        updateOfflineWarning(viewModel.isServerOnline);
         createAndShowView();
     }
 

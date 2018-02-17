@@ -1,0 +1,31 @@
+.badge {
+    display: inline-block;
+    height: 24px;
+    margin: 0 5px 0 0;
+    background-color: @color-blue-grey-900;
+    line-height: 24px;
+    font-size: 11px;
+    color: white;
+    text-decoration: none;
+}
+
+.badge-label {
+    display: inline-block;
+    min-width: 50px;
+    padding: 0 8px;
+    text-align: center;
+}
+
+.badge-value {
+    display: inline-block;
+    background-color: @color-teal-500;
+    min-width: 50px;
+    padding: 0 8px;
+    text-align: center;
+}
+
+.badge-value-highlight {
+    .badge-value;
+    background-color: @color-lime;
+    color: @color-blue-grey-900;
+}

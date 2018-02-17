@@ -5,11 +5,8 @@
 }
 
 .app-bar-logo {
-    position: absolute;
-    bottom: 0;
     height: 65px;
-    left: 0;
-    width: 300px;
+    width: 250px;
 }
 
 .app-bar-logo-stars-icon {
@@ -66,29 +63,27 @@
     }
 }
 
-.app-bar-bubble {
-    position: absolute;
-    right: 10px;
-    top: 20px;
-}
-
 .app-bar-bubble-text {
     .no-select;
-    display: block;
-    margin: 5px 0 10px 50px;
+    display: inline-block;
     line-height: 20px;
     padding: 5px 10px;
     border-radius: 20px;
     border: solid 2px white;
     min-width: 80px;
     color: white;
-    font-size: 15px;
-    font-family: "Roboto", sans-serif;
     cursor: pointer;
     text-decoration: none;
+    white-space: nowrap;
 }
 
 .app-bar-bubble-text:hover {
     background-color: white;
     color: @color-blue-grey-300;
+}
+
+.app-bar-badges {
+    margin-top: @line-height;
+    text-align: right;
+    white-space: nowrap;
 }
