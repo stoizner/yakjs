@@ -1,0 +1,35 @@
+@toggle-button-height: 20px;
+
+.toggle-button {
+    background: @color-blue-grey-900;
+    border-radius: @toggle-button-height / 2;
+    padding: 2px;
+    transition: all .2s ease;
+    outline: 0;
+    display: inline-block;
+    width: 2 * @toggle-button-height;
+    height: @toggle-button-height;
+    position: relative;
+    cursor: pointer;
+    user-select: none;
+
+    &:after {
+        left: 0;
+        border-radius: @toggle-button-height / 2;
+        background: #ffffff;
+        transition: all .2s ease;
+        position: relative;
+        display: block;
+        content: "";
+        width: (@toggle-button-height) - 4px;
+        height: (@toggle-button-height) - 4px;
+    }
+
+    &[data-is-active="true"] {
+        background: @color-lime;
+    }
+
+    &[data-is-active="true"]:after {
+        left: @toggle-button-height;
+    }
+}

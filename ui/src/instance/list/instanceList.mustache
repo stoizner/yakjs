@@ -1,4 +1,4 @@
-<div class="header-panel">
+<div class="header-panel instance-list">
     <header class="header-panel-header">
         <div class="tool-bar-block">
             <div class="tool-bar-block-line">
@@ -24,16 +24,12 @@
                                 <li class="list-item clickable" data-id="{{id}}" data-state="{{state}}">
                                     <div class="list-item-icon icon-instance" title="{{state}} {{stateTooltipText}}"></div>
                                     <div class="list-item-cell">
-                                        <button
-                                            class="list-inline-button list-inline-button-green {{#isStarted}}list-inline-button-active{{/isStarted}}"
-                                            data-element="startButton"
-                                            title="Starts the instance and runs it on port {{port}}. Other instances using the same port will be stopped.">START</button>
-                                    </div>
-                                    <div class="list-item-cell">
-                                        <button
-                                            class="list-inline-button list-inline-button-red {{^isStarted}}list-inline-button-active{{/isStarted}}"
-                                            data-element="stopButton"
-                                            title="Stops the instance and runs it on port {{port}}.">STOP</button>
+                                        <div class="toggle-button"
+                                             data-element="startStopButton"
+                                             data-is-active="{{isStarted}}"
+                                             {{#isStarted}}title="Stops the instance."{{/isStarted}}
+                                             {{^isStarted}}title="Starts the instance and runs it on port {{port}}. Other instances using the same port will be stopped."{{/isStarted}}>
+                                        </div>
                                     </div>
 
                                     <div style="width: 50px" class="list-item-cell text-line-block">

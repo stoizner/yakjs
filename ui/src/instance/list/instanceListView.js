@@ -25,17 +25,17 @@ function InstanceListView(parent, context, viewModel) {
 
     function constructor() {
         viewModel.onItemsChanged = createList;
-        createList();
     }
 
     /**
      * Create the instance list.
      */
     function createList() {
+        parent.empty();
         parent.html(template.build({instances: viewModel.items}));
 
         itemList = parent.find('[data-element=instanceList]');
-        itemList.click(handleListClick);
+        itemList.on('click', handleListClick);
 
         parent.find('[data-element=create]').click(function() { viewModel.activateInstanceEditPanel(); });
         parent.find('[data-element=restart]').click(function() { viewModel.restartAllInstances(); });
@@ -49,19 +49,23 @@ function InstanceListView(parent, context, viewModel) {
         var clickTarget = $(event.target);
         var listItemElement = clickTarget.closest('[data-id]');
         var instanceId = listItemElement.attr('data-id');
-        var elementName = clickTarget.attr('data-element');
+        var outerStartStopButton = clickTarget.closest('[data-element=startStopButton]');
+        var innerStartStopButton = clickTarget.find('[data-element=startStopButton]');
 
-        var handlers = {
-            startButton: viewModel.startInstance,
-            stopButton: viewModel.stopInstance
-        };
+        var startStopButton = $(outerStartStopButton[0] || innerStartStopButton[0]);
 
-        if (instanceId) {
-            if (handlers[elementName]) {
-                handlers[elementName](instanceId);
+        if (startStopButton.length > 0) {
+            var isActive = startStopButton.attr('data-is-active') === 'true';
+            console.log('Start/Stop button clicked', {isChecked: isActive});
+            if (isActive) {
+                startStopButton.attr('data-is-active', 'false');
+                viewModel.stopInstance(instanceId);
             } else {
-                viewModel.activateInstanceEditPanel(instanceId);
+                startStopButton.attr('data-is-active', 'true');
+                viewModel.startInstance(instanceId);
             }
+        } else {
+            viewModel.activateInstanceEditPanel(instanceId);
         }
     }
 

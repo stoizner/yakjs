@@ -2,6 +2,7 @@ var InstanceInfoItem = require('./instanceInfoItem');
 var InstanceView = require('../edit/instanceView');
 var nameCompare = require('../../core/nameComparer');
 var ShowViewCommand = require('../../workspace/showViewCommand');
+var delay = require('../../core/promise/delay');
 
 /**
  * @constructor
@@ -43,7 +44,7 @@ function InstanceListViewModel(context) {
      * @param {string} id
      */
     this.startInstance = function startInstance(id) {
-        context.adapter.post('/instances/' + id + '/start').then(self.reload);
+        context.adapter.post('/instances/' + id + '/start').then(delay()).then(self.reload);
     };
 
     /**
@@ -58,12 +59,12 @@ function InstanceListViewModel(context) {
      * @param {string} id
      */
     this.stopInstance = function stopInstance(id) {
-        context.adapter.post('/instances/' + id + '/stop').then(self.reload);
+        context.adapter.post('/instances/' + id + '/stop').then(delay()).then(self.reload);
     };
 
     /**
      * Show and activate the instance edit panel.
-     * @param {string} instanceId
+     * @param {?string} instanceId
      */
     this.activateInstanceEditPanel = function activateInstanceEditPanel(instanceId) {
         var contextItem = _.findWhere(self.items, { id: instanceId});
