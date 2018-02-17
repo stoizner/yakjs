@@ -7,9 +7,9 @@ function InstanceDetailsItem() {
 
     /**
      * ID of the instance
-     * @type {string}
+     * @type {?string}
      */
-    this.id = '';
+    this.id = null;
 
     /**
      * Name of the instance

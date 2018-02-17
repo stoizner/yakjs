@@ -50,7 +50,7 @@ function InstanceViewModel(context) {
             self.instanceDetailsItem.plugins = data.plugins.map(pluginName => new PluginItem(pluginName, '', true)).sort(nameComparer);
             self.instanceDetailsItem.filteredPlugins = self.instanceDetailsItem.plugins
         } else {
-            self.instanceDetailsItem = null;
+            self.instanceDetailsItem = new InstanceDetailsItem();
         }
 
         self.onInstanceDetailsItemChanged();
@@ -104,14 +104,22 @@ function InstanceViewModel(context) {
             }
         };
 
-        let apiUrl = '/instances/config';
+        let requestPromise;
+        let apiUrl;
 
-        if (self.instanceDetailsItem) {
+        if (self.instanceDetailsItem.id) {
+            // Update instance API URL.
             apiUrl = '/instances/' + self.instanceDetailsItem.id + '/config';
+
+            requestPromise = context.adapter.put(apiUrl, request);
+        } else {
+            // Create instance API URL.
+            apiUrl = '/instances/config';
+
+            requestPromise = context.adapter.post(apiUrl, request);
         }
 
-        context.adapter
-            .put(apiUrl, request)
+        requestPromise
             .then(showList)
             .catch(showErrorResponse);
     };
