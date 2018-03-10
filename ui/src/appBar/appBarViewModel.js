@@ -9,19 +9,9 @@ function AppBarViewModel(context) {
     'use strict';
 
     /**
-     * @type {AppBarViewModel}
-     */
-    var self = this;
-
-    /**
      * @type {!Subject<Object>}
      */
     this.versionInfo = serverStatusProvider.versionInfo;
-
-    function constructor() {
-    }
-
-    constructor();
 }
 
 module.exports = AppBarViewModel;

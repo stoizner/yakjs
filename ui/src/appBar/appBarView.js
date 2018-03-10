@@ -11,7 +11,7 @@ function AppBarView(parent, context, viewModel) {
     /**
      * @type {Template}
      */
-    var template = context.template.load('appBar');
+    const template = context.template.load('appBar');
 
     function constructor() {
         viewModel.versionInfo.subscribeAndInvoke(updateAppBar);
