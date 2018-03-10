@@ -1,3 +1,5 @@
+var StoreNodeItemType = require('./storeNodeItemType');
+
 /**
  * @constructor
  * @struct

@@ -2,7 +2,7 @@
  * @constructor
  * @enum {string}
  */
-StoreNodeItemType = {
+var StoreNodeItemType = {
     GROUP: 'group',
     ITEM: 'item'
 };
