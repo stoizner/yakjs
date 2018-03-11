@@ -1,11 +1,13 @@
 @import "../common";
 
+@badge-height: 24px;
+
 .badge {
-    display: inline-block;
-    height: 24px;
+    display: inline-flex;
+    height: @badge-height;
     margin: 0 5px 0 0;
     background-color: @color-blue-grey-900;
-    line-height: 24px;
+    line-height: @badge-height;
     font-size: 11px;
     color: white;
     text-decoration: none;
@@ -16,6 +18,12 @@
     min-width: 50px;
     padding: 0 8px;
     text-align: center;
+}
+
+.badge-icon {
+    display: inline-block;
+    width: @badge-height;
+    height: @badge-height;
 }
 
 .badge-value {
