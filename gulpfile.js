@@ -10,6 +10,8 @@ const mocha = require('gulp-mocha');
 const less = require('gulp-less');
 const concat = require('gulp-concat');
 const rename = require('gulp-rename');
+const svgo = require('gulp-svgo');
+const lessImport = require('gulp-less-import');
 const webpack = require('webpack');
 const webpackStream = require('webpack-stream');
 
@@ -55,14 +57,14 @@ function copyScripts() {
 
 function copyFonts() {
     return gulp.src([
-        './ui/src/style/icons/**/*'
-    ]).pipe(gulp.dest(uiDistPath + 'style/icons/'));
+        './ui/src/style/fonts/**/*'
+    ]).pipe(gulp.dest(uiDistPath + 'style/fonts/'));
 }
 
 function copyIcons() {
     return gulp.src([
-        './ui/src/style/fonts/**/*'
-    ]).pipe(gulp.dest(uiDistPath + 'style/fonts/'));
+        './ui/src/style/icons/**/*'
+    ]).pipe(gulp.dest(uiDistPath + 'style/icons/'));
 }
 
 function copyStaticAssets() {
@@ -84,6 +86,7 @@ function createCss() {
     return gulp.src([
         './ui/src/**/*.less'
     ])
+        .pipe(lessImport('yakjs-style.less'))
         .pipe(less({
             paths: [path.join(__dirname, 'less', 'includes') ]
         }))
@@ -125,6 +128,14 @@ function watch() {
     gulp.watch('./ui/src/**/*.less', gulp.series(createCss));
     gulp.watch('./ui/src/**/*.mustache', gulp.series(bundleTemplates, renderIndexHtml));
     gulp.watch('./ui/src/**/*.js', gulp.series(bundleJs));
+    gulp.watch('./ui/src/**/*.js', gulp.series(bundleJs));
+    gulp.watch('./ui/src/style/icons/**/*', gulp.series(copyIcons));
+}
+
+function optimzeSvg() {
+    return gulp.src('./ui/src/style/icons/**/*.svg', {base: './'})
+        .pipe(svgo())
+        .pipe(gulp.dest('./'))
 }
 
 const buildServer = gulp.series(lint, test);
@@ -135,7 +146,11 @@ const buildUserInterface = gulp.series(clean, copyFiles, createCss, bundleJs, bu
 const buildAll = gulp.series(buildServer, buildUserInterface);
 const buildDev = gulp.series(buildServer, buildUserInterface, watch);
 
+// Tools
+gulp.task('svgo', optimzeSvg);
+
+// Development Tasks
 gulp.task('server', buildServer);
 gulp.task('ui', buildUserInterface);
-gulp.task('default', buildAll);
 gulp.task('dev', buildDev);
+gulp.task('default', buildAll);
