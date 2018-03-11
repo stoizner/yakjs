@@ -21,14 +21,14 @@
 
                     <div class="header-panel">
                         <header class="header-panel-header">
-                            <section data-section="drop" class="frame-block">
+                            <section data-element="drop" class="frame-block">
                                 <div class="drop-block" title="Drop files here for upload *.instance.json, *.plugin.js, *.store.txt">
                                     <div class="drop-block-icon"></div>
                                     <div class="drop-block-text">Drop files here for upload. Supported types: *.instance.json, *.plugin.js, *.store.txt, *.cp.json</div>
                                 </div>
                             </section>
 
-                            <section data-section="progress" class="frame-block">
+                            <section data-element="progress" class="frame-block">
                                 <div class="progress-block">
                                     <div class="progress-block-progress" style="width: 0"></div>
                                     <div class="progress-block-text">0%</div>
@@ -37,7 +37,12 @@
                         </header>
                         <div class="header-panel-body">
                             <div class="scroll-panel">
-                                <div data-container="report"></div>
+                                <div data-element="errorMessage">
+                                    <div class="frame-block">
+                                        <div class="line-block warning-text" data-element="errorMessageText"></div>
+                                    </div>
+                                </div>
+                                <div data-element="report"></div>
                             </div>
                         </div>
                     </div>

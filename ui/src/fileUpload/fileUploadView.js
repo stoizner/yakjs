@@ -32,13 +32,20 @@ function FileUploadView(parent, context, viewModel) {
      */
     var progressSection;
 
+    /**
+     * @type {jQuery}
+     */
+    var reportContainer;
+
     function constructor() {
         parent.html(template.build());
 
         fileDropZone = parent.find('.drop-block');
         progressBar = parent.find('.progress-block');
-        progressSection = parent.find('[data-section=progress]');
+        progressSection = parent.find('[data-element=progress]');
         progressSection.hide();
+
+        reportContainer = parent.find('[data-element=report]');
 
         fileDropZone.bind('drop', handleFileDrop);
         fileDropZone.bind('dragover', handleFileDragOver);
@@ -46,6 +53,7 @@ function FileUploadView(parent, context, viewModel) {
 
         parent.find('[data-element=choose]').click(handleChooseCommand);
         parent.find('[name=fileInput]').change(handleFileInputChange);
+        hideErrorMessage();
 
         viewModel.onFileUploadItemsChanged = updateUploadProgress;
         viewModel.onFileUploadCompleted = handleFileUploadCompleted;
@@ -73,8 +81,6 @@ function FileUploadView(parent, context, viewModel) {
         } else {
             progressBar.attr('data-status', 'error');
         }
-
-        var reportContainer = parent.find('[data-container]');
 
         var context = {
             items: fileUploadItems,
@@ -106,6 +112,7 @@ function FileUploadView(parent, context, viewModel) {
      * @param {jQuery.Event} event
      */
     function handleFileDragOver(event) {
+        hideErrorMessage();
         event.stopPropagation();
         event.preventDefault();
         event.originalEvent.dataTransfer.dropEffect = 'copy';
@@ -131,7 +138,12 @@ function FileUploadView(parent, context, viewModel) {
         event.preventDefault();
 
         var files = event.originalEvent.target.files || event.originalEvent.dataTransfer.files;
-        uploadFiles(files);
+
+        if (files && files.length && files[0].type) {
+            uploadFiles(files);
+        } else {
+            showErrorMessage('Please drag and drop only files that are not empty.');
+        }
     }
 
     /**
@@ -141,6 +153,21 @@ function FileUploadView(parent, context, viewModel) {
         progressSection.show();
         progressBar.attr('data-status', '');
         viewModel.uploadFiles(files);
+    }
+
+    /**
+     * Displays an error message.
+     * @param {string} message
+     */
+    function showErrorMessage(message) {
+        progressSection.hide();
+        reportContainer.empty();
+        parent.find('[data-element=errorMessage]').show();
+        parent.find('[data-element=errorMessageText]').html(message);
+    }
+
+    function hideErrorMessage() {
+        parent.find('[data-element=errorMessage]').hide();
     }
 
     constructor();
