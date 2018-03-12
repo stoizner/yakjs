@@ -10,7 +10,7 @@ const fileExtension = require('../infrastructure/fileExtension');
 /**
  * @type {string}
  */
-const COMMAND_PRESETS_DIRECTORY = './commandPresets/';
+const COMMAND_PRESETS_DIRECTORY = path.join(__dirname, '../../commandPresets/');
 
 if (!fs.existsSync(COMMAND_PRESETS_DIRECTORY)) {
     fs.mkdirSync(COMMAND_PRESETS_DIRECTORY);
