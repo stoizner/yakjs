@@ -1,0 +1,9 @@
+{
+    "name": "broadcast",
+    "displayName": "",
+    "groupName": null,
+    "commandName": "broadcast",
+    "commandData": {
+        "message": "foo"
+    }
+}
