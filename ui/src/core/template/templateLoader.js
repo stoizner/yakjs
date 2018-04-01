@@ -11,6 +11,7 @@ function TemplateLoader(mustache) {
     /**
      * Load a template by Name
      * @param {string} templateName
+     * @returns {!Template}
      */
     this.load = function load(templateName) {
         var templateId = 'mustache-' + templateName.toLowerCase();
