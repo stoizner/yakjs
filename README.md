@@ -28,8 +28,3 @@ This will start YAKjs using default port `8790`.
 ### Open the YAKjs User Interface
 
 Open the YKAjs user interface at [**http://localhost:8790**](http://localhost:8790)
-
-### Alternative install via download
-
-Download the complete zip package with the **[latest release here](https://github.com/cschuller/yakjs/releases)**.
-Run the startup script  ```> yakjs.bat ```
