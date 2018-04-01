@@ -5,7 +5,8 @@
     "plugins": [
         "analytics",
         "broadcast",
-        "echo"
+        "echo",
+        "pingPong"
     ],
     "autoStartEnabled": true,
     "id": "chat"
