@@ -1,4 +1,4 @@
-var nameCompare = require('../../core/nameComparer');
+var compareName = require('../../core/compare/compareName');
 
 /**
  * @constructor
@@ -61,7 +61,7 @@ function PluginListView(parent, context, viewModel) {
         var html = '';
         var itemContainer = parent.find('.plugin-items');
 
-        viewModel.items.sort(nameCompare);
+        viewModel.items.sort(compareName);
 
         _.each(viewModel.items, function createListItem(item) {
             html += itemTemplate.build(item);

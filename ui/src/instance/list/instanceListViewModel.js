@@ -1,6 +1,6 @@
 var InstanceInfoItem = require('./instanceInfoItem');
 var InstanceView = require('../edit/instanceView');
-var nameCompare = require('../../core/nameComparer');
+var compareName = require('../../core/compare/compareName');
 var ShowViewCommand = require('../../workspace/showViewCommand');
 var delay = require('../../core/promise/delay');
 
@@ -82,7 +82,7 @@ function InstanceListViewModel(context) {
         console.log('handleGetInstancesResponse', {response: response});
 
         self.items = response.instances.map(toInstanceItem);
-        self.items = self.items.sort(nameCompare);
+        self.items = self.items.sort(compareName);
 
         self.onItemsChanged();
     }

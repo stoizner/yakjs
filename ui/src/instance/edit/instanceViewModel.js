@@ -4,7 +4,7 @@ const InstanceDetailsItem = require('./instanceDetailsItem');
 const PluginItem = require('./pluginItem');
 const ShowViewCommand = require('../../workspace/showViewCommand');
 const InstanceListView = require('../list/instanceListView');
-const nameComparer = require('../../core/nameComparer');
+const compareName = require('../../core/compare/compareName');
 
 /**
  * @constructor
@@ -47,7 +47,7 @@ function InstanceViewModel(context) {
             self.instanceDetailsItem.description = data.description;
             self.instanceDetailsItem.name = data.name;
             self.instanceDetailsItem.port = data.port;
-            self.instanceDetailsItem.plugins = data.plugins.map(pluginName => new PluginItem(pluginName, '', true)).sort(nameComparer);
+            self.instanceDetailsItem.plugins = data.plugins.map(pluginName => new PluginItem(pluginName, '', true)).sort(compareName);
             self.instanceDetailsItem.filteredPlugins = self.instanceDetailsItem.plugins
         } else {
             self.instanceDetailsItem = new InstanceDetailsItem();
@@ -85,7 +85,7 @@ function InstanceViewModel(context) {
             return item;
         });
 
-        self.instanceDetailsItem.plugins.sort(nameComparer);
+        self.instanceDetailsItem.plugins.sort(compareName);
         self.instanceDetailsItem.filteredPlugins = self.instanceDetailsItem.plugins;
     }
 
