@@ -67,10 +67,12 @@ function execute(commandName, data) {
     var commands = getCommands(commandName);
 
     var promises = commands.map(command => {
-        var commandPromise = Promise.resolve();
+        var commandPromise;
 
         if (command.config.execute && command.context) {
             commandPromise = command.config.execute(data, command.context, command.config) || Promise.resolve();
+        } else {
+            commandPromise = Promise.resolve();
         }
 
         return commandPromise;
