@@ -1,4 +1,4 @@
-# ![YAKjs logo](http://www.yakjs.com/asset/yakjs-logo-64.svg)&nbsp;YAKjs
+# ![YAKjs logo](http://www.yakjs.com/asset/yakjs-logo-dark.svg)
 [![GitHub version](https://img.shields.io/github/tag/cschuller/yak-js.svg?style=flat-square)](https://github.com/cschuller/yakjs)
 [![npm](https://img.shields.io/npm/v/yakjs.svg?style=flat-square)](https://www.npmjs.com/package/yakjs)
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://raw.githubusercontent.com/cschuller/yakjs/master/LICENSE)
