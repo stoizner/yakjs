@@ -19,7 +19,7 @@
 
                         <div class="frame-block">
                             <label class="input-label">Port</label>
-                            <div class="light-text">The YAKjs port (default: 8790). Requires a server restart.</div>
+                            <div class="light-text">The YAKjs port (default: 8790). Requires a YAKjs restart.</div>
                             <input type="text" class="input-text" data-element="httpPort"/>
 
                             <label class="input-label">Use Secure Connection (SSL)</label>
@@ -27,7 +27,7 @@
                                 YAKjs and all WebSocket instances will use secure connections (SSL) with integrated certificate.
                                 Then the user interface will be available at https://localhost.yakjs.com:8790/ and all WebSocket instances at wss://localhost.yakjs.com:9020/
                                 YAKjs is a testing and prototyping tool, the integrated certificate was signed for localhost.yakjs.com with a private key that is public.
-                                Please do not use YAKjs for sensitive information or use your own certificates.
+                                Please do not use YAKjs for sensitive information or use your own certificates. Requires a YAKjs restart.
                             </div>
                             <input type="checkbox" class="input-checkbox" name="useSecureConnection" data-element="useSecureConnection"/>
                             <label for="useSecureConnection">Use HTTPS / WSS (Secure Connection)</label>
@@ -36,7 +36,7 @@
                             <div class="light-text">
                                 A list of static content routes that will be routed by YAKjs. Use &lt;NAME&gt;=&lt;PATH&gt;.
                                 The name shall be URL safe and use an absolute path to a local folder.
-                                Then the folder will be available at localhost:8790/&lt;NAME&gt;/. Requires a server restart.
+                                Then the folder will be available at localhost:8790/&lt;NAME&gt;/. Requires a YAKjs restart.
                             </div>
                             <textarea class="input-text-area" data-element="staticRoutes"></textarea>
                         </div>
