@@ -2,7 +2,8 @@
  * @constructor
  * @struct
  * @param {Function} View The View to show.
- * @param {string|Object} [data]
+ * @param {string|T} [data]
+ * @template T
  */
 function ShowViewCommand(View, data) {
     'use strict';
@@ -18,7 +19,7 @@ function ShowViewCommand(View, data) {
     this.ViewConstructor = View;
 
     /**
-     * @type {string|Object}
+     * @type {string|T}
      */
     this.data = data || null;
 }
