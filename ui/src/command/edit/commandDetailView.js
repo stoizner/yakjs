@@ -1,36 +1,42 @@
 /* global CodeMirror:false */
 
-var CommandListItem = require('../list/commandListItem');
+var CommandDetailsItem = require('./commandDetailsItem');
 
 /**
  * @constructor
  * @struct
- * @param {jQuery} parent
- * @param {ViewContext} context
- * @param {CommandDetailViewModel} viewModel
+ * @param {!jQuery} parent
+ * @param {!ViewContext} context
+ * @param {!CommandDetailViewModel} viewModel
  */
 function CommandDetailView(parent, context, viewModel) {
     'use strict';
+
     /**
      * @type {CodeMirror}
      */
     var codeEditor = null;
 
     /**
-     * @type {Template}
+     * @type {!Template}
      */
     var template = context.template.load('commandDetailView');
 
-    function constructor() {
-        updateView();
+    /**
+     * @type {!Template}
+     */
+    var selectableListItemTemplate = context.template.load('selectableListItem');
 
-        viewModel.onItemChanged = updateView;
+    function constructor() {
+        viewModel.item.subscribeAndInvoke(updateView);
+        viewModel.commandItems.subscribeAndInvoke(updatePluginAndCommandList);
+        viewModel.pluginItems.subscribeAndInvoke(updatePluginAndCommandList);
     }
 
     function updateView() {
         parent.html(template.build(viewModel));
 
-        codeEditor = new CodeMirror(parent.find('[data-element=storeValueEditor]')[0], {
+        codeEditor = new CodeMirror(parent.find('[data-element=jsonEditor]')[0], {
             value:  '',
             mode:  {name: "javascript", json: true},
             lineNumbers: false,
@@ -38,10 +44,9 @@ function CommandDetailView(parent, context, viewModel) {
         });
 
         parent.find('[data-element=save]').click(save);
-        parent.find('[data-element=saveAndRun]').click(saveAndRun);
         parent.find('[data-element=run]').click(run);
-        parent.find('[data-element=saveNew]').click(saveNew);
         parent.find('[data-element=create]').click(save);
+        parent.find('[data-element=copy]').click(() => viewModel.copy());
         parent.find('[data-element=deleteButton]').click(handleDeleteCommand);
         parent.find('[data-element=cancelButton]').click(handleCancelCommand);
 
@@ -52,16 +57,27 @@ function CommandDetailView(parent, context, viewModel) {
 
         parent.find('[data-element=useGroupButton]').click(useGroupName);
 
-        if (viewModel.item) {
-            codeEditor.setValue(viewModel.item.commandData || viewModel.item.exampleData);
+        if (viewModel.item.value) {
+            codeEditor.setValue(viewModel.item.value.commandData || '');
         }
+
+        parent.find('[data-element=pluginList]').change(event => {
+            viewModel.selectPlugin($(event.target).val());
+        });
 
         minimizeCodeEditor();
     }
 
+    function updatePluginAndCommandList() {
+        var pluginList = parent.find('[data-element=pluginList]');
+        pluginList.html(viewModel.pluginItems.value.map(selectableListItemTemplate.build));
+
+        var commandList = parent.find('[data-element=commandList]');
+        commandList.html(viewModel.commandItems.value.map(selectableListItemTemplate.build));
+    }
+
     /**
-     * Activate view
-     * @param {string|object} [data]
+     * @type {function(string)}
      */
     this.activate = viewModel.activate;
 
@@ -69,32 +85,18 @@ function CommandDetailView(parent, context, viewModel) {
         viewModel.saveOrUpdate(getItemFromDom()).then(viewModel.showCommandListView);
     }
 
-    function saveAndRun() {
-        viewModel.saveOrUpdate(getItemFromDom()).then(viewModel.runPreset);
-    }
-
     function run() {
         var commandData = codeEditor.getValue();
         viewModel.runCommand(commandData);
     }
 
-    function saveNew() {
-        var item = getItemFromDom();
-        item.originalCommandPresetName = null;
-
-        viewModel.saveOrUpdate(item).then(viewModel.showCommandListView);
-    }
-
     function getItemFromDom() {
         var presetFullName = parseGroupPresetName(parent.find('[name=commandPresetName]').val());
+        var item = new CommandDetailsItem(presetFullName.presetName);
 
-        var item = new CommandListItem();
-        item.isPreset = true;
-        item.originalCommandPresetName = viewModel.item.originalCommandPresetName;
-        item.commandPresetName = presetFullName.presetName;
         item.groupName = presetFullName.groupName;
         item.displayName = parent.find('[name=displayName]').val();
-        item.commandName = viewModel.item.commandName;
+        item.commandName = parent.find('[data-element=commandList]').val();
         item.commandData = codeEditor.getValue();
 
         return item;
@@ -145,9 +147,6 @@ function CommandDetailView(parent, context, viewModel) {
         }
     }
 
-    /**
-     * Maximizes the code editor and hides the config section.
-     */
     function maximizeCodeEditor() {
         parent.find('[data-element=maximize-editor]').hide();
         parent.find('[data-element=minimize-editor]').show();
@@ -155,9 +154,6 @@ function CommandDetailView(parent, context, viewModel) {
         parent.find('[data-section=config]').hide();
     }
 
-    /**
-     * Minimizes the code editor to available space.
-     */
     function minimizeCodeEditor() {
         parent.find('[data-element=maximize-editor]').show();
         parent.find('[data-element=minimize-editor]').hide();

@@ -8,50 +8,47 @@ function CommandListView(parent, context, viewModel) {
     'use strict';
 
     /**
-     * @type {Template}
+     * @type {!Template}
      */
     var template = context.template.load('CommandList');
 
     /**
-     * @type {Template}
+     * @type {!Template}
      */
     var itemTemplate = context.template.load('commandListItem');
 
     /**
-     * @type {Template}
+     * @type {!Template}
      */
     var groupTemplate = context.template.load('commandGroupItem');
 
-    /**
-     * Activate the view.
-     */
     this.activate = viewModel.activate;
 
     /**
-     * @type {jquery}
+     * @type {jQuery}
      */
     var itemList;
 
+    /**
+     * @type {jQuery}
+     */
     var groupsList;
 
     function constructor() {
         console.log('CommandListView.constructor');
         parent.html(template.build());
 
-        parent.find('[data-element=refresh]').click(viewModel.reload);
+        parent.find('[data-element=create]').click(() => viewModel.openCommandDetailPanel());
         parent.find('[data-element=clearFilter]').click(viewModel.clearFilter);
-        parent.find('[data-element=commandsFilter]').click(viewModel.activateCommandFilter);
-        parent.find('[data-element=presetsFilter]').click(viewModel.activatePresetFilter);
+        parent.find('[data-element=refresh]').click(viewModel.reload);
 
-        itemList = parent.find('[data-element=commandList]');
+        itemList = parent.find('[data-element=commandPresetList]');
         itemList.click(handleListClick);
 
         groupsList = parent.find('[data-element=groups]');
         groupsList.click(handleGroupListClick);
 
-        viewModel.onItemsChanged = updateList;
-
-        updateList();
+        viewModel.items.subscribeAndInvoke(updateList);
     }
 
     /**
@@ -60,13 +57,13 @@ function CommandListView(parent, context, viewModel) {
     function handleListClick(event) {
         var clickTarget = $(event.target);
         var listItemElement = clickTarget.closest('[data-id]');
-        var commandId = listItemElement.attr('data-id');
+        var itemId = listItemElement.attr('data-id');
 
-        if (commandId) {
+        if (itemId) {
             if (clickTarget.attr('data-element') === 'runButton') {
-                viewModel.runCommand(commandId);
+                viewModel.runCommandPreset(itemId);
             } else {
-                viewModel.openCommandDetailPanel(commandId);
+                viewModel.openCommandDetailPanel(itemId);
             }
         }
     }
@@ -82,8 +79,11 @@ function CommandListView(parent, context, viewModel) {
         viewModel.activateGroupFilter(groupName);
     }
 
-    function updateList() {
-        itemList.html(viewModel.items.map(itemTemplate.build).join(''));
+    /**
+     * @param {!Array<!CommandListItem>} items
+     */
+    function updateList(items) {
+        itemList.html(items.map(itemTemplate.build).join(''));
 
         if (viewModel.groups) {
             parent.find('[data-element=groups]').html(groupTemplate.build({groups: viewModel.groups}));

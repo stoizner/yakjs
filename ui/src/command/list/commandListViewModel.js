@@ -1,7 +1,8 @@
 var CommandListItem = require('./commandListItem');
 var CommandDetailView = require('../edit/commandDetailView');
 var ShowViewCommand = require('../../workspace/showViewCommand');
-var magicNumbers = require('../../../../server/src/util/magicNumbers');
+var Subject = require('../../core/subject');
+var ListItem = require('../../core/listItem');
 
 /**
  * @constructor
@@ -22,50 +23,29 @@ function CommandListViewModel(context) {
     var allItems = [];
 
     /**
-     * @type {!Array<!CommandListItem>}
+     * @type {!Subject<!Array<!CommandListItem>>}
      */
-    this.items = [];
+    this.items = new Subject([]);
 
     /**
      * @type {!Array<{groupName:string}>}
      */
     this.groups = [];
 
-    /**
-     * @type {Function}
-     */
-    this.onItemsChanged = _.noop;
-
     function constructor() {
         console.log('CommandListViewModel.constructor');
     }
 
-    /**
-     * Activate View
-     */
     this.activate = function activate() {
         console.log('CommandListViewModel.active');
         loadCommandPresets();
     };
 
     /**
-     * @param {string} name
+     * @param {string} [itemId]
      */
-    this.deleteCommand = function deleteCommand(name) {
-        context.adapter.deleteResource('/commands/' + name).then(self.reload);
-    };
-
-    /**
-     * @param {string} [commandId]
-     */
-    this.openCommandDetailPanel = function openCommandDetailPanel(commandId) {
-        if (commandId) {
-            var item = allItems.find(matchCommandId(commandId));
-
-            if (item) {
-                context.eventBus.post(new ShowViewCommand(CommandDetailView, item));
-            }
-        }
+    this.openCommandDetailPanel = function openCommandDetailPanel(itemId) {
+        context.eventBus.post(new ShowViewCommand(CommandDetailView, itemId));
     };
 
     this.reload = function reloadAndRefreshList() {
@@ -73,64 +53,39 @@ function CommandListViewModel(context) {
     };
 
     /**
-     * @param {string} commandId
+     * @param {string} itemId
      */
-    this.runCommand = function runCommand(commandId) {
-        var item = allItems.find(matchCommandId(commandId));
-
-        if(item.isPreset) {
-            context.adapter.get('/commands/presets/' + item.commandPresetName + '/execute');
-        } else if (item.commandName) {
-            context.adapter.post('/commands/' + item.commandName + '/execute', item.exampleData);
-        }
-    };
-
-    this.activateCommandFilter = function activateCommandFilter() {
-        self.items = allItems.filter(function(item) {
-            return !item.isPreset;
-        });
-        self.onItemsChanged(self.items);
-    };
-
-    this.activatePresetFilter = function activatePresetFilter() {
-        self.items = allItems.filter(function(item) {
-            return item.isPreset;
-        });
-        self.onItemsChanged(self.items);
+    this.runCommandPreset = function runCommandPreset(itemId) {
+        context.adapter.get('/commands/presets/' + itemId + '/execute');
     };
 
     this.clearFilter = function clearFilter() {
-        self.items = allItems;
-        self.onItemsChanged(self.items);
+        self.items.set(allItems);
     };
 
     this.activateGroupFilter = function activateGroupFilter(groupName) {
-        self.items = allItems.filter(function(item) {
+        self.items.set(allItems.filter(function(item) {
             return item.groupName === groupName;
-        });
-        self.onItemsChanged(self.items);
+        }));
     };
 
     function loadCommandPresets() {
         allItems = [];
-        self.items = [];
-        self.onItemsChanged();
+        self.items.set([]);
 
-        Promise.all([
-            context.adapter.get('/commands/presets').then(extractPresetsFromResponse).then(addPresetsAsListItem),
-            context.adapter.get('/commands').then(extractCommands).then(addCommandsAsListItem)
-        ])
-        .then(function() {
-            allItems = allItems.sort(byProperty('displayName'));
-            self.groups = findGroups(allItems).sort(byProperties(['icon', 'groupName']));
-            self.items = allItems;
-            self.onItemsChanged(self.items);
-        });
+        context.adapter.get('/commands/presets')
+            .then(extractPresetsFromResponse)
+            .then(addPresetsAsListItem)
+            .then(() => {
+                allItems = allItems.sort(ListItem.compare);
+                self.groups = findGroups(allItems).sort(byProperties(['icon', 'groupName']));
+                self.items.set(allItems);
+            });
     }
 
     /**
      * @param {!Array<!!CommandListItem>} items
-     * @returns {!Array<{groupName: string>}
+     * @returns {!Array<{groupName: string}>}
      */
     function findGroups(items) {
         var groups = [];
@@ -169,72 +124,13 @@ function CommandListViewModel(context) {
      * @param {!Array<!CommandPreset>} presets
      */
     function addPresetsAsListItem(presets) {
-        allItems = allItems.concat(presets.map(function toItem(preset) {
-            var item = new CommandListItem(preset.name);
-            item.displayName = preset.displayName || preset.commandName;
-            item.description = preset.description;
-            item.commandPresetName = preset.name;
-            item.commandName = preset.commandName;
-            item.commandData = JSON.stringify(preset.commandData, null, magicNumbers.JSON_SPACE);
-            item.originalCommandPresetName = preset.name;
-            item.isPreset = true;
-            item.groupName = preset.groupName;
-            return item;
-        }));
+        allItems = allItems.concat(presets.map(preset => new CommandListItem(
+            preset.name,
+            preset.displayName,
+            preset.commandName,
+            preset.groupName)
+        ));
     }
-
-    /**
-     * @param {{commands: Array<!CommandInfo>}} response
-     * @return {!Array<!CommandInfo>}
-     */
-    function extractCommands(response) {
-        return response.commands || [];
-
-    }
-
-    /**
-     * @param  {!Array<!CommandInfo>} commandInfo
-     */
-    function addCommandsAsListItem(commandInfo) {
-        allItems = allItems.concat(commandInfo.map(function toItem(command) {
-            var item = new CommandListItem();
-            item.commandName = command.name;
-            item.displayName = command.name;
-            item.description = command.description;
-            item.exampleData = JSON.stringify(command.exampleData, null, magicNumbers.JSON_SPACE);
-            item.isPreset = false;
-            item.pluginId = command.pluginId;
-            return item;
-        }));
-    }
-
-    /**
-     * @param {string} commandId
-     * @returns {function(!CommandListItem):boolean}
-     */
-    function matchCommandId(commandId) {
-        return function(item) {
-            return item.commandId === commandId;
-        }
-    }
-
-    /**
-     * @param {string} propertyName
-     * @returns {function(T, T)}
-     * @template T
-     */
-    function byProperty(propertyName) {
-        /**
-         * @param {T} leftItem
-         * @param {T} rightItem
-         * @returns {number}
-         * @template T
-         */
-        return function(leftItem, rightItem) {
-            return leftItem[propertyName].localeCompare(rightItem[propertyName]);
-        }
-    }
-
 
     /**
      * @param {Array<string>} propertyNames
@@ -267,6 +163,7 @@ function CommandListViewModel(context) {
             }, 0);
         }
     }
+
     constructor();
 }
 

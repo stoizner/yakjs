@@ -1,65 +1,36 @@
-var createGuid = require('../../../../server/common/guid');
 /**
  * @constructor
+ * @param {string} presetName
+ * @param {string} displayName
+ * @param {string} commandName
+ * @param {string} groupName
+ * @extends {ListItem}
  */
-function CommandListItem() {
+function CommandListItem(presetName, displayName, commandName, groupName) {
     'use strict';
 
     /**
-     * Whether the command is a pure command or a preset.
-     * @type {boolean}
+     * This is the unique preset name.
+     * @type {string}
+     * @inheritDoc
      */
-    this.isPreset = false;
+    this.id = presetName;
+
+    /**
+     * @type {string}
+     * @inheritDoc
+     */
+    this.label = displayName || presetName;
 
     /**
      * @type {string}
      */
-    this.commandId = createGuid();
-
-    /**
-     * @type {?string}
-     */
-    this.commandName = null;
-
-    /**
-     * @type {?string}
-     */
-    this.groupName = null;
-
-    /**
-     * @type {?string}
-     */
-    this.originalCommandPresetName = null;
-
-    /**
-     * @type {?string}
-     */
-    this.commandPresetName = null;
+    this.commandName = commandName;
 
     /**
      * @type {string}
      */
-    this.displayName = '';
-
-    /**
-     * @type {string}
-     */
-    this.description = '';
-
-    /**
-     * @type {string}
-     */
-    this.exampleData = '';
-
-    /**
-     * @type {string}
-     */
-    this.commandData = '';
-
-    /**
-     * @type {string}
-     */
-    this.pluginId = '';
+    this.groupName = groupName;
 }
 
 module.exports = CommandListItem;

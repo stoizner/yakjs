@@ -3,20 +3,13 @@
         <div class="tool-bar-block">
             <div class="tool-bar-block-line">
                 <div class="center-panel">
-                    {{#item.originalCommandPresetName}}
-                        <div class="button" data-element="save" title="Saves and overwrites existing preset">Save</div>
-                        <div class="button" data-element="saveAndRun" title="Saves and runs the preset">Save and Run</div>
-                        <div class="button" data-element="saveNew" title="Saves this preset as a new preset">Save New</div>
-                    {{/item.originalCommandPresetName}}
+                    <div class="button" data-element="save" title="Saves and overwrites existing preset">Save</div>
+                    <div class="button" data-element="run" title="Executes the command">Run</div>
 
-                    {{^item.originalCommandPresetName}}
-                        <div class="button" data-element="create">Create new preset</div>
-                        <div class="button" data-element="run" title="Runs the command">Run</div>
-                    {{/item.originalCommandPresetName}}
-
-                    {{#canBeDeleted}}
+                    {{#item.value}}
                         <div class="button" data-element="deleteButton" >Delete</div>
-                    {{/canBeDeleted}}
+                    {{/item.value}}
+
                     <div class="button" data-element="cancelButton">Cancel</div>
 
                     <div class="tool-box">
@@ -43,7 +36,7 @@
                                 <label class="input-label">Preset name</label>
                                 <p class="light-text">The unique name for your command preset. To put a preset into a group use groupName/presetName.</p>
 
-                                <input type="text" class="input-text" name="commandPresetName" value="{{#item.groupName}}{{item.groupName}}/{{/item.groupName}}{{item.commandPresetName}}"/>
+                                <input type="text" class="input-text" name="commandPresetName" value="{{#item.value.groupName}}{{item.value.groupName}}/{{/item.value.groupName}}{{item.value.presetName}}"/>
                                 <button class="inline-button" data-element="useGroupButton" data-group-name="*">Use star group</button>
                                 <button class="inline-button" data-element="useGroupButton" data-group-name="fav">Use favourite group</button>
                             </div>
@@ -51,7 +44,14 @@
                             <div class="frame-block">
                                 <label class="input-label">Display name</label>
                                 <div class="light-text">Optional: The user interface will use this name.</div>
-                                <input type="text" class="input-text" name="displayName" value="{{item.displayName}}"/>
+                                <input type="text" class="input-text" name="displayName" value="{{item.value.displayName}}"/>
+                            </div>
+
+                            <div class="frame-block">
+                                <label class="input-label">Command</label>
+                                <div class="light-text">Select a command from a plugin.</div>
+                                <select class="input-select" data-element="pluginList"></select>
+                                <select class="input-select" data-element="commandList"></select>
                             </div>
 
                             <div class="frame-block">
@@ -64,7 +64,7 @@
 
                         <div class="header-panel-body" data-section="editor">
                             <div class="panel">
-                                <div data-element="storeValueEditor" class="code-editor-panel"></div>
+                                <div data-element="jsonEditor" class="code-editor-panel"></div>
                             </div>
                         </div>
                     </div>
