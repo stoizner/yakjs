@@ -17,6 +17,7 @@ function getCommandsRoute(request, response) {
             current.commands = current.commands.concat(plugin.module.commands.map(commandConfig => ({
                 pluginId: plugin.id,
                 name: commandConfig.name,
+                displayName: commandConfig.displayName,
                 description: commandConfig.description,
                 exampleData: commandConfig.exampleData
             })));
