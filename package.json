@@ -28,8 +28,8 @@
         "vsa"
     ],
     "scripts": {
-        "start": "grunt && node ./dist/yakjs/yakjs.js",
-        "debug": "grunt && node ./dist/yakjs/yakjs.js --debug"
+        "start": "gulp && node ./server/yakjs.js",
+        "debug": "gulp && node ./server/yakjs.js --debug"
     },
     "bin": {
         "yakjs": "./bin/yakjs-cli.js"
