@@ -18,8 +18,11 @@ const webpackStream = require('webpack-stream');
 const mustache = require('gulp-mustache');
 
 const pkg = require('./package.json');
-const uiDistPath = './ui/dist/';
 const convertToHtmlTemplate = require('./gulp/convertToHtmlTemplate');
+const checkNonSnapshotVersion = require('./gulp/checkNonSnapshotVersion');
+
+const uiDistPath = './ui/dist/';
+const git = require('gulp-git');
 
 const babelLoader = {
     test: /.js$/,
@@ -146,10 +149,22 @@ const buildUserInterface = gulp.series(clean, copyFiles, createCss, bundleJs, bu
 const buildAll = gulp.series(buildServer, buildUserInterface);
 const buildDev = gulp.series(buildServer, buildUserInterface, watch);
 
+gulp.task('push-origin-master', () => {
+    git.push('origin', 'master', {args: ' --tags'});
+});
+
+gulp.task('tag-version', () => {
+    git.tag(`v${pkg.version}`, `Updates version number to "${pkg.version}".`);
+});
+
+gulp.task('checkNonSnapshotVersion', checkNonSnapshotVersion);
+const prepublish = gulp.series(buildAll, 'checkNonSnapshotVersion', 'tag-version', 'push-origin-master');
+
 // Tools
 gulp.task('svgo', optimzeSvg);
 
 // Development Tasks
+gulp.task('prepublish', prepublish);
 gulp.task('server', buildServer);
 gulp.task('ui', buildUserInterface);
 gulp.task('dev', buildDev);
