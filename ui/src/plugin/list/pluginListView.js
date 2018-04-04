@@ -1,5 +1,3 @@
-var compareName = require('../../core/compare/compareName');
-
 /**
  * @constructor
  * @struct
@@ -20,26 +18,17 @@ function PluginListView(parent, context, viewModel) {
      */
     var itemTemplate = context.template.load('pluginItem');
 
-    /**
-     * Activate the view.
-     */
-    this.activate = function activate() { viewModel.activate(); };
+    this.activate = () => viewModel.activate();
 
-    /**
-     * Constructor
-     */
     function constructor() {
         console.log('PluginListView.constructor');
         parent.html(template.build());
-
 
         parent.find('[data-element=create]').click(viewModel.activatePluginEditPanel);
         parent.find('[data-element=refresh]').click(viewModel.reload);
         parent.find('.plugin-items').click(handleListClick);
 
-        viewModel.onItemsChanged = function onItemsChanged() { createList(); };
-
-        createList();
+        viewModel.items.subscribeAndInvoke(createList);
     }
 
     /**
@@ -54,20 +43,11 @@ function PluginListView(parent, context, viewModel) {
         }
     }
 
-    /**
-     * Update panel list
-     */
     function createList() {
-        var html = '';
         var itemContainer = parent.find('.plugin-items');
+        var rowElements = viewModel.items.value.map(itemTemplate.build);
 
-        viewModel.items.sort(compareName);
-
-        _.each(viewModel.items, function createListItem(item) {
-            html += itemTemplate.build(item);
-        });
-
-        itemContainer.html(html);
+        itemContainer.html(rowElements.join(''));
     }
 
     constructor();

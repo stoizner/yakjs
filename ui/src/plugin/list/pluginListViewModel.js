@@ -1,6 +1,8 @@
-var PluginItem = require('../pluginItem');
-var PluginView = require('../edit/pluginView');
-var ShowViewCommand = require('../../workspace/showViewCommand');
+const PluginItem = require('../pluginItem');
+const PluginView = require('../edit/pluginView');
+const ShowViewCommand = require('../../workspace/showViewCommand');
+const Subject = require('../../core/subject');
+const compareId = require('../../core/compare/compareId');
 
 /**
  * @constructor
@@ -16,14 +18,9 @@ function PluginListViewModel(context) {
     var self = this;
 
     /**
-     * @type {!Array<!PluginItem>}
+     * @type {!Subject<!Array<!PluginItem>>}
      */
-    this.items = [];
-
-    /**
-     * @type {Function}
-     */
-    this.onItemsChanged = _.noop;
+    this.items = new Subject([]);
 
     function constructor() {
         console.log('PluginListViewModel.constructor');
@@ -42,7 +39,7 @@ function PluginListViewModel(context) {
         var item = null;
 
         if (id) {
-            item = _.findWhere(self.items, {id: id});
+            item = self.items.value.find(item => item.id === id);
         }
 
         context.eventBus.post(new ShowViewCommand(PluginView, item));
@@ -53,18 +50,13 @@ function PluginListViewModel(context) {
     };
 
     /**
-     * @param {GetPluginsResponse} response
+     * @param {!Object} response
      */
     function handleGetPluginsResponse(response) {
         console.log('handleGetPluginsResponse', response);
 
-        self.items = _.map(response.plugins, function toItem(plugin) {
-            var item = new PluginItem();
-            _.extend(item, plugin);
-            return item;
-        });
-
-        self.onItemsChanged();
+        let listItems = response.plugins.map(plugin => Object.assign(new PluginItem(), plugin));
+        self.items.set(listItems.sort(compareId));
     }
 
     constructor();
