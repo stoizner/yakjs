@@ -23,6 +23,7 @@ const checkNonSnapshotVersion = require('./gulp/checkNonSnapshotVersion');
 
 const uiDistPath = './ui/dist/';
 const git = require('gulp-git');
+const util = require('util');
 
 const babelLoader = {
     test: /.js$/,
@@ -150,11 +151,13 @@ const buildAll = gulp.series(buildServer, buildUserInterface);
 const buildDev = gulp.series(buildServer, buildUserInterface, watch);
 
 gulp.task('push-origin-master', () => {
-    return git.push('origin', 'master', {args: ' --tags'});
+    const push = util.promisify(git.push);
+    return push('origin', 'master', {args: ' --tags'});
 });
 
 gulp.task('tag-version', () => {
-    return git.tag(`v${pkg.version}`, `Updates version number to "${pkg.version}".`);
+    const tag = util.promisify(git.tag);
+    return tag(`v${pkg.version}`, `Updates version number to ${pkg.version}.`);
 });
 
 gulp.task('checkNonSnapshotVersion', checkNonSnapshotVersion);
