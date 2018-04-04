@@ -150,11 +150,11 @@ const buildAll = gulp.series(buildServer, buildUserInterface);
 const buildDev = gulp.series(buildServer, buildUserInterface, watch);
 
 gulp.task('push-origin-master', () => {
-    git.push('origin', 'master', {args: ' --tags'});
+    return git.push('origin', 'master', {args: ' --tags'});
 });
 
 gulp.task('tag-version', () => {
-    git.tag(`v${pkg.version}`, `Updates version number to "${pkg.version}".`);
+    return git.tag(`v${pkg.version}`, `Updates version number to "${pkg.version}".`);
 });
 
 gulp.task('checkNonSnapshotVersion', checkNonSnapshotVersion);
