@@ -12,7 +12,11 @@ describe('StoreProvider', function() {
     let sut;
 
     beforeEach(function() {
-        mockery.enable({useCleanCache: true});
+        mockery.enable({
+            warnOnReplace: false,
+            warnOnUnregistered: false,
+            useCleanCache: true
+        });
 
         // Set up stubs
 

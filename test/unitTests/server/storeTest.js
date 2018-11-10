@@ -17,7 +17,11 @@ describe('Store', function() {
     let store;
 
     beforeEach(function() {
-        mockery.enable({useCleanCache: true});
+        mockery.enable({
+            warnOnReplace: false,
+            warnOnUnregistered: false,
+            useCleanCache: true
+        });
 
         // Set up stubs
         storeProvider = {

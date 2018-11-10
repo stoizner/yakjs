@@ -114,21 +114,34 @@ function WebSocketInstance(pluginManager, id, port) {
 
     /**
      * Start server instance
+     * @returns {!Promise}
      */
     this.start = function start() {
         log.info('Start WebSocketServer Instance', {id: self.id});
-        try {
-            if (self.state === InstanceState.RUNNING) {
-                log.info('Can not start, instance already running.', {id: self.id});
-            } else {
-                instantiatePlugins();
-                startServer();
-                self.state = InstanceState.RUNNING;
-            }
-        } catch (ex) {
-            log.error('Could not start instance: ', {error: ex.message, ex: ex, stack: ex.stack});
-            self.state = InstanceState.ERROR;
+
+        let promise;
+
+        if (self.state === InstanceState.RUNNING) {
+            let error = {
+                message: 'Can not start, instance already running.',
+                instanceId : self.id
+            };
+            log.info(error.message, {id: error.instanceId});
+            promise = Promise.reject(error.message)
+        } else {
+            instantiatePlugins();
+            promise = startServer()
+                .then(() => {
+                    self.state = InstanceState.RUNNING;
+                })
+                .catch(error => {
+                    log.error('Could not start instance: ', {error});
+                    self.state = InstanceState.ERROR;
+                    throw error;
+                });
         }
+
+        return promise;
     };
 
     /**
@@ -137,6 +150,7 @@ function WebSocketInstance(pluginManager, id, port) {
      */
     this.stop = function stop() {
         log.info('Stop WebSocketServer Instance', {name: self.name, state: self.state});
+
         return new Promise(resolve => {
             if (webSocketServer && self.state === InstanceState.RUNNING) {
                 self.state = InstanceState.STOPPING;
@@ -158,10 +172,13 @@ function WebSocketInstance(pluginManager, id, port) {
                         resolve();
                     }
                 });
+            } else {
+                resolve();
             }
-        }).catch(reason => {
-            log.info('Could not stop instance, maybe instance is not running.', {reason: reason, stack: reason.stack});
+        }).catch(error => {
+            log.info('Could not stop instance, maybe instance is not running.', {error, stack: error.stack});
             self.state = InstanceState.STOPPED;
+            throw error;
         });
     };
 
@@ -169,17 +186,26 @@ function WebSocketInstance(pluginManager, id, port) {
      * Start the web socket.
      */
     function startServer() {
-        log.info('Start WebSocket server instance.', {port: self.port, useSecureConnection: configProvider.config.useSecureConnection});
+        return new Promise((resolve, reject) => {
+            log.info('Start WebSocket server instance.', {
+                port: self.port,
+                useSecureConnection: configProvider.config.useSecureConnection
+            });
 
-        if (configProvider.config.useSecureConnection) {
-            webServer = https.createServer(httpsServerOptionsProvider.options).listen(self.port);
-        } else {
-            webServer = http.createServer().listen(self.port);
-        }
+            if (configProvider.config.useSecureConnection) {
+                webServer = https.createServer(httpsServerOptionsProvider.options).listen(self.port);
+            } else {
+                webServer = http.createServer().listen(self.port);
+            }
 
-        webSocketServer = new WebSocketServer({server: webServer});
-        webSocketServer.on('connection', handleConnection);
-        webSocketServer.on('error', handleError);
+            webSocketServer = new WebSocketServer({server: webServer});
+            webSocketServer.on('connection', handleConnection);
+            webSocketServer.on('error', error => {
+                handleError(error);
+                reject(error);
+            });
+            resolve();
+        });
     }
 
     /**
