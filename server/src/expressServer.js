@@ -60,8 +60,8 @@ function ExpressServer(config) {
             });
 
             app.use(bodyParser.json({limit: '10MB'}));
-            app.use(bodyParser.text({type: 'text/*'}));
-            app.use(bodyParser.raw({type: '*/*'}));
+            app.use(bodyParser.text({type: 'text/*', limit: '10MB'}));
+            app.use(bodyParser.raw({type: '*/*', limit: '100MB'}));
 
             app.get('/scripts/yakjs-ui-config.js', getUIConfig);
 
