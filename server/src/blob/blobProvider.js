@@ -1,5 +1,6 @@
 'use strict';
 
+const Blob = require('./blob');
 const fse = require('fs-extra');
 const path = require('path');
 
@@ -28,13 +29,39 @@ class BlobProvider {
     /**
      * @param {string} space
      * @param {string} name
-     * @returns {!Promise<Buffer>}
+     * @returns {!Promise<Blob>}
      */
     read(space, name) {
         const spacePath = path.join(BLOB_DIR, space);
         const filePath = path.join(spacePath, name);
+        let blobName = name;
 
-        return fse.readFile(filePath);
+        return fse.stat(filePath)
+            .then(() => fse.readFile(filePath))
+            .catch(error => {
+                // The file does not exist.
+                // Start a lookup if a file with the given name and any extension does exist.
+                return this.getBlobs(space).then(blobNames => {
+                    let promise;
+                    const bobNameMap = blobNames.reduce((index, currentBlobName) => {
+                        const blobNameWithoutExtension = path.basename(currentBlobName, path.extname(currentBlobName));
+                        return Object.assign(index, {[blobNameWithoutExtension]: currentBlobName});
+                    }, {});
+
+                    if (bobNameMap[name]) {
+                        blobName = bobNameMap[name];
+                        const filePathWithExtension = path.join(spacePath, blobName);
+                        promise = fse.readFile(filePathWithExtension);
+                    } else {
+                        promise = Promise.reject(error);
+                    }
+
+                    return promise;
+                });
+            })
+            .then(content => {
+                return new Blob(blobName, content);
+            });
     }
 
     /**

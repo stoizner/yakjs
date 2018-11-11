@@ -20,9 +20,9 @@ function getBlobRoute(request, response) {
     const name = request.params.name;
 
     blobProvider.read(space, name)
-        .then(content => {
-            response.type(request.query.contentType || mime.lookup(name));
-            response.send(content);
+        .then(blob => {
+            response.type(request.query.contentType || mime.lookup(blob.name));
+            response.send(blob.content);
         })
         .catch(error => {
             response.status(HttpStatus.INTERNAL_SERVER_ERROR).send({error});
