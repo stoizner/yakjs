@@ -4,6 +4,7 @@ const Logger = require('./infrastructure/logger');
 const ExpressServer = require('./expressServer');
 
 const setupErrorProtectionForTimerFunctions = require('./infrastructure/setupErrorProtectionForTimerFunctions');
+const installPluginModules = require('./infrastructure/installPluginModules');
 const yakServerState = require('./yakServerState');
 
 /**
@@ -39,7 +40,10 @@ function YakServer() {
      */
     this.start = function start() {
         expressServer = new ExpressServer(yakServerState.config);
-        expressServer.start();
+
+        installPluginModules().then(() => {
+            expressServer.start();
+        });
     };
 
     /**
