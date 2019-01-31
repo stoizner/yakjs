@@ -2,7 +2,7 @@ FROM node
 
 MAINTAINER Christian Schuller <cschuller@servusalps.com>
 
-ENV YAKJS_VERSION=3.2.0
+ENV YAKJS_VERSION=3.3.1
 
 RUN npm install -g yakjs@${YAKJS_VERSION}
 
