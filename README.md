@@ -3,7 +3,7 @@
 [![npm](https://img.shields.io/npm/v/yakjs.svg?style=flat-square)](https://www.npmjs.com/package/yakjs)
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://raw.githubusercontent.com/cschuller/yakjs/master/LICENSE)
 
-A local server to stub complex WebSocket backends.
+A local server to stub complex WebSocket back-ends.
 
 Visit [yakjs.com](http://www.yakjs.com/) for full documentation.
 
