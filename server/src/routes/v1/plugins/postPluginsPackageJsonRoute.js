@@ -4,7 +4,7 @@ const fs = require('fs-extra');
 const HttpStatus = require('http-status-codes');
 const getCurrentPluginsDirectory = require('../../../infrastructure/getCurrentPluginsDirectory');
 const installPluginModules = require('../../../infrastructure/installPluginModules');
-const Logger = require('../infrastructure/logger');
+const Logger = require('../../../infrastructure/logger');
 
 /**
  * @param request
