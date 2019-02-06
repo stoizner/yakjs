@@ -21,9 +21,58 @@ const pkg = require('./package.json');
 const convertToHtmlTemplate = require('./gulp/convertToHtmlTemplate');
 const checkNonSnapshotVersion = require('./gulp/checkNonSnapshotVersion');
 
-const uiDistPath = './ui/dist/';
 const git = require('gulp-git');
 const util = require('util');
+
+const paths = {
+    ui: {
+        src: './ui/src/',
+        dist: './ui/dist/',
+        ext: {
+            src: './ui/ext/**/*'
+        },
+        code: {
+            src: './ui/src/**/*.js'
+        },
+        template: {
+            src: './ui/src/**/*.mustache'
+        },
+        style: {
+            src: './ui/src/style/',
+            dist: './ui/dist/style/',
+            less: {
+                src: './ui/src/**/*.less'
+            },
+            fonts: {
+                src: './ui/src/style/fonts/**/*',
+                dist: './ui/dist/style/fonts/'
+            },
+            icons: {
+                src: './ui/src/style/icons/**/*',
+                dist: './ui/dist/style/icons/'
+            },
+            svg: {
+                src: './ui/src/**/*.svg'
+            }
+        }
+    },
+    server: {
+        src: './server/src/**/*.js'
+    },
+    test: {
+        unitTests: {
+            src: './test/unitTests/**/*Test.js'
+        }
+    }
+};
+
+const filenames = {
+    index: {
+        mustache: 'index.mustache',
+        js: 'index.js'
+    },
+    templates: 'templates.html'
+};
 
 const babelLoader = {
     test: /.js$/,
@@ -35,11 +84,12 @@ const babelLoader = {
 };
 
 function clean() {
-    return del(['./ui/dist/']);
+    return del([paths.ui.dist]);
 }
 
 function lint() {
-    return gulp.src(['**/*.js', '!node_modules/**', '!ui/dist/**/*', '!ui/ext/**/*', '!ui/**/*', '!test/**/*', '!bin/**/*', '!gulpfile.js'])
+    return gulp
+        .src([paths.server.src])
         .pipe(eslint({
             fix: true,
             cache: true
@@ -49,57 +99,49 @@ function lint() {
 }
 
 function test() {
-    return gulp.src('test/unitTests/**/*Test.js', {read: false})
+    return gulp
+        .src(paths.test.unitTests.src, {read: false})
         .pipe(mocha({reporter: 'nyan'}));
 }
 
-function copyScripts() {
-    return gulp.src([
-        './ui/ext/**/*'
-    ]).pipe(gulp.dest(uiDistPath + 'ext/'));
+function copyDependencyScripts() {
+    return gulp
+        .src([paths.ui.ext.src])
+        .pipe(gulp.dest(paths.ui.dist + 'ext/'));
 }
 
 function copyFonts() {
-    return gulp.src([
-        './ui/src/style/fonts/**/*'
-    ]).pipe(gulp.dest(uiDistPath + 'style/fonts/'));
+    return gulp.src([paths.ui.style.fonts.src]).pipe(gulp.dest(paths.ui.style.fonts.dist));
 }
 
 function copyIcons() {
-    return gulp.src([
-        './ui/src/style/icons/**/*'
-    ]).pipe(gulp.dest(uiDistPath + 'style/icons/'));
+    return gulp.src([paths.ui.style.icons.src]).pipe(gulp.dest(paths.ui.style.icons.dist));
 }
 
 function copyStaticAssets() {
-    return gulp.src([
+    return gulp
+        .src([
         './ui/src/*.png',
         './ui/src/*.xml',
         './ui/src/*.svg',
         './ui/src/*.json',
-    ]).pipe(gulp.dest(uiDistPath));
-}
-
-function copyLogo() {
-    return gulp.src([
-        './ui/src/style/*.svg'
-    ]).pipe(gulp.dest(uiDistPath + 'style/'));
+        ])
+        .pipe(gulp.dest(paths.ui.dist));
 }
 
 function createCss() {
-    return gulp.src([
-        './ui/src/**/*.less'
-    ])
+    return gulp
+        .src([paths.ui.style.less.src])
         .pipe(lessImport('yakjs-style.less'))
         .pipe(less({
             paths: [path.join(__dirname, 'less', 'includes') ]
         }))
         .pipe(concat('yakjs-style.css'))
-        .pipe(gulp.dest(uiDistPath + 'style/'));
+        .pipe(gulp.dest(paths.ui.style.dist));
 }
 
 function bundleJs() {
-    return gulp.src('./ui/src/index.js')
+    return gulp.src(paths.ui.src + filenames.index.js)
         .pipe(webpackStream({
             module: {
                 loaders: [babelLoader]
@@ -109,66 +151,72 @@ function bundleJs() {
             ]
         }))
         .pipe(rename({basename: pkg.name + '-ui'}))
-        .pipe(gulp.dest(uiDistPath));
+        .pipe(gulp.dest(paths.ui.dist));
 }
 
 function bundleTemplates() {
-    return gulp.src(['./ui/src/**/*.mustache', '!./ui/src/index.mustache'])
+    return gulp
+        .src([paths.ui.template.src, '!' + paths.ui.src + filenames.index.mustache])
         .pipe(convertToHtmlTemplate())
-        .pipe(concat('templates.html'))
-        .pipe(gulp.dest(uiDistPath));
+        .pipe(concat(filenames.templates))
+        .pipe(gulp.dest(paths.ui.dist));
 }
 
 function renderIndexHtml() {
-    const templates = fs.readFileSync('./ui/dist/templates.html', 'utf8');
+    const templates = fs.readFileSync(paths.ui.dist + filenames.templates, 'utf8');
 
-    return gulp.src('./ui/src/index.mustache')
+    return gulp
+        .src(paths.ui.src + filenames.index.mustache)
         .pipe(mustache({templates}))
         .pipe(rename({extname: '.html'}))
-        .pipe(gulp.dest(uiDistPath));
+        .pipe(gulp.dest(paths.ui.dist));
 }
 
 function watch() {
-    gulp.watch('./ui/src/**/*.less', gulp.series(createCss));
-    gulp.watch('./ui/src/**/*.mustache', gulp.series(bundleTemplates, renderIndexHtml));
-    gulp.watch('./ui/src/**/*.js', gulp.series(bundleJs));
-    gulp.watch('./ui/src/**/*.js', gulp.series(bundleJs));
-    gulp.watch('./ui/src/style/icons/**/*', gulp.series(copyIcons));
+    gulp.watch(paths.ui.style.less.src, gulp.series(createCss));
+    gulp.watch(paths.ui.template.src, gulp.series(bundleTemplates, renderIndexHtml));
+    gulp.watch(paths.ui.code.src, gulp.series(bundleJs));
+    gulp.watch(paths.ui.style.icons.src, gulp.series(copyIcons));
 }
 
 function optimzeSvg() {
-    return gulp.src('./ui/src/style/icons/**/*.svg', {base: './'})
+    return gulp
+        .src(paths.ui.style.svg.src, {base: './'})
         .pipe(svgo())
         .pipe(gulp.dest('./'))
 }
 
+function pushOriginMaster() {
+    const push = util.promisify(git.push);
+    return push('origin', 'master', {args: ' --tags'});
+}
+
+function tagVersion() {
+    const tag = util.promisify(git.tag);
+    return tag(`v${pkg.version}`, `Updates version number to ${pkg.version}.`);
+}
+
 const buildServer = gulp.series(lint, test);
 
-const copyFiles = gulp.parallel(copyScripts, copyFonts, copyIcons, copyLogo, copyStaticAssets);
+const copyFiles = gulp.parallel(copyDependencyScripts, copyFonts, copyIcons, copyStaticAssets);
 const buildUserInterface = gulp.series(clean, copyFiles, createCss, bundleJs, bundleTemplates, renderIndexHtml);
 
 const buildAll = gulp.series(buildServer, buildUserInterface);
-const buildDev = gulp.series(buildServer, buildUserInterface, watch);
+const buildAllAndWatch = gulp.series(buildAll, watch);
 
-gulp.task('push-origin-master', () => {
-    const push = util.promisify(git.push);
-    return push('origin', 'master', {args: ' --tags'});
-});
+/**
+ * Define tasks that can automate some developer work.
+ */
+exports.optimize = optimzeSvg;
+exports.watch = buildAllAndWatch;
+exports.lint = lint;
 
-gulp.task('tag-version', () => {
-    const tag = util.promisify(git.tag);
-    return tag(`v${pkg.version}`, `Updates version number to ${pkg.version}.`);
-});
+/*
+ * Define tasks that are used by npm scripts or hooks.
+ */
+exports.prepublish = gulp.series(buildAll, checkNonSnapshotVersion, tagVersion, pushOriginMaster);
 
-gulp.task('checkNonSnapshotVersion', checkNonSnapshotVersion);
-const prepublish = gulp.series(buildAll, 'checkNonSnapshotVersion', 'tag-version', 'push-origin-master');
-
-// Tools
-gulp.task('svgo', optimzeSvg);
-
-// Development Tasks
-gulp.task('prepublish', prepublish);
-gulp.task('server', buildServer);
-gulp.task('ui', buildUserInterface);
-gulp.task('dev', buildDev);
-gulp.task('default', buildAll);
+/*
+ * Define default task that can be called by just running `gulp` from cli
+ */
+exports.default = buildAll;
