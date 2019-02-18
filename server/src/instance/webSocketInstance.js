@@ -19,7 +19,7 @@ const configProvider = require('../config/configProvider');
  * @constructor
  * @struct
  * @implements {Instance}
- * @param {PluginManager} pluginManager
+ * @param {!PluginManager} pluginManager
  * @param {string} id Unique instance id.
  * @param {number} port The port number to use.
  */
@@ -124,10 +124,10 @@ function WebSocketInstance(pluginManager, id, port) {
         if (self.state === InstanceState.RUNNING) {
             let error = {
                 message: 'Can not start, instance already running.',
-                instanceId : self.id
+                instanceId: self.id
             };
             log.info(error.message, {id: error.instanceId});
-            promise = Promise.reject(error.message)
+            promise = Promise.reject(error.message);
         } else {
             instantiatePlugins();
             promise = startServer()
@@ -371,8 +371,7 @@ function WebSocketInstance(pluginManager, id, port) {
      * @param {?} socket
      */
     function handleConnection(socket) {
-        let connection = new WebSocketConnection();
-        connection.socket = socket;
+        let connection = new WebSocketConnection(socket);
 
         log.info('New client connected', {connectionId: connection.id});
 

@@ -6,29 +6,19 @@ const Logger = require('../infrastructure/logger');
 /**
  * @constructor
  * @struct
- * @param {WebSocket} [socket]
+ * @param {WebSocket} socket
  */
 function WebSocketConnection(socket) {
     /**
-     * @type {!WebSocketConnection}
-     */
-    const self = this;
-
-    /**
      * @type {!Logger}
      */
-    const log = new Logger(self.constructor.name);
+    const log = new Logger('WebSocketConnection');
 
     /**
      * Unique Id of the web socket connection.
      * @type {string}
      */
     this.id = createGuid();
-
-    /**
-     * @type {WebSocket|null}
-     */
-    this.socket = socket || null;
 
     /**
      * Sends data over the WebSocket connection.
@@ -48,9 +38,9 @@ function WebSocketConnection(socket) {
      * @param {string} message
      */
     function sendMessage(message) {
-        if (self.socket && self.socket.readyState === self.socket.OPEN) {
+        if (socket && socket.readyState === socket.OPEN) {
             try {
-                self.socket.send(message);
+                socket.send(message);
             } catch (ex) {
                 log.warn('Could not send message.', {error: ex.message});
             }
