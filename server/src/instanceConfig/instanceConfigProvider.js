@@ -3,7 +3,6 @@
 const Logger = require('../infrastructure/logger');
 const fs = require('fs');
 const path = require('path');
-const _ = require('underscore');
 const magic = require('../util/magicNumbers');
 
 /**
@@ -48,7 +47,7 @@ function InstanceConfigProvider() {
 
     /**
      * @param {string} id
-     * @returns {yak.InstanceConfig} The instance.
+     * @returns {InstanceConfig} The instance configuration.
      */
     this.getConfig = function getConfig(id) {
         return instanceConfigs[id];
@@ -56,10 +55,10 @@ function InstanceConfigProvider() {
 
     /**
      * Get list of instances.
-     * @returns {Array<yak.InstanceConfig>} List of instance configurations.
+     * @returns {Array<InstanceConfig>} List of instance configurations.
      */
     this.getConfigs = function getConfigs() {
-        return _.values(instanceConfigs);
+        return Object.values(instanceConfigs);
     };
 
     /**
@@ -119,11 +118,9 @@ function InstanceConfigProvider() {
      * @returns {!Array<string>} List of filenames to instance config files found in the INSTANCES_DIR folder.
      */
     function getInstanceConfigs() {
-        let filenames = fs.readdirSync(INSTANCES_DIR);
+        const filenames = fs.readdirSync(INSTANCES_DIR);
 
-        return _.filter(filenames, function usingInstanceExtension(filename) {
-            return path.extname(path.basename(filename, '.json')) === INSTANCE_CONFIG_MARKER;
-        });
+        return filenames.filter(filename => path.extname(path.basename(filename, '.json')) === INSTANCE_CONFIG_MARKER);
     }
 
     /**
@@ -131,12 +128,15 @@ function InstanceConfigProvider() {
      * @param {!Array<string>} filenames
      */
     function readAndParseInstanceConfigFiles(filenames) {
-        let configs = _.map(filenames, function readAndParseConfig(filename) {
+        const configs = filenames.map(filename => {
             let content = readConfig(filename);
             return parseConfig(filename, content);
         });
 
-        instanceConfigs = _.indexBy(configs, 'id');
+        instanceConfigs = configs.filter(x => x).reduce((map, config) => {
+            map[config.id] = config;
+            return map;
+        }, {});
     }
 
     /**
@@ -161,12 +161,9 @@ function InstanceConfigProvider() {
     /**
      * @param {string} filename The instance id will be generated out of the filename.
      * @param {string} content The file json content.
-     * @returns {yak.InstanceConfig} The parsed instance configuration.
+     * @returns {InstanceConfig} The parsed instance configuration.
      */
     function parseConfig(filename, content) {
-        /**
-         * @type {yak.InstanceConfig}
-         */
         let instanceConfig = null;
 
         try {

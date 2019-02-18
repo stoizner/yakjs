@@ -1,6 +1,5 @@
 'use strict';
 
-const _ = require('underscore');
 const InstanceInfo = require('./instanceInfo');
 const state = require('../../../yakServerState');
 
@@ -9,8 +8,8 @@ const state = require('../../../yakServerState');
  * @param response
  */
 function getInstancesRoute(request, response) {
-    let instances = state.instanceManager.getInstances();
-    let responseMessage = {
+    const instances = state.instanceManager.getInstances();
+    const responseMessage = {
         instances: instances.map(toInstanceInfo)
     };
 
@@ -22,11 +21,11 @@ function getInstancesRoute(request, response) {
  * @returns {!InstanceInfo} The instance info.
  */
 function toInstanceInfo(instance) {
-    let instanceInfo = new InstanceInfo();
+    const instanceInfo = new InstanceInfo();
     instanceInfo.id = instance.id;
     instanceInfo.name = instance.name;
 
-    let connections = instance.getConnections();
+    const connections = instance.getConnections();
     instanceInfo.connectionCount = connections ? connections.length : 0;
 
     if (instance.plugins) {
@@ -41,8 +40,8 @@ function toInstanceInfo(instance) {
     instanceInfo.activePlugins = instance.getPluginInstances().map(item => item.name);
     instanceInfo.description = instance.description;
 
-    let instanceConfig = state.instanceManager.configProvider.getConfig(instance.id);
-    instanceInfo.inactivePlugins = _.difference(instanceConfig.plugins, instanceInfo.activePlugins);
+    const instanceConfig = state.instanceManager.configProvider.getConfig(instance.id);
+    instanceInfo.inactivePlugins = instanceConfig.plugins.filter(plugin => instanceInfo.activePlugins.includes(plugin));
 
     return instanceInfo;
 }

@@ -1,7 +1,6 @@
 'use strict';
 
 const Logger = require('../infrastructure/logger');
-const _ = require('underscore');
 const WebSocketInstance = require('./webSocketInstance');
 
 /**
@@ -204,7 +203,7 @@ function InstanceManager(configProvider, pluginManager) {
      */
     function initializeInstances() {
         instances = {};
-        _.each(configProvider.getConfigs(), function initializeInstance(instanceConfig) {
+        configProvider.getConfigs().forEach(instanceConfig => {
             instances[instanceConfig.id] = setupInstance(instanceConfig);
         });
     }
@@ -213,9 +212,9 @@ function InstanceManager(configProvider, pluginManager) {
      * Starts all instances with enabled auto start.
      */
     function startInstancesWithAutoStartEnabled() {
-        _.each(configProvider.getConfigs(), function startInstances(config) {
-            if (config.autoStartEnabled) {
-                self.start(config.id);
+        configProvider.getConfigs().forEach(instanceConfig => {
+            if (instanceConfig.autoStartEnabled) {
+                self.start(instanceConfig.id);
             }
         });
     }

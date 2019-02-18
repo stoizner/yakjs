@@ -1,6 +1,5 @@
 'use strict';
 
-const _ = require('underscore');
 const WebSocketServer = require('ws').Server;
 const https = require('https');
 const http = require('http');
@@ -41,7 +40,7 @@ function WebSocketInstance(pluginManager, id, port) {
     let webServer = null;
 
     /**
-     * @type {Object<string, WebSocketConnection>}
+     * @type {!Object<string, WebSocketConnection>}
      */
     let connections = {};
 
@@ -316,7 +315,7 @@ function WebSocketInstance(pluginManager, id, port) {
     function stopAllPlugins() {
         log.debug('Stop all plugins.', {count: self.plugins.length});
 
-        _.each(pluginInstances, function saveTerminatePlugin(pluginWorker) {
+        pluginInstances.forEach(pluginWorker => {
             // A termination fail, shall not stop the loop, so
             // that other plugins can be terminated.
             try {
@@ -356,7 +355,7 @@ function WebSocketInstance(pluginManager, id, port) {
      * @returns {!Array<!WebSocketConnection>} List of websocket connections.
      */
     this.getConnections = function getConnections() {
-        return _.toArray(connections);
+        return Object.values(connections);
     };
 
     /**
@@ -466,8 +465,8 @@ function WebSocketInstance(pluginManager, id, port) {
      * @param {!WebSocketConnection} connection
      */
     function callPluginsOnNewConnection(connection) {
-        _.each(pluginInstances, function callOnNewConnection(pluginInstance) {
-            let pluginLog = getPluginLogger(pluginInstance.name);
+        pluginInstances.forEach(pluginInstance => {
+            const pluginLog = getPluginLogger(pluginInstance.name);
 
             if (pluginInstance.onNewConnection) {
                 try {
@@ -486,7 +485,7 @@ function WebSocketInstance(pluginManager, id, port) {
      * @param {!WebSocketConnection} connection
      */
     function callPlluginsOnConnectionClosed(connection) {
-        _.each(pluginInstances, function callOnConnectionClosed(pluginInstance) {
+        pluginInstances.forEach(pluginInstance => {
             if (pluginInstance.onConnectionClosed) {
                 try {
                     self.log.info('Plugin.onConnectionClosed', {pluginName: pluginInstance.name});

@@ -1,6 +1,5 @@
 'use strict';
 
-const _ = require('underscore');
 const Logger = require('../infrastructure/logger');
 const pluginProvider = require('../plugin/pluginProvider');
 const fileExtension = require('../infrastructure/fileExtension');
@@ -169,9 +168,7 @@ function PluginManager() {
      */
     this.savePlugins = function savePlugins() {
         log.info('savePlugins');
-        _.each(plugins, function savePlugin(plugin) {
-            self.savePlugin(plugin);
-        });
+        plugins.forEach(plugin => self.savePlugin(plugin));
     };
 
     /**
