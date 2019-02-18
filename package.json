@@ -57,7 +57,7 @@
         "semver": "^5.5.0",
         "underscore": "^1.8.3",
         "util.promisify": "^1.0.0",
-        "ws": "~4.0.0"
+        "ws": "~6.1.4"
     },
     "engines": {
         "node": ">=8.9.0"
