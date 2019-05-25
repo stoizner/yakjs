@@ -20,7 +20,7 @@ class Config {
          * The folder location of the static frontend application.
          * @type {string}
          */
-        this.frontendFolder = '../ui/dist/';
+        this.frontendFolder = '../../node_modules/@yakjs/yakjs-client/dist';
 
         /**
          * Whether to use secure connections for YAKjs and all WebSocket instances.

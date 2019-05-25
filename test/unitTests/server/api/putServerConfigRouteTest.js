@@ -38,7 +38,7 @@ describe('putServerConfigRoute', function() {
         configProvider = {
             config: {
                 port: '8790',
-                frontendFolder: '../ui/dist/',
+                frontendFolder: '../../node_modules/@yakjs/yakjs-client/',
                 staticRoutes: []
             },
             update: sinon.stub().resolves()
