@@ -4,13 +4,14 @@ const log4js = require('log4js');
 const fs = require('fs-extra');
 const argv = require('minimist')(process.argv.slice(2));
 
+const isDebugLogEnabled = argv.hasOwnProperty('debug');
+
 /**
  * Binds the internal logging to the log4js system.
  * @constructor
  * @struct
- * @param {string} level The log4js log level.
  */
-function LogAdapter(level) {
+function LogAdapter() {
     /**
      * Maximal file size in bytes.
      * @type {number}
@@ -23,6 +24,9 @@ function LogAdapter(level) {
      */
     const MAX_NUMBER_OF_FILES = 3;
 
+    const level = isDebugLogEnabled ? 'debug' : 'info';
+    const category = isDebugLogEnabled ? 'debug': 'default';
+
     /**
      * Initializes the logging system.
      */
@@ -34,24 +38,24 @@ function LogAdapter(level) {
                 console: {type: 'console'},
                 serverLogfile: {
                     type: 'file',
-                    filename: 'logs/yakjs',
+                    filename: 'logs/yakjs.log',
                     maxLogSize: MAX_FILE_SIZE,
                     backups: MAX_NUMBER_OF_FILES,
                     keepFileExt: true
                 },
                 pluginLogFile: {
                     type: 'file',
-                    filename: 'logs/plugins',
+                    filename: 'logs/plugins.log',
                     maxLogSize: MAX_FILE_SIZE,
                     backups: MAX_NUMBER_OF_FILES,
                     keepFileExt: true
                 }
             },
             categories: {
-                console: {appenders: ['console'], level: 'info'},
-                debug: {appenders: ['console', 'serverLogfile'], level: 'debug'},
-                default: {appenders: ['serverLogfile'], level: 'info', enableCallStack: true},
-                plugin: {appenders: ['pluginLogFile'], level: 'info'}
+                console: {appenders: ['console'], level},
+                debug: {appenders: ['console', 'serverLogfile'], level},
+                default: {appenders: ['serverLogfile'], level, enableCallStack: true},
+                plugin: {appenders: ['pluginLogFile'], level}
             }
         });
     }
@@ -60,7 +64,7 @@ function LogAdapter(level) {
      * @returns {!Logger} The default log4js logger.
      */
     this.getLogger = function getLogger() {
-        const logger = log4js.getLogger();
+        const logger = log4js.getLogger(category);
         logger.lebel = level;
 
         return logger;
@@ -93,5 +97,5 @@ function LogAdapter(level) {
  * @type {!LogAdapter}
  */
 module.exports = {
-    logAdapter: new LogAdapter(argv.debug ? 'DEBUG' : 'INFO')
+    logAdapter: new LogAdapter()
 };
