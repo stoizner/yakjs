@@ -17,8 +17,3 @@ module.exports = {
     expect: expect,
     sinon: sinon,
 };
-
-// Setup some globals
-global._ = {
-    noop: () => {}
-}
