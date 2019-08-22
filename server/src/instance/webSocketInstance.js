@@ -4,7 +4,8 @@ const WebSocketServer = require('ws').Server;
 const https = require('https');
 const http = require('http');
 
-const Logger = require('../infrastructure/logger');
+const log = require('../infrastructure/logger').defaultLogger;
+const pluginLog = require('../infrastructure/logger').pluginLogger;
 const InstanceState = require('./instanceState');
 const PluginContext = require('../plugin/pluginContext');
 const WebSocketConnection = require('./webSocketConnection');
@@ -72,11 +73,6 @@ function WebSocketInstance(pluginManager, id, port) {
      * @type {Array<string>}
      */
     this.plugins = [];
-
-    /**
-     * @type {!Logger}
-     */
-    const log = new Logger(id + '.instance');
 
     /**
      * Expose logger.
@@ -292,7 +288,6 @@ function WebSocketInstance(pluginManager, id, port) {
     function callPluginOnStart(plugin) {
         log.debug('Initialize plugin.', {plugin: plugin.name});
 
-        let pluginLog = getPluginLogger(plugin.name);
         let callback = plugin.onStart || plugin.onInitialize;
 
         if (callback) {
@@ -333,7 +328,6 @@ function WebSocketInstance(pluginManager, id, port) {
      */
     function callPluginOnStop(plugin) {
         log.info('Stop plugin.', {plugin: plugin.name});
-        let pluginLog = getPluginLogger(plugin.name);
 
         let callback = plugin.onStop || plugin.onTerminate;
 
@@ -428,7 +422,6 @@ function WebSocketInstance(pluginManager, id, port) {
      * @param {!WebSocketConnection} connection
      */
     function callPluginOnJsonMessage(pluginInstance, data, connection) {
-        let pluginLog = getPluginLogger(pluginInstance.name);
         let callback = pluginInstance.onJsonMessage;
 
         if (callback) {
@@ -447,7 +440,6 @@ function WebSocketInstance(pluginManager, id, port) {
      * @param {!WebSocketConnection} connection
      */
     function callPluginOnMessage(pluginInstance, data, connection) {
-        let pluginLog = getPluginLogger(pluginInstance.name);
         let callback = pluginInstance.onMessage;
 
         if (callback) {
@@ -466,8 +458,6 @@ function WebSocketInstance(pluginManager, id, port) {
      */
     function callPluginsOnNewConnection(connection) {
         pluginInstances.forEach(pluginInstance => {
-            const pluginLog = getPluginLogger(pluginInstance.name);
-
             if (pluginInstance.onNewConnection) {
                 try {
                     pluginLog.info('onNewConnection', {connectionId: connection.id});
@@ -496,14 +486,6 @@ function WebSocketInstance(pluginManager, id, port) {
             }
         });
     }
-
-    /**
-     * Gets the plugin logger.
-     * @param {string} pluginId
-     * @returns {!Logger} The plugin logger.
-     */
-    function getPluginLogger(pluginId) {
-        return new Logger(pluginId + '.plugin');
-    }
 }
+
 module.exports = WebSocketInstance;

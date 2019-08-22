@@ -2,7 +2,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const Logger = require('../infrastructure/logger');
+const log = require('../infrastructure/logger').defaultLogger;
 const Module = require('./module');
 
 /**
@@ -24,11 +24,6 @@ function ModuleProvider() {
      * @type {string}
      */
     const MODULE_EXTENSION = '.js';
-
-    /**
-     * @type {!Logger}
-     */
-    const log = new Logger(self.constructor.name);
 
     /**
      * @param {string} moduleFilename The module filename.

@@ -1,7 +1,7 @@
 'use strict';
 
 const createGuid = require('../../common/guid');
-const Logger = require('../infrastructure/logger');
+const log = require('../infrastructure/logger').defaultLogger;
 
 /**
  * @constructor
@@ -9,11 +9,6 @@ const Logger = require('../infrastructure/logger');
  * @param {WebSocket} socket
  */
 function WebSocketConnection(socket) {
-    /**
-     * @type {!Logger}
-     */
-    const log = new Logger('WebSocketConnection');
-
     /**
      * Unique Id of the web socket connection.
      * @type {string}

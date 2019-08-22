@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const fsAdapter = require('../adapter/fsAdapter');
 
-const Logger = require('../infrastructure/logger');
+const log = require('../infrastructure/logger').defaultLogger;
 const Config = require('./config');
 const magic = require('../util/magicNumbers');
 
@@ -45,10 +45,6 @@ class ConfigProvider {
  * @returns {!Config}
  */
 function readConfig() {
-    /**
-     * @type {!Logger}
-     */
-    let log = new Logger('ConfigProvider');
     let config = new Config();
 
     try {

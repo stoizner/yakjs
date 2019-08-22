@@ -1,7 +1,7 @@
 'use strict';
 
 const log4js = require('log4js');
-const fs = require('fs');
+const fs = require('fs-extra');
 const argv = require('minimist')(process.argv.slice(2));
 
 /**
@@ -11,8 +11,6 @@ const argv = require('minimist')(process.argv.slice(2));
  * @param {string} level The log4js log level.
  */
 function LogAdapter(level) {
-    let appenders = {};
-
     /**
      * Maximal file size in bytes.
      * @type {number}
@@ -29,50 +27,61 @@ function LogAdapter(level) {
      * Initializes the logging system.
      */
     function constructor() {
-        try {
-            fs.mkdirSync('./logs');
-        } catch (ex) {
-            // Ignore the exception when the log directory already exists.
-        }
+        fs.ensureDir('./logs');
 
-        log4js.clearAppenders();
-        log4js.loadAppender('file');
-
-        appenders.yakjs = log4js.appenders.file('logs/yakjs.log', null, MAX_FILE_SIZE, MAX_NUMBER_OF_FILES);
-
-        log4js.addAppender(appenders.yakjs);
-
-        // Add console appender to every category when in debug mode.
-        if (level === 'DEBUG') {
-            log4js.addAppender(log4js.appenders.console());
-        }
+        log4js.configure({
+            appenders: {
+                console: {type: 'console'},
+                serverLogfile: {
+                    type: 'file',
+                    filename: 'logs/yakjs',
+                    maxLogSize: MAX_FILE_SIZE,
+                    backups: MAX_NUMBER_OF_FILES,
+                    keepFileExt: true
+                },
+                pluginLogFile: {
+                    type: 'file',
+                    filename: 'logs/plugins',
+                    maxLogSize: MAX_FILE_SIZE,
+                    backups: MAX_NUMBER_OF_FILES,
+                    keepFileExt: true
+                }
+            },
+            categories: {
+                console: {appenders: ['console'], level: 'info'},
+                debug: {appenders: ['console', 'serverLogfile'], level: 'debug'},
+                default: {appenders: ['serverLogfile'], level: 'info', enableCallStack: true},
+                plugin: {appenders: ['pluginLogFile'], level: 'info'}
+            }
+        });
     }
 
     /**
-     * @param {string} name
-     * @returns {?} The log4js logger.
+     * @returns {!Logger} The default log4js logger.
      */
-    this.getLogger = function getLogger(name) {
-        let logger = log4js.getLogger(name);
-        logger.setLevel(level);
+    this.getLogger = function getLogger() {
+        const logger = log4js.getLogger();
+        logger.lebel = level;
 
-        if (name.indexOf('.plugin') > 0) {
-            if (!appenders[name]) {
-                appenders[name] = log4js.appenders.file('logs/' + name + '.log', null, MAX_FILE_SIZE, MAX_NUMBER_OF_FILES);
-                log4js.addAppender(appenders[name], name);
-            }
+        return logger;
+    };
 
-            logger = log4js.getLogger(name);
-        }
+    /**
+     * @returns {!Logger} The console log4js logger.
+     */
+    this.getConsoleLogger = function getConsoleLogger() {
+        const logger = log4js.getLogger('console');
+        logger.lebel = level;
 
-        if (name.indexOf('.console') > 0 && level !== 'DEBUG') {
-            if (!appenders[name]) {
-                appenders[name] = log4js.appenders.console();
-                log4js.addAppender(appenders[name], name);
-            }
+        return logger;
+    };
 
-            logger = log4js.getLogger(name);
-        }
+    /**
+     * @returns {!Logger} The plugin log4js logger.
+     */
+    this.getPluginLogger = function getPluginLogger() {
+        const logger = log4js.getLogger('plugin');
+        logger.lebel = level;
 
         return logger;
     };
@@ -80,13 +89,9 @@ function LogAdapter(level) {
     constructor();
 }
 
-let logLevel = 'INFO';
-
-if (argv.debug) {
-    logLevel = 'DEBUG';
-}
-
 /**
  * @type {!LogAdapter}
  */
-module.exports = new LogAdapter(logLevel);
+module.exports = {
+    logAdapter: new LogAdapter(argv.debug ? 'DEBUG' : 'INFO')
+};

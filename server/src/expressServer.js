@@ -5,7 +5,8 @@ const http = require('http');
 const https = require('https');
 const path = require('path');
 const bodyParser = require('body-parser');
-const Logger = require('./infrastructure/logger');
+const log = require('./infrastructure/logger').defaultLogger;
+const console = require('./infrastructure/logger').consoleLogger;
 const apiV1Router = require('./routes/v1/apiV1Router');
 const httpsServerOptionsProvider = require('./config/httpsServerOptionsProvider');
 
@@ -15,22 +16,7 @@ const httpsServerOptionsProvider = require('./config/httpsServerOptionsProvider'
  * @param {!Config} config
  */
 function ExpressServer(config) {
-    /**
-     * @type {ExpressServer}
-     */
-    let self = this;
-
-    /**
-     * @type {!Logger}
-     */
-    let log = new Logger(self.constructor.name);
-
-    /**
-     * @type {!Logger}
-     */
-    let console = new Logger(self.constructor.name + '.console');
-
-    let app = express();
+    const app = express();
 
     function constructor() {
         process.on('uncaughtException', function handleUncaughtException(error) {

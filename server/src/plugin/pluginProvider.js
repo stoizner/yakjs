@@ -1,6 +1,7 @@
 'use strict';
 
-const Logger = require('../infrastructure/logger');
+const log = require('../infrastructure/logger').defaultLogger;
+const pluginLog = require('../infrastructure/logger').pluginLogger;
 const fs = require('fs');
 const path = require('path');
 const fileExtension = require('../infrastructure/fileExtension');
@@ -20,11 +21,6 @@ function PluginProvider() {
      * @type {string}
      */
     const PLUGINS_DIR = path.join(__dirname, '../../plugins/');
-
-    /**
-     * @type {!Logger}
-     */
-    const log = new Logger(self.constructor.name);
 
     /**
      * @returns {!Object<string, !Plugin>}
@@ -141,10 +137,8 @@ function PluginProvider() {
             pluginModule = require(modulePath);
             /* eslint-enable global-require */
         } catch (ex) {
-            var pluginLog = new Logger(toPluginId(filename) + '.plugin');
-
-            log.warn('Could not load plugin module', {ex: ex.message});
-            pluginLog.error('Could not load plugin module', {ex: ex.message});
+            log.warn('Could not load plugin module', {filename, ex: ex.message});
+            pluginLog.error('Could not load plugin module', {filename, ex: ex.message});
 
             if (ex.message.indexOf('\'./common') >= 0) {
                 pluginLog.error('Use two dots, like ../common/ to load a common module.');

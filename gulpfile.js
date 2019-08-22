@@ -46,7 +46,7 @@ function pushOriginMaster() {
 
 function tagVersion() {
     const tag = util.promisify(git.tag);
-    return tag(`v${pkg.version}`, `Updates version number to ${pkg.version}.`);
+    return tag(`v${pkg.version}`, `Update version number to "${pkg.version}"`);
 }
 
 const buildServer = gulp.series(lint, test);

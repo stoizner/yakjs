@@ -6,8 +6,9 @@
         "analytics",
         "broadcast",
         "echo",
+        "empty",
         "pingPong"
     ],
-    "autoStartEnabled": true,
+    "autoStartEnabled": false,
     "id": "chat"
 }

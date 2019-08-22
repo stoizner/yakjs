@@ -1,6 +1,6 @@
 'use strict';
 
-const Logger = require('../infrastructure/logger');
+const log = require('../infrastructure/logger').defaultLogger;
 
 /**
  * Replaces the setTimeout and setInterval functions
@@ -12,11 +12,6 @@ const Logger = require('../infrastructure/logger');
  * @param {?} global
  */
 function setupErrorProtectionForTimerFunctions(global) {
-    /**
-     * @type {!Logger}
-     */
-    const log = new Logger('ErrorProtectionForTimerFunctions');
-
     /**
      * Keep an instance of the original setTimeout.
      * @type {function(Function, number, Object=)}

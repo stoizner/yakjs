@@ -1,12 +1,7 @@
 'use strict';
 
 const Command = require('./command');
-const Logger = require('../infrastructure/logger');
-
-/**
- * @type {!Logger}
- */
-const log = new Logger('commandDispatcher');
+const log = require('../infrastructure/logger').defaultLogger;
 
 /**
  * Command index, the key is the command name.

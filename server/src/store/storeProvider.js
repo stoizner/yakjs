@@ -2,7 +2,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const Logger = require('../infrastructure/logger');
+const log = require('../infrastructure/logger').defaultLogger;
 const StoreKeyValueItem = require('./storeKeyValueItem');
 const fileExtension = require('../infrastructure/fileExtension');
 
@@ -25,11 +25,6 @@ function StoreProvider() {
      * @type {string}
      */
     const STORE_FILENAME_POSTFIX = '.store.txt';
-
-    /**
-     * @type {!Logger}
-     */
-    const log = new Logger(self.constructor.name);
 
     /**
      * @type {!Object<string, !StoreKeyValueItem>}

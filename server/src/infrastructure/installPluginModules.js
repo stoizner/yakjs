@@ -2,7 +2,7 @@
 
 const getCurrentPluginsDirectory = require('./getCurrentPluginsDirectory');
 const childProcess = require('child_process');
-const Logger = require('../infrastructure/logger');
+const log = require('../infrastructure/logger').defaultLogger;
 const fs = require('fs-extra');
 
 /**
@@ -11,10 +11,6 @@ const fs = require('fs-extra');
  */
 function installPluginModules() {
     return new Promise((resolve, reject) => {
-        /**
-         * @type {!Logger}
-         */
-        const log = new Logger('installPluginModules');
         const pluginCwd = getCurrentPluginsDirectory();
 
         if (fs.existsSync(pluginCwd + 'package.json')) {

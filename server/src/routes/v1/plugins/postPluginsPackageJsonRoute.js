@@ -4,18 +4,13 @@ const fs = require('fs-extra');
 const HttpStatus = require('http-status-codes');
 const getCurrentPluginsDirectory = require('../../../infrastructure/getCurrentPluginsDirectory');
 const installPluginModules = require('../../../infrastructure/installPluginModules');
-const Logger = require('../../../infrastructure/logger');
+const log = require('../../../infrastructure/logger').defaultLogger;
 
 /**
  * @param request
  * @param response
  */
 function postPluginsPackageJsonRoute(request, response) {
-    /**
-     * @type {!Logger}
-     */
-    const log = new Logger('postPluginsPackageJsonRoute');
-
     /**
      * @type {!Object}
      */

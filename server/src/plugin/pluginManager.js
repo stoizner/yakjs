@@ -1,6 +1,7 @@
 'use strict';
 
-const Logger = require('../infrastructure/logger');
+const log = require('../infrastructure/logger').defaultLogger;
+const pluginLog = require('../infrastructure/logger').pluginLogger;
 const pluginProvider = require('../plugin/pluginProvider');
 const fileExtension = require('../infrastructure/fileExtension');
 
@@ -18,11 +19,6 @@ function PluginManager() {
      * @type {!Object<string, !Plugin>}
      */
     let plugins = {};
-
-    /**
-     * @type {!Logger}
-     */
-    const log = new Logger(self.constructor.name);
 
     /**
      * Load plugins.
@@ -111,8 +107,6 @@ function PluginManager() {
      * @returns {*} A working plugin instance.
      */
     this.createPluginWorker = function createPluginWorker(pluginName, pluginContext) {
-        let pluginLog = new Logger(pluginName + '.plugin');
-
         let pluginWorker = null;
         let plugin = plugins[pluginName];
 

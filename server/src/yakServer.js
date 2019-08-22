@@ -1,6 +1,6 @@
 'use strict';
 
-const Logger = require('./infrastructure/logger');
+const log = require('./infrastructure/logger').defaultLogger;
 const ExpressServer = require('./expressServer');
 
 const setupErrorProtectionForTimerFunctions = require('./infrastructure/setupErrorProtectionForTimerFunctions');
@@ -12,16 +12,6 @@ const yakServerState = require('./yakServerState');
  * @struct
  */
 function YakServer() {
-    /**
-     * @type {YakServer}
-     */
-    let self = this;
-
-    /**
-     * @type {!Logger}
-     */
-    const log = new Logger(self.constructor.name);
-
     /**
      * The HTTP express server
      * @type {ExpressServer}

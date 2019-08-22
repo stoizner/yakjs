@@ -1,6 +1,6 @@
 'use strict';
 
-const Logger = require('../infrastructure/logger');
+const log = require('../infrastructure/logger').defaultLogger;
 const WebSocketInstance = require('./webSocketInstance');
 
 /**
@@ -19,11 +19,6 @@ function InstanceManager(configProvider, pluginManager) {
      * @type {Object<string, Instance>}
      */
     let instances = {};
-
-    /**
-     * @type {!Logger}
-     */
-    const log = new Logger(self.constructor.name);
 
     /**
      * @type {!InstanceConfigProvider}

@@ -2,7 +2,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const Logger = require('../infrastructure/logger');
+const log = require('../infrastructure/logger').defaultLogger;
 const CommandPreset = require('./commandPreset');
 const magicNumbers = require('../util/magicNumbers');
 const fileExtension = require('../infrastructure/fileExtension');
@@ -25,11 +25,6 @@ function CommandPresetProvider() {
      * @type {!CommandPresetProvider}
      */
     const self = this;
-
-    /**
-     * @type {!Logger}
-     */
-    const log = new Logger(self.constructor.name);
 
     /**
      * @param {CommandPreset} commandPreset

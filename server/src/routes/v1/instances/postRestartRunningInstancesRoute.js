@@ -2,10 +2,8 @@
 
 const state = require('../../../yakServerState');
 const InstanceState = require('../../../instance/instanceState');
-const Logger = require('../../../infrastructure/logger');
+const log = require('../../../infrastructure/logger').defaultLogger;
 const HttpStatus = require('http-status-codes');
-
-const log = new Logger('postRestartRunningInstancesRoute');
 
 /**
  * @param request

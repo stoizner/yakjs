@@ -1,6 +1,6 @@
 'use strict';
 
-const Logger = require('../infrastructure/logger');
+const log = require('../infrastructure/logger').defaultLogger;
 const fs = require('fs');
 const path = require('path');
 const magic = require('../util/magicNumbers');
@@ -11,11 +11,6 @@ const magic = require('../util/magicNumbers');
  * @struct
  */
 function InstanceConfigProvider() {
-    /**
-     * @type {!InstanceConfigProvider}
-     */
-    const self = this;
-
     /**
      * @type {string}
      */
@@ -32,11 +27,6 @@ function InstanceConfigProvider() {
      * @type {!Object<string, !yak.InstanceConfig>}
      */
     let instanceConfigs = {};
-
-    /**
-     * @type {!Logger}
-     */
-    const log = new Logger(self.constructor.name);
 
     /**
      * Initializes the config provider.
