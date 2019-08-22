@@ -67,7 +67,7 @@
         "chai-as-promised": "^6.0.0",
         "del": "^3.0.0",
         "dirty-chai": "^2.0.1",
-        "eslint": "^3.19.0",
+        "eslint": "^6.2.1",
         "gulp": "^4.0.0",
         "gulp-eslint": "^4.0.2",
         "gulp-git": "^2.5.2",
