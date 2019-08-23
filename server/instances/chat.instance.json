@@ -9,6 +9,6 @@
         "empty",
         "pingPong"
     ],
-    "autoStartEnabled": false,
+    "autoStartEnabled": true,
     "id": "chat"
 }
