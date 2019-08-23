@@ -17,7 +17,7 @@ function BroadcastPlugin(context) {
      * @param {!WebSocketConnection} myConnection
      */
     this.onMessage = (message, myConnection) => {
-        let connections = context.instance.getConnections();
+        const connections = context.instance.getConnections();
 
         connections.forEach(connection => {
             if (connection.id !== myConnection.id) {
@@ -34,7 +34,7 @@ function BroadcastPlugin(context) {
  * @param {CommandConfig} command
  */
 function executeBroadcastCommand(data, context, command) {
-    let connections = context.instance.getConnections();
+    const connections = context.instance.getConnections();
 
     context.log.debug('Execute command: ' + command.name);
     connections.forEach(connection => {
