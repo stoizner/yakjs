@@ -1,6 +1,6 @@
 {
     "name": "yakjs",
-    "version": "3.4.3",
+    "version": "3.5.0",
     "description": "YAKjs - a local server to stub WebSocket backends.",
     "keywords": [
         "YAK",
@@ -62,6 +62,7 @@
         "node": ">=10.0.0"
     },
     "devDependencies": {
+        "@types/express": "^4.17.1",
         "blanket": "^1.2.1",
         "chai": "^4.2.0",
         "chai-as-promised": "^7.1.1",
