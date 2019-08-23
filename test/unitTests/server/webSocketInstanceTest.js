@@ -1,3 +1,5 @@
+'use strict';
+
 const sandbox = require('../../testSandbox');
 const sinon = sandbox.sinon;
 const expect = sandbox.expect;
@@ -5,17 +7,15 @@ const WebSocketInstance = require('../../../server/src/instance/webSocketInstanc
 const InstanceState = require('../../../server/src/instance/instanceState');
 
 describe('WebSocketInstance', function() {
-    'use strict';
-
     /**
      * @type {!WebSocketInstance}
      */
-    var sut;
+    let sut;
 
     /**
      *  @type {PluginManager}
      */
-    var pluginManagerStub;
+    let pluginManagerStub;
 
     beforeEach(function() {
         pluginManagerStub = {
@@ -42,10 +42,10 @@ describe('WebSocketInstance', function() {
             expect(pluginManagerStub.createPluginWorker).to.have.been.calledWith('myPlugin');
         });
 
-        it('call onInitialize on plugin', async function() {
+        it('calls onInitialize on plugin', async function() {
             // Given
             sut.plugins = ['myPlugin'];
-            var plugin = {
+            const plugin = {
                 name: 'myPlugin',
                 onInitialize: sinon.spy()
             };
@@ -58,10 +58,10 @@ describe('WebSocketInstance', function() {
             expect(plugin.onInitialize).calledWith();
         });
 
-        it('call onStart on plugin', async function() {
+        it('calls onStart on plugin', async function() {
             // Given
             sut.plugins = ['myPlugin'];
-            var plugin = {
+            const plugin = {
                 name: 'myPlugin',
                 onStart: sinon.spy()
             };
@@ -77,7 +77,7 @@ describe('WebSocketInstance', function() {
         it('do not call onInitialize when plugin does not have a onInitialize method', async function() {
             // Given
             sut.plugins = ['myPlugin'];
-            var plugin = {name: 'myPlugin'};
+            const plugin = {name: 'myPlugin'};
             pluginManagerStub.createPluginWorker = sinon.stub().returns(plugin);
 
             // When
@@ -90,7 +90,7 @@ describe('WebSocketInstance', function() {
         it('plugin without onInitialize shall be added to active plugins', async function() {
             // Given
             sut.plugins = ['myPlugin'];
-            var plugin = {name: 'myPlugin'};
+            const plugin = {name: 'myPlugin'};
             pluginManagerStub.createPluginWorker = sinon.stub().returns(plugin);
 
             // When
@@ -103,7 +103,7 @@ describe('WebSocketInstance', function() {
         it('count active plugins', async function() {
             // Given
             sut.plugins = ['myPlugin'];
-            var plugin = {name: 'myPlugin'};
+            const plugin = {name: 'myPlugin'};
             pluginManagerStub.createPluginWorker = sinon.stub().returns(plugin);
 
             // When
@@ -111,14 +111,30 @@ describe('WebSocketInstance', function() {
 
             // Then
             expect(sut.activePluginCount).to.eql(1);
-        })
+        });
+
+        it('calls onInstanceStarted', async function() {
+            // Given
+            sut.plugins = ['myPlugin'];
+            const plugin = {
+                name: 'myPlugin',
+                onInstanceStarted: sinon.spy()
+            };
+            pluginManagerStub.createPluginWorker = sinon.stub().returns(plugin);
+
+            // When
+            await sut.start();
+
+            // Then
+            expect(plugin.onInstanceStarted).calledWith();
+        });
     });
 
     describe('stop', function() {
         it('calls onTerminate on plugin', async function() {
             // Given
             sut.plugins = ['myPlugin'];
-            var plugin = {name: 'myPlugin', onTerminate: sinon.spy()};
+            const plugin = {name: 'myPlugin', onTerminate: sinon.spy()};
             pluginManagerStub.createPluginWorker = sinon.stub().returns(plugin);
             await sut.start();
             sut.state = InstanceState.RUNNING;
@@ -133,7 +149,7 @@ describe('WebSocketInstance', function() {
         it('calls onStop on plugin', async function() {
             // Given
             sut.plugins = ['myPlugin'];
-            var plugin = {name: 'myPlugin', onStop: sinon.spy()};
+            const plugin = {name: 'myPlugin', onStop: sinon.spy()};
             pluginManagerStub.createPluginWorker = sinon.stub().returns(plugin);
             await sut.start();
             sut.state = InstanceState.RUNNING;

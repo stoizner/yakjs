@@ -11,6 +11,11 @@ function EmptyPlugin(context) {
     this.onStart = () => {};
 
     /**
+     * @param {!InstanceStartedEvent} event
+     */
+    this.onInstanceStarted = event => {};
+
+    /**
      * @param {!WebSocketConnection} connection
      */
     this.onNewConnection = connection => {};

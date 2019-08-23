@@ -15,6 +15,16 @@ function EchoPlugin() {
     this.onMessage = (message, connection) => {
         connection.send(message.data);
     };
+
+    /**
+     * @param {!InstanceStartedEvent} event
+     */
+    this.onInstanceStarted = event => {
+        // Create a route for http://localhost:<PORT>/echo
+        event.app.get('/echo', (request, response) => {
+            response.send('Hello from the echo plugin!');
+        });
+    };
 }
 
 /**

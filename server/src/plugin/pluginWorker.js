@@ -7,9 +7,15 @@
  */
 function PluginWorker() {
     /**
-     * Called when the instance is started.
+     * Called when the instance starts.
      */
     this.onStart = function onStart() {};
+
+    /**
+     * Called when the instance is started and can accept WebSocket connections or HTTP requests.
+     * @param {!InstanceStartedEvent} event
+     */
+    this.onInstanceStarted = function onInstanceStarted(event) {};
 
     /**
      * Called on new client connected to instance.

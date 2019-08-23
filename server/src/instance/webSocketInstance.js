@@ -3,6 +3,7 @@
 const WebSocketServer = require('ws').Server;
 const http = require('http');
 
+const express = require('express');
 const log = require('../infrastructure/logger').defaultLogger;
 const pluginLog = require('../infrastructure/logger').pluginLogger;
 const InstanceState = require('./instanceState');
@@ -11,6 +12,8 @@ const WebSocketConnection = require('./webSocketConnection');
 const WebSocketMessage = require('./webSocketMessage');
 const magic = require('../util/magicNumbers');
 const commandDispatcher = require('../command/commandDispatcher');
+
+const {InstanceStartedEvent} = require('./instanceStartedEvent');
 
 /**
  * @constructor
@@ -24,7 +27,7 @@ function WebSocketInstance(pluginManager, id, port) {
     /**
      * @type {WebSocketInstance}
      */
-    let self = this;
+    const self = this;
 
     /**
      * WebSocketServer instance
@@ -40,7 +43,7 @@ function WebSocketInstance(pluginManager, id, port) {
     /**
      * @type {!Object<string, WebSocketConnection>}
      */
-    let connections = {};
+    const connections = {};
 
     /**
      * The instance id.
@@ -73,7 +76,7 @@ function WebSocketInstance(pluginManager, id, port) {
 
     /**
      * Expose logger.
-     * @type {!Logger}
+     * @type {!Log}
      */
     this.log = log;
 
@@ -97,43 +100,40 @@ function WebSocketInstance(pluginManager, id, port) {
     /**
      * @type {!Array<!PluginWorker>}
      */
-    let pluginInstances = [];
+    let pluginWorkers = [];
 
     /**
-     * @type {!PluginContext}
+     * @type {PluginContext}
      */
     let pluginContext = null;
+
+    /**
+     * @type {core.Express}
+     */
+    let expressApp = null;
 
     /**
      * Start server instance
      * @returns {!Promise}
      */
-    this.start = function start() {
+    this.start = async function start() {
         log.info('Start WebSocketServer Instance', {id: self.id});
 
-        let promise;
-
         if (self.state === InstanceState.RUNNING) {
-            let error = {
-                message: 'Can not start, instance already running.',
-                instanceId: self.id
-            };
-            log.info(error.message, {id: error.instanceId});
-            promise = Promise.reject(error.message);
-        } else {
-            instantiatePlugins();
-            promise = startServer()
-                .then(() => {
-                    self.state = InstanceState.RUNNING;
-                })
-                .catch(error => {
-                    log.error('Could not start instance: ', {error});
-                    self.state = InstanceState.ERROR;
-                    throw error;
-                });
+            throw new Error(`Can not start, instance already running. (${self.id})`);
         }
 
-        return promise;
+        try {
+            instantiatePlugins();
+            await startServer();
+            self.state = InstanceState.RUNNING;
+
+            triggerInstanceStarted();
+        } catch (error) {
+            log.error('Could not start instance: ', {error});
+            self.state = InstanceState.ERROR;
+            throw error;
+        }
     };
 
     /**
@@ -183,7 +183,8 @@ function WebSocketInstance(pluginManager, id, port) {
                 port: self.port
             });
 
-            webServer = http.createServer().listen(self.port);
+            expressApp = express();
+            webServer = http.createServer(expressApp).listen(self.port);
 
             webSocketServer = new WebSocketServer({server: webServer});
             webSocketServer.on('connection', handleConnection);
@@ -217,12 +218,12 @@ function WebSocketInstance(pluginManager, id, port) {
         log.debug('Instantiate and initialize plugins.', {count: self.plugins.length});
 
         self.activePluginCount = 0;
-        pluginInstances = [];
+        pluginWorkers = [];
 
-        self.plugins.forEach(function instantiatePlugin(pluginId) {
-            log.debug('Instantiate plugin.', {plugin: pluginId});
+        self.plugins.forEach(pluginId => {
+            log.debug('Instantiate plugin.', {pluginId});
 
-            let pluginWorker = pluginManager.createPluginWorker(pluginId, getOrCreatePluginContext());
+            const pluginWorker = pluginManager.createPluginWorker(pluginId, getOrCreatePluginContext());
 
             if (pluginWorker) {
                 // #HACK Extend with pluginName
@@ -232,14 +233,14 @@ function WebSocketInstance(pluginManager, id, port) {
                 // When one plugin instantiation fails, it shall continue with the next plugin.
                 try {
                     registerPluginCommands(pluginManager.getPlugin(pluginId), getOrCreatePluginContext());
-                    callPluginOnStart(pluginWorker);
-                    pluginInstances.push(pluginWorker);
+                    triggerStart(pluginWorker);
+                    pluginWorkers.push(pluginWorker);
                     self.activePluginCount++;
                 } catch (ex) {
-                    log.warn('Plugin start/initialize failed.', {plugin: pluginId, error: ex.message});
+                    log.warn('Plugin start/initialize failed.', {pluginId, error: ex.message});
                 }
             } else {
-                log.error('Plugin could not be loaded.', {plugin: pluginId});
+                log.error('Plugin could not be loaded.', {pluginId});
             }
 
             return pluginWorker;
@@ -277,23 +278,33 @@ function WebSocketInstance(pluginManager, id, port) {
     /**
      * @param {!PluginWorker} plugin
      */
-    function callPluginOnStart(plugin) {
-        log.debug('Initialize plugin.', {plugin: plugin.name});
+    function triggerStart(plugin) {
+        const pluginName = plugin.name;
+        log.debug('Initialize plugin.', {pluginName});
 
-        let callback = plugin.onStart || plugin.onInitialize;
+        const callback = plugin.onStart || plugin.onInitialize;
 
         if (callback) {
             try {
                 callback();
 
                 pluginLog.info('Plugin started.', {instance: self.name});
-                log.debug('Plugin started.', {plugin: plugin.name});
-            } catch (ex) {
-                pluginLog.error('Plugin start failed.', {instance: self.name, error: ex.message});
-                log.warn('Plugin start failed.', {plugin: plugin.name, error: ex.message});
-                throw ex;
+                log.debug('Plugin started.', {pluginName});
+            } catch (error) {
+                pluginLog.error('Plugin start failed.', {instance: self.name, error: error.message});
+                log.warn('Plugin start failed.', {pluginName, error: error.message});
+                throw error;
             }
         }
+    }
+
+    function triggerInstanceStarted() {
+        pluginWorkers.forEach(pluginWorker => {
+            if (pluginWorker.onInstanceStarted) {
+                const event = new InstanceStartedEvent(expressApp);
+                pluginWorker.onInstanceStarted(event);
+            }
+        });
     }
 
     /**
@@ -302,23 +313,23 @@ function WebSocketInstance(pluginManager, id, port) {
     function stopAllPlugins() {
         log.debug('Stop all plugins.', {count: self.plugins.length});
 
-        pluginInstances.forEach(pluginWorker => {
+        pluginWorkers.forEach(pluginWorker => {
             // A termination fail, shall not stop the loop, so
             // that other plugins can be terminated.
             try {
-                callPluginOnStop(pluginWorker);
+                triggerStop(pluginWorker);
             } catch (ex) {
                 log.error('Could not stop plugin', {plugin: pluginWorker.name, error: ex, stack: ex.stack});
             }
         });
 
-        pluginInstances = [];
+        pluginWorkers = [];
     }
 
     /**
      * @param {!PluginWorker} plugin
      */
-    function callPluginOnStop(plugin) {
+    function triggerStop(plugin) {
         log.info('Stop plugin.', {plugin: plugin.name});
 
         let callback = plugin.onStop || plugin.onTerminate;
@@ -348,7 +359,7 @@ function WebSocketInstance(pluginManager, id, port) {
      * @returns {!Array<!PluginWorker>} List of instantiated plugins.
      */
     this.getPluginInstances = function getPluginInstances() {
-        return pluginInstances;
+        return pluginWorkers;
     };
 
     /**
@@ -366,19 +377,19 @@ function WebSocketInstance(pluginManager, id, port) {
             self.log.info('Connection closed ', {connectionId: connection.id});
             delete connections[connection.id];
 
-            callPlluginsOnConnectionClosed(connection);
+            triggerConnectionClosed(connection);
         });
 
         socket.on('error', function handleSocketError() {
             self.log.info('Connection closed with error', {connectionId: connection.id});
             delete connections[connection.id];
 
-            callPlluginsOnConnectionClosed(connection);
+            triggerConnectionClosed(connection);
         });
 
         socket.on('message', createMessageHandler(connection));
 
-        callPluginsOnNewConnection(connection);
+        triggerNewConnection(connection);
     }
 
     /**
@@ -389,6 +400,22 @@ function WebSocketInstance(pluginManager, id, port) {
         return function handleMessage(data) {
             log.debug('Received websocket message ', {fromConnectionId: connection.id, data: data});
 
+            pluginWorkers.forEach(pluginWorker => {
+                triggerMessage(pluginWorker, data, connection);
+                triggerJsonMessage(pluginWorker, data, connection);
+            });
+        };
+    }
+
+    /**
+     * @param {!PluginWorker} pluginWorker
+     * @param {string} data
+     * @param {!WebSocketConnection} connection
+     */
+    function triggerJsonMessage(pluginWorker, data, connection) {
+        const callback = pluginWorker.onJsonMessage;
+
+        if (callback) {
             let jsonData;
 
             try {
@@ -397,49 +424,31 @@ function WebSocketInstance(pluginManager, id, port) {
                 jsonData = null;
             }
 
-            for (let i = 0; i < pluginInstances.length; i++) {
-                let plugin = pluginInstances[i];
-                callPluginOnMessage(plugin, data, connection);
-
-                if (jsonData) {
-                    callPluginOnJsonMessage(plugin, jsonData, connection);
+            if (jsonData) {
+                try {
+                    callback(new WebSocketMessage(jsonData), connection);
+                } catch (ex) {
+                    pluginLog.error('Call onJsonMessage failed', {error: ex.message, data: jsonData, connectionId: connection.id});
+                    log.warn('Call onJsonMessage failed', {plugin: pluginWorker.name, error: ex.message, data: jsonData, connectionId: connection.id});
                 }
-            }
-        };
-    }
-
-    /**
-     * @param {!PluginWorker} pluginInstance
-     * @param {object} data
-     * @param {!WebSocketConnection} connection
-     */
-    function callPluginOnJsonMessage(pluginInstance, data, connection) {
-        let callback = pluginInstance.onJsonMessage;
-
-        if (callback) {
-            try {
-                callback(new WebSocketMessage(data), connection);
-            } catch (ex) {
-                pluginLog.error('Call onJsonMessage failed', {error: ex.message, data: data, connectionId: connection.id});
-                log.warn('Call onJsonMessage failed', {plugin: pluginInstance.name, error: ex.message, data: data, connectionId: connection.id});
             }
         }
     }
 
     /**
-     * @param {!PluginWorker} pluginInstance
+     * @param {!PluginWorker} pluginWorker
      * @param {string} data
      * @param {!WebSocketConnection} connection
      */
-    function callPluginOnMessage(pluginInstance, data, connection) {
-        let callback = pluginInstance.onMessage;
+    function triggerMessage(pluginWorker, data, connection) {
+        let callback = pluginWorker.onMessage;
 
         if (callback) {
             try {
                 callback(new WebSocketMessage(data), connection);
             } catch (ex) {
                 pluginLog.error('Call onMessage failed', {error: ex.message, data: data, connectionId: connection.id});
-                log.warn('Call onMessage failed', {plugin: pluginInstance.name, error: ex.message, data: data, connectionId: connection.id});
+                log.warn('Call onMessage failed', {plugin: pluginWorker.name, error: ex.message, data: data, connectionId: connection.id});
             }
         }
     }
@@ -448,15 +457,15 @@ function WebSocketInstance(pluginManager, id, port) {
      * Notify all plugins that a new connection has been established
      * @param {!WebSocketConnection} connection
      */
-    function callPluginsOnNewConnection(connection) {
-        pluginInstances.forEach(pluginInstance => {
-            if (pluginInstance.onNewConnection) {
+    function triggerNewConnection(connection) {
+        pluginWorkers.forEach(pluginWorker => {
+            if (pluginWorker.onNewConnection) {
                 try {
                     pluginLog.info('onNewConnection', {connectionId: connection.id});
-                    pluginInstance.onNewConnection(connection);
+                    pluginWorker.onNewConnection(connection);
                 } catch (ex) {
                     pluginLog.error('onNewConnection failed.', {error: ex.message, connectionId: connection.id});
-                    log.warn('onNewConnection failed @' + pluginInstance.name, {error: ex.message, connectionId: connection.id});
+                    log.warn('onNewConnection failed @' + pluginWorker.name, {error: ex.message, connectionId: connection.id});
                 }
             }
         });
@@ -466,14 +475,14 @@ function WebSocketInstance(pluginManager, id, port) {
      * Notify all plugins that a connection has been closed
      * @param {!WebSocketConnection} connection
      */
-    function callPlluginsOnConnectionClosed(connection) {
-        pluginInstances.forEach(pluginInstance => {
-            if (pluginInstance.onConnectionClosed) {
+    function triggerConnectionClosed(connection) {
+        pluginWorkers.forEach(pluginWorker => {
+            if (pluginWorker.onConnectionClosed) {
                 try {
-                    self.log.info('Plugin.onConnectionClosed', {pluginName: pluginInstance.name});
-                    pluginInstance.onConnectionClosed(connection);
+                    self.log.info('Plugin.onConnectionClosed', {pluginName: pluginWorker.name});
+                    pluginWorker.onConnectionClosed(connection);
                 } catch (ex) {
-                    self.log.error('Plugin.onConnectionClosed failed.', {pluginName: pluginInstance.name, error: ex.name, message: ex.message});
+                    self.log.error('Plugin.onConnectionClosed failed.', {pluginName: pluginWorker.name, error: ex.name, message: ex.message});
                 }
             }
         });
