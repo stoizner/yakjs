@@ -4,11 +4,10 @@
         "node": true,
         "es6": true
     },
+    "parserOptions": {
+        "ecmaVersion": 2017
+    },
     "globals": {
-        "cobu": true,
-        "Mustache": true,
-        "_": true,
-        "$": true
     },
     "rules": {
         "eqeqeq": 0,
