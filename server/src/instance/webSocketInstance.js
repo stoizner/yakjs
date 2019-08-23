@@ -1,7 +1,6 @@
 'use strict';
 
 const WebSocketServer = require('ws').Server;
-const https = require('https');
 const http = require('http');
 
 const log = require('../infrastructure/logger').defaultLogger;
@@ -12,8 +11,6 @@ const WebSocketConnection = require('./webSocketConnection');
 const WebSocketMessage = require('./webSocketMessage');
 const magic = require('../util/magicNumbers');
 const commandDispatcher = require('../command/commandDispatcher');
-const httpsServerOptionsProvider = require('../config/httpsServerOptionsProvider');
-const configProvider = require('../config/configProvider');
 
 /**
  * @constructor
@@ -183,15 +180,10 @@ function WebSocketInstance(pluginManager, id, port) {
     function startServer() {
         return new Promise((resolve, reject) => {
             log.info('Start WebSocket server instance.', {
-                port: self.port,
-                useSecureConnection: configProvider.config.useSecureConnection
+                port: self.port
             });
 
-            if (configProvider.config.useSecureConnection) {
-                webServer = https.createServer(httpsServerOptionsProvider.options).listen(self.port);
-            } else {
-                webServer = http.createServer().listen(self.port);
-            }
+            webServer = http.createServer().listen(self.port);
 
             webSocketServer = new WebSocketServer({server: webServer});
             webSocketServer.on('connection', handleConnection);

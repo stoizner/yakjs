@@ -2,13 +2,11 @@
 
 const express = require('express');
 const http = require('http');
-const https = require('https');
 const path = require('path');
 const bodyParser = require('body-parser');
 const log = require('./infrastructure/logger').defaultLogger;
 const console = require('./infrastructure/logger').consoleLogger;
 const apiV1Router = require('./routes/v1/apiV1Router');
-const httpsServerOptionsProvider = require('./config/httpsServerOptionsProvider');
 
 /**
  * @constructor
@@ -62,18 +60,11 @@ function ExpressServer(config) {
                 restrictedToHostname = null;
             }
 
-            if (config.useSecureConnection) {
-                https.createServer(httpsServerOptionsProvider.options, app).listen(app.get('port'), restrictedToHostname, displayWelcomeMessage);
-                https.createServer(httpsServerOptionsProvider.options, app).on('error', () => {
-                    console.info('Not listening on IPV6 interface.');
-                }).listen(app.get('port'), '[::1]');
-            } else {
-                http.createServer(app).listen(app.get('port'), restrictedToHostname, displayWelcomeMessage);
+            http.createServer(app).listen(app.get('port'), restrictedToHostname, displayWelcomeMessage);
 
-                http.createServer(app).on('error', () => {
-                    console.info('Not listening on IPV6 interface.');
-                }).listen(app.get('port'), '[::1]');
-            }
+            http.createServer(app).on('error', () => {
+                console.info('Not listening on IPV6 interface.');
+            }).listen(app.get('port'), '[::1]');
         } catch (ex) {
             displayErrorMessage(ex.message);
         }

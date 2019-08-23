@@ -23,12 +23,6 @@ class Config {
         this.frontendFolder = '../../node_modules/@yakjs/yakjs-client/dist';
 
         /**
-         * Whether to use secure connections for YAKjs and all WebSocket instances.
-         * @type {boolean}
-         */
-        this.useSecureConnection = false;
-
-        /**
          * @type {!Array<!StaticRouteConfig>}
          */
         this.staticRoutes = [];
