@@ -4,8 +4,7 @@ const HttpStatus = require('http-status-codes');
 const pkg = require('../../../../../package');
 const semver = require('semver');
 const moment = require('moment');
-
-const npm = require('../../../adapter/npmCliAdapter');
+const fetch = require('node-fetch');
 
 const npmVersion = {
     latestVersion: null,
@@ -23,9 +22,14 @@ function getVersionRoute(request, response) {
     };
 
     return getLastVersion()
-        .then(lastReleasedVersion => {
-            versionInfo.lastReleasedVersion = lastReleasedVersion;
-            versionInfo.isNewVersionAvailable = semver.gt(versionInfo.lastReleasedVersion, versionInfo.version);
+        .then(versionResponse => {
+            if (versionResponse) {
+                versionInfo.lastReleasedVersion = versionResponse.version;
+                versionInfo.isNewVersionAvailable = semver.gt(versionInfo.lastReleasedVersion, versionInfo.version);
+            } else {
+                versionInfo.lastReleasedVersion = null;
+                versionInfo.isNewVersionAvailable = false;
+            }
         })
         .then(() => response.send(versionInfo))
         .catch(error => response.status(HttpStatus.INTERNAL_SERVER_ERROR).send(error));
@@ -38,16 +42,13 @@ function getLastVersion() {
     let promise;
 
     // Only request the last version once when YAKjs was started.
-    if (npmVersion.latestVersion && npmVersion.checkedVersionAt > yesterday()) {
+    if (npmVersion.checkedVersionAt > yesterday()) {
         promise = Promise.resolve(npmVersion.latestVersion);
     } else {
         npmVersion.checkedVersionAt = moment().valueOf();
-        promise = npm
-            .show('yakjs')
-            .then(info => {
-                npmVersion.latestVersion = info['dist-tags'].latest;
-                return npmVersion.latestVersion;
-            });
+        promise = fetch('http://www.yakjs.com/version.json')
+            .then(response => response.json())
+            .catch(() => null);
     }
 
     return promise;
@@ -60,4 +61,4 @@ function yesterday() {
     return moment().add(-1, 'days').valueOf();
 }
 
-module.exports = getVersionRoute;
+module.exports = {getVersionRoute};
