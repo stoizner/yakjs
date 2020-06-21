@@ -78,6 +78,7 @@
         "gulp-rename": "^1.4.0",
         "mocha": "^5.2.0",
         "mockery": "^2.1.0",
+        "mustache": "^4.0.1",
         "proxyquire": "^1.7.11",
         "request": "^2.88.0",
         "sinon": "~2.2.0",

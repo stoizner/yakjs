@@ -7,6 +7,7 @@ const mocha = require('gulp-mocha');
 
 const pkg = require('./package.json');
 const {checkNonSnapshotVersion} = require('./gulp/checkNonSnapshotVersion');
+const {buildFrontendPages} = require('./gulp/buildFrontendPages');
 
 const git = require('gulp-git');
 const util = require('util');
@@ -61,7 +62,11 @@ exports.lint = lint;
  */
 exports.prepublish = gulp.series(buildServer, checkNonSnapshotVersion, tagVersion, pushOriginMaster);
 
+exports.buildFrontend = gulp.series(buildFrontendPages);
+
 /*
  * Define default task that can be called by just running `gulp` from cli
  */
 exports.default = buildServer;
+
+

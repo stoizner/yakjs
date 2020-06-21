@@ -6,4 +6,5 @@ dist/
 npm-debug.log
 
 logs/
+frontend/
 *.log
