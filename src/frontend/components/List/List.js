@@ -7,7 +7,7 @@ export class List extends LitElement {
         return [listStyles];
     }
 
-    static getAttributeNames() {
+    static get properties() {
         return {
             items: {type: Array}
         }

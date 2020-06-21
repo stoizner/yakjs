@@ -17,12 +17,8 @@ export class ToggleButtonElement extends LitElement {
         this.isActive = false;
     }
 
-    handleButtonClick() {
-        this.isActive = !this.isActive;
-    }
-
     render() {
-        return html`<div class="toggle-button" @click="${this.handleButtonClick}" ?data-is-active="${this.isActive}"></div>`;
+        return html`<div class="toggle-button" ?data-is-active="${this.isActive}"></div>`;
     }
 }
 
