@@ -3,8 +3,10 @@
 const sandbox = require('../../testSandbox');
 const sinon = sandbox.sinon;
 const expect = sandbox.expect;
-const WebSocketInstance = require('../../../server/src/instance/webSocketInstance');
-const InstanceState = require('../../../server/src/instance/instanceState');
+const {WebSocketInstance} = require('../../../src/instance/webSocketInstance');
+const InstanceState = require('../../../src/instance/instanceState');
+const {YakInstance} = require('../../../src/YakInstance');
+const {ConsoleLogger} = require('../../../log/ConsoleLogger');
 
 describe('WebSocketInstance', function() {
     /**
@@ -13,9 +15,34 @@ describe('WebSocketInstance', function() {
     let sut;
 
     /**
-     *  @type {PluginManager}
+     * @type {PluginManager}
      */
     let pluginManagerStub;
+
+    /**
+     * @type {CommandDispatcher}
+     */
+    let commandDispatcherStub;
+
+    /**
+     * @type {Service}
+     */
+    let service = {};
+
+    /**
+     * @type {YakInstance}
+     */
+    let yakInstance;
+
+    /**
+     * @type {Plugin}
+     */
+    let myPlugin;
+
+    /**
+     * @type {PluginWorker}
+     */
+    let myPluginWorker;
 
     beforeEach(function() {
         pluginManagerStub = {
@@ -23,7 +50,29 @@ describe('WebSocketInstance', function() {
             getPlugin: sinon.stub().returns({})
         };
 
-        sut = new WebSocketInstance(pluginManagerStub, 'test', 9002);
+        commandDispatcherStub = {
+            unregisterAllWithContext: sinon.stub()
+        };
+
+        service = {
+            log: new ConsoleLogger({logLevels: []}),
+            pluginManager: pluginManagerStub,
+            commandDispatcher: commandDispatcherStub
+        };
+
+        yakInstance = new YakInstance({
+            id: 'testInstance',
+            port: 9020
+        });
+
+        myPluginWorker = createSpyWorker();
+
+        myPlugin = {
+            name: 'myPlugin',
+            createWorker: sinon.stub().returns(myPluginWorker)
+        };
+
+        sut = new WebSocketInstance(service, yakInstance);
     });
 
     describe('start', function() {
@@ -33,109 +82,57 @@ describe('WebSocketInstance', function() {
 
         it('create a plugin instance', async function() {
             // Given
-            sut.plugins = ['myPlugin'];
+            yakInstance.plugins = [myPlugin];
 
             // When
             await sut.start();
 
             // Then
-            expect(pluginManagerStub.createPluginWorker).to.have.been.calledWith('myPlugin');
-        });
-
-        it('calls onInitialize on plugin', async function() {
-            // Given
-            sut.plugins = ['myPlugin'];
-            const plugin = {
-                name: 'myPlugin',
-                onInitialize: sinon.spy()
-            };
-            pluginManagerStub.createPluginWorker = sinon.stub().returns(plugin);
-
-            // When
-            await sut.start();
-
-            // Then
-            expect(plugin.onInitialize).calledWith();
+            expect(myPlugin.createWorker).to.have.been.called();
         });
 
         it('calls onStart on plugin', async function() {
             // Given
-            sut.plugins = ['myPlugin'];
-            const plugin = {
-                name: 'myPlugin',
-                onStart: sinon.spy()
-            };
-            pluginManagerStub.createPluginWorker = sinon.stub().returns(plugin);
+            myPluginWorker.onStart = sinon.spy();
+            yakInstance.plugins = [myPlugin];
 
             // When
             await sut.start();
 
             // Then
-            expect(plugin.onStart).calledWith();
+            expect(myPluginWorker.onStart).to.be.called();
         });
 
-        it('do not call onInitialize when plugin does not have a onInitialize method', async function() {
+        it('calls onInitialize on plugin when no onStart is available', async function() {
             // Given
-            sut.plugins = ['myPlugin'];
-            const plugin = {name: 'myPlugin'};
-            pluginManagerStub.createPluginWorker = sinon.stub().returns(plugin);
+            myPluginWorker.onInitialize = sinon.spy();
+            yakInstance.plugins = [myPlugin];
 
             // When
             await sut.start();
 
             // Then
-            expect(sut.state).not.to.deep.equal(InstanceState.ERROR);
-        });
-
-        it('plugin without onInitialize shall be added to active plugins', async function() {
-            // Given
-            sut.plugins = ['myPlugin'];
-            const plugin = {name: 'myPlugin'};
-            pluginManagerStub.createPluginWorker = sinon.stub().returns(plugin);
-
-            // When
-            await sut.start();
-
-            // Then
-            expect(sut.getPluginInstances()[0]).to.be.eql(plugin);
-        });
-
-        it('count active plugins', async function() {
-            // Given
-            sut.plugins = ['myPlugin'];
-            const plugin = {name: 'myPlugin'};
-            pluginManagerStub.createPluginWorker = sinon.stub().returns(plugin);
-
-            // When
-            await sut.start();
-
-            // Then
-            expect(sut.activePluginCount).to.eql(1);
+            expect(myPluginWorker.onInitialize).to.be.called();
         });
 
         it('calls onInstanceStarted', async function() {
             // Given
-            sut.plugins = ['myPlugin'];
-            const plugin = {
-                name: 'myPlugin',
-                onInstanceStarted: sinon.spy()
-            };
-            pluginManagerStub.createPluginWorker = sinon.stub().returns(plugin);
+            myPluginWorker.onInstanceStarted = sinon.spy();
+            yakInstance.plugins = [myPlugin];
 
             // When
             await sut.start();
 
             // Then
-            expect(plugin.onInstanceStarted).calledWith();
+            expect(myPluginWorker.onInstanceStarted).to.be.called();
         });
     });
 
     describe('stop', function() {
-        it('calls onTerminate on plugin', async function() {
+        it('calls onTerminate on plugin when onStop is not defined', async function() {
             // Given
-            sut.plugins = ['myPlugin'];
-            const plugin = {name: 'myPlugin', onTerminate: sinon.spy()};
-            pluginManagerStub.createPluginWorker = sinon.stub().returns(plugin);
+            myPluginWorker.onTerminate = sinon.spy();
+            yakInstance.plugins = [myPlugin];
             await sut.start();
             sut.state = InstanceState.RUNNING;
 
@@ -143,14 +140,13 @@ describe('WebSocketInstance', function() {
             await sut.stop();
 
             // Then
-            expect(plugin.onTerminate).called();
+            expect(myPluginWorker.onTerminate).to.be.called();
         });
 
         it('calls onStop on plugin', async function() {
             // Given
-            sut.plugins = ['myPlugin'];
-            const plugin = {name: 'myPlugin', onStop: sinon.spy()};
-            pluginManagerStub.createPluginWorker = sinon.stub().returns(plugin);
+            myPluginWorker.onStop = sinon.spy();
+            yakInstance.plugins = [myPlugin];
             await sut.start();
             sut.state = InstanceState.RUNNING;
 
@@ -158,7 +154,24 @@ describe('WebSocketInstance', function() {
             await sut.stop();
 
             // Then
-            expect(plugin.onStop).called();
+            expect(myPluginWorker.onStop).to.be.called();
         });
     });
+
+    /**
+     * @returns {PluginWorker}
+     */
+    function createSpyWorker() {
+        return {
+            onStart: undefined,
+            onInitialize: undefined,
+            onInstanceStarted: undefined,
+            onNewConnection: undefined,
+            onMessage: undefined,
+            onJsonMessage: undefined,
+            onConnectionClosed: undefined,
+            onStop: undefined,
+            onTerminate: undefined
+        }
+    }
 });

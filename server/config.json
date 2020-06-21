@@ -1,6 +1,0 @@
-{
-    "httpPort": "8790",
-    "frontendFolder": "../node_modules/@yakjs/yakjs-client/dist/",
-    "staticRoutes": [],
-    "useSecureConnection": false
-}

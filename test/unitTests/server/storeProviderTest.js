@@ -21,7 +21,7 @@ describe('StoreProvider', function() {
         // Set up stubs
 
         // Create subject under test
-        sut = require('../../../server/src/store/storeProvider');
+        sut = require('../../../src/store/storeProvider');
     });
 
     afterEach(function() {

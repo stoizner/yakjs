@@ -4,7 +4,9 @@ const sandbox = require('../../testSandbox');
 const sinon = sandbox.sinon;
 const expect = sandbox.expect;
 
-const commandDispatcher = require('../../../server/src/command/commandDispatcher');
+const {CommandDispatcher} = require('../../../src/command/CommandDispatcher');
+const {CommandConfig} = require('../../../src/command/commandConfig');
+const {ConsoleLogger} = require('../../../log/ConsoleLogger');
 
 describe('commandDispatcher', function() {
     /**
@@ -12,8 +14,21 @@ describe('commandDispatcher', function() {
      */
     const context = /* {@type {!PluginContext} */(sinon.stub());
 
+    /**
+     * @type {CommandDispatcher}
+     */
+    let commandDispatcher = null;
+
+    /**
+     * @type {Service}
+     */
+    let service = {};
+
     beforeEach(function() {
-        commandDispatcher.unregisterAll();
+        service = {
+            log: new ConsoleLogger({logLevels: []}),
+        };
+        commandDispatcher = new CommandDispatcher(service);
     });
 
     describe('register()', function() {
@@ -39,8 +54,9 @@ describe('commandDispatcher', function() {
             commandDispatcher.register(commandFooB, context);
 
             // Then
-            expect(commandDispatcher.getCommands('foo')[0].config).to.equal(commandFooA);
-            expect(commandDispatcher.getCommands('foo')[1].config).to.equal(commandFooB);
+            const commands = commandDispatcher.getCommands('foo');
+            expect(commands[0].config).to.equal(commandFooA);
+            expect(commands[1].config).to.equal(commandFooB);
         });
     });
 
@@ -66,7 +82,7 @@ describe('commandDispatcher', function() {
             commandDispatcher.register(commandFoo, context);
 
             // When
-            commandDispatcher.unregisterAll();
+            commandDispatcher.commandMap.clear();
 
             // Then
             expect(commandDispatcher.getCommands('foo')).to.deep.equal([]);
@@ -92,11 +108,18 @@ describe('commandDispatcher', function() {
         });
     });
 
+    /**
+     *
+     * @param name
+     * @param description
+     * @param executeHandler
+     * @returns {{name: *, description: *, execute: *}}
+     */
     function createCommand(name, description, executeHandler) {
-        return {
+        return new CommandConfig({
             name: name,
             description: description,
             execute: executeHandler
-        };
+        });
     }
 });

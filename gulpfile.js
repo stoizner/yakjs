@@ -6,7 +6,7 @@ const eslint = require('gulp-eslint');
 const mocha = require('gulp-mocha');
 
 const pkg = require('./package.json');
-const checkNonSnapshotVersion = require('./gulp/checkNonSnapshotVersion');
+const {checkNonSnapshotVersion} = require('./gulp/checkNonSnapshotVersion');
 
 const git = require('gulp-git');
 const util = require('util');

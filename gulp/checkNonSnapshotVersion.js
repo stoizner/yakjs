@@ -14,4 +14,4 @@ function checkNonSnapshotVersion() {
     return promise;
 }
 
-module.exports = checkNonSnapshotVersion;
+module.exports = {checkNonSnapshotVersion};

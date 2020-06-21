@@ -34,7 +34,7 @@ describe('Store', function() {
         // Create subject under test
         mockery.registerMock('../src/store/storeProvider', storeProvider);
         mockery.registerAllowable('../../../server/common/store');
-        store = require('../../../server/common/store');
+        store = require('../../../common/store');
     });
 
     afterEach(function() {
