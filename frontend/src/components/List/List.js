@@ -22,13 +22,15 @@ export class List extends LitElement {
         this.items = [];
     }
 
+
     render() {
         return html`
             <ol>
-                ${this.items.map(listItem => html`<yak-list-item .item="${listItem}" data-label="${listItem.label}"></yak-list-item>`)}
+                ${this.items.map(listItem => html`<yak-list-item .item="${listItem}" data-id="${listItem.id}"></yak-list-item>`)}
             </ol>
         `;
     }
+
 }
 
 customElements.define('yak-list', List);

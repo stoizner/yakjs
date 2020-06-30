@@ -22,5 +22,10 @@ export class ListItem {
          * @type {Boolean}
          */
         this.isActive = init.isActive === undefined ? false : init.isActive;
+
+        /**
+         * @type {Object}
+         */
+        this.detail = init.detail || null;
     }
 }

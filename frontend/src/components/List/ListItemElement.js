@@ -14,21 +14,38 @@ export class ListItemElement extends LitElement {
 
     constructor() {
         super();
+
+        /**
+         * @type {ListItem}
+         */
         this.item = null;
     }
 
-    handleToggleButtonClick() {
-        const event = new CustomEvent('toggleButtonClick', {
+    handleToggleButtonClick(event) {
+        const customEvent = new CustomEvent('toggleButtonClick', {
             bubbles: true,
             composed: true,
             detail: this.item
         });
-        this.dispatchEvent(event);
+        this.dispatchEvent(customEvent);
+        event.preventDefault();
+        event.stopPropagation();
+    }
+
+    handleClick(event) {
+        const customEvent = new CustomEvent('itemClick', {
+            bubbles: true,
+            composed: true,
+            detail: this.item
+        });
+        this.dispatchEvent(customEvent);
+        event.preventDefault();
+        event.stopPropagation();
     }
 
     render() {
         return html`
-            <li>
+            <li @click="${this.handleClick}">
                 <yak-toggle-button @click="${this.handleToggleButtonClick}" .isActive="${this.item.isActive}"></yak-toggle-button>
                 <div class="expand">
                     <label>${this.item.label}</label>

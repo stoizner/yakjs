@@ -3,6 +3,7 @@ import styles from './instanceListViewStyles.css';
 import {ListItem} from '../../components/List/ListItem';
 import {RequestSender} from '../../core/RequestSender';
 import {List} from '../../components/List/List';
+import {InstanceView} from './InstanceView';
 
 const requestSender = new RequestSender();
 
@@ -13,13 +14,15 @@ export class InstanceListView extends LitElement {
 
     static get properties() {
         return {
-            instanceItems: {type: Array}
+            instanceItems: {type: Array},
+            selectedInstanceItem: {type: Object}
         }
     }
 
     constructor() {
         super();
         this.instanceItems = [];
+        this.selectedInstanceItem = null;
 
         requestSender.getRequest('/instances').then(response => this.updateListItems(response.instances));
     }
@@ -30,7 +33,8 @@ export class InstanceListView extends LitElement {
             return new ListItem({
                 id: instanceInfo.id,
                 label: instanceInfo.name,
-                isActive: instanceInfo.state === 'running'
+                isActive: instanceInfo.state === 'running',
+                detail: instanceInfo
             });
         });
     }
@@ -48,15 +52,26 @@ export class InstanceListView extends LitElement {
 
         const response = await requestSender.getRequest('/instances');
         this.updateListItems(response.instances);
+
+        this.selectedInstanceItem = response.instances.find(instance => instance.id === this.selectedInstanceItem.id);
+    }
+
+    async handleListItemClick(event) {
+        const listItem = event.detail;
+        console.log('handleListItemClick', {listItem});
+        const response = await requestSender.getRequest('/instances');
+        this.selectedInstanceItem = response.instances.find(instance => instance.id === listItem.id);
     }
 
     render() {
         return html`
             <yak-sidebar-panel>
                 <div slot="sidebar">
-                    <yak-list .items="${this.instanceItems}" @toggleButtonClick="${this.handleToggleButtonClick}"></yak-list>
+                    <yak-list .items="${this.instanceItems}" @toggleButtonClick="${this.handleToggleButtonClick}" @itemClick="${this.handleListItemClick}"></yak-list>
                 </div>
-                <p slot="body">No instance selected.</p>
+                <div slot="body">
+                    <yak-instance-view .instanceItem="${this.selectedInstanceItem}"></yak-instance-view>
+                </div>
             </yak-sidebar-panel>
         `;
     }
