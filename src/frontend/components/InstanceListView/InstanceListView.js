@@ -1,5 +1,5 @@
-import {LitElement, css, html} from 'lit-element';
-import {instanceListViewStyles} from './instanceListViewStyles';
+import {LitElement, html} from 'lit-element';
+import styles from './instanceListViewStyles.css';
 import {ListItem} from '../List/ListItem';
 import {RequestSender} from '../../core/RequestSender';
 import {List} from '../List/List';
@@ -8,7 +8,7 @@ const requestSender = new RequestSender();
 
 export class InstanceListView extends LitElement {
     static get styles() {
-        return [instanceListViewStyles];
+        return [styles];
     }
 
     static get properties() {

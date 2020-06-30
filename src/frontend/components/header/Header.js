@@ -1,10 +1,10 @@
-import {LitElement, css, html} from 'lit-element';
-import {headerStyles} from './headerStyles';
+import {LitElement, html} from 'lit-element';
+import styles from './headerStyles.css';
 import {yakSvgLogo} from './yakSvgLogo';
 
 export class Header extends LitElement {
     static get styles() {
-        return [headerStyles];
+        return [styles];
     }
 
     constructor() {

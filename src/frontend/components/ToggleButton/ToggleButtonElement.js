@@ -1,9 +1,9 @@
 import {LitElement, css, html} from 'lit-element';
-import {toggleButtonStyles} from './toggleButtonStyles';
+import styles from './toggleButtonStyles.css';
 
 export class ToggleButtonElement extends LitElement {
     static get styles() {
-        return [toggleButtonStyles];
+        return [styles];
     }
 
     static get properties() {

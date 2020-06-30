@@ -1,10 +1,10 @@
-import {LitElement, css, html} from 'lit-element';
-import {listStyles} from './listStyles';
+import {LitElement, html} from 'lit-element';
+import style from './listStyles.css';
 import {ListItemElement} from './ListItemElement';
 
 export class List extends LitElement {
     static get styles() {
-        return [listStyles];
+        return [style];
     }
 
     static get properties() {

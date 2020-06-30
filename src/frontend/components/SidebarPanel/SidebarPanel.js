@@ -1,9 +1,9 @@
 import {LitElement, css, html} from 'lit-element';
-import {sidebarPanelStyles} from './sidebarPanelStyles';
+import styles from './sidebarPanelStyles.css';
 
 export class SidebarPanel extends LitElement {
     static get styles() {
-        return [sidebarPanelStyles];
+        return [styles];
     }
 
     constructor() {

@@ -1,9 +1,9 @@
-import {LitElement, css, html} from 'lit-element';
-import {listStyles} from './listStyles';
+import {LitElement, html} from 'lit-element';
+import styles from './listStyles.css';
 
 export class ListItemElement extends LitElement {
     static get styles() {
-        return [listStyles];
+        return [styles];
     }
 
     static get properties() {
@@ -30,7 +30,10 @@ export class ListItemElement extends LitElement {
         return html`
             <li>
                 <yak-toggle-button @click="${this.handleToggleButtonClick}" .isActive="${this.item.isActive}"></yak-toggle-button>
-                <label>${this.item.label}</label>
+                <div class="expand">
+                    <label>${this.item.label}</label>
+                </div>
+                <div class="icon-block chevron-icon"></div>
             </li>
         `;
     }

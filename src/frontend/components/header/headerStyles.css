@@ -1,0 +1,13 @@
+:host {
+    position: relative;
+    height: 64px;
+    overflow: hidden;
+    display: flex;
+    width: 100%;
+    background-color: var(--header-background-color);
+}
+
+.logo svg {
+    width: 250px;
+    height: 64px;
+}

@@ -1,7 +1,47 @@
+
 :host {
+    --list-item-height: 3rem;
+    --more-icon: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgdmVyc2lvbj0iMS4xIj48cGF0aCBmaWxsPSIjNjA2MDYwIiBkPSJNOC41OSwxNi41OEwxMy4xNywxMkw4LjU5LDcuNDFMMTAsNkwxNiwxMkwxMCwxOEw4LjU5LDE2LjU4WiIgLz48L3N2Zz4=');
 }
 
 ol {
     list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+li {
+    position: relative;
+    display: flex;
+    justify-content: left;
+    align-items: center;
     box-sizing: border-box;
+    height: var(--list-item-height);
+    padding: 0;
+    line-height: var(--list-item-height);
+    border-bottom: solid 1px #e0e0e0;
+    cursor: pointer;
+}
+
+li > * {
+    margin-left: 1rem;
+    flex: 0 0 auto;
+}
+
+li > .expand {
+    flex: 1 0 auto;
+}
+
+.icon-block {
+    margin: 0;
+    height: var(--list-item-height);
+    width: var(--list-item-height);
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 24px 24px;
+    background-image: var(--more-icon);
+}
+
+li:hover {
+    background-color: #f5f5f5;
 }

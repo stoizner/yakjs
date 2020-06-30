@@ -1,9 +1,9 @@
 import {LitElement, css, html} from 'lit-element';
-import {appLayoutStyles} from './appLayoutStyles';
+import styles from './appLayoutStyles.css';
 
 export class AppLayout extends LitElement {
     static get styles() {
-        return [appLayoutStyles];
+        return [styles];
     }
 
     constructor() {

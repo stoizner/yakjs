@@ -7,5 +7,13 @@ module.exports = {
         filename: 'yakjs-frontend.js'
     },
     mode: 'production',
-    devtool: 'source-map'
+    devtool: 'source-map',
+    module: {
+        rules: [
+            {
+                test: /\.css$/,
+                use: ['./loaders/litCssLoader'],
+            },
+        ],
+    },
 }
