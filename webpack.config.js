@@ -4,7 +4,7 @@ module.exports = {
     context: path.resolve(__dirname, './frontend/src/'),
     entry: './index.js',
     output: {
-        path: path.resolve('../static/'),
+        path: path.resolve(__dirname, './frontend/static/'),
         filename: 'yakjs-frontend.js'
     },
     mode: 'production',
