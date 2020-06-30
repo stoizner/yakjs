@@ -28,20 +28,20 @@
         "vsa"
     ],
     "scripts": {
-        "build": "gulp",
+        "lint": "eslint ./src/",
         "start": "node ./test/integration/startIntegrationServer",
-        "prepublishOnly": "gulp prepublish"
+        "test": "mocha ./test/unitTests/**/*Test.js --reporter nyan",
+        "build": "npm run lint && npm run test && webpack",
+        "prepublishOnly": "node ./scripts/checkNonSnapshotVersion.js && npm run build",
+        "watch": "webpack --watch"
     },
-    "bin": {
-        "yakjs": "./bin/yakjs-cli.js"
-    },
-    "main": "yakjs.js",
+    "main": "./src/YakServer.js",
     "files": [
-        "bin",
-        "server",
-        "yakjs.bat",
-        "yakjs.js",
-        "yakjs.sh"
+        "common",
+        "frontend/static",
+        "log",
+        "plugins",
+        "src"
     ],
     "dependencies": {
         "body-parser": "^1.19.0",
@@ -71,12 +71,6 @@
         "dirty-chai": "^2.0.1",
         "eslint": "^6.2.1",
         "fast-glob": "^3.2.4",
-        "gulp": "^4.0.2",
-        "gulp-eslint": "^6.0.0",
-        "gulp-git": "^2.9.0",
-        "gulp-mocha": "^7.0.1",
-        "gulp-mustache": "^4.1.2",
-        "gulp-rename": "^1.4.0",
         "mocha": "^5.2.0",
         "mockery": "^2.1.0",
         "mustache": "^4.0.1",

@@ -32,7 +32,7 @@ class YakServerConfig {
         /**
          * @type {string}
          */
-        this.frontendFolder = './frontend/';
+        this.frontendFolder = './frontend/static/';
     }
 }
 

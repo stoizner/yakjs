@@ -6,5 +6,6 @@ dist/
 npm-debug.log
 
 /logs/
-/frontend/
+/frontend/static/yakjs-frontend.js
+/frontend/static/yakjs-frontend.js.map
 *.log

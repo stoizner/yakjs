@@ -1,8 +1,8 @@
 import {LitElement, html} from 'lit-element';
 import styles from './instanceListViewStyles.css';
-import {ListItem} from '../List/ListItem';
+import {ListItem} from '../../components/List/ListItem';
 import {RequestSender} from '../../core/RequestSender';
-import {List} from '../List/List';
+import {List} from '../../components/List/List';
 
 const requestSender = new RequestSender();
 

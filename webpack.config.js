@@ -1,9 +1,10 @@
 const path = require('path');
 
 module.exports = {
+    context: path.resolve(__dirname, './frontend/src/'),
     entry: './index.js',
     output: {
-        path: path.resolve('../../frontend/'),
+        path: path.resolve('../static/'),
         filename: 'yakjs-frontend.js'
     },
     mode: 'production',
@@ -12,7 +13,7 @@ module.exports = {
         rules: [
             {
                 test: /\.css$/,
-                use: ['./loaders/litCssLoader'],
+                use: ['./loaders/litCssLoader.js'],
             },
         ],
     },
