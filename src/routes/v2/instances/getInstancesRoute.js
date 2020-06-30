@@ -1,6 +1,7 @@
 'use strict';
 
 const {InstanceInfo} = require('./InstanceInfo');
+const {GetInstancesResponse} = require('./GetInstancesResponse');
 const {instanceManager} = require('../../../service');
 
 /**
@@ -11,9 +12,9 @@ function getInstancesRoute(request, response) {
     const instanceManager = request.app.locals.service.instanceManager;
 
     const instances = instanceManager.getInstances();
-    const responseMessage = {
+    const responseMessage = new GetInstancesResponse({
         instances: instances.map(toInstanceInfo)
-    };
+    });
 
     response.send(JSON.stringify(responseMessage));
 }
@@ -40,5 +41,9 @@ function toInstanceInfo(instance) {
 module.exports = {
     method: 'get',
     path: '/instances',
-    handler: getInstancesRoute
+    handler: getInstancesRoute,
+    schemas: [
+        GetInstancesResponse,
+        InstanceInfo
+    ]
 };
