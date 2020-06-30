@@ -1,6 +1,10 @@
 'use strict';
 
 const express = require('express');
+const getInstancesRoute = require('./getInstancesRoute');
+const postStartInstancesRoute = require('./postStartInstancesRoute');
+const postStopInstancesRoute = require('./postStopInstancesRoute');
+const postRestartRunningInstancesRoute = require('./postRestartRunningInstancesRoute');
 
 /**
  * @param {Service} service
@@ -8,13 +12,14 @@ const express = require('express');
 function createInstancesRouter(service) {
     const router = express.Router(); // eslint-disable-line new-cap
 
-    // Instance
-    router.get('/instances', require('./getInstancesRoute'));
+    const routes = [
+        getInstancesRoute,
+        postStartInstancesRoute,
+        postStopInstancesRoute,
+        postRestartRunningInstancesRoute
+    ];
 
-    // Instance actions
-    router.post('/instances/running/restart', require('./postRestartRunningInstancesRoute'));
-    router.post('/instances/:instanceId/start', require('./postStartInstancesRoute'));
-    router.post('/instances/:instanceId/stop', require('./postStopInstancesRoute'));
+    routes.forEach(route => router[route.method](route.path, route.handler));
 
     return router;
 }

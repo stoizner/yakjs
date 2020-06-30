@@ -18,4 +18,8 @@ async function postStopInstancesRoute(request, response) {
     }
 }
 
-module.exports = postStopInstancesRoute;
+module.exports = {
+    method: 'post',
+    path: '/instances/:instanceId/stop',
+    handler: postStopInstancesRoute
+};

@@ -37,4 +37,8 @@ function toInstanceInfo(instance) {
     return instanceInfo;
 }
 
-module.exports = getInstancesRoute;
+module.exports = {
+    method: 'get',
+    path: '/instances',
+    handler: getInstancesRoute
+};

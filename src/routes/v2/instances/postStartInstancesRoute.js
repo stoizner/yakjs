@@ -13,4 +13,8 @@ function postStartInstancesRoute(request, response) {
     response.send();
 }
 
-module.exports = postStartInstancesRoute;
+module.exports = {
+    method: 'post',
+    path: '/instances/:instanceId/start',
+    handler: postStartInstancesRoute
+};

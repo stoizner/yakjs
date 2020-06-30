@@ -30,4 +30,8 @@ function postRestartRunningInstancesRoute(request, response) {
         });
 }
 
-module.exports = postRestartRunningInstancesRoute;
+module.exports = {
+    method: 'post',
+    path: '/instances/running/restart',
+    handler: postRestartRunningInstancesRoute
+};
