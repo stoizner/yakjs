@@ -15,6 +15,7 @@ export class InstanceView extends LitElement {
 
     constructor() {
         super();
+
         /**
          * @type {InstanceInfo}
          */
