@@ -6,7 +6,6 @@ const {Service} = require('./Service');
 
 const {YakServerConfig} = require('./YakServerConfig');
 const {InstanceManager} = require('./instance/InstanceManager');
-const {PluginManager} = require('./plugin/PluginManager');
 const {CommandDispatcher} = require('./command/CommandDispatcher');
 const {CommandPresetProvider} = require('./command/CommandPresetProvider');
 
@@ -34,7 +33,6 @@ class YakServer {
         const runtimeConfig = Object.assign(new YakServerConfig(), config || {});
 
         this.service.initialize(runtimeConfig);
-        this.service.pluginManager = new PluginManager(this.service);
         this.service.instanceManager = new InstanceManager(this.service);
         this.service.commandDispatcher = new CommandDispatcher(this.service);
 

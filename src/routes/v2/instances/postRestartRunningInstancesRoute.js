@@ -1,7 +1,7 @@
 'use strict';
 
 const {instanceManager, log} = require('../../../service');
-const InstanceState = require('../../../instance/instanceState');
+const {InstanceState} = require('../../../instance/instanceState');
 const HttpStatus = require('http-status-codes');
 
 /**
@@ -15,7 +15,7 @@ function postRestartRunningInstancesRoute(request, response) {
 
     Promise
         .all(instances
-            .filter(instance => instance.state === InstanceState.RUNNING)
+            .filter(instance => instance.state === InstanceState.STARTED)
             .map(instance => instance
                 .stop()
                 .then(instance.start)

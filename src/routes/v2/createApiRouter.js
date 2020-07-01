@@ -4,6 +4,7 @@ const express = require('express');
 const cors = require('cors');
 
 const {createInstancesRouter} = require('./instances/createInstancesRouter');
+const {createCommandsRouter} = require('./commands/createCommandsRouter');
 
 /**
  * @param {Service} service
@@ -12,9 +13,8 @@ function createApiRouter(service) {
     const router = express.Router(); // eslint-disable-line new-cap
 
     router.use(cors());
-    router.use(require('./commands/router'));
-    router.use(require('./commands/presets/router'));
     router.use(createInstancesRouter(service));
+    router.use(createCommandsRouter(service));
     router.use(require('./package/router'));
     router.use(require('./storeItems/router'));
     router.use(require('./blob/router'));

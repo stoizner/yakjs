@@ -14,11 +14,6 @@ class Service {
         this.config = null;
 
         /**
-         * @type {PluginManager}
-         */
-        this.pluginManager = null;
-
-        /**
          * @type {InstanceManager}
          */
         this.instanceManager = null;

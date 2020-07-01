@@ -1,31 +1,56 @@
 'use strict';
 
-const {pluginManager} = require('../../../service');
+const {CommandItem} = require('./CommandItem');
+const {GetCommandsResponse} = require('./GetCommandsResponse');
+const {InstanceState} = require('../../../instance/instanceState');
 
 /**
  * @param request
  * @param response
  */
-function getCommandsRoute(request, response) {
+function handleRequest(request, response) {
     /**
-     * @type {!Array<!Plugin>}
+     * @type {InstanceManager}
      */
-    let plugins = pluginManager.getPlugins();
+    const instanceManager = request.app.locals.service.instanceManager;
 
-    let responseData = plugins.reduce((current, plugin) => {
-        if (plugin.module.commands) {
-            current.commands = current.commands.concat(plugin.module.commands.map(commandConfig => ({
-                pluginId: plugin.id,
-                name: commandConfig.name,
-                displayName: commandConfig.displayName,
-                description: commandConfig.description,
-                exampleData: commandConfig.exampleData
-            })));
+    /**
+     * @type {Array<WorkerInstance>}
+     */
+    const instances = instanceManager.getInstances();
+    const startedInstances = instances.filter(isStarted);
+
+    const commands = [];
+
+    for(const instance of startedInstances) {
+        for(const plugin of instance.plugins) {
+            if (plugin.commands) {
+                for (const command of plugin.commands) {
+                    commands.push(new CommandItem({
+                        instanceId: instance.yakInstance.id,
+                        pluginName: plugin.name,
+                        name: command.name,
+                        displayName: command.displayName,
+                        description: command.description,
+                        data: command.data
+                    }));
+                }
+            }
         }
-        return current;
-    }, {commands: []});
+    }
 
-    response.send(responseData);
+    response.send(new GetCommandsResponse(commands));
 }
 
-module.exports = getCommandsRoute;
+function isStarted(instance) {
+    return instance.state && instance.state === InstanceState.STARTED;
+}
+
+module.exports = {
+    method: 'get',
+    path: '/commands',
+    handler: handleRequest,
+    schemas: [
+        CommandItem
+    ]
+};

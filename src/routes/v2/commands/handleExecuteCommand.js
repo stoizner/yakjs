@@ -1,17 +1,13 @@
 'use strict';
 
 const HttpStatus = require('http-status-codes');
-const commandDispatcher = require('../../../command/commandDispatcher');
 
 /**
  * @param request
  * @param response
  */
-function executeCommandRoute(request, response) {
-    /**
-     * @type {!FileContainer}
-     */
-    const data = request.body;
+function handleExecuteCommand(request, response) {
+    const commandDispatcher = request.app.locals.service.commandDispatcher;
 
     /**
      * @type {string}
@@ -19,9 +15,9 @@ function executeCommandRoute(request, response) {
     const commandName = request.params.commandName;
 
     commandDispatcher
-        .execute(commandName, data)
+        .execute(commandName)
         .then(returnValues => response.send(returnValues))
         .catch(error => response.status(HttpStatus.INTERNAL_SERVER_ERROR).send({message: error}));
 }
 
-module.exports = executeCommandRoute;
+module.exports = {handleExecuteCommand};

@@ -22,6 +22,7 @@ export class AppView extends LitElement {
          */
         this.navigationItems = [
            new AppNavigationItem({label: 'Instance', view: new InstanceListView()}),
+           new AppNavigationItem({label: 'Commands', view: new CommandsListView()}),
            new AppNavigationItem({label: 'Blob', view: new PlaceholderView()}),
         ];
 

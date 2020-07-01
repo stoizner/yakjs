@@ -57,14 +57,13 @@ class CommandDispatcher {
     /**
      * Executes all commands with given name.
      * @param {string} commandName
-     * @param {?} data
      * @returns {Promise<Array<?>>}
      */
-    async execute(commandName, data) {
+    async execute(commandName) {
         const commands = this.getCommands(commandName);
 
         for(const command of commands) {
-            const commandPromise = command.config.execute(data, command.context, command.config);
+            const commandPromise = command.config.execute(command.config.data, command.context, command.config);
 
             if (commandPromise) {
                 await commandPromise;

@@ -7,9 +7,9 @@
 const InstanceState = {
     STARTING: 'starting',
     STOPPED: 'stopped',
-    RUNNING: 'running',
+    STARTED: 'started',
     STOPPING: 'stopping',
     ERROR: 'error'
 };
 
-module.exports = InstanceState;
+module.exports = {InstanceState};

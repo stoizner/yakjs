@@ -4,7 +4,7 @@ const sandbox = require('../../testSandbox');
 const sinon = sandbox.sinon;
 const expect = sandbox.expect;
 const {WebSocketInstance} = require('../../../src/instance/webSocketInstance');
-const InstanceState = require('../../../src/instance/instanceState');
+const {InstanceState} = require('../../../src/instance/instanceState');
 const {YakInstance} = require('../../../src/YakInstance');
 const {ConsoleLogger} = require('../../../log/ConsoleLogger');
 
@@ -134,7 +134,7 @@ describe('WebSocketInstance', function() {
             myPluginWorker.onTerminate = sinon.spy();
             yakInstance.plugins = [myPlugin];
             await sut.start();
-            sut.state = InstanceState.RUNNING;
+            sut.state = InstanceState.STARTED;
 
             // When
             await sut.stop();
@@ -148,7 +148,7 @@ describe('WebSocketInstance', function() {
             myPluginWorker.onStop = sinon.spy();
             yakInstance.plugins = [myPlugin];
             await sut.start();
-            sut.state = InstanceState.RUNNING;
+            sut.state = InstanceState.STARTED;
 
             // When
             await sut.stop();

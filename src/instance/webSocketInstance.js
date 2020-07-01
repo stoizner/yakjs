@@ -4,7 +4,7 @@ const WebSocketServer = require('ws').Server;
 const http = require('http');
 
 const express = require('express');
-const InstanceState = require('./instanceState');
+const {InstanceState} = require('./instanceState');
 const PluginContext = require('../plugin/pluginContext');
 const WebSocketConnection = require('./webSocketConnection');
 const WebSocketMessage = require('./webSocketMessage');
@@ -106,7 +106,7 @@ function WebSocketInstance(service, yakInstance) {
     this.start = async function start() {
         log.info('Start WebSocketServer Instance', {id: self.id});
 
-        if (self.state === InstanceState.RUNNING) {
+        if (self.state === InstanceState.STARTED) {
             throw new Error(`Can not start, instance already running. (${self.id})`);
         }
 
@@ -115,7 +115,7 @@ function WebSocketInstance(service, yakInstance) {
             await startServer();
             triggerInstanceStarted();
 
-            self.state = InstanceState.RUNNING;
+            self.state = InstanceState.STARTED;
         } catch (error) {
             log.error('Could not start instance: ', {error});
             self.state = InstanceState.ERROR;
@@ -131,7 +131,7 @@ function WebSocketInstance(service, yakInstance) {
         log.info('Stop WebSocketServer Instance', {name: self.name, state: self.state});
 
         return new Promise(resolve => {
-            if (webSocketServer && self.state === InstanceState.RUNNING) {
+            if (webSocketServer && self.state === InstanceState.STARTED) {
                 self.state = InstanceState.STOPPING;
 
                 commandDispatcher.unregisterAllWithContext(getOrCreatePluginContext());
