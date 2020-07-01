@@ -28,7 +28,19 @@ class IntegrationServer {
             ]
         });
 
+        const instanceB = new YakInstance({
+            id: 'instanceB',
+            name: 'Instance B',
+            description: 'Uses only a echo plugin.',
+            port: 9020,
+            isAutoStartEnabled: true,
+            plugins: [
+                echoPlugin
+            ]
+        });
+
         await this.server.addInstance(instanceA);
+        await this.server.addInstance(instanceB);
         await this.server.start();
     }
 

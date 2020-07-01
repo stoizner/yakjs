@@ -1,0 +1,26 @@
+:host {
+    --color: var(--tab-navigation-color, #CDDC39);
+}
+
+nav {
+    background-color: #405d6b;
+    display: flex;
+    height: 4rem;
+}
+
+.nav-item {
+    flex: 0 0 auto;
+    color: var(--color);
+    padding: 0 2rem;
+    line-height: 4rem;
+    text-transform: uppercase;
+    font-size: 1.25rem;
+    cursor: pointer;
+    border-bottom: solid 0 transparent;
+    transition: all .5s ease;
+}
+
+.nav-item[data-is-selected] {
+    border-bottom: solid 8px var(--color);
+    transition: all .5s ease;
+}

@@ -2,7 +2,9 @@ import {LitElement, html} from 'lit-element';
 import styles from './instanceListViewStyles.css';
 import {ListItem} from '../../components/List/ListItem';
 import {RequestSender} from '../../core/RequestSender';
+
 import {List} from '../../components/List/List';
+import {SidebarPanel} from '../../components/SidebarPanel/SidebarPanel';
 import {InstanceView} from './InstanceView';
 
 const requestSender = new RequestSender();
