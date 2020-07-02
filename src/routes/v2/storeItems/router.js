@@ -1,15 +1,22 @@
 'use strict';
 
-const express = require('express');
-const router = express.Router(); // eslint-disable-line new-cap
+import express from 'express';
 
-router.get('/storeitems/keys', require('./getStoreItemKeysRoute'));
-router.get('/storeitems/:key', require('./getStoreItemsRoute'));
-router.get('/storeitems/:key/value', require('./getStoreItemsValueRoute'));
+import getStoreItemKeysRoute from './getStoreItemKeysRoute.js';
+import getStoreItemsRoute from './getStoreItemsRoute.js';
+import getStoreItemsValueRoute from './getStoreItemsValueRoute.js';
+import deleteStoreItemsRoute from './deleteStoreItemsRoute.js';
+import putStoreItemsRoute from './putStoreItemsRoute.js';
+import putStoreItemsValueRoute from './putStoreItemsValueRoute.js';
+import postStoreItemsRoute from './postStoreItemsRoute.js';
 
-router.delete('/storeitems/:key', require('./deleteStoreItemsRoute'));
-router.put('/storeitems/:key', require('./putStoreItemsRoute'));
-router.put('/storeitems/:key/value', require('./putStoreItemsValueRoute'));
-router.post('/storeitems', require('./postStoreItemsRoute'));
+export const router = express.Router(); // eslint-disable-line new-cap
 
-module.exports = router;
+router.get('/storeitems/keys', getStoreItemKeysRoute);
+router.get('/storeitems/:key', getStoreItemsRoute);
+router.get('/storeitems/:key/value', getStoreItemsValueRoute);
+
+router.delete('/storeitems/:key', deleteStoreItemsRoute);
+router.put('/storeitems/:key', putStoreItemsRoute);
+router.put('/storeitems/:key/value', putStoreItemsValueRoute);
+router.post('/storeitems', postStoreItemsRoute);

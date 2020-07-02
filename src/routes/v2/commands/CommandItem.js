@@ -1,4 +1,4 @@
-class CommandItem {
+export class CommandItem {
     /**
      * @param {Partial<CommandItem>} init
      */
@@ -34,5 +34,3 @@ class CommandItem {
         this.data = init.data || null;
     }
 }
-
-module.exports = {CommandItem};

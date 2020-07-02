@@ -1,8 +1,8 @@
 'use strict';
 
-const {CommandWorker} = require('./CommandWorker');
+import {CommandWorker} from './CommandWorker.js';
 
-class CommandDispatcher {
+export class CommandDispatcher {
     /**
      * @param {Service} service
      */
@@ -71,5 +71,3 @@ class CommandDispatcher {
         }
     }
 }
-
-module.exports = {CommandDispatcher};

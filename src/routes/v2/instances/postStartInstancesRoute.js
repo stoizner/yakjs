@@ -1,7 +1,5 @@
 'use strict';
 
-const {instanceManager} = require('../../../service');
-
 /**
  * @param request
  * @param response
@@ -13,7 +11,7 @@ function postStartInstancesRoute(request, response) {
     response.send();
 }
 
-module.exports = {
+export default {
     method: 'post',
     path: '/instances/:instanceId/start',
     handler: postStartInstancesRoute

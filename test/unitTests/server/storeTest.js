@@ -1,7 +1,8 @@
-const sandbox = require('../../testSandbox');
+import sandbox from '../../testSandbox';
+import mockery from 'mockery';
+
 const sinon = sandbox.sinon;
 const expect = sandbox.expect;
-const mockery =  require('mockery');
 
 describe('Store', function() {
     'use strict';

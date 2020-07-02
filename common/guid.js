@@ -7,7 +7,7 @@
  * @public
  * @returns {string} A GUID.
  */
-function createGuid() {
+export default function createGuid() {
     /**
      * S4
      * @returns {string} An 4 alpha-numeric character string block.
@@ -20,6 +20,3 @@ function createGuid() {
 
     return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
 }
-
-module.exports = createGuid;
-

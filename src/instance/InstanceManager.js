@@ -1,13 +1,13 @@
 'use strict';
 
-const {WebSocketInstance} = require('./webSocketInstance');
+import {WebSocketInstance} from './webSocketInstance.js';
 
 /**
  * @constructor
  * @struct
  * @param {Service} service
  */
-function InstanceManager(service) {
+export function InstanceManager(service) {
     /**
      * @type {!InstanceManager}
      */
@@ -150,5 +150,3 @@ function InstanceManager(service) {
         }
     }
 }
-
-module.exports = {InstanceManager};

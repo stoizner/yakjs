@@ -1,12 +1,12 @@
 'use strict';
 
-const {ConsoleLogger} = require('../log/ConsoleLogger');
+import {ConsoleLogger} from '../log/ConsoleLogger.js';
 
 /**
  * The YAKjs server configuration
  * @class
  */
-class YakServerConfig {
+export class YakServerConfig {
     /**
      * @constructor
      * @struct
@@ -34,5 +34,3 @@ class YakServerConfig {
         this.frontendFolder = './frontend/static/';
     }
 }
-
-module.exports =  {YakServerConfig};

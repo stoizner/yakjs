@@ -1,6 +1,6 @@
 'use strict';
 
-class Service {
+export class Service {
     constructor() {
         /**
          * @type {YakLogger}
@@ -38,5 +38,3 @@ class Service {
         this.log = runtimeConfig.log;
     }
 }
-
-module.exports = {Service};

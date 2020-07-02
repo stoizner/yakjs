@@ -4,7 +4,7 @@
  * @constructor
  * @struct
  */
-function CommandPreset() {
+export function CommandPreset() {
     /**
      * @type {string}
      */
@@ -31,5 +31,3 @@ function CommandPreset() {
      */
     this.commandData = null;
 }
-
-module.exports = CommandPreset;

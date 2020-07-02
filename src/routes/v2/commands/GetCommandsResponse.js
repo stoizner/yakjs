@@ -1,4 +1,4 @@
-class GetCommandsResponse {
+export class GetCommandsResponse {
     constructor(commands) {
         /**
          * @type {Array<CommandItem>}
@@ -6,5 +6,3 @@ class GetCommandsResponse {
         this.commands = commands;
     }
 }
-
-module.exports = {GetCommandsResponse};

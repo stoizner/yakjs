@@ -1,11 +1,11 @@
 'use strict';
 
-const {LogLevel} = require('./LogLevel');
+import {LogLevel} from './LogLevel.js';
 
 /**
  * @implements {YakLogger}
  */
-class ConsoleLogger {
+export class ConsoleLogger {
     /**
      *
      * @param {Partial<{logLevels: Array<LogLevel>}>} [partialOptions]
@@ -81,5 +81,3 @@ function callLogFunction(fn, message, data) {
         fn(message);
     }
 }
-
-module.exports = {ConsoleLogger};

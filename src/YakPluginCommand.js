@@ -1,10 +1,8 @@
-'use strict';
-
 /**
  * @constructor
  * @struct
  */
-class YakPluginCommand {
+export class YakPluginCommand {
     /**
      * @param {Partial<YakPluginCommand>} [commandInit]
      */
@@ -50,5 +48,3 @@ class YakPluginCommand {
         this.exampleData = init.exampleData || null;
     }
 }
-
-module.exports = {YakPluginCommand};

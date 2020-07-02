@@ -1,10 +1,8 @@
-'use strict';
-
 /**
  * @constructor
  * @struct
  */
-class InstanceInfo {
+export class InstanceInfo {
     constructor() {
         /**
          * ID of the instance
@@ -47,5 +45,3 @@ class InstanceInfo {
         this.plugins = [];
     }
 }
-
-module.exports = {InstanceInfo};

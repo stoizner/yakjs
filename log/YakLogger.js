@@ -1,9 +1,7 @@
-'use strict';
-
 /**
  * @interface
  */
-class YakLogger {
+export class YakLogger {
 
     constructor(options) {
         /**
@@ -36,5 +34,3 @@ class YakLogger {
      */
     debug(message, data) {}
 }
-
-module.exports = {YakLogger};

@@ -4,7 +4,7 @@
  * @constructor
  * @struct
  */
-class CommandWorker {
+export class CommandWorker {
     /**
      * @param {YakPluginCommand} command
      * @param {PluginContext} pluginContext
@@ -21,5 +21,3 @@ class CommandWorker {
         this.pluginContext = pluginContext;
     }
 }
-
-module.exports = {CommandWorker};

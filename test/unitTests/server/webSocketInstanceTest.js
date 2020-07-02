@@ -1,12 +1,13 @@
 'use strict';
 
-const sandbox = require('../../testSandbox');
+import sandbox from '../../testSandbox';
+import {WebSocketInstance} from '../../../src/instance/webSocketInstance';
+import {InstanceState} from '../../../src/instance/instanceState';
+import {YakInstance} from '../../../src/YakInstance';
+import {ConsoleLogger} from '../../../log/ConsoleLogger';
+
 const sinon = sandbox.sinon;
 const expect = sandbox.expect;
-const {WebSocketInstance} = require('../../../src/instance/webSocketInstance');
-const {InstanceState} = require('../../../src/instance/instanceState');
-const {YakInstance} = require('../../../src/YakInstance');
-const {ConsoleLogger} = require('../../../log/ConsoleLogger');
 
 describe('WebSocketInstance', function() {
     /**

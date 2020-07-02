@@ -1,15 +1,15 @@
 'use strict';
 
-const express = require('express');
-const getInstancesRoute = require('./getInstancesRoute');
-const postStartInstancesRoute = require('./postStartInstancesRoute');
-const postStopInstancesRoute = require('./postStopInstancesRoute');
-const postRestartRunningInstancesRoute = require('./postRestartRunningInstancesRoute');
+import express from 'express';
+import getInstancesRoute from './getInstancesRoute.js';
+import postStartInstancesRoute from './postStartInstancesRoute.js';
+import postStopInstancesRoute from './postStopInstancesRoute.js';
+import postRestartRunningInstancesRoute from './postRestartRunningInstancesRoute.js';
 
 /**
  * @param {Service} service
  */
-function createInstancesRouter(service) {
+export function createInstancesRouter(service) {
     const router = express.Router(); // eslint-disable-line new-cap
 
     const routes = [
@@ -23,5 +23,3 @@ function createInstancesRouter(service) {
 
     return router;
 }
-
-module.exports = {createInstancesRouter};

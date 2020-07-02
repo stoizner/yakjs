@@ -1,10 +1,10 @@
 'use strict';
 
-const HttpStatus = require('http-status-codes');
-const pkg = require('../../../../package.json');
-const semver = require('semver');
-const moment = require('moment');
-const fetch = require('node-fetch');
+import HttpStatus from 'http-status-codes';
+import pkg from '../../../../package.json';
+import semver from 'semver';
+import moment from 'moment';
+import fetch from 'node-fetch';
 
 const npmVersion = {
     latestVersion: null,
@@ -15,7 +15,7 @@ const npmVersion = {
  * @param request
  * @param response
  */
-function getVersionRoute(request, response) {
+export function getVersionRoute(request, response) {
     var versionInfo = {
         version: pkg.version,
         isNewVersionAvailable: false
@@ -60,5 +60,3 @@ function getLastVersion() {
 function yesterday() {
     return moment().add(-1, 'days').valueOf();
 }
-
-module.exports = {getVersionRoute};

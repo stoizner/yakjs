@@ -1,8 +1,7 @@
 'use strict';
 
-const {InstanceInfo} = require('./InstanceInfo');
-const {GetInstancesResponse} = require('./GetInstancesResponse');
-const {instanceManager} = require('../../../service');
+import {InstanceInfo} from './InstanceInfo.js';
+import {GetInstancesResponse} from './GetInstancesResponse.js';
 
 /**
  * @param request
@@ -38,7 +37,7 @@ function toInstanceInfo(instance) {
     return instanceInfo;
 }
 
-module.exports = {
+export default {
     method: 'get',
     path: '/instances',
     handler: getInstancesRoute,

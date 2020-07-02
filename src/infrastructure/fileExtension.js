@@ -1,6 +1,6 @@
 'use strict';
 
-const fileExtensions = {
+export const fileExtensions = {
     PLUGIN_EXTENSION: '.plugin.js',
     MODULE_EXTENSION: '.js',
     INSTANCE_EXTENSION: '.instance.json',
@@ -8,5 +8,3 @@ const fileExtensions = {
     STORE_EXTENSION_OLD: '.txt',
     COMMAND_PRESET_EXTENSION: '.cp.json'
 };
-
-module.exports = fileExtensions;

@@ -1,8 +1,8 @@
 'use strict';
 
-const {expect} = require('../../testSandbox');
-const fetch = require('node-fetch');
-const {integrationServer} = require('../integrationServer');
+import {expect} from '../../testSandbox';
+import fetch from 'node-fetch';
+import {integrationServer} from '../integrationServer';
 
 describe('instances routes', function () {
     'use strict';

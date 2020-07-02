@@ -1,17 +1,15 @@
 'use strict';
 
-const {config} = require('../../../service');
-
 /**
  * @param request
  * @param response
  */
-function getServerConfigRoute(request, response) {
+export function getServerConfigRoute(request, response) {
+    const config = request.app.locals.service.config;
+
     let responseData = {
         serverConfig: config
     };
 
     response.send(responseData);
 }
-
-module.exports = getServerConfigRoute;

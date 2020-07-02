@@ -1,11 +1,11 @@
 'use strict';
 
-const fs = require('fs');
-const path = require('path');
-const {log} = require('../service');
-const CommandPreset = require('./commandPreset');
-const magicNumbers = require('../util/magicNumbers');
-const fileExtension = require('../infrastructure/fileExtension');
+import fs from 'fs';
+import path from 'path';
+import {log} from '../service';
+import CommandPreset from './commandPreset';
+import magicNumbers from '../util/magicNumbers';
+import fileExtension from '../infrastructure/fileExtension';
 
 /**
  * @type {string}
@@ -20,7 +20,7 @@ if (!fs.existsSync(COMMAND_PRESETS_DIRECTORY)) {
  * @constructor
  * @struct
  */
-function CommandPresetProvider() {
+export function CommandPresetProvider() {
     /**
      * @type {!CommandPresetProvider}
      */
@@ -104,5 +104,3 @@ function CommandPresetProvider() {
         return COMMAND_PRESETS_DIRECTORY + presetName + fileExtension.COMMAND_PRESET_EXTENSION;
     }
 }
-
-module.exports = {CommandPresetProvider};

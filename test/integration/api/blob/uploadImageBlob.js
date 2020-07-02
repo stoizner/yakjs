@@ -1,9 +1,8 @@
 'use strict';
 
-const fse = require('fs-extra');
-const httpPost = require('../../httpPost');
-
-const mime = require('mime-types');
+import fse from 'fs-extra';
+import httpPost from '../../httpPost';
+import mime from 'mime-types';
 
 const fileName = '../../../../ui/src/favicon-32x32.png';
 const contentType = mime.lookup(fileName);

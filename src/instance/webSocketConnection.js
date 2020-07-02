@@ -1,6 +1,6 @@
 'use strict';
 
-const createGuid = require('../../common/guid');
+import createGuid from '../../common/guid.js';
 
 /**
  * @constructor
@@ -8,7 +8,7 @@ const createGuid = require('../../common/guid');
  * @param {Service} service
  * @param {WebSocket} socket
  */
-function WebSocketConnection(service, socket) {
+export function WebSocketConnection(service, socket) {
     /**
      * @type {YakLogger}
      */
@@ -49,5 +49,3 @@ function WebSocketConnection(service, socket) {
         }
     }
 }
-
-module.exports = WebSocketConnection;

@@ -1,10 +1,8 @@
-'use strict';
-
 /**
  * @constructor
  * @struct
  */
-function PluginContext() {
+export function PluginContext() {
     /**
      * @type {WebSocketInstance}
      */
@@ -15,5 +13,3 @@ function PluginContext() {
      */
     this.log = null;
 }
-
-module.exports = PluginContext;

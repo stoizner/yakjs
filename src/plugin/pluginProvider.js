@@ -1,17 +1,15 @@
-'use strict';
-
-const {log} = require('../service');
-const pluginLog = require('../infrastructure/logger').pluginLogger;
-const fs = require('fs');
-const path = require('path');
-const fileExtension = require('../infrastructure/fileExtension');
-const Plugin = require('./plugin');
+import {log} from '../service';
+import {pluginLogger as pluginLog} from '../infrastructure/logger';
+import fs from 'fs';
+import path from 'path';
+import fileExtension from '../infrastructure/fileExtension';
+import Plugin from './plugin';
 
 /**
  * @constructor
  * @struct
  */
-function PluginProvider() {
+export function PluginProvider() {
     /**
      * @type {!PluginProvider}
      */
@@ -169,4 +167,4 @@ function PluginProvider() {
     }
 }
 
-module.exports = new PluginProvider();
+export default new PluginProvider();

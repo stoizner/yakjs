@@ -1,8 +1,8 @@
 'use strict';
 
-const {handleExecuteCommand} = require('./handleExecuteCommand');
+import {handleExecuteCommand} from './handleExecuteCommand.js';
 
-module.exports = {
+export default {
     method: 'get',
     path: '/commands/:commandName/execute',
     handler: handleExecuteCommand,

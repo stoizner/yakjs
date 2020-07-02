@@ -1,12 +1,9 @@
 'use strict';
 
-const sandbox = require('../../testSandbox');
-const sinon = sandbox.sinon;
-const expect = sandbox.expect;
-
-const {CommandDispatcher} = require('../../../src/command/CommandDispatcher');
-const {YakPluginCommand} = require('../../../src/YakPluginCommand');
-const {ConsoleLogger} = require('../../../log/ConsoleLogger');
+import {sinon, expect} from '../../testSandbox';
+import {CommandDispatcher} from '../../../src/command/CommandDispatcher';
+import {YakPluginCommand} from '../../../src/YakPluginCommand';
+import {ConsoleLogger} from '../../../log/ConsoleLogger';
 
 describe('commandDispatcher', function() {
     /**

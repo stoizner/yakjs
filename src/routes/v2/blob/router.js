@@ -1,12 +1,15 @@
-'use strict';
+import express from 'express';
 
-const express = require('express');
-const router = express.Router(); // eslint-disable-line new-cap
+import getSpacesRoute from './getSpacesRoute';
+import getBlobsRoute from './getBlobsRoute';
+import getBlobRoute from './getBlobRoute';
+import postBlobRoute from './postBlobRoute';
+import deleteBlobRoute from './deleteBlobRoute';
 
-router.get('/blob/', require('./getSpacesRoute'));
-router.get('/blob/:space/', require('./getBlobsRoute'));
-router.get('/blob/:space/:name', require('./getBlobRoute'));
-router.post('/blob/:space/:name', require('./postBlobRoute'));
-router.delete('/blob/:space/:name', require('./deleteBlobRoute'));
+export const router = express.Router(); // eslint-disable-line new-cap
 
-module.exports = router;
+router.get('/blob/', getSpacesRoute);
+router.get('/blob/:space/', getBlobsRoute);
+router.get('/blob/:space/:name', getBlobRoute);
+router.post('/blob/:space/:name', postBlobRoute);
+router.delete('/blob/:space/:name', deleteBlobRoute);

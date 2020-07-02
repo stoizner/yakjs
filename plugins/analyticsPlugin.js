@@ -5,7 +5,7 @@
 /**
  * @type {!JsonStore}
  */
-const jsonStore = require('../common/jsonStore');
+import jsonStore from '../common/jsonStore.js';
 
 /**
  * @constructor
@@ -33,7 +33,7 @@ function AnalyticsPlugin(context) {
     };
 }
 
-module.exports = {
+export default {
     name: 'analytics',
     description: 'Counts received messages per instance and updates the "plugin.analytics.data" store item.',
     createWorker: context => new AnalyticsPlugin(context)

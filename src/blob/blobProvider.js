@@ -1,8 +1,8 @@
 'use strict';
 
-const Blob = require('./blob');
-const fse = require('fs-extra');
-const path = require('path');
+import Blob from './blob';
+import fse from 'fs-extra';
+import path from 'path';
 
 /**
  * @type {string}
@@ -12,7 +12,7 @@ const BLOB_DIR = path.join(__dirname, '../../blob/');
 /**
  * @class
  */
-class BlobProvider {
+export class BlobProvider {
     /**
      * @param {string} space
      * @param {string} name
@@ -93,5 +93,3 @@ class BlobProvider {
         return fse.readdir(BLOB_DIR);
     }
 }
-
-module.exports = new BlobProvider();

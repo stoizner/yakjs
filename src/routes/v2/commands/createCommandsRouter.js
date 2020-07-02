@@ -1,14 +1,14 @@
 'use strict';
 
-const express = require('express');
-const getCommandExecuteRoute = require('./getCommandExecuteRoute');
-const getCommandsRoute = require('./getCommandsRoute');
-const postCommandExecuteRoute = require('./postCommandExecuteRoute');
+import express from 'express';
+import getCommandExecuteRoute from './getCommandExecuteRoute.js';
+import getCommandsRoute from './getCommandsRoute.js';
+import postCommandExecuteRoute from './postCommandExecuteRoute.js';
 
 /**
  * @param {Service} service
  */
-function createCommandsRouter(service) {
+export function createCommandsRouter(service) {
     const router = express.Router(); // eslint-disable-line new-cap
 
     const routes = [
@@ -21,5 +21,3 @@ function createCommandsRouter(service) {
 
     return router;
 }
-
-module.exports = {createCommandsRouter};

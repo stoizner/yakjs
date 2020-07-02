@@ -1,17 +1,19 @@
 'use strict';
 
-const express = require('express');
-const http = require('http');
-const path = require('path');
-const bodyParser = require('body-parser');
-const {createApiRouter} = require('../routes/v2/createApiRouter');
+import express from 'express';
+import http from 'http';
+import path from 'path';
+import bodyParser from 'body-parser';
+import {createApiRouter} from '../routes/v2/createApiRouter.js';
+import {fileURLToPath} from 'url';
+import {dirname} from '../util/dirname.js';
 
 /**
  * @constructor
  * @struct
  * @param {Service} service
  */
-function ExpressServer(service) {
+export function ExpressServer(service) {
     const app = express();
 
     /**
@@ -38,7 +40,7 @@ function ExpressServer(service) {
     this.start = async function start() {
         app.locals.service = service;
 
-        let frontendPath = path.join(__dirname, '../../', config.frontendFolder);
+        const frontendPath = path.join(dirname, '../../', config.frontendFolder);
         log.debug('Serving YAKjs UI from', {frontendPath});
 
         app.use(express.static(frontendPath));
@@ -100,5 +102,3 @@ function ExpressServer(service) {
 
     constructor();
 }
-
-module.exports = {ExpressServer};

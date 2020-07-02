@@ -1,7 +1,8 @@
-const sandbox = require('../../testSandbox');
+import sandbox from '../../testSandbox';
+import proxyquire from 'proxyquire';
+
 const sinon = sandbox.sinon;
 const expect = sandbox.expect;
-const proxyquire =  require('proxyquire');
 
 describe('JsonStore', function() {
     'use strict';

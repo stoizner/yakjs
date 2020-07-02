@@ -1,8 +1,7 @@
 'use strict';
 
-const {instanceManager, log} = require('../../../service');
-const {InstanceState} = require('../../../instance/instanceState');
-const HttpStatus = require('http-status-codes');
+import HttpStatus from 'http-status-codes';
+import {InstanceState} from '../../../instance/instanceState.js';
 
 /**
  * @param request
@@ -30,7 +29,7 @@ function postRestartRunningInstancesRoute(request, response) {
         });
 }
 
-module.exports = {
+export default {
     method: 'post',
     path: '/instances/running/restart',
     handler: postRestartRunningInstancesRoute

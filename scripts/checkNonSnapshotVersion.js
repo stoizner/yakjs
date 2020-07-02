@@ -1,6 +1,6 @@
 'use strict';
 
-const pkg = require('../package.json');
+import pkg from '../package.json';
 
 if (pkg.version.includes('SNAPSHOT')) {
     console.error('❌ package.json shall not use a SNAPSHOT version.');

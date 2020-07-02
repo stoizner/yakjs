@@ -3,7 +3,7 @@
 /**
  * @class
  */
-class Blob {
+export class Blob {
     /**
      * @param {string} name
      * @param {Buffer} content
@@ -20,5 +20,3 @@ class Blob {
         this.content = content;
     }
 }
-
-module.exports = Blob;

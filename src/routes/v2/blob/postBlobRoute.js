@@ -1,13 +1,13 @@
 'use strict';
 
-const blobProvider = require('../../../blob/blobProvider');
-const HttpStatus = require('http-status-codes');
+import blobProvider from '../../../blob/blobProvider';
+import HttpStatus from 'http-status-codes';
 
 /**
  * @param request
  * @param response
  */
-function postBlobRoute(request, response) {
+export function postBlobRoute(request, response) {
     /**
      * @type {string}
      */
@@ -27,5 +27,3 @@ function postBlobRoute(request, response) {
             response.status(HttpStatus.INTERNAL_SERVER_ERROR).send({error});
         });
 }
-
-module.exports = postBlobRoute;

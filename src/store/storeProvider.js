@@ -1,16 +1,16 @@
 'use strict';
 
-const fs = require('fs');
-const path = require('path');
-const {log} = require('../service');
-const StoreKeyValueItem = require('./storeKeyValueItem');
-const fileExtension = require('../infrastructure/fileExtension');
+import fs from 'fs';
+import path from 'path';
+import {log} from '../service';
+import StoreKeyValueItem from './storeKeyValueItem.js';
+import fileExtension from '../infrastructure/fileExtension.js';
 
 /**
  * @constructor
  * @struct
  */
-function StoreProvider() {
+export function StoreProvider() {
     /**
      * @type {!StoreProvider}
      */
@@ -167,5 +167,3 @@ function StoreProvider() {
         });
     }
 }
-
-module.exports = new StoreProvider();

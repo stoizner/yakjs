@@ -1,11 +1,9 @@
-'use strict';
-
 /* eslint-disable no-empty-function, no-unused-vars */
 
 /**
  * @implements {PluginWorker}
  */
-class PluginWorkerContainer {
+export class PluginWorkerContainer {
     /**
      * @param {YakPlugin} yakPlugin
      */
@@ -51,5 +49,3 @@ class PluginWorkerContainer {
         this.onStop = () => {};
     }
 }
-
-module.exports = {PluginWorkerContainer};

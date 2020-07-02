@@ -1,13 +1,13 @@
 'use strict';
 
-const magic = require('../util/magicNumbers');
+import magic from '../util/magicNumbers';
 
 /**
  * Validate properties of {yak.api.InstanceConfig}.
  * @constructor
  * @param {!yak.api.InstanceConfig} instance
  */
-function InstanceConfigValidator(instance) {
+export function InstanceConfigValidator(instance) {
     /**
      * Last or top prio validation error message.
      * @type {string}
@@ -78,5 +78,3 @@ function InstanceConfigValidator(instance) {
         }
     }
 }
-
-module.exports = InstanceConfigValidator;

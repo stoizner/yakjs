@@ -1,11 +1,9 @@
-'use strict';
-
 /* eslint-disable no-empty-function */
 
 /**
  * @interface
  */
-function WorkerInstance() {
+export function WorkerInstance() {
     /**
      * The unique instance ID.
      * @type {string}
@@ -40,5 +38,3 @@ function WorkerInstance() {
      */
     this.log = null;
 }
-
-module.exports = {WorkerInstance};

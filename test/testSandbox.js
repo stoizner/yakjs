@@ -1,19 +1,19 @@
 /* global: global */
 
 // Setup of test libs
-const chai = require('chai');
-const sinon = require('sinon');
-const sinonChai= require('sinon-chai');
-const expect = chai.expect;
-const chaiAsPromised = require('chai-as-promised');
-const dirtyChai = require('dirty-chai');
+import chai from 'chai';
+import sinon from 'sinon';
+import sinonChai from 'sinon-chai';
+import chaiAsPromised from 'chai-as-promised';
+import dirtyChai from 'dirty-chai';
 
+const expect = chai.expect;
 chai.use(sinonChai);
 chai.use(chaiAsPromised);
 chai.use(dirtyChai);
 
 // Export stuff for writing tests.
-module.exports = {
+export default {
     expect: expect,
     sinon: sinon,
 };

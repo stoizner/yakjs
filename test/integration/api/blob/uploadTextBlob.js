@@ -1,6 +1,6 @@
 'use strict';
 
-const post = require('../../post');
+import post from '../../post';
 
 const postData = 'Hello World! ƒ(x) = 1';
 

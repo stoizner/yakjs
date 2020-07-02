@@ -1,13 +1,13 @@
 'use strict';
 
-const storeProvider = require('../../../store/storeProvider');
-const HttpStatus = require('http-status-codes');
+import storeProvider from '../../../store/storeProvider.js';
+import HttpStatus from 'http-status-codes';
 
 /**
  * @param request
  * @param response
  */
-function deleteStoreItemsRoute(request, response) {
+export function deleteStoreItemsRoute(request, response) {
     /**
      * @type {string}
      */
@@ -22,5 +22,3 @@ function deleteStoreItemsRoute(request, response) {
         });
     }
 }
-
-module.exports = deleteStoreItemsRoute;

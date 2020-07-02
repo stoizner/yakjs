@@ -49,7 +49,7 @@ function executeBroadcastCommand(data, context, command) {
     });
 }
 
-module.exports = {
+export default {
     name: 'broadcast',
     description: 'Every received message will be sent to all connected clients.',
     createWorker: context => new BroadcastPlugin(context),

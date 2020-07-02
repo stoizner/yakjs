@@ -34,7 +34,7 @@ function EmptyPlugin(context) {
     this.onStop = () => {};
 }
 
-module.exports = {
+export default {
     name: 'empty',
     description: 'This plugin does nothing.',
     createWorker: context => new EmptyPlugin(context)

@@ -1,7 +1,7 @@
 'use strict';
 
-const JsonStoreError = require('./jsonStoreError');
-const storeProvider = require('../src/store/storeProvider');
+import JsonStoreError from './jsonStoreError';
+import storeProvider from '../src/store/storeProvider';
 
 /**
  * YAK key-object(json) store
@@ -71,4 +71,4 @@ function JsonStore() {
     };
 }
 
-module.exports = new JsonStore();
+export default new JsonStore();

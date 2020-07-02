@@ -4,7 +4,7 @@
  * @constructor
  * @struct
  */
-class GetInstancesResponse {
+export class GetInstancesResponse {
     /**
      *
      * @param {Partial<GetInstancesResponse>} getInstancesResponseInit
@@ -13,5 +13,3 @@ class GetInstancesResponse {
         this.instances = getInstancesResponseInit.instances || [];
     }
 }
-
-module.exports = {GetInstancesResponse};

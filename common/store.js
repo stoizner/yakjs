@@ -3,7 +3,7 @@
 /**
  * @type {!StoreProvider}
  */
-const storeProvider = require('../src/store/storeProvider');
+import storeProvider from '../src/store/storeProvider';
 
 /**
  * YAK key-value store
@@ -11,7 +11,7 @@ const storeProvider = require('../src/store/storeProvider');
  * @constructor
  * @struct
  */
-function Store() {
+export function Store() {
     /**
      * Sets a store value.
      * @param {string} key The unique key.
@@ -49,5 +49,3 @@ function Store() {
         return storeProvider.deleteItem(key);
     };
 }
-
-module.exports = new Store();

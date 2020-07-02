@@ -1,12 +1,12 @@
 'use strict';
 
-const pkg = require('../../../../package.json');
+import pkg from '../../../../package.json';
 
 /**
  * @param request
  * @param response
  */
-function getStatusRoute(request, response) {
+export function getStatusRoute(request, response) {
     const statusInfo = {
         isOnline: true,
         version: pkg.version
@@ -14,5 +14,3 @@ function getStatusRoute(request, response) {
 
     response.send(statusInfo);
 }
-
-module.exports = {getStatusRoute};

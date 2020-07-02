@@ -1,13 +1,13 @@
 'use strict';
 
-const storeProvider = require('../../../store/storeProvider');
-const HttpStatus = require('http-status-codes');
+import storeProvider from '../../../store/storeProvider.js';
+import HttpStatus from 'http-status-codes';
 
 /**
  * @param request
  * @param response
  */
-function putStoreItemsValueRoute(request, response) {
+export function putStoreItemsValueRoute(request, response) {
     /**
      * @type {string}
      */
@@ -28,5 +28,3 @@ function putStoreItemsValueRoute(request, response) {
         });
     }
 }
-
-module.exports = putStoreItemsValueRoute;

@@ -1,19 +1,16 @@
 'use strict';
 
-const {ExpressServer} = require('./server/ExpressServer');
-
-const {Service} = require('./Service');
-
-const {YakServerConfig} = require('./YakServerConfig');
-const {InstanceManager} = require('./instance/InstanceManager');
-const {CommandDispatcher} = require('./command/CommandDispatcher');
-const {CommandPresetProvider} = require('./command/CommandPresetProvider');
+import {ExpressServer} from './server/ExpressServer.js';
+import {Service} from './Service.js';
+import {YakServerConfig} from './YakServerConfig.js';
+import {InstanceManager} from './instance/InstanceManager.js';
+import {CommandDispatcher} from './command/CommandDispatcher.js';
 
 /**
  * @constructor
  * @struct
  */
-class YakServer {
+export class YakServer {
     /**
      * Initializes the yakjs server.
      * @param {Partial<YakServerConfig>} [config]
@@ -35,8 +32,6 @@ class YakServer {
         this.service.initialize(runtimeConfig);
         this.service.instanceManager = new InstanceManager(this.service);
         this.service.commandDispatcher = new CommandDispatcher(this.service);
-
-        this.service.commandPresetsProvider = new CommandPresetProvider();
     }
 
     /**
@@ -63,5 +58,3 @@ class YakServer {
         }
     }
 }
-
-module.exports = {YakServer};

@@ -1,11 +1,9 @@
-'use strict';
-
 /* eslint-disable no-empty-function, no-unused-vars */
 
 /**
  * @interface
  */
-function PluginWorker() {
+export function PluginWorker() {
     /**
      * Called when the instance starts.
      */
@@ -60,5 +58,3 @@ function PluginWorker() {
      */
     this.onTerminate = function onTerminate() {};
 }
-
-module.exports = {PluginWorker};

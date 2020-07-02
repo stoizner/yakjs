@@ -2,7 +2,7 @@
 
 /* eslint-disable no-empty-function, no-unused-vars */
 
-const dns = require('dns');
+import dns from 'dns';
 
 /**
  * Resolves a hostname (e.g. 'example.com') into the first found A (IPv4).
@@ -35,7 +35,7 @@ function DnsLookupPlugin(require) {
     this.onStop = function onStop() {};
 }
 
-module.exports = {
+export default {
     name: 'dnsLookup',
     description: 'Resolves a hostname (e.g. "example.com") into the first found A (IPv4).',
     createWorker: context => new DnsLookupPlugin(context)

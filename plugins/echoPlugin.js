@@ -34,7 +34,7 @@ function EchoPlugin(context) {
 /**
  * @type {!Plugin}
  */
-module.exports = {
+export default {
     name: 'echo',
     description: 'Every received message will be send back',
     createWorker: context => new EchoPlugin(context)

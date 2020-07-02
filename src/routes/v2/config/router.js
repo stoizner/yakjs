@@ -1,8 +1,8 @@
 'use strict';
 
-const express = require('express');
-const router = express.Router(); // eslint-disable-line new-cap
+import express from 'express';
+import getServerConfigRoute from './getServerConfigRoute.js';
 
-router.get('/config', require('./getServerConfigRoute'));
+export const router = express.Router(); // eslint-disable-line new-cap
 
-module.exports = router;
+router.get('/config', getServerConfigRoute);

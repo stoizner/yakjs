@@ -1,7 +1,6 @@
 'use strict';
 
-const {instanceManager} = require('../../../service');
-const HttpStatus = require('http-status-codes');
+import HttpStatus from 'http-status-codes';
 
 /**
  * @param request
@@ -18,7 +17,7 @@ async function postStopInstancesRoute(request, response) {
     }
 }
 
-module.exports = {
+export default {
     method: 'post',
     path: '/instances/:instanceId/stop',
     handler: postStopInstancesRoute

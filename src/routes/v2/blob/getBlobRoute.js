@@ -1,14 +1,14 @@
 'use strict';
 
-const HttpStatus = require('http-status-codes');
-const blobProvider = require('../../../blob/blobProvider');
-const mime = require('mime-types');
+import HttpStatus from 'http-status-codes';
+import blobProvider from '../../../blob/blobProvider';
+import mime from 'mime-types';
 
 /**
  * @param request
  * @param response
  */
-function getBlobRoute(request, response) {
+export function getBlobRoute(request, response) {
     /**
      * @type {string}
      */
@@ -28,5 +28,3 @@ function getBlobRoute(request, response) {
             response.status(HttpStatus.INTERNAL_SERVER_ERROR).send({error});
         });
 }
-
-module.exports = getBlobRoute;

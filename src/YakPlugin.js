@@ -1,6 +1,4 @@
-'use strict';
-
-class YakPlugin {
+export class YakPlugin {
     /**
      * @param {Partial<YakPlugin>} [yakPluginInit]
      */
@@ -34,5 +32,3 @@ class YakPlugin {
         this.commands = init.commands || [];
     }
 }
-
-module.exports = {YakPlugin};

@@ -1,17 +1,17 @@
 'use strict';
 
-const WebSocketServer = require('ws').Server;
-const http = require('http');
+import ws from 'ws';
+import http from 'http';
 
-const express = require('express');
-const {InstanceState} = require('./instanceState');
-const PluginContext = require('../plugin/pluginContext');
-const WebSocketConnection = require('./webSocketConnection');
-const WebSocketMessage = require('./webSocketMessage');
-const magic = require('../util/magicNumbers');
+import express from 'express';
+import {InstanceState} from './instanceState.js';
+import {PluginContext} from '../plugin/pluginContext.js';
+import {WebSocketConnection} from './webSocketConnection.js';
+import {WebSocketMessage} from './webSocketMessage.js';
+import {magicNumbers as magic} from '../util/magicNumbers.js';
 
-const {InstanceStartedEvent} = require('./instanceStartedEvent');
-const {PluginWorkerContainer} = require('../plugin/PluginWorkerContainer');
+import {InstanceStartedEvent} from './instanceStartedEvent.js';
+import {PluginWorkerContainer} from '../plugin/PluginWorkerContainer.js';
 
 /**
  * @constructor
@@ -20,7 +20,7 @@ const {PluginWorkerContainer} = require('../plugin/PluginWorkerContainer');
  * @param {Service} service
  * @param {YakInstance} yakInstance
  */
-function WebSocketInstance(service, yakInstance) {
+export function WebSocketInstance(service, yakInstance) {
     /**
      * @type {WebSocketInstance}
      */
@@ -29,8 +29,8 @@ function WebSocketInstance(service, yakInstance) {
     const {pluginManager, log, commandDispatcher} = service;
 
     /**
-     * WebSocketServer instance
-     * @type {WebSocketServer}
+     * WebSocket instance
+     * @type {Server}
      */
     let webSocketServer = null;
 
@@ -95,7 +95,7 @@ function WebSocketInstance(service, yakInstance) {
     let pluginContext = null;
 
     /**
-     * @type {core.Express}
+     * @type {Express}
      */
     let expressApp = null;
 
@@ -104,7 +104,7 @@ function WebSocketInstance(service, yakInstance) {
      * @returns {!Promise}
      */
     this.start = async function start() {
-        log.info('Start WebSocketServer Instance', {id: self.id});
+        log.info('Start WebSocket Instance', {id: self.id});
 
         if (self.state === InstanceState.STARTED) {
             throw new Error(`Can not start, instance already running. (${self.id})`);
@@ -128,7 +128,7 @@ function WebSocketInstance(service, yakInstance) {
      * @returns {!Promise}
      */
     this.stop = function stop() {
-        log.info('Stop WebSocketServer Instance', {name: self.name, state: self.state});
+        log.info('Stop WebSocket Instance', {name: self.name, state: self.state});
 
         return new Promise(resolve => {
             if (webSocketServer && self.state === InstanceState.STARTED) {
@@ -172,7 +172,7 @@ function WebSocketInstance(service, yakInstance) {
             expressApp = express();
             webServer = http.createServer(expressApp).listen(self.port);
 
-            webSocketServer = new WebSocketServer({server: webServer});
+            webSocketServer = new ws.Server({server: webServer});
             webSocketServer.on('connection', handleConnection);
             webSocketServer.on('error', error => {
                 handleError(error);
@@ -463,5 +463,3 @@ function WebSocketInstance(service, yakInstance) {
         });
     }
 }
-
-module.exports = {WebSocketInstance};

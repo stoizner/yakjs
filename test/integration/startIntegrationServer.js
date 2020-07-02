@@ -1,4 +1,5 @@
 'use strict';
 
-const {integrationServer} = require('./integrationServer');
+import {integrationServer} from './integrationServer.js';
+
 integrationServer.start();

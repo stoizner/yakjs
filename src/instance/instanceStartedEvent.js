@@ -3,7 +3,7 @@
 /**
  * @class
  */
-class InstanceStartedEvent {
+export class InstanceStartedEvent {
     /**
      * @param {!core.Express} app
      */
@@ -14,5 +14,3 @@ class InstanceStartedEvent {
         this.app = app;
     }
 }
-
-module.exports = {InstanceStartedEvent};

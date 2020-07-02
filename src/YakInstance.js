@@ -1,10 +1,8 @@
-'use strict';
-
 /**
  * @constructor
  * @struct
  */
-class YakInstance {
+export class YakInstance {
     /**
      * @param {Partial<YakInstance>} partialYakInstance
      */
@@ -48,5 +46,3 @@ class YakInstance {
         this.plugins = partial.plugins || [];
     }
 }
-
-module.exports = {YakInstance};

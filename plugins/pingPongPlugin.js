@@ -36,7 +36,7 @@ function executeSendCommand(data, context, command) {
     return Promise.resolve();
 }
 
-module.exports = {
+export default {
     name: 'pingPong',
     description: 'For every received "ping" string, this plugin will send an "pong" string.',
     createWorker: () => new PingPongPlugin(),

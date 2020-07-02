@@ -1,13 +1,13 @@
 'use strict';
 
-const https = require('https');
+import https from 'https';
 
 const userAgent = 'YAKjs';
 
 /**
  * @class
  */
-class GutHubApiAdapter {
+export class GutHubApiAdapter {
     /**
      * @param {string} path
      * @returns {!Promise<Object>}
@@ -37,5 +37,3 @@ class GutHubApiAdapter {
         });
     }
 }
-
-module.exports = new GutHubApiAdapter();

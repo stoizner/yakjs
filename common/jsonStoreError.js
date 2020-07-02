@@ -1,5 +1,3 @@
-'use strict';
-
 /**
  * @public
  * @constructor
@@ -7,7 +5,7 @@
  * @param {string} message
  * @param {Error|?} originalError
  */
-function JsonStore(message, originalError) {
+export function JsonStore(message, originalError) {
     /**
      * @type {string}
      */
@@ -18,5 +16,3 @@ function JsonStore(message, originalError) {
      */
     this.originalError = originalError;
 }
-
-module.exports = JsonStore;

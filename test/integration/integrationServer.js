@@ -1,11 +1,11 @@
 'use strict';
 
-const {YakServer} = require('../../src/YakServer');
-const {YakInstance} = require('../../src/YakInstance')
-const echoPlugin = require('../../plugins/echoPlugin');
-const pingPongPlugin = require('../../plugins/pingPongPlugin');
-const broadCastPlugin = require('../../plugins/broadcastPlugin');
-const integrationServerConfig = require('./integrationServerConfig');
+import {YakServer} from '../../src/YakServer.js';
+import {YakInstance} from '../../src/YakInstance.js';
+import echoPlugin from '../../plugins/echoPlugin.js';
+import pingPongPlugin from '../../plugins/pingPongPlugin.js';
+import broadCastPlugin from '../../plugins/broadcastPlugin.js';
+import integrationServerConfig from './integrationServerConfig.js';
 
 class IntegrationServer {
     constructor() {
@@ -62,6 +62,4 @@ class IntegrationServer {
     }
 }
 
-const integrationServer = new IntegrationServer();
-
-module.exports = {integrationServer};
+export const integrationServer = new IntegrationServer();

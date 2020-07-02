@@ -1,26 +1,28 @@
 'use strict';
 
-const express = require('express');
-const cors = require('cors');
+import cors from 'cors';
+import express from 'express';
+import {createInstancesRouter} from './instances/createInstancesRouter.js';
+import {createCommandsRouter} from './commands/createCommandsRouter.js';
 
-const {createInstancesRouter} = require('./instances/createInstancesRouter');
-const {createCommandsRouter} = require('./commands/createCommandsRouter');
+// import storeItems from './storeItems/router';
+// import blob from './blob/router';
+// import config from './config/router';
 
 /**
  * @param {Service} service
  */
-function createApiRouter(service) {
+export function createApiRouter(service) {
     const router = express.Router(); // eslint-disable-line new-cap
 
     router.use(cors());
     router.use(createInstancesRouter(service));
     router.use(createCommandsRouter(service));
-    router.use(require('./package/router'));
-    router.use(require('./storeItems/router'));
-    router.use(require('./blob/router'));
-    router.use(require('./config/router'));
+
+    // #TODO
+    // router.use(storeItems);
+    // router.use(blob);
+    // router.use(config);
 
     return router;
 }
-
-module.exports = {createApiRouter};

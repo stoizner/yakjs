@@ -1,8 +1,8 @@
 'use strict';
 
-const {CommandItem} = require('./CommandItem');
-const {GetCommandsResponse} = require('./GetCommandsResponse');
-const {InstanceState} = require('../../../instance/instanceState');
+import {CommandItem} from './CommandItem.js';
+import {InstanceState} from '../../../instance/instanceState.js';
+import {GetCommandsResponse} from './GetCommandsResponse.js';
 
 /**
  * @param request
@@ -46,7 +46,7 @@ function isStarted(instance) {
     return instance.state && instance.state === InstanceState.STARTED;
 }
 
-module.exports = {
+export default {
     method: 'get',
     path: '/commands',
     handler: handleRequest,
