@@ -61,4 +61,4 @@ function PluginWorker() {
     this.onTerminate = function onTerminate() {};
 }
 
-module.exports = PluginWorker;
+module.exports = {PluginWorker};

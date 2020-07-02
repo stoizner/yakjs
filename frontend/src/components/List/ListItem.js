@@ -11,7 +11,7 @@ export class ListItem {
         /**
          * @type {string}
          */
-        this.id = init.id || '';
+        this.id = init.id || init.label || '';
 
         /**
          * @type {string}

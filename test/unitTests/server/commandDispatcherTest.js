@@ -5,7 +5,7 @@ const sinon = sandbox.sinon;
 const expect = sandbox.expect;
 
 const {CommandDispatcher} = require('../../../src/command/CommandDispatcher');
-const {CommandConfig} = require('../../../src/command/commandConfig');
+const {YakPluginCommand} = require('../../../src/YakPluginCommand');
 const {ConsoleLogger} = require('../../../log/ConsoleLogger');
 
 describe('commandDispatcher', function() {
@@ -40,8 +40,8 @@ describe('commandDispatcher', function() {
             commandDispatcher.register(commandFoo, context);
 
             // Then
-            expect(commandDispatcher.getCommands('foo')[0].config).to.equal(commandFoo);
-            expect(commandDispatcher.getCommands('foo')[0].context).to.equal(context);
+            expect(commandDispatcher.getCommandWorkers('foo')[0].command).to.equal(commandFoo);
+            expect(commandDispatcher.getCommandWorkers('foo')[0].pluginContext).to.equal(context);
         });
 
         it('registers two command configuration', function() {
@@ -54,24 +54,29 @@ describe('commandDispatcher', function() {
             commandDispatcher.register(commandFooB, context);
 
             // Then
-            const commands = commandDispatcher.getCommands('foo');
-            expect(commands[0].config).to.equal(commandFooA);
-            expect(commands[1].config).to.equal(commandFooB);
+            const commands = commandDispatcher.getCommandWorkers('foo');
+            expect(commands[0].command).to.equal(commandFooA);
+            expect(commands[1].command).to.equal(commandFooB);
         });
     });
 
     describe('execute()', function() {
         it('calls the commandHandler', async function() {
             // Given
-            const commandFoo = createCommand('foo', 'About foo', sinon.spy());
-            const context = sinon.spy();
+            const commandFoo = new YakPluginCommand({
+                name: 'foo',
+                description: 'About foo',
+                data: 'data',
+                execute: sinon.spy()
+            });
+            const context = {};
 
             // When
             commandDispatcher.register(commandFoo, context);
-            await commandDispatcher.execute('foo', 'data', context);
+            await commandDispatcher.execute('foo');
 
             // Then
-            expect(commandFoo.execute).to.be.calledWith('data', context, commandFoo);
+            expect(commandFoo.execute).to.be.calledWith(commandFoo.data, context, commandFoo);
         });
     });
 
@@ -85,17 +90,17 @@ describe('commandDispatcher', function() {
             commandDispatcher.commandMap.clear();
 
             // Then
-            expect(commandDispatcher.getCommands('foo')).to.deep.equal([]);
+            expect(commandDispatcher.getCommandWorkers('foo')).to.deep.equal([]);
         });
     });
 
     describe('unregisterAllWithContext()', function() {
         it('unregisters all commands that references the given context', function() {
             // Given
-            const contextA = {context: 'A'};
-            const contextB = {context: 'B'};
-            const commandFooA = createCommand('foo', 'About foo', () => {});
-            const commandFooB = createCommand('foo', 'About foo', () => {});
+            const contextA = {};
+            const contextB = {};
+            const commandFooA = new YakPluginCommand({name: 'foo'});
+            const commandFooB = new YakPluginCommand({name: 'foo'});
             commandDispatcher.register(commandFooA, contextA);
             commandDispatcher.register(commandFooB, contextB);
 
@@ -103,7 +108,7 @@ describe('commandDispatcher', function() {
             commandDispatcher.unregisterAllWithContext(contextA);
 
             // Then
-            expect(commandDispatcher.getCommands('foo')[0].context).to.equal(contextB);
+            expect(commandDispatcher.getCommandWorkers('foo')[0].pluginContext).to.equal(contextB);
 
         });
     });
@@ -116,7 +121,7 @@ describe('commandDispatcher', function() {
      * @returns {{name: *, description: *, execute: *}}
      */
     function createCommand(name, description, executeHandler) {
-        return new CommandConfig({
+        return new YakPluginCommand({
             name: name,
             description: description,
             execute: executeHandler

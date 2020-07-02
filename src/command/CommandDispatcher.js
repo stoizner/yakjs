@@ -1,6 +1,6 @@
 'use strict';
 
-const Command = require('./command');
+const {CommandWorker} = require('./CommandWorker');
 
 class CommandDispatcher {
     /**
@@ -14,24 +14,24 @@ class CommandDispatcher {
 
         /**
          * The key is the command name.
-         * @type {Map<string, !Array<!Command>>}
+         * @type {Map<string, Array<CommandWorker>>}
          */
         this.commandMap = new Map();
     }
 
     /**
      * Registers a command, it requires a configuration and a context to be executeable.
-     * @param {CommandConfig} config
+     * @param {YakPluginCommand} command
      * @param {PluginContext} context
      */
-    register(config, context) {
-        this.log.debug('Register command', {name: config.name});
+    register(command, context) {
+        this.log.debug('Register command', {name: command.name});
 
-        if (!this.commandMap.has(config.name)) {
-            this.commandMap.set(config.name, []);
+        if (!this.commandMap.has(command.name)) {
+            this.commandMap.set(command.name, []);
         }
 
-        this.commandMap.get(config.name).push(new Command(config, context));
+        this.commandMap.get(command.name).push(new CommandWorker(command, context));
     }
 
     /**
@@ -40,17 +40,16 @@ class CommandDispatcher {
      */
     unregisterAllWithContext(context) {
         for(const commandName of this.commandMap.keys()) {
-            const commands = this.commandMap.get(commandName).filter(command => command.context !== context);
+            const commands = this.commandMap.get(commandName).filter(command => command.pluginContext !== context);
             this.commandMap.set(commandName, commands);
         }
     }
 
     /**
-     * Gets all registered commands.
      * @param {string} commandName
-     * @return {!Array<!Command>}
+     * @return {Array<CommandWorker>}
      */
-    getCommands(commandName) {
+    getCommandWorkers(commandName) {
         return this.commandMap.get(commandName) || [];
     }
 
@@ -60,10 +59,11 @@ class CommandDispatcher {
      * @returns {Promise<Array<?>>}
      */
     async execute(commandName) {
-        const commands = this.getCommands(commandName);
+        const commandWorkers = this.getCommandWorkers(commandName);
 
-        for(const command of commands) {
-            const commandPromise = command.config.execute(command.config.data, command.context, command.config);
+        for(const worker of commandWorkers) {
+            const data = worker.command.data || worker.command.exampleData;
+            const commandPromise = worker.command.execute(data, worker.pluginContext, worker.command);
 
             if (commandPromise) {
                 await commandPromise;

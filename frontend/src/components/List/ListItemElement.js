@@ -3,7 +3,6 @@ import styles from './listStyles.css';
 
 import {ToggleButtonElement} from '../ToggleButton/ToggleButtonElement';
 
-
 export class ListItemElement extends LitElement {
     static get styles() {
         return [styles];
@@ -30,9 +29,11 @@ export class ListItemElement extends LitElement {
             composed: true,
             detail: this.item
         });
-        this.dispatchEvent(customEvent);
         event.preventDefault();
         event.stopPropagation();
+        this.dispatchEvent(customEvent);
+
+        return null;
     }
 
     handleClick(event) {

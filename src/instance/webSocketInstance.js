@@ -244,11 +244,10 @@ function WebSocketInstance(service, yakInstance) {
     function registerPluginCommands(plugin, context) {
         log.debug('Register plugin commands', {plugin: plugin.name});
 
-        if (plugin.commands) {
-            plugin.commands.forEach(pluginConfig => {
-                commandDispatcher.register(pluginConfig, context);
-            });
-        }
+        const commands = plugin.commands || [];
+        commands.forEach(command => {
+            commandDispatcher.register(command, context);
+        });
     }
 
     /**

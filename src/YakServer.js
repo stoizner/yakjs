@@ -1,6 +1,6 @@
 'use strict';
 
-const {ExpressServer} = require('./ExpressServer');
+const {ExpressServer} = require('./server/ExpressServer');
 
 const {Service} = require('./Service');
 

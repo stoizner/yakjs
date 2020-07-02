@@ -3,6 +3,7 @@
 const {YakServer} = require('../../src/YakServer');
 const {YakInstance} = require('../../src/YakInstance')
 const echoPlugin = require('../../plugins/echoPlugin');
+const pingPongPlugin = require('../../plugins/pingPongPlugin');
 const broadCastPlugin = require('../../plugins/broadcastPlugin');
 const integrationServerConfig = require('./integrationServerConfig');
 
@@ -18,24 +19,24 @@ class IntegrationServer {
 
         const instanceA = new YakInstance({
             id: 'instanceA',
-            name: 'Instance A',
+            name: 'Broadcast instance',
             description: 'Instance Description A',
             port: 9010,
             isAutoStartEnabled: true,
             plugins: [
-                broadCastPlugin,
-                echoPlugin
+                broadCastPlugin
             ]
         });
 
         const instanceB = new YakInstance({
             id: 'instanceB',
-            name: 'Instance B',
-            description: 'Uses only a echo plugin.',
+            name: 'Parrot Instance',
+            description: 'Uses multiple plugins',
             port: 9020,
             isAutoStartEnabled: true,
             plugins: [
-                echoPlugin
+                echoPlugin,
+                pingPongPlugin
             ]
         });
 

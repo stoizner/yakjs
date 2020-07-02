@@ -35,7 +35,7 @@ export class InstanceListView extends LitElement {
             return new ListItem({
                 id: instanceInfo.id,
                 label: instanceInfo.name,
-                isActive: instanceInfo.state === 'running',
+                isActive: instanceInfo.state === 'started',
                 detail: instanceInfo
             });
         });
@@ -54,8 +54,6 @@ export class InstanceListView extends LitElement {
 
         const response = await requestSender.getRequest('/instances');
         this.updateListItems(response.instances);
-
-        this.selectedInstanceItem = response.instances.find(instance => instance.id === this.selectedInstanceItem.id);
     }
 
     async handleListItemClick(event) {

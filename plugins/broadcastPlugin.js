@@ -31,7 +31,7 @@ function BroadcastPlugin(context) {
 /**
  * @param {?} data
  * @param {PluginContext} context
- * @param {CommandConfig} command
+ * @param {Command} command
  */
 function executeBroadcastCommand(data, context, command) {
     const connections = context.instance.getConnections();

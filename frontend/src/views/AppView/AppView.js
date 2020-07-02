@@ -6,6 +6,7 @@ import {InstanceListView} from '../InstanceListView/InstanceListView';
 import {PlaceholderView} from '../PlaceholderView/PlaceholderView';
 import {NavigationItem} from '../../components/tabNavigation/NavigationItem';
 import {AppNavigationItem} from './AppNavigationItem';
+import {CommandsListView} from '../CommandsListView/CommandsListView';
 
 export class AppView extends LitElement {
     static get properties() {

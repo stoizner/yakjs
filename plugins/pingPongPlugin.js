@@ -22,15 +22,15 @@ function PingPongPlugin() {
 /**
  * @param {?} data
  * @param {PluginContext} context
- * @param {CommandConfig} command
+ * @param {YakPluginCommand} command
  */
-function executeSendPingCommand(data, context, command) {
+function executeSendCommand(data, context, command) {
     let connections = context.instance.getConnections();
 
     context.log.debug('Execute command: ' + command.name);
     connections.forEach(connection => {
-        context.log.debug('Sending ping to ' + connection.id);
-        connection.send('ping');
+        context.log.debug(`Sending "${data} to ${connection.id}`);
+        connection.send(data);
     });
 
     return Promise.resolve();
@@ -45,8 +45,15 @@ module.exports = {
             name: 'sendPing',
             displayName: 'Send a ping',
             description: 'Send a ping message to all connected clients',
-            execute: executeSendPingCommand,
-            exampleData: {}
+            execute: executeSendCommand,
+            data: 'ping'
+        },
+        {
+            name: 'sendPong',
+            displayName: 'Send a pong',
+            description: 'Send a pong message to all connected clients',
+            execute: executeSendCommand,
+            data: 'pong'
         }
     ]
 };

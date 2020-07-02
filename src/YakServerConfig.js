@@ -1,7 +1,6 @@
 'use strict';
 
 const {ConsoleLogger} = require('../log/ConsoleLogger');
-const path = require('path');
 
 /**
  * The YAKjs server configuration

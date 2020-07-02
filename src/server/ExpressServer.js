@@ -4,7 +4,7 @@ const express = require('express');
 const http = require('http');
 const path = require('path');
 const bodyParser = require('body-parser');
-const {createApiRouter} = require('./routes/v2/createApiRouter');
+const {createApiRouter} = require('../routes/v2/createApiRouter');
 
 /**
  * @constructor
@@ -38,7 +38,7 @@ function ExpressServer(service) {
     this.start = async function start() {
         app.locals.service = service;
 
-        let frontendPath = path.join(__dirname, '../', config.frontendFolder);
+        let frontendPath = path.join(__dirname, '../../', config.frontendFolder);
         log.debug('Serving YAKjs UI from', {frontendPath});
 
         app.use(express.static(frontendPath));

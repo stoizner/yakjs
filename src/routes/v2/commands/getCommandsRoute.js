@@ -32,7 +32,7 @@ function handleRequest(request, response) {
                         name: command.name,
                         displayName: command.displayName,
                         description: command.description,
-                        data: command.data
+                        data: command.data || command.exampleData
                     }));
                 }
             }
