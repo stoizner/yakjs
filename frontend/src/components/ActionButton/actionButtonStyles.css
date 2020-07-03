@@ -1,0 +1,40 @@
+:host {
+    --background: var(--action-button-background-color, #CDDC39);
+    --height: var(--action-button-height, 2rem);
+    --color: var(--action-button-color, #405d6b);
+
+    display: inline-block;
+    position: relative;
+    min-width: var(--height);
+    height: var(--height);
+    padding: 0;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.action-button {
+    background: var(--background);
+    color: var(--color);
+    border-radius: 4px;
+    padding: 0 1rem;
+    transition: all .25s ease;
+    outline: 0;
+    cursor: pointer;
+    user-select: none;
+    border: solid 2px transparent;
+    font-weight: bold;
+    font-size: 1rem;
+    line-height: var(--height);
+    white-space: nowrap;
+    margin-right: 0.25rem;
+}
+
+.action-button:hover {
+    border: solid 2px var(--color);
+}
+
+.toggle-button[disabled] {
+    opacity: 0.5;
+}

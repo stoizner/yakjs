@@ -13,7 +13,7 @@ export class RequestSender {
 
     /**
      * @param {string} apiPath
-     * @returns {Promise<any>}
+     * @returns {Promise<Response>}
      */
     postRequest(apiPath) {
         return fetch(BASE_URL + apiPath, {method: 'POST'});
