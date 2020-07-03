@@ -5,7 +5,6 @@ import http from 'http';
 import path from 'path';
 import bodyParser from 'body-parser';
 import {createApiRouter} from '../routes/v2/createApiRouter.js';
-import {fileURLToPath} from 'url';
 import {dirname} from '../util/dirname.js';
 
 /**
