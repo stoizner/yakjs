@@ -1,6 +1,7 @@
 import {LitElement, html} from 'lit-element';
 import styles from './instanceListViewStyles.css';
 import {ListItem} from '../../components/List/ListItem';
+import {ToggleButtonListItem} from '../../components/List/ToggleButtonListItem';
 import {RequestSender} from '../../core/RequestSender';
 
 import {List} from '../../components/List/List';
@@ -32,7 +33,7 @@ export class InstanceListView extends LitElement {
     updateListItems(instances) {
         console.log('Update instance items', {instances});
         this.instanceItems = instances.map(instanceInfo => {
-            return new ListItem({
+            return new ToggleButtonListItem({
                 id: instanceInfo.id,
                 label: instanceInfo.name,
                 isActive: instanceInfo.state === 'started',

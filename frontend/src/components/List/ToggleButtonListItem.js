@@ -1,4 +1,4 @@
-export class ListItem {
+export class ToggleButtonListItem {
     /**
      * @type {Partial<ListItem>} [listItemInit]
      */
@@ -17,6 +17,11 @@ export class ListItem {
          * @type {string}
          */
         this.label = init.label || '';
+
+        /**
+         * @type {Boolean}
+         */
+        this.isActive = init.isActive === undefined ? false : init.isActive;
 
         /**
          * @type {Object}

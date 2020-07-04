@@ -1,7 +1,9 @@
 import {LitElement, html} from 'lit-element';
 import styles from './listStyles.css';
 
-import {ToggleButtonElement} from '../ToggleButton/ToggleButtonElement';
+import {ListItem} from './ListItem';
+import {ToggleButtonListItem} from './ToggleButtonListItem';
+import {ToggleButtonElement} from '../../components/ToggleButton/ToggleButtonElement';
 
 export class ListItemElement extends LitElement {
     static get styles() {
@@ -18,7 +20,7 @@ export class ListItemElement extends LitElement {
         super();
 
         /**
-         * @type {ListItem}
+         * @type {ListItem|ToggleButtonListItem}
          */
         this.item = null;
     }
@@ -48,9 +50,15 @@ export class ListItemElement extends LitElement {
     }
 
     render() {
+        let toggleButtonHtml = null;
+
+        if (this.item instanceof ToggleButtonListItem) {
+            toggleButtonHtml = html`<yak-toggle-button @click="${this.handleToggleButtonClick}" .isActive="${this.item.isActive}"></yak-toggle-button>`
+        }
+
         return html`
             <li @click="${this.handleClick}">
-                <yak-toggle-button @click="${this.handleToggleButtonClick}" .isActive="${this.item.isActive}"></yak-toggle-button>
+                ${toggleButtonHtml}
                 <div class="expand">
                     <label>${this.item.label}</label>
                 </div>

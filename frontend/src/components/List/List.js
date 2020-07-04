@@ -9,7 +9,7 @@ export class List extends LitElement {
 
     static get properties() {
         return {
-            items: {type: Array}
+            items: {type: Array},
         }
     }
 
