@@ -3,6 +3,7 @@ import {RequestSender} from '../../core/RequestSender';
 
 import {PropertyBlock} from '../../components/propertyBlock/PropertyBlock';
 import {ActionButton} from '../../components/ActionButton/ActionButton';
+import {JsonEditor} from '../../components/JsonEditor/JsonEditor';
 
 const requestSender = new RequestSender();
 
@@ -24,6 +25,11 @@ export class CommandView extends LitElement {
         this.item = null;
 
         this.runButtonText = 'RUN';
+
+        /**
+         * @type {string}
+         */
+        this.commandData = '';
     }
 
     render() {
@@ -37,7 +43,9 @@ export class CommandView extends LitElement {
             <yak-property-block label="Name">${this.item.name}</yak-property-block>
             <yak-property-block label="Display name">${this.item.displayName}</yak-property-block>
             <yak-property-block label="Plugin Name">${this.item.pluginName}</yak-property-block>
-            <yak-property-block label="Data (${typeof this.item.data})"><pre>${this.formatData(this.item.data)}</pre></yak-property-block>
+            <yak-property-block label="Data (${typeof this.item.data})">
+                <yak-json-editor .value="${this.formatData(this.item.data)}" @input="${this.handleEditorInputEvent}"></yak-json-editor>
+            </yak-property-block>
             `;
         } else {
             content = html`<span></span>`;
@@ -46,7 +54,12 @@ export class CommandView extends LitElement {
         return content;
     }
 
+    handleEditorInputEvent(event) {
+        this.commandData = event.detail || '';
+    }
+
     async handleRunButtonClick() {
+        console.log('Run command', {data: this.commandData});
         this.runButtonText = 'RUN ...';
         const response = await requestSender.postRequest(`/commands/${this.item.name}/execute`);
 

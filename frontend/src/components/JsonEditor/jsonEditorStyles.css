@@ -1,0 +1,10 @@
+:host {
+    --height: var(--json-editor-height, 10rem);
+}
+
+.editor {
+    position: relative;
+    height: var(--height);
+    border: solid 1px #c0c0c0;
+    width: 100%;
+}
