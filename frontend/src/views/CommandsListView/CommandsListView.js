@@ -1,5 +1,6 @@
 import {LitElement, html} from 'lit-element';
 import {RequestSender} from '../../core/RequestSender';
+import {ActionButtonListItem} from '../../components/List/ActionButtonListItem';
 import {ListItem} from '../../components/List/ListItem';
 
 import {SidebarPanel} from '../../components/SidebarPanel/SidebarPanel';
@@ -65,7 +66,7 @@ export class CommandsListView extends LitElement {
         if (this.selectedPluginItem) {
             this.commandItems = this.commands
                 .filter(command => command.pluginName === this.selectedPluginItem.id)
-                .map(command => new ListItem({id: command.name, label: command.displayName || command.name}));
+                .map(command => new ActionButtonListItem({id: command.name, label: command.displayName || command.name,  buttonLabel: 'RUN'}));
         } else {
             this.commandItems = [];
         }
@@ -82,6 +83,14 @@ export class CommandsListView extends LitElement {
         this.selectedCommandItem = this.commands.find(command => command.name === event.detail.id);
     }
 
+    /**
+     * @param {ActionButtonClickEvent} event
+     */
+    async handleActionButtonClick(event) {
+        console.log(event.detail);
+        const response = await requestSender.postRequest(`/commands/${event.detail.id}/execute`);
+    }
+
     render() {
         return html`
             <yak-sidebar-panel>
@@ -91,7 +100,7 @@ export class CommandsListView extends LitElement {
                 <div slot="body">
                     <yak-sidebar-panel>
                         <div slot="sidebar">
-                            <yak-list .items="${this.commandItems}" @itemClick="${this.handleListItemClick}"></yak-list>
+                            <yak-list .items="${this.commandItems}" @itemClick="${this.handleListItemClick}" @actionButtonClick="${this.handleActionButtonClick}"></yak-list>
                          </div>
                          <div slot="body">
                             <yak-command-view .item="${this.selectedCommandItem}"></yak-command-view>

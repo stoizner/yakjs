@@ -2,10 +2,14 @@ import {LitElement, html} from 'lit-element';
 import styles from './listStyles.css';
 
 import {ListItem} from './ListItem';
+import {ActionButtonListItem} from './ActionButtonListItem';
 import {ToggleButtonListItem} from './ToggleButtonListItem';
 import {ToggleButtonClickEvent} from './ToggleButtonClickEvent';
 import {ItemClickEvent} from './ItemClickEvent';
+
+import {ActionButtonClickEvent} from './ActionButtonClickEvent';
 import {ToggleButtonElement} from '../../components/ToggleButton/ToggleButtonElement';
+import {ActionButton} from '../../components/ActionButton/ActionButton';
 
 export class ListItemElement extends LitElement {
     static get styles() {
@@ -43,16 +47,31 @@ export class ListItemElement extends LitElement {
         return null;
     }
 
+    handleActionButtonClick(event) {
+        this.dispatchEvent(new ActionButtonClickEvent(this.item));
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        return null;
+    }
+
     render() {
         let toggleButtonHtml = null;
+        let actionButtonHtml = null;
 
         if (this.item instanceof ToggleButtonListItem) {
-            toggleButtonHtml = html`<yak-toggle-button @click="${this.handleToggleButtonClick}" .isActive="${this.item.isActive}"></yak-toggle-button>`
+            toggleButtonHtml = html`<yak-toggle-button @click="${this.handleToggleButtonClick}" .isActive="${this.item.isActive}"></yak-toggle-button>`;
+        }
+
+        if (this.item instanceof ActionButtonListItem) {
+            actionButtonHtml = html`<yak-action-button @click="${this.handleActionButtonClick}">${this.item.buttonLabel}</yak-action-button>`;
         }
 
         return html`
             <li @click="${this.handleClick}">
                 ${toggleButtonHtml}
+                ${actionButtonHtml}
                 <div class="expand">
                     <label>${this.item.label}</label>
                 </div>

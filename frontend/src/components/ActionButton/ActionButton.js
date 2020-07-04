@@ -18,9 +18,9 @@ export class ActionButton extends LitElement {
     }
 
     render() {
-        return html`<button class="action-button" ?disabled="${this.isDisabled}">
+        return html`<div class="action-button" ?disabled="${this.isDisabled}">
             <slot></slot>
-        </button>`;
+        </div>`;
     }
 }
 

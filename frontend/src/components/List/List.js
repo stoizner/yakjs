@@ -22,7 +22,6 @@ export class List extends LitElement {
         this.items = [];
     }
 
-
     render() {
         return html`
             <ol>
