@@ -3,6 +3,8 @@ import styles from './listStyles.css';
 
 import {ListItem} from './ListItem';
 import {ToggleButtonListItem} from './ToggleButtonListItem';
+import {ToggleButtonClickEvent} from './ToggleButtonClickEvent';
+import {ItemClickEvent} from './ItemClickEvent';
 import {ToggleButtonElement} from '../../components/ToggleButton/ToggleButtonElement';
 
 export class ListItemElement extends LitElement {
@@ -26,27 +28,19 @@ export class ListItemElement extends LitElement {
     }
 
     handleToggleButtonClick(event) {
-        const customEvent = new CustomEvent('toggleButtonClick', {
-            bubbles: true,
-            composed: true,
-            detail: this.item
-        });
+        this.dispatchEvent(new ToggleButtonClickEvent(this.item));
         event.preventDefault();
         event.stopPropagation();
-        this.dispatchEvent(customEvent);
 
         return null;
     }
 
     handleClick(event) {
-        const customEvent = new CustomEvent('itemClick', {
-            bubbles: true,
-            composed: true,
-            detail: this.item
-        });
-        this.dispatchEvent(customEvent);
+        this.dispatchEvent(new ItemClickEvent(this.item));
         event.preventDefault();
         event.stopPropagation();
+
+        return null;
     }
 
     render() {
