@@ -5,7 +5,7 @@
  * @param {string} message
  * @param {Error|?} originalError
  */
-export function JsonStore(message, originalError) {
+export function JsonStoreError(message, originalError) {
     /**
      * @type {string}
      */

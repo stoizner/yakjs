@@ -1,15 +1,16 @@
 'use strict';
 
-import JsonStoreError from './jsonStoreError';
-import storeProvider from '../src/store/storeProvider';
+import {JsonStoreError} from './jsonStoreError.js';
+import {StoreProvider} from '../src/store/storeProvider.js';
 
 /**
  * YAK key-object(json) store
  * @public
  * @constructor
  * @struct
+ * @param {StoreProvider} storeProvider
  */
-function JsonStore() {
+export function JsonStore(storeProvider) {
     /**
      * @type {number}
      */
@@ -71,4 +72,5 @@ function JsonStore() {
     };
 }
 
-export default new JsonStore();
+export const jsonStore = new JsonStore(new StoreProvider());
+export default jsonStore;

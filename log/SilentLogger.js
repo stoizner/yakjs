@@ -1,15 +1,20 @@
+'use strict';
+
+import {LogLevel} from './LogLevel.js';
+
 /**
- * @interface
+ * @implements {YakLogger}
  */
-export class YakLogger {
+export class SilentLogger {
     /**
-     * @param [options]
+     *
+     * @param {Partial<{logLevels: Array<LogLevel>}>} [partialOptions]
      */
-    constructor(options) {
+    constructor(partialOptions) {
         /**
-         * @type {Array<LogLevel>}
+         * @type {Set<LogLevel>}
          */
-        this.logLevels = options.logLevels || [];
+        this.logLevels = new Set([]);
     }
 
     /**

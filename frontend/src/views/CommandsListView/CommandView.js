@@ -61,7 +61,7 @@ export class CommandView extends LitElement {
     async handleRunButtonClick() {
         console.log('Run command', {data: this.commandData});
         this.runButtonText = 'RUN ...';
-        const response = await requestSender.postRequest(`/commands/${this.item.name}/execute`);
+        const response = await requestSender.postRequest(`/commands/${this.item.name}/execute`, {body: this.commandData});
 
         if (response.ok && response.status === 200) {
             this.runButtonText = 'RUN ✔';

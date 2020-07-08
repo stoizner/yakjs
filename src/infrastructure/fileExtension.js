@@ -1,6 +1,6 @@
 'use strict';
 
-export const fileExtensions = {
+export const fileExtension = {
     PLUGIN_EXTENSION: '.plugin.js',
     MODULE_EXTENSION: '.js',
     INSTANCE_EXTENSION: '.instance.json',

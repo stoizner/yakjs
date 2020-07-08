@@ -1,17 +1,15 @@
 'use strict';
 
-/**
- * @type {!StoreProvider}
- */
-import storeProvider from '../src/store/storeProvider';
+import {StoreProvider} from '../src/store/storeProvider.js';
 
 /**
  * YAK key-value store
  * @public
  * @constructor
  * @struct
+ * @param {StoreProvider} storeProvider
  */
-export function Store() {
+export function Store(storeProvider) {
     /**
      * Sets a store value.
      * @param {string} key The unique key.
@@ -49,3 +47,6 @@ export function Store() {
         return storeProvider.deleteItem(key);
     };
 }
+
+export const store = new Store(new StoreProvider());
+export default store;

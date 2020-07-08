@@ -1,8 +1,5 @@
-import sandbox from '../../testSandbox';
-import mockery from 'mockery';
-
-const sinon = sandbox.sinon;
-const expect = sandbox.expect;
+import {sinon, expect} from '../../testSandbox.js';
+import {StoreProvider} from '../../../src/store/storeProvider.js';
 
 describe('StoreProvider', function() {
     'use strict';
@@ -13,21 +10,10 @@ describe('StoreProvider', function() {
     let sut;
 
     beforeEach(function() {
-        mockery.enable({
-            warnOnReplace: false,
-            warnOnUnregistered: false,
-            useCleanCache: true
-        });
-
         // Set up stubs
 
         // Create subject under test
-        sut = require('../../../src/store/storeProvider');
-    });
-
-    afterEach(function() {
-        mockery.deregisterAll();
-        mockery.disable();
+        sut = new StoreProvider();
     });
 
     describe('constructor', function() {

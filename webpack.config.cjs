@@ -1,6 +1,8 @@
-import path from 'path';
+const path = require('path');
 
-export default {
+console.log(__dirname);
+
+module.exports = {
     context: path.resolve(__dirname, './frontend/src/'),
     entry: './index.js',
     output: {
@@ -13,7 +15,7 @@ export default {
         rules: [
             {
                 test: /\.css$/,
-                use: ['./loaders/litCssLoader.js'],
+                use: ['./loaders/litCssLoader.cjs'],
             },
         ],
     },

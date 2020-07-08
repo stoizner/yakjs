@@ -1,8 +1,5 @@
-import sandbox from '../../testSandbox';
-import proxyquire from 'proxyquire';
-
-const sinon = sandbox.sinon;
-const expect = sandbox.expect;
+import {sinon, expect} from '../../testSandbox.js';
+import {JsonStore} from '../../../common/jsonStore.js';
 
 describe('JsonStore', function() {
     'use strict';
@@ -27,9 +24,7 @@ describe('JsonStore', function() {
         };
 
         // Create subject under test
-        jsonStore = proxyquire('../../../common/jsonStore', {
-            '../src/store/storeProvider': storeProvider
-        });
+        jsonStore = new JsonStore(storeProvider);
     });
 
     describe('set (update or create) a value', function() {

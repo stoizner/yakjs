@@ -1,9 +1,9 @@
 'use strict';
 
-import {sinon, expect} from '../../testSandbox';
-import {CommandDispatcher} from '../../../src/command/CommandDispatcher';
-import {YakPluginCommand} from '../../../src/YakPluginCommand';
-import {ConsoleLogger} from '../../../log/ConsoleLogger';
+import {sinon, expect} from '../../testSandbox.js';
+import {CommandDispatcher} from '../../../src/command/CommandDispatcher.js';
+import {YakPluginCommand} from '../../../src/YakPluginCommand.js';
+import {ConsoleLogger} from '../../../log/ConsoleLogger.js';
 
 describe('commandDispatcher', function() {
     /**

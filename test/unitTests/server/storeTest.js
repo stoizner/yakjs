@@ -1,8 +1,5 @@
-import sandbox from '../../testSandbox';
-import mockery from 'mockery';
-
-const sinon = sandbox.sinon;
-const expect = sandbox.expect;
+import {sinon, expect} from '../../testSandbox.js';
+import {Store} from '../../../common/store.js';
 
 describe('Store', function() {
     'use strict';
@@ -18,12 +15,6 @@ describe('Store', function() {
     let store;
 
     beforeEach(function() {
-        mockery.enable({
-            warnOnReplace: false,
-            warnOnUnregistered: false,
-            useCleanCache: true
-        });
-
         // Set up stubs
         storeProvider = {
             updateItem: sinon.stub(),
@@ -33,14 +24,7 @@ describe('Store', function() {
         };
 
         // Create subject under test
-        mockery.registerMock('../src/store/storeProvider', storeProvider);
-        mockery.registerAllowable('../../../server/common/store');
-        store = require('../../../common/store');
-    });
-
-    afterEach(function() {
-        mockery.deregisterAll();
-        mockery.disable();
+        store = new Store(storeProvider);
     });
 
     describe('setValue', function() {

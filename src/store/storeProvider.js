@@ -2,9 +2,10 @@
 
 import fs from 'fs';
 import path from 'path';
-import {log} from '../service';
-import StoreKeyValueItem from './storeKeyValueItem.js';
-import fileExtension from '../infrastructure/fileExtension.js';
+import {log} from '../../log/loggerService.js';
+import {StoreKeyValueItem} from './storeKeyValueItem.js';
+import {fileExtension} from '../infrastructure/fileExtension.js';
+import {dirname} from '../util/dirname.js';
 
 /**
  * @constructor
@@ -19,7 +20,7 @@ export function StoreProvider() {
     /**
      * @type {string}
      */
-    const STORES_DIR = path.join(__dirname, '../../stores/');
+    const STORES_DIR = path.join(dirname, '../../stores/');
 
     /**
      * @type {string}
