@@ -30,7 +30,7 @@ export class YakPluginCommand {
         /**
          * The execute handler function. This function can return nothing (undefined or null) or a Promise.
          * When nothing is returned then it will be handled as a Promise.resolve.
-         * @type {function(data:?, context:PluginContext, command:YakPluginCommand):Optional<Promise>}
+         * @type {function(data:object|string, context:PluginContext, command:YakPluginCommand):Optional<Promise>}
          */
         this.execute = init.execute;
 

@@ -20,14 +20,14 @@ function PingPongPlugin() {
 }
 
 /**
- * @param {?} data
+ * @param {string} data
  * @param {PluginContext} context
  * @param {YakPluginCommand} command
  */
 function executeSendCommand(data, context, command) {
     let connections = context.instance.getConnections();
 
-    context.log.debug('Execute command: ' + command.name);
+    context.log.debug('executeSendCommand', {data});
     connections.forEach(connection => {
         context.log.debug(`Sending "${data} to ${connection.id}`);
         connection.send(data);

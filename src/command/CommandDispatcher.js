@@ -56,13 +56,14 @@ export class CommandDispatcher {
     /**
      * Executes all commands with given name.
      * @param {string} commandName
+     * @param {object|string} commandData
      * @returns {Promise<Array<?>>}
      */
-    async execute(commandName) {
+    async execute(commandName, commandData) {
         const commandWorkers = this.getCommandWorkers(commandName);
 
         for(const worker of commandWorkers) {
-            const data = worker.command.data || worker.command.exampleData;
+            const data = commandData || worker.command.data || worker.command.exampleData;
             const commandPromise = worker.command.execute(data, worker.pluginContext, worker.command);
 
             if (commandPromise) {

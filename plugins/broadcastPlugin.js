@@ -36,7 +36,7 @@ function BroadcastPlugin(context) {
 function executeBroadcastCommand(data, context, command) {
     const connections = context.instance.getConnections();
 
-    context.log.debug('Execute command: ' + command.name);
+    context.log.debug('executeBroadcastCommand()', {data});
     connections.forEach(connection => {
         context.log.debug('Sending message to ' + connection.id);
         connection.send(data);
