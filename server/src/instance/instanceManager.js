@@ -120,16 +120,17 @@ function InstanceManager(configProvider, pluginManager) {
     /**
      * Start an instance entity.
      * @param {string} id The id of the instance.
+     * @returns {!Promise}
      */
-    this.start = function start(id) {
+    this.start = async function start(id) {
         log.debug('Start instance', {instance: id});
 
         // Creates a fresh instance.
         let instance = self.createInstance(id);
 
         if (instance) {
-            stopAllInstancesByPort(instance.port);
-            instance.start();
+            await stopAllInstancesByPort(instance.port);
+            await instance.start();
             updateAutoStartEnabledConfig(id, true);
         }
     };
@@ -170,14 +171,13 @@ function InstanceManager(configProvider, pluginManager) {
 
     /**
      * @param {number} port
+     * @returns {!Promise}
      */
     function stopAllInstancesByPort(port) {
-        Object.keys(instances)
+        return Promise.all(Object.keys(instances)
             .map(key => instances[key])
             .filter(instance => instance.port === port)
-            .forEach(instance => {
-                self.stop(instance.id);
-            });
+            .map(instance => self.stop(instance.id)));
     }
 
     /**
